@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- 针形旋转 -->
+    <Style x:Key="WaitLoadPath" TargetType="Path">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+
+        <Setter Property="Fill" Value="{Binding Foreground,RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl,AncestorLevel=1}, Mode=OneTime}" />
+
+        <Setter Property="Data" Value="M 0,-20 L -3,-23 V -37 L 0,-40 L 3,-37 V -23 Z" />
+
+        <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=RenderTransform.Children[1].Angle}" />
+    </Style>
+</ResourceDictionary>

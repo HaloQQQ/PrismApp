@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SocketHelper</name>
+    </assembly>
+    <members>
+        <member name="E:SocketHelper.Base.BaseSocket.ReceivedMessage">
+            <summary>
+            from=>to, data
+            </summary>
+        </member>
+        <member name="E:SocketHelper.Base.BaseSocket.ExceptionOccurred">
+            <summary>
+            remotePoint, exception
+            </summary>
+        </member>
+        <member name="E:SocketHelper.Base.BaseSocket.Started">
+            <summary>
+            currentPoint
+            </summary>
+        </member>
+        <member name="P:SocketHelper.Base.BaseSocket.MessageMaxLength">
+            <summary>
+            可接受的最长数据长度
+            </summary>
+        </member>
+        <member name="M:SocketHelper.Base.BaseSocket.Dispose">
+            <summary>
+            关闭Socket
+            </summary>
+        </member>
+        <member name="M:SocketHelper.Base.BaseSocket.Close">
+            <summary>
+            销毁资源
+            </summary>
+        </member>
+        <member name="M:SocketHelper.Base.BaseSocket.GetStream">
+            <summary>
+            获取Socket流
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SocketHelper.Base.BaseSocket.ExceptionOccurredHander(System.String,System.Exception)">
+            <summary>
+            销毁连接
+            </summary>
+            <param name="remotePoint"></param>
+            <param name="exception"></param>
+        </member>
+        <member name="M:SocketHelper.Base.BaseSocket.StartedHandler(System.String)">
+            <summary>
+            更新连接状态
+            </summary>
+            <param name="socket"></param>
+        </member>
+        <member name="M:SocketHelper.Base.BaseSocket.ToString">
+            <summary>
+            LocalEndPoint.ToString()
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="E:SocketHelper.Base.ISocket.ReceivedMessage">
+            <summary>
+            EndPoint:from
+            EndPoint:to
+            byte[]:originMsg
+            </summary>
+        </member>
+        <member name="E:SocketHelper.Base.ISocket.ExceptionOccurred">
+            <summary>
+            string:remotePoint
+            Exception:originException
+            </summary>
+        </member>
+        <member name="E:SocketHelper.Base.ISocket.Started">
+            <summary>
+            socketPoint
+            </summary>
+        </member>
+        <member name="P:SocketHelper.Base.ISocket.IsConnected">
+            <summary>
+            是否为允许发送数据的状态
+            </summary>
+        </member>
+        <member name="M:SocketHelper.Base.ISocket.GetString(System.Byte[])">
+            <summary>
+            将字节数组按照指定编码转为字符串
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SocketHelper.Base.ISocket.GetBytes(System.String)">
+            <summary>
+            将字符串按照指定编码转为字节数组
+            </summary>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SocketHelper.Base.ISocket.Send(System.String)">
+            <summary>
+            同步发送数据
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:SocketHelper.Base.ISocket.Send(System.Byte[])">
+            <summary>
+            同步发送数据
+            </summary>
+            <param name="data">字节数组</param>
+        </member>
+        <member name="M:SocketHelper.Base.ISocket.SendAsync(System.String)">
+            <summary>
+            异步发送数据
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:SocketHelper.Base.ISocket.SendAsync(System.Byte[])">
+            <summary>
+            异步发送数据
+            </summary>
+            <param name="data">字节数组</param>
+        </member>
+        <member name="M:SocketHelper.Base.ISocket.Start">
+            <summary>
+            初始化Socket
+            </summary>
+        </member>
+        <member name="M:SocketHelper.Base.ISocket.Close">
+            <summary>
+            关闭Socket
+            </summary>
+        </member>
+        <member name="M:SocketHelper.Base.ISocket.GetStream">
+            <summary>
+            获取NetworkStream
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SocketHelper.Tcp.NewTcpServer.Dispose">
+            <summary>
+            关闭客户端Socket和监听Socket
+            </summary>
+        </member>
+        <member name="M:SocketHelper.Tcp.NewTcpServer.SendToAsync(System.Net.IPEndPoint,System.Byte[])">
+            <summary>
+            定点发送
+            </summary>
+            <param name="remotePoint">目标</param>
+            <param name="data">字节数组</param>
+        </member>
+        <member name="M:SocketHelper.Tcp.NewTcpServer.SendToAsync(System.Net.IPEndPoint,System.String)">
+            <summary>
+            定点发送
+            </summary>
+            <param name="remotePoint">目标</param>
+            <param name="message">消息</param>
+        </member>
+        <member name="M:SocketHelper.Tcp.NewTcpServer.TransmitFromAsync(System.Net.IPEndPoint,System.Byte[])">
+            <summary>
+            消息转发，必须是已连接的客户端才允许转发
+            </summary>
+            <param name="fromPoint">起点</param>
+            <param name="data">字节数组</param>
+        </member>
+        <member name="M:SocketHelper.Tcp.NewTcpServer.TransmitFromAsync(System.Net.IPEndPoint,System.String)">
+            <summary>
+            消息转发，必须是已连接的客户端才允许转发
+            </summary>
+            <param name="fromPoint">起点</param>
+            <param name="message">消息</param>
+        </member>
+        <member name="M:SocketHelper.Tcp.NewTcpServer.Send(System.Byte[])">
+            <summary>
+            同步群发消息
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:SocketHelper.Tcp.NewTcpServer.SendWhile(System.Byte[],System.Func{System.Collections.Generic.IDictionary{System.String,System.Net.Sockets.Socket},System.Collections.Generic.IEnumerable{System.Net.Sockets.Socket}})">
+            <summary>
+            筛选要同步发送数据的目标Socket
+            </summary>
+            <param name="data"></param>
+            <param name="filter"></param>
+        </member>
+        <member name="M:SocketHelper.Tcp.NewTcpServer.SendAsync(System.Byte[])">
+            <summary>
+            异步群发消息
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:SocketHelper.Tcp.NewTcpServer.SendAsyncWhile(System.Byte[],System.Func{System.Collections.Generic.IDictionary{System.String,System.Net.Sockets.Socket},System.Collections.Generic.IEnumerable{System.Net.Sockets.Socket}})">
+            <summary>
+            筛选要异步发送数据的目标Socket
+            </summary>
+            <param name="data"></param>
+            <param name="filter"></param>
+        </member>
+        <member name="M:SocketHelper.Tcp.NewTcpServer.Start">
+            <summary>
+            启动Socket通讯
+            </summary>
+        </member>
+        <member name="M:SocketHelper.Tcp.NewTcpServer.AccpetCallBack(System.IAsyncResult)">
+            <summary>
+            接收到连接时的回调函数，递归监听
+            </summary>
+            <param name="result"></param>
+        </member>
+        <member name="M:SocketHelper.Tcp.NewTcpServer.ExceptionOccurredHander(System.String,System.Exception)">
+            <summary>
+            移除客户端
+            若当前连接的数量等于最大连接数，重启监听功能
+            </summary>
+            <param name="remoteName"></param>
+            <param name="exception"></param>
+        </member>
+        <member name="M:SocketHelper.Udp.NewUdpClient.Send(System.Byte[])">
+            <summary>
+            发送到初始指定的Target
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="M:SocketHelper.Udp.NewUdpClient.SendAsync(System.Byte[])">
+            <summary>
+            发送到初始指定的Target
+            </summary>
+            <param name="data"></param>
+        </member>
+    </members>
+</doc>

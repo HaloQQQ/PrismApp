@@ -1,0 +1,54 @@
+﻿<Window x:Class="TcpSocket.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:commonCtrl="clr-namespace:TcpSocket.UserControls.Common"
+        xmlns:waitLoads="clr-namespace:TcpSocket.UserControls.WaitLoads"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource WithoutTitleBar}"
+        MinHeight="640" MinWidth="1200">
+
+    <Window.InputBindings>
+        <KeyBinding Key="F11" Command="Open" CommandParameter="Max" />
+        <KeyBinding Modifiers="Shift" Key="F11" Command="Open" CommandParameter="Normal" />
+        <KeyBinding Key="Escape" Command="Open" CommandParameter="Min" />
+        <KeyBinding Modifiers="Shift" Key="Escape" Command="Close" CommandParameter="Close" />
+    </Window.InputBindings>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="Open" Executed="KeyBoard_OnExecuted" />
+        <CommandBinding Command="Close" Executed="KeyBoard_OnExecuted" />
+        <CommandBinding Command="GoToPage" Executed="KeyBoard_OnExecuted" />
+        <CommandBinding Command="Save" Executed="KeyBoard_OnExecuted" />
+    </Window.CommandBindings>
+
+    <Grid VerticalAlignment="Stretch" Margin="5" x:Name="Container" Style="{DynamicResource Container}">
+        <DockPanel>
+
+            <commonCtrl:UsrTitleBarSlider
+                x:Name="TitleBarSlider"
+                DockPanel.Dock="Top"
+                Background="Transparent"
+                Cursor="SizeAll"
+                VerticalAlignment="Top" />
+            
+            <TabControl TabStripPlacement="Left" DockPanel.Dock="Bottom" 
+                        SelectionChanged="Selector_OnSelectionChanged">
+                <TabItem Header="通讯工具" />
+                <TabItem Header="图片列表" />
+                <TabItem Header="进程服务" />
+            </TabControl>
+        </DockPanel>
+
+        <commonCtrl:UsrSwitchBackgroundSlider
+            x:Name="SwitchBackgroundSlider"
+            DataContext="{Binding ImagesContext, Mode=OneWay}"
+            Width="309" HorizontalAlignment="Right"
+            Background="#AACCCCCC">
+
+            <commonCtrl:UsrSwitchBackgroundSlider.RenderTransform>
+                <TranslateTransform X="309" />
+            </commonCtrl:UsrSwitchBackgroundSlider.RenderTransform>
+
+        </commonCtrl:UsrSwitchBackgroundSlider>
+    </Grid>
+</Window>

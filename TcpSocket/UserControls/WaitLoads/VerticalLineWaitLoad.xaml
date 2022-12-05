@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="TcpSocket.UserControls.WaitLoads.VerticalLineWaitLoad"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Foreground="#f1404b">
+
+    <Viewbox>
+        <Grid Margin="20">
+            <Grid.Resources>
+                <Style x:Key="rec" TargetType="Rectangle">
+                    <Setter Property="Width" Value="10" />
+                    <Setter Property="Height" Value="30" />
+                    <Setter Property="Fill"
+                            Value="{Binding Foreground, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl,AncestorLevel=1}, Mode=OneTime}" />
+                </Style>
+                <PowerEase x:Key="powerEase" Power="3" EasingMode="EaseInOut" />
+            </Grid.Resources>
+            <Grid.Triggers>
+                <EventTrigger RoutedEvent="Grid.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard RepeatBehavior="Forever" Storyboard.TargetProperty="Height">
+                            <DoubleAnimation Storyboard.TargetName="rec1" To="50" BeginTime="0:0:0.0" Duration="0:0:0.5"
+                                             EasingFunction="{StaticResource powerEase}" AutoReverse="True" />
+                            <DoubleAnimation Storyboard.TargetName="rec2" To="50" BeginTime="0:0:0.2" Duration="0:0:0.5"
+                                             EasingFunction="{StaticResource powerEase}" AutoReverse="True" />
+                            <DoubleAnimation Storyboard.TargetName="rec3" To="50" BeginTime="0:0:0.4" Duration="0:0:0.5"
+                                             EasingFunction="{StaticResource powerEase}" AutoReverse="True" />
+                            <DoubleAnimation Storyboard.TargetName="rec4" To="50" BeginTime="0:0:0.6" Duration="0:0:0.5"
+                                             EasingFunction="{StaticResource powerEase}" AutoReverse="True" />
+                            <DoubleAnimation Storyboard.TargetName="rec5" To="50" BeginTime="0:0:0.8" Duration="0:0:0.5"
+                                             EasingFunction="{StaticResource powerEase}" AutoReverse="True" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Grid.Triggers>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="15" />
+                <ColumnDefinition Width="15" />
+                <ColumnDefinition Width="15" />
+                <ColumnDefinition Width="15" />
+                <ColumnDefinition Width="15" />
+            </Grid.ColumnDefinitions>
+            <Label Content="Loading"
+                   FontSize="18"
+                   FontFamily="Times New Roman"
+                   Foreground="#252c41"
+                   FontWeight="Bold"
+                   Grid.ColumnSpan="5"
+                   VerticalContentAlignment="Center"
+                   HorizontalContentAlignment="Center"
+                   Margin="0,80,0,0" />
+            <Rectangle Name="rec1" Grid.Column="0" Style="{StaticResource rec}" />
+            <Rectangle Name="rec2" Grid.Column="1" Style="{StaticResource rec}" />
+            <Rectangle Name="rec3" Grid.Column="2" Style="{StaticResource rec}" />
+            <Rectangle Name="rec4" Grid.Column="3" Style="{StaticResource rec}" />
+            <Rectangle Name="rec5" Grid.Column="4" Style="{StaticResource rec}" />
+        </Grid>
+
+    </Viewbox>
+</UserControl>

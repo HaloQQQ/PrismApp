@@ -1,0 +1,113 @@
+﻿<UserControl x:Class="TcpSocket.UserControls.Common.UsrSwitchBackgroundSlider"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:panelCtrls="clr-namespace:TcpSocket.UsefulControl"
+             xmlns:selector="clr-namespace:TcpSocket.DataTemplateSelector">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <selector:BackgroundImageBlockDataTemplateSelector x:Key="ImageBlockDataTemplateSelector">
+                <selector:BackgroundImageBlockDataTemplateSelector.BlockData>
+                    <DataTemplate>
+                        <ContentPresenter ContentTemplate="{StaticResource BlockImageDataTemplate}" />
+                    </DataTemplate>
+                </selector:BackgroundImageBlockDataTemplateSelector.BlockData>
+                <selector:BackgroundImageBlockDataTemplateSelector.Empty>
+                    <DataTemplate>
+                        <ContentPresenter ContentTemplate="{StaticResource EmptyImageDataTemplate}" />
+                    </DataTemplate>
+                </selector:BackgroundImageBlockDataTemplateSelector.Empty>
+            </selector:BackgroundImageBlockDataTemplateSelector>
+
+            <selector:BackgroundImageListDataTemplateSelector x:Key="ImageListDataTemplateSelector">
+                <selector:BackgroundImageListDataTemplateSelector.ListData>
+                    <DataTemplate>
+                        <ContentPresenter ContentTemplate="{StaticResource ListImageDataTemplate}" />
+                    </DataTemplate>
+                </selector:BackgroundImageListDataTemplateSelector.ListData>
+                <selector:BackgroundImageListDataTemplateSelector.Empty>
+                    <DataTemplate>
+                        <ContentPresenter ContentTemplate="{StaticResource EmptyImageDataTemplate}" />
+                    </DataTemplate>
+                </selector:BackgroundImageListDataTemplateSelector.Empty>
+            </selector:BackgroundImageListDataTemplateSelector>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Height="{Binding Height, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl,AncestorLevel=1}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.InputBindings>
+            <KeyBinding Key="Escape" Command="Close" CommandParameter="HideSlider" />
+        </Grid.InputBindings>
+        <Grid.CommandBindings>
+            <CommandBinding Command="Close" Executed="KeyBoard_OnExecuted" />
+        </Grid.CommandBindings>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <TextBlock Text="&#xe65f;" ToolTip="向右隐藏"
+                       Style="{StaticResource ClickIconText}" />
+
+            <TextBlock ToolTip="布局排列"
+                       Style="{StaticResource ContentLayoutIconText}" />
+        </StackPanel>
+
+        <ListBox Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                 BorderThickness="0"
+                 MouseLeftButtonUp="ChangeBackground_OnMouseLeftButtonDown"
+                 MouseDoubleClick="ChangeBackground_OnMouseLeftButtonDown"
+                 ItemsSource="{Binding Data}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem"
+                       BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding URI}" Value="{x:Null}">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </DataTrigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleX="1.02" ScaleY="1.02" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.Style>
+                <Style TargetType="ListBox" BasedOn="{StaticResource VerticalScrollVirtualItemsControl}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ShowInList}" Value="False">
+                            <Setter Property="ItemsPanel">
+                                <Setter.Value>
+                                    <ItemsPanelTemplate>
+                                        <panelCtrls:VirtualizingWrapPanel
+                                            Style="{StaticResource VirtualWrapPanelImageSelector}" />
+                                    </ItemsPanelTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="ItemTemplateSelector"
+                                    Value="{StaticResource ImageBlockDataTemplateSelector}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding ShowInList}" Value="True">
+                            <Setter Property="ItemsPanel">
+                                <Setter.Value>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel Style="{StaticResource VirtualStackPanelImageSelector}" />
+                                    </ItemsPanelTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="ItemTemplateSelector"
+                                    Value="{StaticResource ImageListDataTemplateSelector}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.Style>
+        </ListBox>
+    </Grid>
+</UserControl>

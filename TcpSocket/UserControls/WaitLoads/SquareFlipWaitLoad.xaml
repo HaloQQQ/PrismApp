@@ -1,0 +1,94 @@
+﻿<UserControl x:Class="TcpSocket.UserControls.WaitLoads.SquareFlipWaitLoad"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Viewbox>
+        <Grid Width="200" Height="200" Margin="10">
+            <Grid.Resources>
+                <PowerEase x:Key="powerEase" Power="3" EasingMode="EaseIn" />
+            </Grid.Resources>
+            <Viewport3D Width="200" Height="200">
+                <Viewport3D.Triggers>
+                    <EventTrigger RoutedEvent="Viewport3D.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard RepeatBehavior="Forever" Storyboard.TargetProperty="Angle">
+                                <DoubleAnimation Storyboard.TargetName="axisX" To="180" BeginTime="0:0:0" Duration="0:0:0.5"
+                                                 EasingFunction="{StaticResource powerEase}" />
+                                <DoubleAnimation Storyboard.TargetName="axisY" To="180" BeginTime="0:0:0.5" Duration="0:0:0.5"
+                                                 EasingFunction="{StaticResource powerEase}" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Viewport3D.Triggers>
+                <!--垂直屏幕往里-->
+                <Viewport3D.Camera>
+                    <PerspectiveCamera Position="0,0,800" LookDirection="0,0,-1" />
+                </Viewport3D.Camera>
+                <Viewport3D.Children>
+                    <ContainerUIElement3D>
+                        <!--正面-->
+                        <Viewport2DVisual3D>
+                            <Viewport2DVisual3D.Geometry>
+                                <MeshGeometry3D Positions="-100,100,0 -100,-100,0 100,-100,0 100,100,0"
+                                                TriangleIndices="0,1,2 0,2,3"
+                                                TextureCoordinates="0 0  0 1  1 1  1 0" />
+                            </Viewport2DVisual3D.Geometry>
+                            <Viewport2DVisual3D.Material>
+                                <DiffuseMaterial Viewport2DVisual3D.IsVisualHostMaterial="True" />
+                            </Viewport2DVisual3D.Material>
+                            <Viewport2DVisual3D.Visual>
+                                <Rectangle Width="50" Height="50" Fill="#1794A5" />
+                            </Viewport2DVisual3D.Visual>
+                        </Viewport2DVisual3D>
+                        <!--背面-->
+                        <Viewport2DVisual3D>
+                            <Viewport2DVisual3D.Geometry>
+                                <MeshGeometry3D Positions="100,100,0 100,-100,0 -100,-100,0 -100,100,0"
+                                                TriangleIndices="0,1,2 0,2,3"
+                                                TextureCoordinates="0 0  0 1  1 1  1 0" />
+                            </Viewport2DVisual3D.Geometry>
+                            <Viewport2DVisual3D.Material>
+                                <DiffuseMaterial Viewport2DVisual3D.IsVisualHostMaterial="True" />
+                            </Viewport2DVisual3D.Material>
+                            <Viewport2DVisual3D.Visual>
+                                <Rectangle Width="50" Height="50" Fill="#1794A5" />
+                            </Viewport2DVisual3D.Visual>
+                        </Viewport2DVisual3D>
+                        <!--绕X、Y轴旋转-->
+                        <ContainerUIElement3D.Transform>
+                            <Transform3DGroup>
+                                <RotateTransform3D>
+                                    <RotateTransform3D.Rotation>
+                                        <AxisAngleRotation3D x:Name="axisX" Axis="1,0,0" Angle="0" />
+                                    </RotateTransform3D.Rotation>
+                                </RotateTransform3D>
+                                <RotateTransform3D>
+                                    <RotateTransform3D.Rotation>
+                                        <AxisAngleRotation3D x:Name="axisY" Axis="0,1,0" Angle="0" />
+                                    </RotateTransform3D.Rotation>
+                                </RotateTransform3D>
+                            </Transform3DGroup>
+                        </ContainerUIElement3D.Transform>
+                    </ContainerUIElement3D>
+                    <!--灯光-->
+                    <ModelVisual3D>
+                        <ModelVisual3D.Content>
+                            <DirectionalLight Color="Transparent" />
+                        </ModelVisual3D.Content>
+                    </ModelVisual3D>
+                </Viewport3D.Children>
+            </Viewport3D>
+
+            <Label Content="Loading"
+                   FontSize="20"
+                   FontFamily="Times New Roman"
+                   Foreground="#ED5485"
+                   FontWeight="Bold"
+                   Width="200"
+                   HorizontalContentAlignment="Center"
+                   VerticalAlignment="Bottom"
+                   Margin="0,30" />
+        </Grid>
+
+    </Viewbox>
+</UserControl>

@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="TcpSocket.UserControls.Function.UsrProcessService"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/DataGrid.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="7*" />
+        </Grid.ColumnDefinitions>
+
+        <DataGrid Grid.Column="0" ItemsSource="{Binding ProcessListContext.List}">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}">
+                    <DataGridCheckBoxColumn.Header>
+                        <CheckBox Checked="ToggleButton_OnChecked" Unchecked="ToggleButton_OnChecked"
+                            Style="{StaticResource CheckBoxSelectAll}" />
+                    </DataGridCheckBoxColumn.Header>
+                    <DataGridCheckBoxColumn.ElementStyle>
+                        <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}" />
+                    </DataGridCheckBoxColumn.ElementStyle>
+                </DataGridCheckBoxColumn>
+                <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding Id}" Header="编号" />
+                <DataGridTextColumn Width="*" Binding="{Binding Name}" Header="进程名" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <DataGrid Grid.Column="1" ItemsSource="{Binding ServiceList}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding DisplayName}" Header="名称" />
+                <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding ServiceName}" Header="服务名" />
+
+                <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding ServiceControllerStatus}" Header="状态" />
+                <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding ServiceType}" Header="服务类型" />
+                <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding ServiceStartMode}" Header="服务启动类型" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
