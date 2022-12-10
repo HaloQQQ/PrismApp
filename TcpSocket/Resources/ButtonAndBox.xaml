@@ -48,6 +48,68 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <!-- RichTextBox -->
+    <Style TargetType="RichTextBox">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBlock.Foreground}"/>
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Height" Value="Auto" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Padding" Value="5" />
+
+        <Setter Property="helper:MyAttachProperty.CornerRadius" Value="10" />
+
+        <Setter Property="BorderBrush" Value="LightGray" />
+        <Setter Property="BorderThickness" Value="1" />
+        
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBoxBase">
+                    <Grid x:Name="Grid" ClipToBounds="False">
+                        <Border x:Name="Border"
+                                CornerRadius="{TemplateBinding helper:MyAttachProperty.CornerRadius}"
+                                MinHeight="{TemplateBinding MinHeight}"
+                                MinWidth="{TemplateBinding MinWidth}"
+                                MaxHeight="{TemplateBinding MaxHeight}"
+                                MaxWidth="{TemplateBinding MaxWidth}"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}" />
+
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      Margin="2"
+                                      Foreground="{TemplateBinding Foreground}"
+                                      VerticalContentAlignment="Center"
+                                      VerticalAlignment="Stretch" />
+                    </Grid>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="Border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="LightGray" BlurRadius="7" ShadowDepth="0"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Black" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
     <!-- TextBox通用样式 不能直接指定Width,Height -->
     <Style TargetType="TextBox">
@@ -181,16 +243,25 @@
         <Setter Property="Margin" Value="10,3" />
         <Setter Property="Padding" Value="10,5" />
         <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="Background" Value="#0292f9" />
+        <!-- <Setter Property="Background" Value="#0292f9" /> -->
         <Setter Property="BorderBrush" Value="Transparent" />
 
         <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
 
-        <Setter Property="helper:MyAttachProperty.CornerRadius" Value="10" />
+        <Setter Property="helper:MyAttachProperty.CornerRadius" Value="8" />
 
         <Setter Property="Foreground" Value="White" />
 
         <Setter Property="FontSize" Value="16" />
+        
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#9ae464" Offset="0"/>
+                    <GradientStop Color="#1660c2" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
 
         <Setter Property="Template">
             <Setter.Value>
@@ -229,9 +300,9 @@
         </Setter>
 
         <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="True">
-                <Setter Property="Background" Value="#0292f9" />
-            </Trigger>
+            <!-- <Trigger Property="IsEnabled" Value="True"> -->
+            <!--     <Setter Property="Background" Value="#0292f9" /> -->
+            <!-- </Trigger> -->
 
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="Black" />

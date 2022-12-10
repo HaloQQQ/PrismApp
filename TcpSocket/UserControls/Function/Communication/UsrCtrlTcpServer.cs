@@ -1,6 +1,7 @@
 ﻿using SocketHelper.Tcp;
 using System;
 using Helper.Utils;
+using TcpSocket.Helper;
 using TcpSocket.Models;
 
 namespace TcpSocket.UserControls.Function.Communication
@@ -33,7 +34,7 @@ namespace TcpSocket.UserControls.Function.Communication
 
             server.SocketCommunicateWithClientCreated += socket =>
             {
-                this.AppendMsg(GetMessage(socket.RemoteEndPoint!, socket.LocalEndPoint!, "连接建立!"));
+                this.rhTxt.Info(this._tcpSocketContext, "连接建立!");
 
                 if (socket.RemoteEndPoint != null)
                 {
@@ -43,11 +44,7 @@ namespace TcpSocket.UserControls.Function.Communication
                 }
             };
 
-            server.Started += socket =>
-            {
-                base.AppendMsg(base.GetMessage(string.Empty,
-                    $"开始监听{base._tcpSocketContext.IP}:{base._tcpSocketContext.Port}.."));
-            };
+            server.Started += socket => { this.rhTxt.Info(this._tcpSocketContext, $"开始监听{base._tcpSocketContext.IP}:{base._tcpSocketContext.Port}.."); };
 
             server.ReceivedMessage += (from, to, data) => { this._mediatorContext.TransmitFrom(this, data); };
         }
@@ -72,11 +69,11 @@ namespace TcpSocket.UserControls.Function.Communication
 
                 base._tcpSocket.SendAsync(msg);
 
-                base.AppendMsg($"转发数据：【{msg}】");
+                this.rhTxt.Info( this._tcpSocketContext, $"转发数据：【{msg}】");
             }
             catch (Exception ex)
             {
-                base.AppendMsg(ex.Message);
+                this.rhTxt.Info( this._tcpSocketContext, ex.Message);
             }
         }
     }

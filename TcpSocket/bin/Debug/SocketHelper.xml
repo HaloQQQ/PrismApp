@@ -9,6 +9,11 @@
             from=>to, data
             </summary>
         </member>
+        <member name="E:SocketHelper.Base.BaseSocket.SentMessage">
+            <summary>
+            from=>to, data
+            </summary>
+        </member>
         <member name="E:SocketHelper.Base.BaseSocket.ExceptionOccurred">
             <summary>
             remotePoint, exception
@@ -17,6 +22,11 @@
         <member name="E:SocketHelper.Base.BaseSocket.Started">
             <summary>
             currentPoint
+            </summary>
+        </member>
+        <member name="E:SocketHelper.Base.BaseSocket.ConnectStatusChanged">
+            <summary>
+            当前状态
             </summary>
         </member>
         <member name="P:SocketHelper.Base.BaseSocket.MessageMaxLength">
@@ -40,7 +50,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:SocketHelper.Base.BaseSocket.ExceptionOccurredHander(System.String,System.Exception)">
+        <member name="M:SocketHelper.Base.BaseSocket.ExceptionOccurredHandler(System.String,System.Exception)">
             <summary>
             销毁连接
             </summary>
@@ -60,6 +70,13 @@
             <returns></returns>
         </member>
         <member name="E:SocketHelper.Base.ISocket.ReceivedMessage">
+            <summary>
+            EndPoint:from
+            EndPoint:to
+            byte[]:originMsg
+            </summary>
+        </member>
+        <member name="E:SocketHelper.Base.ISocket.SentMessage">
             <summary>
             EndPoint:from
             EndPoint:to
@@ -206,13 +223,22 @@
             </summary>
             <param name="result"></param>
         </member>
-        <member name="M:SocketHelper.Tcp.NewTcpServer.ExceptionOccurredHander(System.String,System.Exception)">
+        <member name="M:SocketHelper.Tcp.NewTcpServer.ExceptionOccurredHandler(System.String,System.Exception)">
             <summary>
             移除客户端
             若当前连接的数量等于最大连接数，重启监听功能
             </summary>
             <param name="remoteName"></param>
             <param name="exception"></param>
+        </member>
+        <member name="M:SocketHelper.Udp.NewUdpClient.#ctor(System.Text.Encoding,System.String,System.UInt16,System.String,System.UInt16,System.String,System.UInt32)">
+            <param name="encoding"></param>
+            <param name="localIp"></param>
+            <param name="localPort"></param>
+            <param name="targetIP"></param>
+            <param name="targetPort"></param>
+            <param name="name"></param>
+            <param name="messageMaxLength"></param>
         </member>
         <member name="M:SocketHelper.Udp.NewUdpClient.Send(System.Byte[])">
             <summary>

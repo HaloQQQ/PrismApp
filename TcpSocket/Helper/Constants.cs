@@ -1,4 +1,6 @@
-﻿namespace TcpSocket.Helper
+﻿using System.Windows.Media;
+
+namespace TcpSocket.Helper
 {
     internal class Constants
     {
@@ -27,5 +29,7 @@
 
         public const string Image_Dir = "E:\\图片";
 
+        public static readonly Brush SendBrush = Brushes.Blue;
+        public static readonly Brush RecvBrush = Brushes.Green;
     }
 }

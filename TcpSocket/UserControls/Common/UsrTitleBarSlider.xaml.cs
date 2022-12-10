@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -224,7 +227,7 @@ namespace TcpSocket.UserControls.Common
             block.ContextMenu.IsOpen = true;
         }
 
-        private void KeyBoard_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        private async void KeyBoard_OnExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             e.Handled = true;
 

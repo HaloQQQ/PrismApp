@@ -66,15 +66,14 @@
                         </ListBox.Style>
                     </ListBox>
 
-                    <TextBox Style="{StaticResource RichTextStyle}"
-                             DockPanel.Dock="Bottom"
+                    <RichTextBox DockPanel.Dock="Bottom"
                              x:Name="rhTxt" ContextMenu="{StaticResource ForMessageBoard}">
-                        <TextBox.CommandBindings>
+                        <RichTextBox.CommandBindings>
                             <CommandBinding Command="Refresh" CanExecute="CommandBinding_OnCanExecute" Executed="CommandBinding_Executed" />
                             <CommandBinding Command="New" Executed="CommandBinding_Executed" />
                             <CommandBinding Command="Open" Executed="CommandBinding_Executed" />
-                        </TextBox.CommandBindings>
-                    </TextBox>
+                        </RichTextBox.CommandBindings>
+                    </RichTextBox>
                 </DockPanel>
             </Grid>
 
@@ -89,7 +88,7 @@
                     </TextBox.InputBindings>
                 </TextBox>
 
-                <Button helper:MyAttachProperty.CornerRadius="5"
+                <Button helper:MyAttachProperty.CornerRadius="10"
                         IsEnabled="{Binding IsConnected}" 
                         Content="发送"
                         Command="New" CommandParameter="SendMsg" />

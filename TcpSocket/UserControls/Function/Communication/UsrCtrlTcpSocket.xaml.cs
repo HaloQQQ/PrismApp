@@ -6,7 +6,9 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Helper.Extensions;
 using Helper.Utils;
+using SocketHelper.Tcp;
 using TcpSocket.Helper;
 using TcpSocket.Models;
 
@@ -21,6 +23,7 @@ namespace TcpSocket.UserControls.Function.Communication
             InitializeComponent();
             this._tcpSocketContext = tcpSocketContext;
             this.DataContext = tcpSocketContext;
+            this.rhTxt.Clear();
         }
 
         protected ISocket _tcpSocket = null!;
@@ -32,45 +35,38 @@ namespace TcpSocket.UserControls.Function.Communication
                 coreMessage;
         }
 
-        protected string GetMessage(string socketName, string coreMessage)
-        {
-            return
-                $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} {Thread.CurrentThread.ManagedThreadId} {Thread.CurrentThread.IsThreadPoolThread} {socketName} " +
-                coreMessage;
-        }
-
-        protected void AppendMsg(string msg)
-        {
-            if (this._tcpSocketContext.IsLogging)
-            {
-                Helper.Helper.Log(this._tcpSocketContext.Name, msg);
-            }
-
-            this.Dispatcher.Invoke(() =>
-                {
-                    this.rhTxt.AppendText(msg + Environment.NewLine);
-                    this.rhTxt.ScrollToEnd();
-
-                    if (this.rhTxt.LineCount > 500)
-                    {
-                        this.rhTxt.Clear();
-                    }
-                }
-            );
-        }
-
-        private void RefreshConnection()
-        {
-            this._tcpSocketContext.IsConnected = this._tcpSocket.IsConnected;
-        }
+        // protected string GetMessage(string socketName, string coreMessage)
+        // {
+        //     return
+        //         $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} {Thread.CurrentThread.ManagedThreadId} {Thread.CurrentThread.IsThreadPoolThread} {socketName} " +
+        //         coreMessage;
+        // }
+        //
+        // protected void AppendMsg(string msg)
+        // {
+        //     if (this._tcpSocketContext.IsLogging)
+        //     {
+        //         Helper.Helper.Log(this._tcpSocketContext.Name, msg);
+        //     }
+        //
+        //     this.Dispatcher.Invoke(() =>
+        //         {
+        //             this.rhTxt.AppendText(msg + Environment.NewLine);
+        //             this.rhTxt.ScrollToEnd();
+        //
+        //             if (this.rhTxt.LineCount > 500)
+        //             {
+        //                 this.rhTxt.Clear();
+        //             }
+        //         }
+        //     );
+        // }
 
         private void CloseSocket()
         {
             this._tcpSocket.Close();
 
             this._tcpSocketContext.ConnList.Clear();
-
-            this.RefreshConnection();
         }
 
         /// <summary>
@@ -102,7 +98,7 @@ namespace TcpSocket.UserControls.Function.Communication
 
                 this._tcpSocket!.ReceivedMessage += (from, to, bytes) =>
                 {
-                    string message = this._tcpSocket.GetString(bytes).Trim('\0').Trim();
+                    string message = this._tcpSocket.GetString(bytes).TrimWhiteSpace();
 
                     if (this.ResolveMsg.GetInvocationList().Length > 0)
                     {
@@ -111,12 +107,17 @@ namespace TcpSocket.UserControls.Function.Communication
 
                     message = GetMessage(from, to, $"收到数据【{message}】!");
 
-                    this.AppendMsg(message);
+                    this.rhTxt.Recv(from, to, this._tcpSocketContext, message);
+                };
+                
+                this._tcpSocket.SentMessage += (from, to, bytes) =>
+                {
+                    this.rhTxt.Send(from, to, this._tcpSocketContext, this._tcpSocket.GetString(bytes));
                 };
 
                 this._tcpSocket.ExceptionOccurred += (socketName, exception) =>
                 {
-                    this.AppendMsg(this.GetMessage(socketName, $" {exception.Message}"));
+                    this.rhTxt.Info(this._tcpSocketContext, exception.Message);
 
                     this.Dispatcher.Invoke(() =>
                         {
@@ -126,17 +127,15 @@ namespace TcpSocket.UserControls.Function.Communication
                             }
                         }
                     );
-
-                    this.RefreshConnection();
                 };
 
-                this._tcpSocket.Start();
+                this._tcpSocket.ConnectStatusChanged += status => this._tcpSocketContext.IsConnected = status;
 
-                this.RefreshConnection();
+                this._tcpSocket.Start();
             }
             catch (Exception ex)
             {
-                this.AppendMsg(ex.Message);
+                this.rhTxt.Info(this._tcpSocketContext, ex.Message);
             }
         }
 
@@ -150,9 +149,10 @@ namespace TcpSocket.UserControls.Function.Communication
                 {
                     if (Helper.Helper.Equals(e.Parameter?.ToString(), Constants.SEND_MSG))
                     {
-                        if (!string.IsNullOrEmpty(this._tcpSocketContext.SendMsg))
+                        var msg = this._tcpSocketContext.SendMsg;
+                        if (!string.IsNullOrEmpty(msg))
                         {
-                            this._tcpSocket.SendAsync(this._tcpSocketContext.SendMsg);
+                            this._tcpSocket.SendAsync(msg);
 
                             this._tcpSocketContext.SendMsg = string.Empty;
                         }
@@ -170,7 +170,7 @@ namespace TcpSocket.UserControls.Function.Communication
                 }
                 else if (e.Command == NavigationCommands.Refresh)
                 {
-                    this.rhTxt.Clear();
+                    this.rhTxt.Document.Blocks.Clear();
                 }
                 else if (e.Command == ApplicationCommands.Open)
                 {
@@ -182,13 +182,11 @@ namespace TcpSocket.UserControls.Function.Communication
             }
             catch (SocketException ex)
             {
-                this.RefreshConnection();
-
-                this.AppendMsg(ex.Message);
+                this.rhTxt.Info(this._tcpSocketContext, ex.Message);
             }
             catch (Exception ex)
             {
-                this.AppendMsg(ex.Message);
+                this.rhTxt.Info(this._tcpSocketContext, ex.Message);
             }
         }
 
@@ -211,11 +209,8 @@ namespace TcpSocket.UserControls.Function.Communication
             }
             else if (e.Command == NavigationCommands.Refresh)
             {
-                if (string.IsNullOrEmpty(this.rhTxt.Text))
-                {
-                    e.CanExecute = false;
-                    return;
-                }
+                e.CanExecute = this.rhTxt.Document.Blocks.Count > 0;
+                return;
             }
 
             e.CanExecute = true;

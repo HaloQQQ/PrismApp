@@ -21,7 +21,8 @@
         <CommandBinding Command="Save" Executed="KeyBoard_OnExecuted" />
     </Window.CommandBindings>
 
-    <Grid VerticalAlignment="Stretch" Margin="5" x:Name="Container" Style="{DynamicResource Container}">
+    <Grid VerticalAlignment="Stretch" Margin="5" x:Name="Container" 
+          Style="{DynamicResource Container}">
         <DockPanel>
 
             <commonCtrl:UsrTitleBarSlider
@@ -31,7 +32,7 @@
                 Cursor="SizeAll"
                 VerticalAlignment="Top" />
             
-            <TabControl TabStripPlacement="Left" DockPanel.Dock="Bottom" 
+            <TabControl DockPanel.Dock="Bottom"
                         SelectionChanged="Selector_OnSelectionChanged">
                 <TabItem Header="通讯工具" />
                 <TabItem Header="图片列表" />

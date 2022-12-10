@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Helper.Utils;
+using Helper.Extensions;
 using SocketHelper.Base;
 using SocketHelper.Udp;
 using TcpSocket.Helper;
@@ -22,55 +20,11 @@ namespace TcpSocket.UserControls.Function.Communication
             InitializeComponent();
             this._socketContext = socketContext;
             this.DataContext = socketContext;
+            
+            this.rhTxt.Clear();
         }
 
         protected ISocket _udpSocket = null!;
-
-        protected string GetMessage(EndPoint from, EndPoint to, string coreMessage)
-        {
-            return
-                $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} {Thread.CurrentThread.ManagedThreadId} {Thread.CurrentThread.IsThreadPoolThread} {from}=>{to} " +
-                coreMessage;
-        }
-
-        protected string GetMessage(string socketName, string coreMessage)
-        {
-            return
-                $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} {Thread.CurrentThread.ManagedThreadId} {Thread.CurrentThread.IsThreadPoolThread} {socketName} " +
-                coreMessage;
-        }
-
-        protected void AppendMsg(string msg)
-        {
-            if (this._socketContext.IsLogging)
-            {
-                Helper.Helper.Log(this._socketContext.Name, msg);
-            }
-
-            this.Dispatcher.Invoke(() =>
-                {
-                    this.rhTxt.AppendText(msg + Environment.NewLine);
-                    this.rhTxt.ScrollToEnd();
-
-                    if (this.rhTxt.LineCount > 500)
-                    {
-                        this.rhTxt.Clear();
-                    }
-                }
-            );
-        }
-
-        private void RefreshConnection()
-        {
-            this._socketContext.IsConnected = this._udpSocket.IsConnected;
-        }
-
-        private void CloseSocket()
-        {
-            this._udpSocket.Close();
-
-            this.RefreshConnection();
-        }
 
         public Func<string, string> ResolveMsg = null!;
 
@@ -78,57 +32,53 @@ namespace TcpSocket.UserControls.Function.Communication
         {
             e.Handled = true;
 
+            if (this._udpSocket != null && this._udpSocket.IsConnected)
+            {
+                this._udpSocket.Close();
+                return;
+            }
+
             try
             {
-                if (this._udpSocket != null && this._udpSocket.IsConnected)
-                {
-                    this.CloseSocket();
-
-                    return;
-                }
-
                 this._udpSocket = new NewUdpClient(this._socketContext.Encoding,
                     this._socketContext.IP, ushort.Parse(this._socketContext.Port),
                     this._socketContext.TargetIP, ushort.Parse(this._socketContext.TargetPort));
 
-                AppUtils.Assert(this._udpSocket != null, "Socket连接未初始化..");
-
-                this._udpSocket!.Started += ip => this.AppendMsg($"{ip}已启动");
+                this._udpSocket!.Started += ip => this.rhTxt.Info(this._socketContext, $"{ip}已启动");
 
                 this._udpSocket.ReceivedMessage += (from, to, bytes) =>
                 {
-                    string message = this._udpSocket.GetString(bytes).Trim('\0').Trim();
+                    string message = this._udpSocket.GetString(bytes).TrimWhiteSpace();
 
                     if (this.ResolveMsg.GetInvocationList().Length > 0)
                     {
                         message = this.ResolveMsg(message);
                     }
 
-                    message = GetMessage(from, to, message);
+                    this.rhTxt.Recv(from, to, this._socketContext, message);
 
-                    this.AppendMsg(message);
-
-                    string[] arr = @from.ToString()!.Split(":");
+                    string[] arr = from.ToString()!.Split(":");
                     this._socketContext.TargetIP = arr[0];
                     this._socketContext.TargetPort = arr[1];
+                };
 
-                    ((this._udpSocket as NewUdpClient)!).ReConnect(from);
+                this._udpSocket.SentMessage += (from, to, bytes) =>
+                {
+                    this.rhTxt.Send(from, to, this._socketContext, this._udpSocket.GetString(bytes));
                 };
 
                 this._udpSocket.ExceptionOccurred += (remotePoint, exception) =>
                 {
-                    this.AppendMsg($"{remotePoint}出现异常:{exception.Message}");
-
-                    this.RefreshConnection();
+                    this.rhTxt.Info(this._socketContext, $"{remotePoint}出现异常:{exception.Message}");
                 };
 
-                this._udpSocket.Start();
+                this._udpSocket.ConnectStatusChanged += connStatus => this._socketContext.IsConnected = connStatus;
 
-                this.RefreshConnection();
+                this._udpSocket.Start();
             }
             catch (Exception ex)
             {
-                this.AppendMsg(ex.Message);
+                this.rhTxt.Info(this._socketContext, ex.Message);
             }
         }
 
@@ -142,9 +92,10 @@ namespace TcpSocket.UserControls.Function.Communication
                 {
                     if (Helper.Helper.Equals(e.Parameter?.ToString(), Constants.SEND_MSG))
                     {
-                        if (!string.IsNullOrEmpty(this._socketContext.SendMsg))
+                        var msg = this._socketContext.SendMsg;
+                        if (!string.IsNullOrEmpty(msg))
                         {
-                            this._udpSocket.SendAsync(this._socketContext.SendMsg);
+                            this._udpSocket.SendAsync(msg);
 
                             this._socketContext.SendMsg = string.Empty;
                         }
@@ -162,7 +113,7 @@ namespace TcpSocket.UserControls.Function.Communication
                 }
                 else if (e.Command == NavigationCommands.Refresh)
                 {
-                    this.rhTxt.Clear();
+                    this.rhTxt.Document.Blocks.Clear();
                 }
                 else if (e.Command == ApplicationCommands.Open)
                 {
@@ -174,13 +125,11 @@ namespace TcpSocket.UserControls.Function.Communication
             }
             catch (SocketException ex)
             {
-                this.RefreshConnection();
-
-                this.AppendMsg(ex.Message);
+                this.rhTxt.Info(this._socketContext, ex.Message);
             }
             catch (Exception ex)
             {
-                this.AppendMsg(ex.Message);
+                this.rhTxt.Info(this._socketContext, ex.Message);
             }
         }
 
@@ -202,11 +151,8 @@ namespace TcpSocket.UserControls.Function.Communication
             }
             else if (e.Command == NavigationCommands.Refresh)
             {
-                if (string.IsNullOrEmpty(this.rhTxt.Text))
-                {
-                    e.CanExecute = false;
-                    return;
-                }
+                e.CanExecute = this.rhTxt.Document.Blocks.Count > 0;
+                return;
             }
 
             e.CanExecute = true;

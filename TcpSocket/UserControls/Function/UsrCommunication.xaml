@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <DockPanel>
-        <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+        <DockPanel DockPanel.Dock="Top" MinHeight="35" LastChildFill="False">
             <CheckBox DockPanel.Dock="Left" x:Name="chbxIsTcp" IsChecked="{Binding IsTcp}">
                 <TextBlock>
                     <TextBlock Style="{StaticResource IconText}" Text="&#xec6f;" />

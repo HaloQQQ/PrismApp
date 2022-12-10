@@ -18,7 +18,7 @@ namespace TcpSocket.UserControls.Function
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
-            
+
             // 是否可切换Tcp和Udp
             this.InitTcpCheckBoxEnabled();
 
@@ -51,14 +51,19 @@ namespace TcpSocket.UserControls.Function
             this.grdUDP.Children.Add(udp);
             this.InitHexMsg(udp);
         }
-        
+
         private void InitHexMsg(UsrCtrlTcpSocket usrCtrlTcpSocket)
         {
             usrCtrlTcpSocket.ResolveMsg += str =>
             {
                 if (Statics.DataContext.IsHex)
                 {
-                    return str.GetStringFromHex();
+                    if (str.IsHexString())
+                    {
+                        return str.GetStringFromHex();
+                    }
+
+                    return str.GetHexFromString();
                 }
 
                 return str;
@@ -71,7 +76,12 @@ namespace TcpSocket.UserControls.Function
             {
                 if (Statics.DataContext.IsHex)
                 {
-                    return str.GetStringFromHex();
+                    if (str.IsHexString())
+                    {
+                        return str.GetStringFromHex();
+                    }
+
+                    return str.GetHexFromString();
                 }
 
                 return str;

@@ -13,7 +13,7 @@ using Helper.Utils;
 
 namespace TcpSocket.Helper
 {
-    internal static class Helper
+    internal static partial class Helper
     {
         internal static void Invoke(Action action)
         {

@@ -1,5 +1,6 @@
 ﻿using SocketHelper.Tcp;
 using System.Net;
+using TcpSocket.Helper;
 using TcpSocket.Models;
 
 namespace TcpSocket.UserControls.Function.Communication
@@ -21,7 +22,7 @@ namespace TcpSocket.UserControls.Function.Communication
 
             base._tcpSocket.Started += socket =>
             {
-                base.AppendMsg(base.GetMessage(string.Empty, "连接成功"));
+                this.rhTxt.Info( this._tcpSocketContext, "连接成功");
 
                 base._tcpSocketContext.ConnList.Add(
                     new IPEndPoint(IPAddress.Parse(this._tcpSocketContext.IP), port).ToString()

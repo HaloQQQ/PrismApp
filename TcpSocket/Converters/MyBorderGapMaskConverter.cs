@@ -8,6 +8,9 @@ using System.Windows.Shapes;
 
 namespace TcpSocket.Converters
 {
+    /// <summary>
+    /// 用于GroupBox标题居中
+    /// </summary>
     public class MyBorderGapMaskConverter : IMultiValueConverter
     {
         /// <summary>
