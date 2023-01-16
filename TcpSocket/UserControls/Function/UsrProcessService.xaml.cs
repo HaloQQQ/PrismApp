@@ -1,7 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using TcpSocket.Helper;
 using TcpSocket.Models.ProcessService;
 
 namespace TcpSocket.UserControls.Function
@@ -17,15 +18,47 @@ namespace TcpSocket.UserControls.Function
         {
             e.Handled = true;
 
-            DataGrid dataGrid = e.Source as DataGrid;
-            if (dataGrid != null)
+            if (e.Command == ApplicationCommands.Open)
             {
-                if (dataGrid.DataContext is ObservableCollection<ProcessContext> processContexts)
+                if (e.Parameter.ToString() == "Service")
                 {
-                    var value = (bool) e.Parameter;
-                    foreach (var processContext in processContexts)
+                    if (e.OriginalSource is FrameworkElement element && element.DataContext is ServiceContext service)
                     {
-                        processContext.IsChecked = value;
+                        service.ServiceController.Start();
+                        Statics.DataContext.ProcessServiceContext.RefreshServices();
+                    }
+                }
+            }
+            else if (e.Command == ApplicationCommands.Close)
+            {
+                if (e.Parameter.ToString() == "Process")
+                {
+                    if (e.OriginalSource is FrameworkElement element && element.DataContext is ProcessContext process)
+                    {
+                        Process.GetProcessById(process.Id).Kill();
+                        Statics.DataContext.ProcessServiceContext.RefreshProcesses();
+                    }
+                }
+                else if (e.Parameter.ToString() == "Service")
+                {
+                    if (e.OriginalSource is FrameworkElement element && element.DataContext is ServiceContext service)
+                    {
+                        service.ServiceController.Stop();
+                        Statics.DataContext.ProcessServiceContext.RefreshServices();
+                    }
+                }
+            }
+            else if (e.Command == NavigationCommands.Refresh)
+            {
+                if (e.Source is DataGrid dataGrid)
+                {
+                    if (dataGrid.Name == "DataGridProcess")
+                    {
+                        Statics.DataContext.ProcessServiceContext.RefreshProcesses();
+                    }
+                    else if (dataGrid.Name == "DataGridService")
+                    {
+                        Statics.DataContext.ProcessServiceContext.RefreshServices();
                     }
                 }
             }

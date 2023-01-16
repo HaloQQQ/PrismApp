@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -111,6 +112,15 @@ namespace TcpSocket
 
                 this.Container.Background = dict[Constants.Container_Background] as SolidColorBrush;
             }
+
+            var bkgrdImage = Statics.DataContext.SoftwareContext.CurrentBkGrd;
+            if (File.Exists(bkgrdImage))
+            {
+                this.Container.Background = new ImageBrush(new BitmapImage(new Uri(bkgrdImage)))
+                {
+                    Stretch = Stretch.UniformToFill
+                }; 
+            }
         }
 
         private void RefreshTheme()
@@ -198,10 +208,13 @@ namespace TcpSocket
         private void SwitchBackgroundEventSubscribe()
         {
             this.SwitchBackgroundSlider.SetBackImage += uri =>
+            {
+                Statics.DataContext.SoftwareContext.CurrentBkGrd = uri;
                 this.Container.Background = new ImageBrush(new BitmapImage(new Uri(uri)))
                 {
                     Stretch = Stretch.UniformToFill
                 };
+            };
         }
 
         #endregion
@@ -213,7 +226,7 @@ namespace TcpSocket
             if (e.Source is TabControl tabControl)
             {
                 var item = tabControl.SelectedItem as TabItem;
-                
+
                 if (item.Header.ToString() == "通讯工具")
                 {
                     if (item.Content == null)

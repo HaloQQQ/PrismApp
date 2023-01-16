@@ -3,7 +3,6 @@
                     xmlns:converters="clr-namespace:TcpSocket.Converters"
                     xmlns:helper="clr-namespace:TcpSocket.Helper">
 
-
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ScrollViewer.xaml" />
         <ResourceDictionary Source="TextBlock.xaml" />

@@ -9,37 +9,62 @@ namespace TcpSocket.Models.ProcessService
     {
         public CanSelectListModel<ProcessContext> ProcessListContext { get; set; }
 
-        public ObservableCollection<ServiceContext> ServiceList { get; set; }
-
-        public ProcessServiceContext()
+        public void RefreshProcesses()
         {
-            this.ProcessListContext = new CanSelectListModel<ProcessContext>();
-            this.ServiceList = new ObservableCollection<ServiceContext>();
-            
             Task.Run(async () =>
             {
                 ProcessContext processContext;
-                foreach (var process in ProcessUtil.GetAllProcessList().Values)
+                Helper.Helper.Invoke(() =>
                 {
-                    processContext = new ProcessContext(process);
-                    Helper.Helper.Invoke(() => { this.ProcessListContext.Add(processContext); });
+                    if (this.ProcessListContext.AllCount > 0)
+                    {
+                        this.ProcessListContext.Clear();
+                    }
+                });
+
+                foreach (var process in ProcessUtil.GetAllProcessList())
+                {
+                    processContext = new ProcessContext(process.Value);
+                    Helper.Helper.Invoke(() => this.ProcessListContext.Add(processContext));
 
                     await Task.Delay(100);
                 }
             });
+        }
 
+        public ObservableCollection<ServiceContext> ServiceList { get; set; }
+
+        public void RefreshServices()
+        {
             Task.Run(async () =>
             {
-
-                ServiceContext serviceContext = null;
-                foreach (var service in ServiceUtil.GetAllNormalServiceList().Values)
+                ServiceContext serviceContext;
+                Helper.Helper.Invoke(() =>
                 {
-                    serviceContext = new ServiceContext(service);
+                    if (this.ServiceList.Count > 0)
+                    {
+                        this.ServiceList.Clear();
+                    }
+                });
+
+                foreach (var service in ServiceUtil.GetAllNormalServiceList())
+                {
+                    serviceContext = new ServiceContext(service.Value);
                     Helper.Helper.Invoke(() => { this.ServiceList.Add(serviceContext); });
 
                     await Task.Delay(50);
                 }
             });
+        }
+
+        public ProcessServiceContext()
+        {
+            this.ProcessListContext = new CanSelectListModel<ProcessContext>();
+            this.ServiceList = new ObservableCollection<ServiceContext>();
+
+            this.RefreshProcesses();
+
+            this.RefreshServices();
         }
     }
 }

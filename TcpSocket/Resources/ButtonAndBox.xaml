@@ -3,7 +3,7 @@
                     xmlns:helper="clr-namespace:TcpSocket.Helper"
                     xmlns:converters="clr-namespace:TcpSocket.Converters">
     
-    <converters:DigitalDoubleConverter x:Key="DigitalDoubleConverter" />
+    <converters:DigitalDoubleConverter x:Key="DigitalDoubleConverter"/>
     
     <!-- PasswdBox -->
     <Style TargetType="PasswordBox">
@@ -306,6 +306,7 @@
 
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="Black" />
+                <Setter Property="ToolTip" Value="禁用中"></Setter>
             </Trigger>
         </Style.Triggers>
     </Style>

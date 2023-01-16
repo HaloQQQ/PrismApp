@@ -40,7 +40,7 @@ namespace TcpSocket.UserControls.Function.Communication
 
             try
             {
-                this._udpSocket = new NewUdpClient(this._socketContext.Encoding,
+                this._udpSocket = new NewUdpClient(this._socketContext.Encoding, false,
                     this._socketContext.IP, ushort.Parse(this._socketContext.Port),
                     this._socketContext.TargetIP, ushort.Parse(this._socketContext.TargetPort));
 

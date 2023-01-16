@@ -19,6 +19,7 @@ namespace TcpSocket.Helper
 
         private const string DEFAULT_THEME_URI = "DefaultThemeURI";
         private const string IMAGE_DIR = "ImageDir";
+        private const string Bkgrd_URI = "BkgrdUri";
 
         private const string Is_LOGGING = "IsLogging";
 
@@ -107,7 +108,11 @@ namespace TcpSocket.Helper
         {
             return this.GetBusinessConfig(IMAGE_DIR);
         }
-
+        
+        public string GetBkgrdURI()
+        {
+            return this.GetBusinessConfig(Bkgrd_URI);
+        }
         #endregion
 
         #region 写配置
@@ -141,11 +146,19 @@ namespace TcpSocket.Helper
             }
         }
 
-        public void SetImageURI(JObject jsonObject, string uri)
+        public void SetImageDir(JObject jsonObject, string uri)
         {
             if (!string.IsNullOrEmpty(uri))
             {
                 jsonObject[BusinessConfig][IMAGE_DIR] = uri;
+            }
+        }
+        
+        public void SetBkgrdURI(JObject jsonObject, string pic)
+        {
+            if (!string.IsNullOrEmpty(pic))
+            {
+                jsonObject[BusinessConfig][Bkgrd_URI] = pic;
             }
         }
 

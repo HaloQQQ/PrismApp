@@ -116,13 +116,11 @@
         <TextBlock>
             <TextBlock Text="{Binding Id}" Margin="5,2"/>
             <TextBlock Text="{Binding Name}" Margin="5,2"/>
-            <TextBlock Text="{Binding MachineName}" Margin="5,2"/>
         </TextBlock>
     </DataTemplate>
     
     <DataTemplate x:Key="ServiceDataTemplate" DataType="processService:ServiceContext">
         <TextBlock>
-            <TextBlock Text="{Binding MachineName}" Margin="5,2"/>
             <TextBlock Text="{Binding ServiceName}" Margin="5,2"/>
             <TextBlock Text="{Binding DisplayName}" Margin="5,2"/>
             <TextBlock Text="{Binding ServiceControllerStatus}" Margin="5,2"/>

@@ -48,6 +48,8 @@ namespace TcpSocket.Models.ProcessService
 
         public string ServiceStartMode { get; set; }
 
+        public ServiceController ServiceController { get; set; }
+
         public ServiceContext(ServiceController service)
         {
             this.ServiceName = service.ServiceName;
@@ -55,6 +57,8 @@ namespace TcpSocket.Models.ProcessService
             this.ServiceType = service.ServiceType.ToString();
             this.ServiceStartMode = service.StartType.ToString();
             this.ServiceControllerStatus = service.Status.ToString();
+
+            this.ServiceController = service;
         }
     }
 }

@@ -22,6 +22,7 @@ namespace TcpSocket.Models
             this.ProcessServiceContext = new ProcessServiceContext();
             
             this.SoftwareContext.DefaultThemeURI = config.GetDefaultThemeURI();
+            this.SoftwareContext.CurrentBkGrd = config.GetBkgrdURI();
 
             Task.Run(() =>
             {
@@ -46,6 +47,7 @@ namespace TcpSocket.Models
                 config.SetOnlyOne(jsonObject, this.SoftwareContext.OnlyOneProcess);
                 config.SetAutoStart(jsonObject, this.SoftwareContext.AutoStart);
                 config.SetBackgroundSwitch(jsonObject, this.SoftwareContext.BackgroundSwitch);
+                config.SetBkgrdURI(jsonObject, this.SoftwareContext.CurrentBkGrd);
 
                 config.SetLogging(jsonObject, this.MachineServerContext.Name, this.MachineServerContext.IsLogging);
                 config.SetLogging(jsonObject, this.ApplicationServerContext.Name, this.ApplicationServerContext.IsLogging);
@@ -55,12 +57,12 @@ namespace TcpSocket.Models
 
                 config.SetDefaultThemeURI(jsonObject, this.SoftwareContext.DefaultThemeURI);
 
-                config.SetImageURI(jsonObject, this.ImagesContext.ImageDir);
+                config.SetImageDir(jsonObject, this.ImagesContext.ImageDir);
 
                 config.WriteJsonToFile(jsonObject);
 
 
-                AppUtils.SetAutoStart(this.SoftwareContext.AutoStart);
+                AppUtils.SetAutoStart(string.Empty, this.SoftwareContext.AutoStart);
             };
 
             return this;
@@ -90,17 +92,17 @@ namespace TcpSocket.Models
             }
         }
 
-        private bool isConnected;
-
-        public bool IsConnected
-        {
-            get => this.isConnected;
-            set
-            {
-                this.isConnected = value;
-                CallModel();
-            }
-        }
+        // private bool isConnected;
+        //
+        // public bool IsConnected
+        // {
+        //     get => this.isConnected;
+        //     set
+        //     {
+        //         this.isConnected = value;
+        //         CallModel();
+        //     }
+        // }
 
         private bool isHex;
 

@@ -58,6 +58,11 @@ namespace TcpSocket.Models
             }
         }
 
+        public string CurrentBkGrd { get; set; }
+
+        /// <summary>
+        /// QRCode
+        /// </summary>
         public Bitmap BitmapImage { get; set; }
 
         public PopupResult PopupResult = new PopupResult();

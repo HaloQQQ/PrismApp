@@ -38,6 +38,11 @@ namespace TcpSocket.Models
             }
         }
 
+        public void Clear()
+        {
+            this.List.Clear();
+        }
+
         public int AllCount => this.List.Count;
 
         public int SelectedCount { get; set; }

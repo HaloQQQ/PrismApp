@@ -19,7 +19,7 @@
                         <TextBlock Text="服务器：" />
                     </TextBlock>
                 </CheckBox>
-
+                
                 <StackPanel Orientation="Horizontal"
                             Visibility="{Binding IsTcpServer,Converter={StaticResource BoolToVisibleConverter}}">
                     <TextBlock FontSize="18" Foreground="{DynamicResource TextBlock.Foreground}">
@@ -36,6 +36,14 @@
                     </ComboBox>
                 </StackPanel>
             </StackPanel>
+            
+            <CheckBox DockPanel.Dock="Left" x:Name="chbxCanTcpClientReConnect"  Style="{StaticResource SlideCheckBox}"
+                      Visibility="{Binding IsTcpServer,Converter={StaticResource BoolToCollapsedConverter}}">
+                <TextBlock>
+                    <TextBlock Style="{StaticResource IconText}" Text="&#xe627;" />
+                    <TextBlock Text="重连服务器：" />
+                </TextBlock>
+            </CheckBox>
 
             <CheckBox DockPanel.Dock="Left" IsChecked="{Binding IsHex}" Style="{StaticResource SlideCheckBox}">
                 <TextBlock>

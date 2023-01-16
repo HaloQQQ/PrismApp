@@ -44,6 +44,11 @@ namespace TcpSocket.UserControls.Function
             // Tcp Client模式操作界面
             var client = new UsrCtrlTcpClient(Statics.DataContext.ApplicationClientContext);
             this.grdClient.Children.Add(client);
+            this.chbxCanTcpClientReConnect.SetBinding(CheckBox.IsCheckedProperty, new Binding("CanReConnect")
+            {
+                Source = client.DataContext,
+                Mode = BindingMode.OneWayToSource
+            });
             this.InitHexMsg(client);
 
             // UDP操作界面

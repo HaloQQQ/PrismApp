@@ -27,52 +27,64 @@ namespace TcpSocket.Models
         }
 
         public string IpEndPoint => this.IP + ":" + this.Port;
-        
-        private bool isConnected;
+
+        private bool _isConnected;
+
         public bool IsConnected
         {
-            get => this.isConnected;
+            get => this._isConnected;
             set
             {
-                this.isConnected = value;
-
+                this._isConnected = value;
                 CallModel();
             }
         }
-        
 
-        private string sendMsg = null!;
+
+        private string _sendMsg;
 
         public string SendMsg
         {
-            get => this.sendMsg;
+            get => this._sendMsg;
             set
             {
-                this.sendMsg = value;
+                this._sendMsg = value;
                 CallModel();
             }
         }
 
-        private string iP = null!;
+        private string _iP;
 
         public string IP
         {
-            get => this.iP;
+            get => this._iP;
             set
             {
-                this.iP = value;
+                this._iP = value;
                 CallModel();
             }
         }
 
-        private string port = null!;
+        private string _port;
 
         public string Port
         {
-            get => this.port;
+            get => this._port;
             set
             {
-                this.port = value;
+                this._port = value;
+                CallModel();
+            }
+        }
+
+        private volatile bool _connecting;
+
+        public bool Connecting
+        {
+            get => this._connecting;
+            set
+            {
+                this._connecting = value;
                 CallModel();
             }
         }

@@ -9,14 +9,24 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="7*" />
         </Grid.ColumnDefinitions>
 
-        <DataGrid Grid.Column="0" ItemsSource="{Binding ProcessListContext.List}">
+        <DataGrid Grid.Column="0" x:Name="DataGridProcess" ItemsSource="{Binding ProcessListContext.List}">
+            <DataGrid.CommandBindings>
+                <CommandBinding Command="Close" Executed="CommandBinding_OnExecuted"/>
+                <CommandBinding Command="Refresh" Executed="CommandBinding_OnExecuted"/>
+            </DataGrid.CommandBindings>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="Close" CommandParameter="Process"/>
+                    <MenuItem Command="Refresh" CommandParameter="Process"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridCheckBoxColumn.Header>
@@ -32,7 +42,20 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <DataGrid Grid.Column="1" ItemsSource="{Binding ServiceList}">
+        <DataGrid Grid.Column="1" x:Name="DataGridService" ItemsSource="{Binding ServiceList}">
+            <DataGrid.CommandBindings>
+                <CommandBinding Command="Close" Executed="CommandBinding_OnExecuted"/>
+                <CommandBinding Command="Open" Executed="CommandBinding_OnExecuted"/>
+                <CommandBinding Command="Refresh" Executed="CommandBinding_OnExecuted"/>
+            </DataGrid.CommandBindings>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="Close" CommandParameter="Service"/>
+                    <MenuItem Command="Open" CommandParameter="Service"/>
+                    <MenuItem Command="Redo" CommandParameter="Service"/>
+                    <MenuItem Command="Refresh" CommandParameter="Service"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding DisplayName}" Header="名称" />
                 <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding ServiceName}" Header="服务名" />

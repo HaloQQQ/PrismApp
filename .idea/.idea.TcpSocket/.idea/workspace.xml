@@ -6,27 +6,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5404ad60-6722-44e8-a7f2-721594e32dbf" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/TcpSocket/UserControls/Tests/TestFunction.xaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TcpSocket/UserControls/Tests/TestFunction.xaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TcpSocket/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TcpSocket/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/Converters/MyBorderGapMaskConverter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/Converters/MyBorderGapMaskConverter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/Helper/Constants.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/Helper/Constants.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/Helper/Helper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/Helper/Helper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket.sln" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/App.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/App.xaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/AssemblyInfo.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/TcpSocket/MainWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/MainWindow.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/Resources/ButtonAndBox.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/Resources/ButtonAndBox.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/Resources/GenericDictionary.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/Resources/GenericDictionary.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Resources/CheckBox.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/Resources/CheckBox.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Resources/MyDataTemplate.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/Resources/MyDataTemplate.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TcpSocket/Resources/MyDictionary.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/Resources/MyDictionary.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/TcpSocket.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/TcpSocket.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Resources/iconfont.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/Resources/iconfont.ttf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/TcpSocket.csproj" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/TcpSocket/UserControls/Common/UsrTitleBarSlider.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/UserControls/Common/UsrTitleBarSlider.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/UserControls/Function/Communication/UsrCtrlTcpClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/UserControls/Function/Communication/UsrCtrlTcpClient.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/UserControls/Function/Communication/UsrCtrlTcpServer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/UserControls/Function/Communication/UsrCtrlTcpServer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/UserControls/Function/Communication/UsrCtrlTcpSocket.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/UserControls/Function/Communication/UsrCtrlTcpSocket.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/UserControls/Function/Communication/UsrCtrlTcpSocket.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/UserControls/Function/Communication/UsrCtrlTcpSocket.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/UserControls/Function/Communication/UsrCtrlUDP.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/UserControls/Function/Communication/UsrCtrlUDP.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/UserControls/Function/Communication/UsrCtrlUDP.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/UserControls/Function/Communication/UsrCtrlUDP.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/UserControls/Function/UsrCommunication.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/UserControls/Function/UsrCommunication.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/UserControls/Function/UsrCommunication.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/UserControls/Function/UsrCommunication.xaml.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/Helper.dll" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/bin/Debug/Helper.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/SocketHelper.dll" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/bin/Debug/SocketHelper.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/SocketHelper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/bin/Debug/SocketHelper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/Helper.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/Helper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/SocketHelper.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/SocketHelper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/zxing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/zxing.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,11 +36,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0b2b71b9a548475f9db13de2a63308dea234a8/8f/5bfdaad0/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0b2b71b9a548475f9db13de2a63308dea234a8/f3/e9a49907/TimeSpan.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8877d7b4ae23489fbb14c7343102b9a538600/a3/ccd8eb89/BaseNotifyModel.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/TcpSocket/App.xaml" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/74dc38f1b6a34f73b271b4dafe3bc3d1843c80/02/6f691f5e/Duration.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/74dc38f1b6a34f73b271b4dafe3bc3d1843c80/6d/16e235a6/Timeline.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8877d7b4ae23489fbb14c7343102b9a538600/a3/ccd8eb89/BaseNotifyModel.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0b2b71b9a548475f9db13de2a63308dea234a8/8f/5bfdaad0/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/053b85f8d2e34e41ad67249cf19e5530f87cb0/235/XamlReader.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="2I2rzVtcgiWWBzyBZgbBbKYh8KI" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -60,13 +61,13 @@
   </component>
   <component name="RunManager" selected=".NET Project.TcpSocket">
     <configuration name="Publish TcpSocket to folder" type="DotNetFolderPublish" factoryName="Publish to folder">
-      <riderPublish configuration="Release" platform="Any CPU" runtime="Portable" target_folder="$PROJECT_DIR$/TcpSocket/bin/publish" target_framework="net6.0-windows" uuid_high="-1919604653216676907" uuid_low="-4663454800370272171" />
+      <riderPublish configuration="Release" platform="Any CPU" runtime="Portable" target_folder="$PROJECT_DIR$/TcpSocket/bin/publish" target_framework="net6.0-windows" uuid_high="-1715762118518685441" uuid_low="-5410763006549834522" />
       <method v="2" />
     </configuration>
     <configuration name="TcpSocket" type="DotNetProject" factoryName=".NET Project">
-      <option name="EXE_PATH" value="" />
+      <option name="EXE_PATH" value="$PROJECT_DIR$/TcpSocket/bin/Debug/net6.0-windows/TcpSocket.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/TcpSocket/bin/Debug/net6.0-windows" />
       <option name="PASS_PARENT_ENVS" value="1" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="USE_MONO" value="0" />
@@ -76,11 +77,15 @@
       <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
       <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
       <option name="PROJECT_KIND" value="DotNetCore" />
-      <option name="PROJECT_TFM" value="" />
+      <option name="PROJECT_TFM" value="net6.0-windows7.0" />
       <method v="2">
         <option name="Build" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue=".NET Project.TcpSocket" />
+      <item itemvalue="Publish to folder.Publish TcpSocket to folder" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -95,6 +100,10 @@
       <workItem from="1670274552224" duration="4166000" />
       <workItem from="1670612352598" duration="1496000" />
       <workItem from="1670664577472" duration="307000" />
+      <workItem from="1671122149980" duration="963000" />
+      <workItem from="1671123875780" duration="7230000" />
+      <workItem from="1671193115594" duration="1930000" />
+      <workItem from="1671195179242" duration="762000" />
     </task>
     <servers />
   </component>

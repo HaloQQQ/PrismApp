@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:commonCtrl="clr-namespace:TcpSocket.UserControls.Common"
         xmlns:waitLoads="clr-namespace:TcpSocket.UserControls.WaitLoads"
+        xmlns:tests="clr-namespace:TcpSocket.UserControls.Tests"
         WindowStartupLocation="CenterScreen"
         Style="{StaticResource WithoutTitleBar}"
         MinHeight="640" MinWidth="1200">
@@ -37,6 +38,9 @@
                 <TabItem Header="通讯工具" />
                 <TabItem Header="图片列表" />
                 <TabItem Header="进程服务" />
+                <TabItem Header="测试功能">
+                    <tests:TestFunction/>
+                </TabItem>
             </TabControl>
         </DockPanel>
 

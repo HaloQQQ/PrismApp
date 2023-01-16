@@ -24,6 +24,11 @@
             currentPoint
             </summary>
         </member>
+        <member name="E:SocketHelper.Base.BaseSocket.StartFailed">
+            <summary>
+            remotePoint
+            </summary>
+        </member>
         <member name="E:SocketHelper.Base.BaseSocket.ConnectStatusChanged">
             <summary>
             当前状态
@@ -56,6 +61,13 @@
             </summary>
             <param name="remotePoint"></param>
             <param name="exception"></param>
+        </member>
+        <member name="M:SocketHelper.Base.BaseSocket.DisConnected(System.String)">
+            <summary>
+            抛出Exception异常
+            </summary>
+            <param name="remotePoint"></param>
+            <exception cref="T:System.Exception"></exception>
         </member>
         <member name="M:SocketHelper.Base.BaseSocket.StartedHandler(System.String)">
             <summary>
@@ -91,7 +103,14 @@
         </member>
         <member name="E:SocketHelper.Base.ISocket.Started">
             <summary>
-            socketPoint
+            localPoint
+            启动成功
+            </summary>
+        </member>
+        <member name="E:SocketHelper.Base.ISocket.StartFailed">
+            <summary>
+            remotePoint
+            启动失败
             </summary>
         </member>
         <member name="P:SocketHelper.Base.ISocket.IsConnected">
@@ -152,6 +171,24 @@
             获取NetworkStream
             </summary>
             <returns></returns>
+        </member>
+        <member name="P:SocketHelper.Tcp.NewTcpClient.TryConnecting">
+            <summary>
+            断线重连
+            </summary>
+        </member>
+        <member name="P:SocketHelper.Tcp.NewTcpClient.ReConnectPeriodMilliseconds">
+            <summary>
+            重连尝试周期
+            [1*1000,3600*1000]
+            default: 5000
+            </summary>
+        </member>
+        <member name="M:SocketHelper.Tcp.NewTcpClient.DisConnected(System.String)">
+            <summary>
+            根据TryConnecting决定是否重连
+            </summary>
+            <param name="remotePoint"></param>
         </member>
         <member name="M:SocketHelper.Tcp.NewTcpServer.Dispose">
             <summary>
@@ -231,11 +268,11 @@
             <param name="remoteName"></param>
             <param name="exception"></param>
         </member>
-        <member name="M:SocketHelper.Udp.NewUdpClient.#ctor(System.Text.Encoding,System.String,System.UInt16,System.String,System.UInt16,System.String,System.UInt32)">
+        <member name="M:SocketHelper.Udp.NewUdpClient.#ctor(System.Text.Encoding,System.Boolean,System.String,System.UInt16,System.String,System.UInt16,System.String,System.UInt32)">
             <param name="encoding"></param>
             <param name="localIp"></param>
             <param name="localPort"></param>
-            <param name="targetIP"></param>
+            <param name="targetIp"></param>
             <param name="targetPort"></param>
             <param name="name"></param>
             <param name="messageMaxLength"></param>

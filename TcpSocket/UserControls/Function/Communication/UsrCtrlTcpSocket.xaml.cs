@@ -3,12 +3,10 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Helper.Extensions;
 using Helper.Utils;
-using SocketHelper.Tcp;
 using TcpSocket.Helper;
 using TcpSocket.Models;
 
@@ -18,7 +16,7 @@ namespace TcpSocket.UserControls.Function.Communication
     {
         protected TcpSocketContext _tcpSocketContext;
 
-        public UsrCtrlTcpSocket(TcpSocketContext tcpSocketContext)
+        protected UsrCtrlTcpSocket(TcpSocketContext tcpSocketContext)
         {
             InitializeComponent();
             this._tcpSocketContext = tcpSocketContext;
@@ -28,43 +26,12 @@ namespace TcpSocket.UserControls.Function.Communication
 
         protected ISocket _tcpSocket = null!;
 
-        protected string GetMessage(EndPoint from, EndPoint to, string coreMessage)
-        {
-            return
-                $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} {Thread.CurrentThread.ManagedThreadId} {Thread.CurrentThread.IsThreadPoolThread} {from}=>{to} " +
-                coreMessage;
-        }
-
-        // protected string GetMessage(string socketName, string coreMessage)
-        // {
-        //     return
-        //         $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} {Thread.CurrentThread.ManagedThreadId} {Thread.CurrentThread.IsThreadPoolThread} {socketName} " +
-        //         coreMessage;
-        // }
-        //
-        // protected void AppendMsg(string msg)
-        // {
-        //     if (this._tcpSocketContext.IsLogging)
-        //     {
-        //         Helper.Helper.Log(this._tcpSocketContext.Name, msg);
-        //     }
-        //
-        //     this.Dispatcher.Invoke(() =>
-        //         {
-        //             this.rhTxt.AppendText(msg + Environment.NewLine);
-        //             this.rhTxt.ScrollToEnd();
-        //
-        //             if (this.rhTxt.LineCount > 500)
-        //             {
-        //                 this.rhTxt.Clear();
-        //             }
-        //         }
-        //     );
-        // }
+        protected string GetMessage(EndPoint from, EndPoint to, string coreMessage) =>
+            $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} {Thread.CurrentThread.ManagedThreadId} {Thread.CurrentThread.IsThreadPoolThread} {from}=>{to} {coreMessage}";
 
         private void CloseSocket()
         {
-            this._tcpSocket.Close();
+            this._tcpSocket?.Close();
 
             this._tcpSocketContext.ConnList.Clear();
         }
@@ -77,18 +44,27 @@ namespace TcpSocket.UserControls.Function.Communication
 
         public Func<string, string> ResolveMsg = null!;
 
-        protected void BtnConnect_Click(object sender, RoutedEventArgs e)
+        private void BtnConnect_Click(object sender, ExecutedRoutedEventArgs e)
         {
             e.Handled = true;
 
             try
             {
+                if (this._tcpSocketContext.Connecting)
+                {
+                    return;
+                }
+
                 if (this._tcpSocket != null && this._tcpSocket.IsConnected)
                 {
                     this.CloseSocket();
-
+                    this._tcpSocketContext.Connecting = false;
                     return;
                 }
+
+                this.CloseSocket();
+
+                this._tcpSocketContext.Connecting = true;
 
                 ushort port = ushort.Parse(this._tcpSocketContext.Port);
 
@@ -109,7 +85,7 @@ namespace TcpSocket.UserControls.Function.Communication
 
                     this.rhTxt.Recv(from, to, this._tcpSocketContext, message);
                 };
-                
+
                 this._tcpSocket.SentMessage += (from, to, bytes) =>
                 {
                     this.rhTxt.Send(from, to, this._tcpSocketContext, this._tcpSocket.GetString(bytes));
@@ -119,8 +95,13 @@ namespace TcpSocket.UserControls.Function.Communication
                 {
                     this.rhTxt.Info(this._tcpSocketContext, exception.Message);
 
-                    this.Dispatcher.Invoke(() =>
+                    Helper.Helper.Invoke(() =>
                         {
+                            if (!this._tcpSocketContext.CanReConnect)
+                            {
+                                this._tcpSocketContext.Connecting = false;
+                            }
+
                             if (this._tcpSocketContext.ConnList.Contains(socketName))
                             {
                                 this._tcpSocketContext.ConnList.Remove(socketName);
@@ -129,7 +110,13 @@ namespace TcpSocket.UserControls.Function.Communication
                     );
                 };
 
-                this._tcpSocket.ConnectStatusChanged += status => this._tcpSocketContext.IsConnected = status;
+                this._tcpSocket.ConnectStatusChanged += status =>
+                {
+                    if (this._tcpSocketContext.IsConnected = status)
+                    {
+                        this._tcpSocketContext.Connecting = false;
+                    }
+                };
 
                 this._tcpSocket.Start();
             }
@@ -165,7 +152,8 @@ namespace TcpSocket.UserControls.Function.Communication
                     {
                         this._tcpSocketContext.IsLogging = !this._tcpSocketContext.IsLogging;
 
-                        Helper.Helper.ShowBalloonTip("日志记录功能", $"【{this._tcpSocketContext.Name}】日志功能" + (this._tcpSocketContext.IsLogging ? "开启" : "关闭"));
+                        Helper.Helper.ShowBalloonTip("日志记录功能",
+                            $"【{this._tcpSocketContext.Name}】日志功能" + (this._tcpSocketContext.IsLogging ? "开启" : "关闭"));
                     }
                 }
                 else if (e.Command == NavigationCommands.Refresh)
@@ -194,7 +182,12 @@ namespace TcpSocket.UserControls.Function.Communication
         {
             e.Handled = true;
 
-            if (e.Command == ApplicationCommands.New)
+            if (e.Command == ApplicationCommands.Open)
+            {
+                e.CanExecute = !(this._tcpSocketContext.CanReConnect && this._tcpSocketContext.Connecting);
+                return;
+            }
+            else if (e.Command == ApplicationCommands.New)
             {
                 if (Helper.Helper.Equals(e.Parameter?.ToString(), Constants.SEND_MSG))
                 {

@@ -14,6 +14,7 @@ namespace TcpSocket.Helper
         {
             txt.Document.Blocks.Clear();
         }
+
         internal static void Info(this RichTextBox txt, BaseSocketContext context, string message)
         {
             if (context.IsLogging)
@@ -24,13 +25,16 @@ namespace TcpSocket.Helper
             Invoke(() =>
             {
                 Paragraph paragraph = new Paragraph();
-                paragraph.Inlines.Add(message);
+                paragraph.Inlines.Add(
+                    DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                    + " " + message);
 
                 PrintMsg(txt, paragraph);
             });
         }
 
-        private static Paragraph GetParagraph(string type, EndPoint from, EndPoint to, BaseSocketContext context, string message)
+        private static Paragraph GetParagraph(string type, EndPoint from, EndPoint to, BaseSocketContext context,
+            string message)
         {
             if (context.IsLogging)
             {
@@ -38,7 +42,8 @@ namespace TcpSocket.Helper
             }
 
             Paragraph paragraph = new Paragraph();
-            Run title = new Run($"[{DateTime.Now.FormatTime()}]# {type} {context.Encoding.BodyName} {from}=>{to}>" + Environment.NewLine);
+            Run title = new Run($"[{DateTime.Now.FormatTime()}]# {type} {context.Encoding.BodyName} {from}=>{to}>" +
+                                Environment.NewLine);
             paragraph.Inlines.Add(title);
             Run item = new Run(message);
             paragraph.Inlines.Add(item);
@@ -46,7 +51,8 @@ namespace TcpSocket.Helper
             return paragraph;
         }
 
-        internal static void Send(this RichTextBox txt, EndPoint from, EndPoint to, BaseSocketContext context, string message)
+        internal static void Send(this RichTextBox txt, EndPoint from, EndPoint to, BaseSocketContext context,
+            string message)
         {
             Invoke(() =>
             {
@@ -57,7 +63,8 @@ namespace TcpSocket.Helper
             });
         }
 
-        internal static void Recv(this RichTextBox txt, EndPoint from, EndPoint to, BaseSocketContext context, string message)
+        internal static void Recv(this RichTextBox txt, EndPoint from, EndPoint to, BaseSocketContext context,
+            string message)
         {
             Invoke(() =>
             {

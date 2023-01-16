@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="TcpSocket.UserControls.Tests.TestFunction"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBox Name="txt" BorderThickness="0,0,0,1" Style="{x:Null}" 
+                 VerticalContentAlignment="Bottom" Background="Transparent"
+                 Text="你好啊~小朋友" FontSize="22" Height="40" />
+        <Rectangle RenderTransformOrigin="0,1" Height="40">
+            <Rectangle.Fill>
+                <VisualBrush Visual="{Binding ElementName=txt}" />
+            </Rectangle.Fill>
+            <Rectangle.RenderTransform>
+                <ScaleTransform ScaleY="-1" />
+            </Rectangle.RenderTransform>
+            <Rectangle.OpacityMask>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Offset="0.3" Color="Transparent" />
+                    <GradientStop Offset="1.0" Color="#FF000000" />
+                </LinearGradientBrush>
+            </Rectangle.OpacityMask>
+        </Rectangle>
+    </Grid>
+</UserControl>

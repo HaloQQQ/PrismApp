@@ -4,7 +4,6 @@
                     xmlns:helper="clr-namespace:TcpSocket.Helper">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="MyDataTemplate.xaml" />
         <ResourceDictionary Source="GenericDictionary.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
@@ -187,7 +186,7 @@
             <!-- </DataTrigger> -->
 
             <DataTrigger Binding="{Binding IsConnected}" Value="True">
-                <Setter Property="Background" Value="Black" />
+                <Setter Property="Background" Value="Gray" />
                 <Setter Property="Cursor" Value="SizeAll" />
             </DataTrigger>
         </Style.Triggers>
@@ -200,6 +199,17 @@
                 <Setter Property="Text" Value="打开连接" />
                 <Setter Property="ToolTip" Value="打开连接" />
             </DataTrigger>
+
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding CanReConnect}" Value="True" />
+                    <Condition Binding="{Binding Connecting}" Value="True" />
+                    <Condition Binding="{Binding IsConnected}" Value="False" />
+                </MultiDataTrigger.Conditions>
+
+                <Setter Property="Text" Value="重连中.." />
+                <Setter Property="ToolTip" Value="重连中.." />
+            </MultiDataTrigger>
 
             <DataTrigger Binding="{Binding IsConnected}" Value="True">
                 <Setter Property="ToolTip" Value="关闭连接" />

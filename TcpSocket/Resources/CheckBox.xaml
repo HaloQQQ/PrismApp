@@ -2,9 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:TcpSocket.Converters">
     
-    <converters:DigitalDoubleConverter x:Key="DigitalDoubleConverter" />
     <converters:DigitalToCornerRadiusConverter x:Key="DigitalToCornerRadiusConverter" />
     <converters:DigitalSubConverter x:Key="DigitalSubConverter" />
+    <converters:DigitalDoubleConverter x:Key="DigitalDoubleConverter" />
     
     <!-- CheckBox通用样式 -->
     <Style TargetType="CheckBox">
