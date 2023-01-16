@@ -117,7 +117,7 @@ namespace TcpSocket.UserControls.Function.Communication
                 }
                 else if (e.Command == ApplicationCommands.Open)
                 {
-                    if (e.Source == this.rhTxt || Helper.Helper.Equals(e.Parameter?.ToString(), Constants.LOG))
+                    if (e.Source == this.rhTxt || Constants.LOG.EqualsIgnoreCase(e.Parameter?.ToString()))
                     {
                         Helper.Helper.OpenLog(this._socketContext.Name);
                     }

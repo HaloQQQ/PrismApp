@@ -92,18 +92,6 @@ namespace TcpSocket.Models
             }
         }
 
-        // private bool isConnected;
-        //
-        // public bool IsConnected
-        // {
-        //     get => this.isConnected;
-        //     set
-        //     {
-        //         this.isConnected = value;
-        //         CallModel();
-        //     }
-        // }
-
         private bool isHex;
 
         public bool IsHex

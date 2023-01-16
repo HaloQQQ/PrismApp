@@ -19,15 +19,6 @@ namespace TcpSocket.UserControls.Function
         {
             base.OnInitialized(e);
 
-            // 是否可切换Tcp和Udp
-            this.InitTcpCheckBoxEnabled();
-
-            // 是否可切换Tcp服务器和客户端
-            this.InitTcpServerCheckBoxEnabled();
-
-            // 服务器最大连接数
-            this.InitMaxClientCountEnabled();
-
             // Tcp Server模式操作界面
             var machine = new UsrCtrlTcpServer(Statics.DataContext.MachineServerContext);
             this.grdServer.Children.Add(machine);
@@ -44,11 +35,6 @@ namespace TcpSocket.UserControls.Function
             // Tcp Client模式操作界面
             var client = new UsrCtrlTcpClient(Statics.DataContext.ApplicationClientContext);
             this.grdClient.Children.Add(client);
-            this.chbxCanTcpClientReConnect.SetBinding(CheckBox.IsCheckedProperty, new Binding("CanReConnect")
-            {
-                Source = client.DataContext,
-                Mode = BindingMode.OneWayToSource
-            });
             this.InitHexMsg(client);
 
             // UDP操作界面
@@ -91,75 +77,6 @@ namespace TcpSocket.UserControls.Function
 
                 return str;
             };
-        }
-
-        private void InitTcpServerCheckBoxEnabled()
-        {
-            var multiBinding = new MultiBinding()
-            {
-                Mode = BindingMode.OneWay,
-                Converter = new MultiConnectedConverter()
-            };
-            multiBinding.Bindings.Add(new Binding(nameof(Statics.DataContext.MachineServerContext.IsConnected))
-            {
-                Source = Statics.DataContext.MachineServerContext
-            });
-            multiBinding.Bindings.Add(new Binding(nameof(Statics.DataContext.ApplicationServerContext.IsConnected))
-            {
-                Source = Statics.DataContext.ApplicationServerContext
-            });
-            multiBinding.Bindings.Add(new Binding(nameof(Statics.DataContext.ApplicationClientContext.IsConnected))
-            {
-                Source = Statics.DataContext.ApplicationClientContext
-            });
-
-            this.chbxIsTcpServer.SetBinding(CheckBox.IsEnabledProperty, multiBinding);
-        }
-
-        private void InitTcpCheckBoxEnabled()
-        {
-            var multiBinding = new MultiBinding()
-            {
-                Mode = BindingMode.OneWay,
-                Converter = new MultiConnectedConverter()
-            };
-            multiBinding.Bindings.Add(new Binding(nameof(Statics.DataContext.MachineServerContext.IsConnected))
-            {
-                Source = Statics.DataContext.MachineServerContext
-            });
-            multiBinding.Bindings.Add(new Binding(nameof(Statics.DataContext.ApplicationServerContext.IsConnected))
-            {
-                Source = Statics.DataContext.ApplicationServerContext
-            });
-            multiBinding.Bindings.Add(new Binding(nameof(Statics.DataContext.ApplicationClientContext.IsConnected))
-            {
-                Source = Statics.DataContext.ApplicationClientContext
-            });
-            multiBinding.Bindings.Add(new Binding(nameof(Statics.DataContext.UdpContext.IsConnected))
-            {
-                Source = Statics.DataContext.UdpContext
-            });
-
-            this.chbxIsTcp.SetBinding(CheckBox.IsEnabledProperty, multiBinding);
-        }
-
-        private void InitMaxClientCountEnabled()
-        {
-            var multiBinding = new MultiBinding()
-            {
-                Mode = BindingMode.OneWay,
-                Converter = new MultiConnectedConverter()
-            };
-            multiBinding.Bindings.Add(new Binding(nameof(Statics.DataContext.MachineServerContext.IsConnected))
-            {
-                Source = Statics.DataContext.MachineServerContext
-            });
-            multiBinding.Bindings.Add(new Binding(nameof(Statics.DataContext.ApplicationServerContext.IsConnected))
-            {
-                Source = Statics.DataContext.ApplicationServerContext
-            });
-
-            this.cmbxConnCount.SetBinding(ComboBox.IsEnabledProperty, multiBinding);
         }
     }
 }

@@ -162,7 +162,7 @@ namespace TcpSocket.UserControls.Function.Communication
                 }
                 else if (e.Command == ApplicationCommands.Open)
                 {
-                    if (e.Source is TextBox || Helper.Helper.Equals(e.Parameter?.ToString(), Constants.LOG))
+                    if (e.Source == this.rhTxt || Constants.LOG.EqualsIgnoreCase(e.Parameter?.ToString()))
                     {
                         Helper.Helper.OpenLog(this._tcpSocketContext.Name);
                     }
@@ -184,8 +184,11 @@ namespace TcpSocket.UserControls.Function.Communication
 
             if (e.Command == ApplicationCommands.Open)
             {
-                e.CanExecute = !(this._tcpSocketContext.CanReConnect && this._tcpSocketContext.Connecting);
-                return;
+                if ("ConnButton".EqualsIgnoreCase(e.Parameter.ToString()))
+                {
+                    e.CanExecute = !(this._tcpSocketContext.CanReConnect && this._tcpSocketContext.Connecting);
+                    return;
+                }
             }
             else if (e.Command == ApplicationCommands.New)
             {

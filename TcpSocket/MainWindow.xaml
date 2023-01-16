@@ -38,9 +38,6 @@
                 <TabItem Header="通讯工具" />
                 <TabItem Header="图片列表" />
                 <TabItem Header="进程服务" />
-                <TabItem Header="测试功能">
-                    <tests:TestFunction/>
-                </TabItem>
             </TabControl>
         </DockPanel>
 

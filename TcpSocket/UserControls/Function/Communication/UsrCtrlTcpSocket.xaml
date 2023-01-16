@@ -22,7 +22,7 @@
                 <TextBox Text="{Binding Port}" Tag="服务器监听端口："
                          IsEnabled="{Binding IsConnected,Converter={StaticResource OppositeBoolConverter}}" />
 
-                <Button Command="Open" Style="{StaticResource ConnButton}">
+                <Button Command="Open" CommandParameter="ConnButton" Style="{StaticResource ConnButton}">
                     <Button.CommandBindings>
                         <CommandBinding Command="Open" CanExecute="CommandBinding_OnCanExecute" Executed="BtnConnect_Click"/>
                     </Button.CommandBindings>

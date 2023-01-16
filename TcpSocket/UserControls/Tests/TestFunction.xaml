@@ -1,17 +1,11 @@
 ﻿<UserControl x:Class="TcpSocket.UserControls.Tests.TestFunction"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid ShowGridLines="True">
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-
-        <TextBox Name="txt" BorderThickness="0,0,0,1" Style="{x:Null}" 
+    <Grid>
+        <TextBox Name="txt" BorderThickness="0,0,0,1" Style="{x:Null}"
                  VerticalContentAlignment="Bottom" Background="Transparent"
-                 Text="你好啊~小朋友" FontSize="22" Height="40" />
-        <Rectangle RenderTransformOrigin="0,1" Height="40">
+                 Text="你好啊~小朋友" FontSize="22" Height="40"/>
+        <Rectangle RenderTransformOrigin="1,1" Height="40">
             <Rectangle.Fill>
                 <VisualBrush Visual="{Binding ElementName=txt}" />
             </Rectangle.Fill>
