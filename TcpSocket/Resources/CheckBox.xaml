@@ -49,10 +49,10 @@
     <Style TargetType="CheckBox" x:Key="CheckBoxSelectAll" BasedOn="{StaticResource {x:Type CheckBox}}">
         <Style.Triggers>
             <Trigger Property="CheckBox.IsChecked" Value="False">
-                <Setter Property="CheckBox.ToolTip" Value="全选" />
+                <Setter Property="CheckBox.ToolTip" Value="全不选" />
             </Trigger>
             <Trigger Property="CheckBox.IsChecked" Value="True">
-                <Setter Property="CheckBox.ToolTip" Value="全不选" />
+                <Setter Property="CheckBox.ToolTip" Value="全选" />
             </Trigger>
         </Style.Triggers>
     </Style>

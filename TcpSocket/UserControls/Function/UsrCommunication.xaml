@@ -83,7 +83,7 @@
             </StackPanel>
 
             <CheckBox DockPanel.Dock="Left"
-                      IsEnabled="{Binding ApplicationClientContext.CanReConnect,Mode=OneWayToSource}">
+                      IsChecked="{Binding ApplicationClientContext.CanReConnect,Mode=OneWayToSource}">
                 <CheckBox.Style>
                     <Style TargetType="CheckBox" BasedOn="{StaticResource SlideCheckBox}">
                         <Setter Property="Visibility" Value="Collapsed" />

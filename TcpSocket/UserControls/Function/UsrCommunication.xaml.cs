@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows.Controls;
-using System.Windows.Data;
 using Helper.Extensions;
-using TcpSocket.Converters;
 using TcpSocket.Helper;
 using TcpSocket.UserControls.Function.Communication;
 

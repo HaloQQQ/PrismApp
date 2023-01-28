@@ -7,31 +7,106 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/DataGrid.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
+            <Style x:Key="TransparentBackgroundDataGrid" TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+                <Setter Property="AlternatingRowBackground" Value="Transparent" />
+                <Setter Property="RowBackground" Value="Transparent" />
+                <Setter Property="GridLinesVisibility" Value="None" />
+                
+                <Setter Property="RowStyle">
+                    <Setter.Value>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <!--<Setter Property="Background" Value="LightGray"/>-->
+                                    <Setter Property="Background" Value="LightBlue" />
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform CenterX="0.5" CenterY="0.5" ScaleY="1.2"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#90F670" />
+                                    <Setter Property="Foreground" Value="White" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="DataGridColumnHeader">
+                <Setter Property="ToolTipService.ToolTip"
+                        Value="{Binding RelativeSource={RelativeSource Mode=Self},Path=Content.Text}" />
+
+                <Setter Property="MinWidth" Value="90" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="Width" Value="Auto" />
+
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="Padding" Value="10,3" />
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                            <DockPanel>
+                                <Border x:Name="brd" Background="{TemplateBinding Background}"
+                                        Padding="{TemplateBinding Padding}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                    <TextBlock Foreground="{TemplateBinding Foreground}"
+                                               FontSize="{TemplateBinding FontSize}"
+                                               TextAlignment="Center"
+                                               TextTrimming="WordEllipsis" TextWrapping="Wrap"
+                                               VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <ContentPresenter />
+                                    </TextBlock>
+                                </Border>
+                            </DockPanel>
+
+                            <ControlTemplate.Triggers>
+                                <DataTrigger Binding="{Binding Path=Tag}" Value="First">
+                                    <Setter TargetName="brd" Property="CornerRadius" Value="5,0,0,0" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=Tag}" Value="Last">
+                                    <Setter TargetName="brd" Property="CornerRadius" Value="0,5,0,0" />
+                                </DataTrigger>
+                            </ControlTemplate.Triggers>
+
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="7*" />
         </Grid.ColumnDefinitions>
 
-        <DataGrid Grid.Column="0" x:Name="DataGridProcess" ItemsSource="{Binding ProcessListContext.List}">
+        <DataGrid Grid.Column="0"
+                  Style="{StaticResource TransparentBackgroundDataGrid}"
+                  ItemsSource="{Binding ProcessListContext.List}">
             <DataGrid.CommandBindings>
-                <CommandBinding Command="Close" Executed="CommandBinding_OnExecuted"/>
-                <CommandBinding Command="Refresh" Executed="CommandBinding_OnExecuted"/>
+                <CommandBinding Command="Close" Executed="CommandBinding_OnExecuted" />
+                <CommandBinding Command="Refresh" Executed="CommandBinding_OnExecuted" />
             </DataGrid.CommandBindings>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Command="Close" CommandParameter="Process"/>
-                    <MenuItem Command="Refresh" CommandParameter="Process"/>
+                    <MenuItem Command="Close" CommandParameter="Process" />
+                    <MenuItem Command="Refresh" CommandParameter="Process" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridCheckBoxColumn.Header>
                         <CheckBox Checked="ToggleButton_OnChecked" Unchecked="ToggleButton_OnChecked"
-                            Style="{StaticResource CheckBoxSelectAll}" />
+                                  Style="{StaticResource CheckBoxSelectAll}" />
                     </DataGridCheckBoxColumn.Header>
                     <DataGridCheckBoxColumn.ElementStyle>
                         <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}" />
@@ -42,27 +117,32 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <DataGrid Grid.Column="1" x:Name="DataGridService" ItemsSource="{Binding ServiceList}">
+        <DataGrid Grid.Column="1"
+                  Style="{StaticResource TransparentBackgroundDataGrid}"
+                  ItemsSource="{Binding ServiceList}">
             <DataGrid.CommandBindings>
-                <CommandBinding Command="Close" Executed="CommandBinding_OnExecuted"/>
-                <CommandBinding Command="Open" Executed="CommandBinding_OnExecuted"/>
-                <CommandBinding Command="Refresh" Executed="CommandBinding_OnExecuted"/>
+                <CommandBinding Command="Close" Executed="CommandBinding_OnExecuted" />
+                <CommandBinding Command="Open" Executed="CommandBinding_OnExecuted" />
+                <CommandBinding Command="Refresh" Executed="CommandBinding_OnExecuted" />
             </DataGrid.CommandBindings>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Command="Close" CommandParameter="Service"/>
-                    <MenuItem Command="Open" CommandParameter="Service"/>
-                    <MenuItem Command="Redo" CommandParameter="Service"/>
-                    <MenuItem Command="Refresh" CommandParameter="Service"/>
+                    <MenuItem Command="Close" CommandParameter="Service" />
+                    <MenuItem Command="Open" CommandParameter="Service" />
+                    <MenuItem Command="Redo" CommandParameter="Service" />
+                    <MenuItem Command="Refresh" CommandParameter="Service" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding DisplayName}" Header="名称" />
                 <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding ServiceName}" Header="服务名" />
 
-                <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding ServiceControllerStatus}" Header="状态" />
-                <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding ServiceType}" Header="服务类型" />
-                <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding ServiceStartMode}" Header="服务启动类型" />
+                <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding ServiceControllerStatus}"
+                                    Header="状态" />
+                <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding ServiceType}"
+                                    Header="服务类型" />
+                <DataGridTextColumn Width="{x:Static DataGridLength.Auto}" Binding="{Binding ServiceStartMode}"
+                                    Header="服务启动类型" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
