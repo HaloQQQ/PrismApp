@@ -30,7 +30,7 @@
                         <TextBlock.Inlines>
                             <TextBlock FontFamily="{StaticResource Iconfont}"
                                        Text="&#xe650;" />
-                            <TextBlock Style="{StaticResource ConnText}" />
+                            <TextBlock Style="{StaticResource TcpConnText}" />
                         </TextBlock.Inlines>
                     </TextBlock>
                 </Button>

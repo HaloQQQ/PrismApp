@@ -14,13 +14,10 @@ namespace TcpSocket.Models.ProcessService
             Task.Run(async () =>
             {
                 ProcessContext processContext;
-                Helper.Helper.Invoke(() =>
+                if (this.ProcessListContext.AllCount > 0)
                 {
-                    if (this.ProcessListContext.AllCount > 0)
-                    {
-                        this.ProcessListContext.Clear();
-                    }
-                });
+                    this.ProcessListContext.Clear();
+                }
 
                 foreach (var process in ProcessUtil.GetAllProcessList())
                 {
@@ -39,13 +36,10 @@ namespace TcpSocket.Models.ProcessService
             Task.Run(async () =>
             {
                 ServiceContext serviceContext;
-                Helper.Helper.Invoke(() =>
+                if (this.ServiceList.Count > 0)
                 {
-                    if (this.ServiceList.Count > 0)
-                    {
-                        this.ServiceList.Clear();
-                    }
-                });
+                    this.ServiceList.Clear();
+                }
 
                 foreach (var service in ServiceUtil.GetAllNormalServiceList())
                 {

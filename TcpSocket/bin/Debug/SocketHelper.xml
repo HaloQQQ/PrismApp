@@ -41,7 +41,7 @@
         </member>
         <member name="M:SocketHelper.Base.BaseSocket.Dispose">
             <summary>
-            关闭Socket
+            关闭Socket,设置连接状态IsConnected为False
             </summary>
         </member>
         <member name="M:SocketHelper.Base.BaseSocket.Close">
@@ -254,7 +254,7 @@
             启动Socket通讯
             </summary>
         </member>
-        <member name="M:SocketHelper.Tcp.NewTcpServer.AccpetCallBack(System.IAsyncResult)">
+        <member name="M:SocketHelper.Tcp.NewTcpServer.AcceptCallBack(System.IAsyncResult)">
             <summary>
             接收到连接时的回调函数，递归监听
             </summary>
@@ -265,11 +265,12 @@
             移除客户端
             若当前连接的数量等于最大连接数，重启监听功能
             </summary>
-            <param name="remoteName"></param>
+            <param name="remotePoint"></param>
             <param name="exception"></param>
         </member>
         <member name="M:SocketHelper.Udp.NewUdpClient.#ctor(System.Text.Encoding,System.Boolean,System.String,System.UInt16,System.String,System.UInt16,System.String,System.UInt32)">
             <param name="encoding"></param>
+            <param name="unreachableDisconnect">连接不可达停止接收</param>
             <param name="localIp"></param>
             <param name="localPort"></param>
             <param name="targetIp"></param>

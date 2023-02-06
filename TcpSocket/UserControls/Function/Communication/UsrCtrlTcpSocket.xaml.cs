@@ -112,7 +112,7 @@ namespace TcpSocket.UserControls.Function.Communication
 
                 this._tcpSocket.ConnectStatusChanged += status =>
                 {
-                    if (this._tcpSocketContext.IsConnected = status)
+                    if ((this._tcpSocketContext.IsConnected = status) && !this._tcpSocketContext.CanReConnect)
                     {
                         this._tcpSocketContext.Connecting = false;
                     }

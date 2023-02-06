@@ -1,5 +1,6 @@
 ﻿using SocketHelper.Tcp;
 using System.Net;
+using System.Threading.Tasks;
 using TcpSocket.Helper;
 using TcpSocket.Models;
 
@@ -34,18 +35,17 @@ namespace TcpSocket.UserControls.Function.Communication
                 this.rhTxt.Info(this._tcpSocketContext, "连接成功");
 
                 Helper.Helper.Invoke(() =>
+                {
                     base._tcpSocketContext.ConnList.Add(
                         new IPEndPoint(IPAddress.Parse(this._tcpSocketContext.IP), port).ToString()
-                    )
-                );
+                    );
+                });
             };
 
             base._tcpSocket.StartFailed += socket =>
             {
-                Helper.Helper.Invoke(() =>
-                {
-                    base._tcpSocketContext.Connecting = base._tcpSocketContext.CanReConnect;
-                });
+                base._tcpSocketContext.Connecting = base._tcpSocketContext.CanReConnect;
+
                 this.rhTxt.Info(this._tcpSocketContext, $"{socket}启动失败..");
             };
         }

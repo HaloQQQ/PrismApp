@@ -200,6 +200,15 @@
                 <Setter Property="ToolTip" Value="打开连接" />
             </DataTrigger>
 
+            <DataTrigger Binding="{Binding IsConnected}" Value="True">
+                <Setter Property="ToolTip" Value="关闭连接" />
+                <Setter Property="Text" Value="关闭连接" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style TargetType="TextBlock" BasedOn="{StaticResource ConnText}" x:Key="TcpConnText">
+        <Style.Triggers>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
                     <Condition Binding="{Binding CanReConnect}" Value="True" />
@@ -210,11 +219,6 @@
                 <Setter Property="Text" Value="重连中.." />
                 <Setter Property="ToolTip" Value="重连中.." />
             </MultiDataTrigger>
-
-            <DataTrigger Binding="{Binding IsConnected}" Value="True">
-                <Setter Property="ToolTip" Value="关闭连接" />
-                <Setter Property="Text" Value="关闭连接" />
-            </DataTrigger>
         </Style.Triggers>
     </Style>
 

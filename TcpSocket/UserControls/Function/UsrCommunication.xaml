@@ -34,6 +34,8 @@
                             <Condition Value="False"
                                        Binding="{Binding ApplicationClientContext.IsConnected}" />
                             <Condition Value="False"
+                                       Binding="{Binding ApplicationClientContext.Connecting}" />
+                            <Condition Value="False"
                                        Binding="{Binding UdpContext.IsConnected}" />
                         </MultiDataTrigger.Conditions>
 

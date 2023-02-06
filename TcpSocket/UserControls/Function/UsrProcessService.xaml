@@ -89,7 +89,7 @@
             <ColumnDefinition Width="7*" />
         </Grid.ColumnDefinitions>
 
-        <DataGrid Grid.Column="0"
+        <DataGrid Grid.Column="0" x:Name="DataGridProcess"
                   Style="{StaticResource TransparentBackgroundDataGrid}"
                   ItemsSource="{Binding ProcessListContext.List}">
             <DataGrid.CommandBindings>
@@ -117,7 +117,7 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <DataGrid Grid.Column="1"
+        <DataGrid Grid.Column="1" x:Name="DataGridService"
                   Style="{StaticResource TransparentBackgroundDataGrid}"
                   ItemsSource="{Binding ServiceList}">
             <DataGrid.CommandBindings>
