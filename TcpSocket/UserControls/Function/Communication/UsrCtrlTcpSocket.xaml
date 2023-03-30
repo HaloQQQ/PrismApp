@@ -3,6 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:helper="clr-namespace:TcpSocket.Helper"
              SnapsToDevicePixels="True">
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ConnInput" TargetType="TextBox" 
+                   BasedOn="{StaticResource {x:Type TextBox}}">
+                <Setter Property="IsEnabled" Value="False"/>
+                
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding IsConnected}" Value="False"/>
+                            <Condition Binding="{Binding Connecting}" Value="False"/>
+                        </MultiDataTrigger.Conditions>
+                        
+                        <Setter Property="IsEnabled" Value="True"/>
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
     <GroupBox>
         <GroupBox.Header>
@@ -18,14 +38,15 @@
 
             <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <TextBox Text="{Binding IP}" Tag="服务器IP："
-                         IsEnabled="{Binding IsConnected,Converter={StaticResource OppositeBoolConverter}}" />
+                         Style="{StaticResource ConnInput}" />
                 <TextBox Text="{Binding Port}" Tag="服务器监听端口："
-                         IsEnabled="{Binding IsConnected,Converter={StaticResource OppositeBoolConverter}}" />
+                         Style="{StaticResource ConnInput}" />
 
                 <Button Command="Open" CommandParameter="ConnButton" Style="{StaticResource ConnButton}">
                     <Button.CommandBindings>
                         <CommandBinding Command="Open" CanExecute="CommandBinding_OnCanExecute" Executed="BtnConnect_Click"/>
                     </Button.CommandBindings>
+                    
                     <TextBlock>
                         <TextBlock.Inlines>
                             <TextBlock FontFamily="{StaticResource Iconfont}"

@@ -32,7 +32,7 @@ namespace TcpSocket.UserControls.Function.Communication
 
             base._tcpSocket.Started += socket =>
             {
-                this.rhTxt.Info(this._tcpSocketContext, "连接成功");
+                this.rhTxt.Info(this._tcpSocketContext, $"{socket}连接成功");
 
                 Helper.Helper.Invoke(() =>
                 {
@@ -46,7 +46,7 @@ namespace TcpSocket.UserControls.Function.Communication
             {
                 base._tcpSocketContext.Connecting = base._tcpSocketContext.CanReConnect;
 
-                this.rhTxt.Info(this._tcpSocketContext, $"{socket}启动失败..");
+                this.rhTxt.Info(this._tcpSocketContext, $"连接{socket}失败..");
             };
         }
 

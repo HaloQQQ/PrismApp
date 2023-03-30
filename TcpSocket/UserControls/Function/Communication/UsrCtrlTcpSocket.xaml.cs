@@ -3,7 +3,9 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using Helper.Extensions;
 using Helper.Utils;
@@ -186,7 +188,7 @@ namespace TcpSocket.UserControls.Function.Communication
             {
                 if ("ConnButton".EqualsIgnoreCase(e.Parameter.ToString()))
                 {
-                    e.CanExecute = !(this._tcpSocketContext.CanReConnect && this._tcpSocketContext.Connecting);
+                    e.CanExecute = !this._tcpSocketContext.Connecting;
                     return;
                 }
             }

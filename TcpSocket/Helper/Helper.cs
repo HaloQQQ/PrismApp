@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Threading;
 using Hardcodet.Wpf.TaskbarNotification;
 using Helper.Statics;
 using Helper.FileOperation;
@@ -17,7 +18,7 @@ namespace TcpSocket.Helper
     {
         internal static void Invoke(Action action)
         {
-            App.Current.Dispatcher.Invoke(action);
+            App.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, action);
         }
 
         internal static bool IsInPopup(FrameworkElement element)
@@ -44,7 +45,8 @@ namespace TcpSocket.Helper
 
         internal static void ShowBalloonTip(string title, string message)
         {
-            TaskbarIcon taskbarIcon = App.Current.MainWindow.FindResource(Constants.TaskBar_Resource_Key) as TaskbarIcon;
+            TaskbarIcon taskbarIcon =
+                App.Current.MainWindow.FindResource(Constants.TaskBar_Resource_Key) as TaskbarIcon;
             taskbarIcon.ShowBalloonTip(
                 title,
                 message,
