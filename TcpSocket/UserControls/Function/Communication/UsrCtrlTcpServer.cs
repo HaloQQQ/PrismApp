@@ -1,5 +1,6 @@
 ﻿using SocketHelper.Tcp;
 using System;
+using System.Net;
 using Helper.Utils;
 using TcpSocket.Helper;
 using TcpSocket.Models;
@@ -30,11 +31,11 @@ namespace TcpSocket.UserControls.Function.Communication
                 base._tcpSocketContext.Name, base._tcpSocketContext.MaxMessageLength,
                 base._tcpSocketContext.MaxClientCount);
 
-            var server = (NewTcpServer) base._tcpSocket;
+            var server = (NewTcpServer)base._tcpSocket;
 
             server.SocketCommunicateWithClientCreated += socket =>
             {
-                this.rhTxt.Info(this._tcpSocketContext, "连接建立!");
+                this.rhTxt.Info(this._tcpSocketContext, $"连接{socket.LocalEndPoint}=>{socket.RemoteEndPoint}建立!");
 
                 if (socket.RemoteEndPoint != null)
                 {
@@ -44,9 +45,19 @@ namespace TcpSocket.UserControls.Function.Communication
                 }
             };
 
-            server.Started += socket => { this.rhTxt.Info(this._tcpSocketContext, $"开始监听{base._tcpSocketContext.IP}:{base._tcpSocketContext.Port}.."); };
+            server.Started += socket =>
+            {
+                this.rhTxt.Info(this._tcpSocketContext,
+                    $"开始监听{socket}..");
+            };
 
-            server.ReceivedMessage += (from, to, data) => { this._mediatorContext.TransmitFrom(this, data); };
+            server.ReceivedMessage += (from, to, data) => this._mediatorContext.TransmitFrom(this, data);
+
+            server.DestoryClient += client =>
+            {
+                this.rhTxt.Recv(new IPEndPoint(IPAddress.Any, 0), new IPEndPoint(IPAddress.Any, 0),
+                    this._tcpSocketContext, $"客户端{client}已销毁");
+            };
         }
 
         public void TransmitMessage(byte[] data)
@@ -69,11 +80,11 @@ namespace TcpSocket.UserControls.Function.Communication
 
                 base._tcpSocket.SendAsync(msg);
 
-                this.rhTxt.Info( this._tcpSocketContext, $"转发数据：【{msg}】");
+                this.rhTxt.Info(this._tcpSocketContext, $"转发数据：【{msg}】");
             }
             catch (Exception ex)
             {
-                this.rhTxt.Info( this._tcpSocketContext, ex.Message);
+                this.rhTxt.Info(this._tcpSocketContext, ex.Message);
             }
         }
     }

@@ -190,9 +190,14 @@
             </summary>
             <param name="remotePoint"></param>
         </member>
-        <member name="M:SocketHelper.Tcp.NewTcpServer.Dispose">
+        <member name="T:SocketHelper.Tcp.NewTcpServer">
             <summary>
-            关闭客户端Socket和监听Socket
+            连接数到达最大时，blockWhenFullClients？阻塞策略：服务端关闭并移除客户端连接策略
+            </summary>
+        </member>
+        <member name="E:SocketHelper.Tcp.NewTcpServer.SocketCommunicateWithClientCreated">
+            <summary>
+            Socket连接建立
             </summary>
         </member>
         <member name="M:SocketHelper.Tcp.NewTcpServer.SendToAsync(System.Net.IPEndPoint,System.Byte[])">
@@ -260,6 +265,18 @@
             </summary>
             <param name="result"></param>
         </member>
+        <member name="E:SocketHelper.Tcp.NewTcpServer.DestoryClient">
+            <summary>
+            销毁客户端事件
+            </summary>
+        </member>
+        <member name="M:SocketHelper.Tcp.NewTcpServer.DestoryClientHandler(System.String)">
+            <summary>
+            销毁客户端
+            </summary>
+            <param name="clientPoint">客户端EndPoint</param>
+            <returns>是否存在并销毁客户端</returns>
+        </member>
         <member name="M:SocketHelper.Tcp.NewTcpServer.ExceptionOccurredHandler(System.String,System.Exception)">
             <summary>
             移除客户端
@@ -267,6 +284,11 @@
             </summary>
             <param name="remotePoint"></param>
             <param name="exception"></param>
+        </member>
+        <member name="M:SocketHelper.Tcp.NewTcpServer.Dispose">
+            <summary>
+            关闭客户端Socket和监听Socket
+            </summary>
         </member>
         <member name="M:SocketHelper.Udp.NewUdpClient.#ctor(System.Text.Encoding,System.Boolean,System.String,System.UInt16,System.String,System.UInt16,System.String,System.UInt32)">
             <param name="encoding"></param>

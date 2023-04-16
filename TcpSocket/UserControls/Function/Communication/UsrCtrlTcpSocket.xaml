@@ -3,21 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:helper="clr-namespace:TcpSocket.Helper"
              SnapsToDevicePixels="True">
-    
+
     <UserControl.Resources>
         <ResourceDictionary>
-            <Style x:Key="ConnInput" TargetType="TextBox" 
+            <Style x:Key="ConnInput" TargetType="TextBox"
                    BasedOn="{StaticResource {x:Type TextBox}}">
-                <Setter Property="IsEnabled" Value="False"/>
-                
+                <Setter Property="IsEnabled" Value="False" />
+
                 <Style.Triggers>
                     <MultiDataTrigger>
                         <MultiDataTrigger.Conditions>
-                            <Condition Binding="{Binding IsConnected}" Value="False"/>
-                            <Condition Binding="{Binding Connecting}" Value="False"/>
+                            <Condition Binding="{Binding IsConnected}" Value="False" />
+                            <Condition Binding="{Binding Connecting}" Value="False" />
                         </MultiDataTrigger.Conditions>
-                        
-                        <Setter Property="IsEnabled" Value="True"/>
+
+                        <Setter Property="IsEnabled" Value="True" />
                     </MultiDataTrigger>
                 </Style.Triggers>
             </Style>
@@ -44,9 +44,10 @@
 
                 <Button Command="Open" CommandParameter="ConnButton" Style="{StaticResource ConnButton}">
                     <Button.CommandBindings>
-                        <CommandBinding Command="Open" CanExecute="CommandBinding_OnCanExecute" Executed="BtnConnect_Click"/>
+                        <CommandBinding Command="Open" CanExecute="CommandBinding_OnCanExecute"
+                                        Executed="BtnConnect_Click" />
                     </Button.CommandBindings>
-                    
+
                     <TextBlock>
                         <TextBlock.Inlines>
                             <TextBlock FontFamily="{StaticResource Iconfont}"
@@ -73,6 +74,14 @@
                              ItemsSource="{Binding ConnList}" Background="Transparent"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ListBox.CommandBindings>
+                            <CommandBinding Command="Close" CanExecute="CommandBinding_OnCanExecute" Executed="CommandBinding_Executed"/>
+                        </ListBox.CommandBindings>
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="移除" Command="Close" />
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal" />
@@ -82,7 +91,7 @@
                             <Style TargetType="ListBox">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ConnList.Count}" Value="0">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Setter Property="Visibility" Value="Collapsed" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -90,9 +99,10 @@
                     </ListBox>
 
                     <RichTextBox DockPanel.Dock="Bottom"
-                             x:Name="rhTxt" ContextMenu="{StaticResource ForMessageBoard}">
+                                 x:Name="rhTxt" ContextMenu="{StaticResource ForMessageBoard}">
                         <RichTextBox.CommandBindings>
-                            <CommandBinding Command="Refresh" CanExecute="CommandBinding_OnCanExecute" Executed="CommandBinding_Executed" />
+                            <CommandBinding Command="Refresh" CanExecute="CommandBinding_OnCanExecute"
+                                            Executed="CommandBinding_Executed" />
                             <CommandBinding Command="New" Executed="CommandBinding_Executed" />
                             <CommandBinding Command="Open" Executed="CommandBinding_Executed" />
                         </RichTextBox.CommandBindings>
@@ -101,7 +111,7 @@
             </Grid>
 
             <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <TextBlock Text="发送：" Style="{StaticResource ThemeBlk}"/>
+                <TextBlock Text="发送：" Style="{StaticResource ThemeBlk}" />
                 <TextBox Tag="发送：" Style="{StaticResource WidthAnimationWithoutPrefixTextBox}"
                          Text="{Binding SendMsg, UpdateSourceTrigger=PropertyChanged}"
                          IsEnabled="{Binding IsConnected}"
@@ -112,12 +122,13 @@
                 </TextBox>
 
                 <Button helper:MyAttachProperty.CornerRadius="10"
-                        IsEnabled="{Binding IsConnected}" 
+                        IsEnabled="{Binding IsConnected}"
                         Content="发送"
                         Command="New" CommandParameter="SendMsg" />
 
                 <StackPanel.CommandBindings>
-                    <CommandBinding Command="New" CanExecute="CommandBinding_OnCanExecute" Executed="CommandBinding_Executed" />
+                    <CommandBinding Command="New" CanExecute="CommandBinding_OnCanExecute"
+                                    Executed="CommandBinding_Executed" />
                 </StackPanel.CommandBindings>
             </StackPanel>
         </Grid>

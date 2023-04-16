@@ -3,12 +3,12 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using Helper.Extensions;
 using Helper.Utils;
+using SocketHelper.Tcp;
 using TcpSocket.Helper;
 using TcpSocket.Models;
 
@@ -134,7 +134,17 @@ namespace TcpSocket.UserControls.Function.Communication
 
             try
             {
-                if (e.Command == ApplicationCommands.New)
+                if (e.Command == ApplicationCommands.Close)
+                {
+                    if (e.OriginalSource is ListBoxItem item)
+                    {
+                        if (this._tcpSocket is NewTcpServer server)
+                        {
+                            server.DestoryClientHandler(item.Content.ToString());
+                        }
+                    }
+                }
+                else if (e.Command == ApplicationCommands.New)
                 {
                     if (Helper.Helper.Equals(e.Parameter?.ToString(), Constants.SEND_MSG))
                     {
@@ -184,34 +194,31 @@ namespace TcpSocket.UserControls.Function.Communication
         {
             e.Handled = true;
 
-            if (e.Command == ApplicationCommands.Open)
+            if (e.Command == ApplicationCommands.Close)
+            {
+                e.CanExecute = e.OriginalSource is ListBoxItem;
+            }
+            else if (e.Command == ApplicationCommands.Open)
             {
                 if ("ConnButton".EqualsIgnoreCase(e.Parameter.ToString()))
                 {
                     e.CanExecute = !this._tcpSocketContext.Connecting;
-                    return;
                 }
             }
-            else if (e.Command == ApplicationCommands.New)
+            else if (e.Command == ApplicationCommands.New) // 发送消息
             {
                 if (Helper.Helper.Equals(e.Parameter?.ToString(), Constants.SEND_MSG))
                 {
-                    if (string.IsNullOrEmpty(this._tcpSocketContext.SendMsg)
-                        || this._tcpSocketContext.SendMsg.Trim().Length == 0
-                        || this._tcpSocketContext.ConnList?.Count == 0)
-                    {
-                        e.CanExecute = false;
-                        return;
-                    }
+                    var forbid = string.IsNullOrEmpty(this._tcpSocketContext.SendMsg)
+                                 || this._tcpSocketContext.SendMsg.Trim().Length == 0
+                                 || this._tcpSocketContext.ConnList?.Count == 0;
+                    e.CanExecute = !forbid;
                 }
             }
             else if (e.Command == NavigationCommands.Refresh)
             {
                 e.CanExecute = this.rhTxt.Document.Blocks.Count > 0;
-                return;
             }
-
-            e.CanExecute = true;
         }
     }
 }
