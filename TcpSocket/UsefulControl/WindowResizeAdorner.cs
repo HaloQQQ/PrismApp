@@ -124,7 +124,7 @@ namespace TcpSocket.UsefulControl
             var c = _window;
             var thumb = sender as FrameworkElement;
             double left, top, width, height;
-            if (thumb is {HorizontalAlignment: HorizontalAlignment.Left})
+            if (thumb is { HorizontalAlignment: HorizontalAlignment.Left })
             {
                 left = c.Left + e.HorizontalChange;
                 width = c.Width - e.HorizontalChange;

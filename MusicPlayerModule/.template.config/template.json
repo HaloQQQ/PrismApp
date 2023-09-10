@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Tai Jun",
+  "classifications": [ "Common", "Library" ],
+  "identity": "MusicPlayerModule",
+  "name": "MusicPlayerModule Library",
+  "shortName": "MusicPlayer",
+  "tags": {
+    "language": "C#",
+    "type": "item"
+  }
+}

@@ -7,55 +7,33 @@
         <UseWPF>true</UseWPF>
         <AssemblyVersion>1.0.0.10</AssemblyVersion>
         <ApplicationIcon>Resources\apple.ico</ApplicationIcon>
+        <GenerateDocumentationFile>False</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Musics\**" />
+      <EmbeddedResource Remove="Musics\**" />
+      <None Remove="Musics\**" />
+      <Page Remove="Musics\**" />
+    </ItemGroup>
+
+    <ItemGroup>
       <None Remove="appsettings.json" />
+      <None Remove="Resources\iconfont.ttf" />
+      <None Remove="ViewModels\CommunicationViewModel.cs~RF10339688.TMP" />
     </ItemGroup>
 
     <ItemGroup>
       <Content Include="appsettings.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+      <Resource Include="Resources\iconfont.ttf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
-      <PackageReference Include="Hardcodet.Wpf.TaskbarNotification" Version="1.0.5" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-      <PackageReference Include="NetCore5.0.Microsoft.Expression.Drawing" Version="1.0.0" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-      <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
-      <PackageReference Include="System.ServiceProcess.ServiceController" Version="7.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Page Update="Resources\Animation.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="Resources\DarkTheme.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="Resources\DataGrid.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
       <Page Update="Resources\DenpendencyTaskbarIcon.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="Resources\GenericDictionary.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="Resources\LightTheme.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
@@ -70,97 +48,42 @@
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
-      <Page Update="Resources\ScrollViewer.xaml">
+      <Page Update="Views\SwitchBackgroundView.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
-      <Page Update="Resources\TextBlock.xaml">
+      <Page Update="Views\WindowTitleBarView.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
-      <Page Update="Resources\ToggleButton.xaml">
+      <Page Update="Views\BaseViews\BaseTcpSocketView.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
-      <Page Update="Resources\Window.xaml">
+      <Page Update="Views\UDPView.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
-      <Page Update="UserControls\Common\UsrSwitchBackgroundSlider.xaml">
+      <Page Update="Views\CommunicationView.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
-      <Page Update="UserControls\Common\UsrTitleBarSlider.xaml">
+      <Page Update="Views\ProcessServiceView.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
-      <Page Update="UserControls\Function\Communication\UsrCtrlTcpSocket.xaml">
+      <Page Update="Views\ImageDisplayView.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>
-      <Page Update="UserControls\Function\Communication\UsrCtrlUDP.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="UserControls\Function\UsrCommunication.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="UserControls\Function\UsrProcessService.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="UserControls\Function\VirtualUI.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="UserControls\Tests\TestFunction.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="UserControls\WaitLoads\ArcWaitLoad.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="UserControls\WaitLoads\NeedleWaitLoad.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="UserControls\WaitLoads\PointHorizonLineWaitLoad.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="UserControls\WaitLoads\PointWaitLoad.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="UserControls\WaitLoads\SquareFlipWaitLoad.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="UserControls\WaitLoads\VerticalLineWaitLoad.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
-      <Page Update="MainWindow.xaml">
+      <Page Update="Views\MainWindow.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
@@ -168,21 +91,18 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Resource Include="Resources\iconfont.ttf">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Resource>
       <Resource Include="Resources\网络.png" />
       <None Remove="Resources\apple.ico" />
       <Resource Include="Resources\apple.ico" />
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="UserControls\Function\Communication\UsrCtrlTcpSocket.xaml.cs">
+      <Compile Update="Views\BaseViews\BaseTcpSocketView.xaml.cs">
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="UserControls\Function\Communication\UsrCtrlTcpSocket.xaml.cs">
+      <Compile Update="Views\BaseViews\BaseTcpSocketView.xaml.cs">
         <SubType>Code</SubType>
-        <DependentUpon>UsrCtrlTcpSocket.xaml</DependentUpon>
+        <DependentUpon>BaseTcpSocketView.xaml</DependentUpon>
       </Compile>
     </ItemGroup>
 
@@ -190,12 +110,31 @@
       <Reference Include="Helper">
         <HintPath>bin\Debug\Helper.dll</HintPath>
       </Reference>
+      <Reference Include="Microsoft.Expression.Drawing">
+        <HintPath>..\..\..\..\NuGetPackages\netcore5.0.microsoft.expression.drawing\1.0.0\lib\net5.0-windows7.0\Microsoft.Expression.Drawing.dll</HintPath>
+      </Reference>
+      <Reference Include="Newtonsoft.Json">
+        <HintPath>..\..\DesignPattern\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      </Reference>
       <Reference Include="SocketHelper">
         <HintPath>bin\Debug\SocketHelper.dll</HintPath>
       </Reference>
       <Reference Include="zxing, Version=0.16.8.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60">
         <HintPath>bin\Debug\zxing.dll</HintPath>
       </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+      <PackageReference Include="prism.dryioc" Version="8.1.97" />
+      <PackageReference Include="System.ServiceProcess.ServiceController" Version="7.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MusicPlayerModule\MusicPlayerModule.csproj" />
     </ItemGroup>
 
 </Project>

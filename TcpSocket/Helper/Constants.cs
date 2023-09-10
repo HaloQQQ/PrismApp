@@ -1,35 +1,53 @@
-﻿using System.Windows.Media;
+﻿using System.Windows;
+using System;
+using System.Windows.Media;
 
 namespace TcpSocket.Helper
 {
     internal class Constants
     {
-        public const string SEND_MSG = "SendMsg";
+        internal const string SEND_MSG = "SendMsg";
 
-        public const string LOG = "Log";
+        internal const string LOG = "Log";
 
-        public const string NOTE_PAD = "notepad";
-        
-        public const string NOTE_PAD_EXE = "notepad.exe";
+        internal const string NOTE_PAD = "notepad";
 
-        public const string TaskBar_Resource_Key = "Taskbar";
+        internal const string NOTE_PAD_EXE = "notepad.exe";
 
-        public const string Container_Background = "Container.Background";
+        internal const string TaskBar_Resource_Key = "Taskbar";
 
-        public const string MAX = "Max";
-        public const string NORMAL = "Normal";
-        public const string MIN = "Min";
-        public const string CLOSE = "Close";
-        
-        public const string ONLY_ONE_PROCESS = "OnlyOneProcess";
-        public const string AUTO_START = "AutoStart";
-        public const string BACKGROUND_SWITCH = "BackgroundSwitch";
+        internal const string Container_Background = "Container.Background";
 
-        public const string Software_Log_Dir = "软件启停记录";
+        internal const string MAX = "Max";
+        internal const string NORMAL = "Normal";
+        internal const string MIN = "Min";
+        internal const string CLOSE = "Close";
 
-        public const string Image_Dir = "E:\\图片";
+        internal const string ONLY_ONE_PROCESS = "OnlyOneProcess";
+        internal const string AUTO_START = "AutoStart";
+        internal const string BACKGROUND_SWITCH = "BackgroundSwitch";
 
-        public static readonly Brush SendBrush = Brushes.Blue;
-        public static readonly Brush RecvBrush = Brushes.Green;
+        internal const string IsVideoPlayer = "IsVideoPlayer";
+        internal const string IsMusicPlayer = "IsMusicPlayer";
+
+        internal const string DefaultThemeURI = "DefaultThemeURI";
+        internal const string BkgrdUri = "BkgrdUri";
+
+        internal const string Software_Log_Dir = "软件启停记录";
+
+        internal const string Image_Dir = "E:\\图片";
+
+        internal static readonly Brush SendBrush = Brushes.LightSkyBlue;
+        internal static readonly Brush RecvBrush = Brushes.LightGreen;
+
+        internal static readonly ResourceDictionary Light = new ResourceDictionary()
+        {
+            Source = new Uri("pack://application:,,,/WpfStyleResources;component/Resources/LightTheme.xaml", UriKind.RelativeOrAbsolute)
+        };
+
+        internal static readonly ResourceDictionary Dark = new ResourceDictionary()
+        {
+            Source = new Uri("pack://application:,,,/WpfStyleResources;component/Resources/DarkTheme.xaml", UriKind.RelativeOrAbsolute)
+        };
     }
 }

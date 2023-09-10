@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="TcpSocket.Views.UDPView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:attachs="clr-namespace:WpfStyleResources.Attachs;assembly=WpfStyleResources"
+             xmlns:helper="clr-namespace:WpfStyleResources.Helper;assembly=WpfStyleResources"
+             xmlns:prism="http://prismlibrary.com/" 
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.Resources>
+        <Style TargetType="TextBox" x:Key="DisplayConnInfo" BasedOn="{StaticResource TextBox_DisplayInfo}">
+            <Setter Property="IsEnabled" Value="{Binding IsConnected,Converter={StaticResource OppositeBoolConverter}}" />
+        </Style>
+        <Style x:Key="Lable" TargetType="TextBlock" BasedOn="{StaticResource ThemeBlk}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="0" />
+        </Style>
+    </UserControl.Resources>
+
+    <GroupBox>
+        <GroupBox.Header>
+            <TextBlock Text="{Binding Name}" Foreground="Blue" FontSize="20" FontWeight="Bold" />
+        </GroupBox.Header>
+        <Grid CommandManager.CanExecute="CommandBinding_OnCanExecute" CommandManager.Executed="CommandBinding_Executed">
+            <Grid.RowDefinitions>
+                <RowDefinition MaxHeight="50" />
+                <RowDefinition Height="*" />
+                <RowDefinition MaxHeight="50" />
+            </Grid.RowDefinitions>
+
+            <Viewbox Style="{StaticResource OnlyDownViewbox}" Grid.Row="0" HorizontalAlignment="Left">
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <TextBlock Text="本机IP：" Style="{StaticResource Lable}"/>
+                    <TextBox Text="{Binding IP,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource DisplayConnInfo}" />
+                    <TextBlock Text="本机本机端口：" Style="{StaticResource Lable}"/>
+                    <TextBox Text="{Binding Port,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource DisplayConnInfo}" />
+                    <TextBlock Text="目标IP：" Style="{StaticResource Lable}"/>
+                    <TextBox Text="{Binding TargetIP,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource DisplayConnInfo}" />
+                    <TextBlock Text="目标端口：" Style="{StaticResource Lable}"/>
+                    <TextBox Text="{Binding TargetPort,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource DisplayConnInfo}" />
+
+                    <CheckBox IsEnabled="{Binding IsConnected}" IsChecked="{Binding UnreachableDisconnect}">
+                        <TextBlock FontSize="14">
+                        <TextBlock Style="{StaticResource IconText}" Text="&#xec6f;" />
+                        <TextBlock Text="自动断开：" />
+                    </TextBlock>
+                    </CheckBox>
+
+                    <Button Style="{StaticResource ConnButton}" Click="BtnConnect_Click"/>
+                </StackPanel>
+            </Viewbox>
+
+            <Grid Grid.Row="1">
+                <RichTextBox DockPanel.Dock="Bottom" x:Name="rhTxt" ContextMenu="{StaticResource ForMessageBoard}">
+                    <RichTextBox.CommandBindings>
+                        <CommandBinding Command="Open"/>
+                    </RichTextBox.CommandBindings>
+                </RichTextBox>
+            </Grid>
+
+            <Viewbox Style="{StaticResource OnlyDownViewbox}" Grid.Row="2" HorizontalAlignment="Left">
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <TextBlock Text="发送：" Style="{StaticResource ThemeBlk}" />
+                    <TextBox Style="{StaticResource WidthAnimationWithoutPrefixTextBox}"
+                         attachs:MyAttachProperty.PlaceHolder="待发送消息"
+                         Text="{Binding SendMsg, UpdateSourceTrigger=PropertyChanged}"
+                         IsEnabled="{Binding IsConnected}" MinWidth="200"/>
+
+                    <Button Content="发送" Command="{x:Static helper:CustomCommands.PostCommand}" />
+                </StackPanel>
+            </Viewbox>
+        </Grid>
+    </GroupBox>
+</UserControl>

@@ -9,6 +9,11 @@
             可回收对象的基类
             </summary>
         </member>
+        <member name="M:Helper.AbstractModel.AbstractRecyclable.Refresh">
+            <summary>
+            刷新过期时间
+            </summary>
+        </member>
         <member name="M:Helper.AbstractModel.AbstractRecyclable.Dispose">
             <summary>
             回收到对象池，假如有的话
@@ -52,11 +57,11 @@
             <param name="obj"></param>
             <param name="aspectParam"></param>
         </member>
-        <member name="M:Helper.AbstractModel.BaseProxy`1.#ctor(`0,System.Object)">
+        <member name="M:Helper.AbstractModel.BaseProxy`1.#ctor(System.Object,`0)">
             <summary>
             这种方式只能代理T接口所提供的方法
             </summary>
-            <param name="obj"></param>
+            <param name="obj">接口类型</param>
             <param name="aspectParam"></param>
         </member>
         <member name="M:Helper.AbstractModel.BaseProxy`1.GetProxyInstance">
@@ -67,37 +72,190 @@
         </member>
         <member name="M:Helper.AbstractModel.BaseProxy`1.Executing">
             <summary>
-            代理前
+            代理前，记录代理日志到ProxyLog.csv
             </summary>
         </member>
         <member name="M:Helper.AbstractModel.BaseProxy`1.Executed">
             <summary>
-            代理后
+            代理后，记录代理日志到ProxyLog.csv
             </summary>
         </member>
-        <member name="T:Helper.Statics.NotShowInViewAttribute">
+        <member name="T:Helper.Extensions.CollectionExtensions">
             <summary>
-            标记此特性的属性在使用ViewExtendMethod.AddWithoutTemplateByNotShowInView时不会显示在datagrid中
+            Extension methods for Collections.
             </summary>
         </member>
-        <member name="T:Helper.Statics.NotShowInDataGridAttribute">
+        <member name="M:Helper.Extensions.CollectionExtensions.IsNullOrEmpty``1(System.Collections.Generic.ICollection{``0})">
             <summary>
-            标记此特性的属性在使用ViewExtendMethod.AddWithoutTemplateByNotShowInView时不会显示在datagrid中
+            Checks whatever given collection object is null or has no item.
             </summary>
         </member>
-        <member name="T:Helper.Statics.CanEditAttribute">
+        <member name="M:Helper.Extensions.CollectionExtensions.AddIfNotContains``1(System.Collections.Generic.ICollection{``0},``0)">
             <summary>
-            标记此特性的属性ViewExtendMethod.AddWithoutTemplateByNotShowInView时可以被编辑
+            Adds an item to the collection if it's not already in the collection.
             </summary>
+            <param name="source">The collection</param>
+            <param name="item">Item to check and add</param>
+            <typeparam name="T">Type of the items in the collection</typeparam>
+            <returns>Returns True if added, returns False if not.</returns>
+        </member>
+        <member name="M:Helper.Extensions.CollectionExtensions.AddIfNotContains``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Adds items to the collection which are not already in the collection.
+            </summary>
+            <param name="source">The collection</param>
+            <param name="items">Item to check and add</param>
+            <typeparam name="T">Type of the items in the collection</typeparam>
+            <returns>Returns the added items.</returns>
+        </member>
+        <member name="M:Helper.Extensions.CollectionExtensions.AddIfNotContains``1(System.Collections.Generic.ICollection{``0},System.Func{``0,System.Boolean},System.Func{``0})">
+            <summary>
+            Adds an item to the collection if it's not already in the collection based on the given <paramref name="predicate"/>.
+            </summary>
+            <param name="source">The collection</param>
+            <param name="predicate">The condition to decide if the item is already in the collection</param>
+            <param name="itemFactory">A factory that returns the item</param>
+            <typeparam name="T">Type of the items in the collection</typeparam>
+            <returns>Returns True if added, returns False if not.</returns>
+        </member>
+        <member name="M:Helper.Extensions.CollectionExtensions.RemoveAll``1(System.Collections.Generic.ICollection{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            Removes all items from the collection those satisfy the given <paramref name="predicate"/>.
+            </summary>
+            <typeparam name="T">Type of the items in the collection</typeparam>
+            <param name="source">The collection</param>
+            <param name="predicate">The condition to remove the items</param>
+            <returns>List of removed items</returns>
+        </member>
+        <member name="M:Helper.Extensions.CollectionExtensions.RemoveAll``1(System.Collections.Generic.ICollection{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Removes all items from the collection.
+            </summary>
+            <typeparam name="T">Type of the items in the collection</typeparam>
+            <param name="source">The collection</param>
+            <param name="items">Items to be removed from the list</param>
+        </member>
+        <member name="M:Helper.Extensions.ImageExtensions.GetFullScreen(System.String,System.Int32,System.Int32)">
+            <summary>
+            截取全屏并加水印
+            </summary>
+            <param name="text">水印字样，如果需要的话</param>
+            <param name="x">水印左上角x</param>
+            <param name="y">水印左上角y</param>
+            <returns></returns>
+        </member>
+        <member name="M:Helper.Extensions.ImageExtensions.GetImageFromScreen(System.Drawing.Rectangle)">
+            <summary>
+            截图
+            </summary>
+            <param name="rectangle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Helper.Extensions.ImageExtensions.AddSignature(System.Drawing.Image,System.String,System.Drawing.Font,System.Drawing.Brush,System.Drawing.PointF)">
+            <summary>
+            添加水印
+            </summary>
+            <param name="image"></param>
+            <param name="text"></param>
+            <param name="font"></param>
+            <param name="fontColor"></param>
+            <param name="point">水印左上角</param>
+            <returns></returns>
+        </member>
+        <member name="M:Helper.Extensions.ImageExtensions.AddImageVertical(System.Drawing.Image,System.Drawing.Image)">
+            <summary>
+            垂直排列图片
+            </summary>
+            <param name="img1"></param>
+            <param name="img2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Helper.Extensions.ImageExtensions.AddImageHorizontal(System.Drawing.Image,System.Drawing.Image)">
+            <summary>
+            水平排列图片
+            </summary>
+            <param name="img1"></param>
+            <param name="img2"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Helper.Extensions.ImageExtensions.ClipImage(System.String,System.String,System.Drawing.Rectangle)">
+            <summary>
+            从大图中截取一部分图片
+            </summary>
+            <param name="fromImagePath">来源图片地址</param>        
+            <param name="toImagePath">保存图片地址</param>
+            <param name="rectangle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Helper.Extensions.ObjectExtensions.As``1(System.Object)">
+            <summary>
+            Used to simplify and beautify casting an object to a type.
+            </summary>
+            <typeparam name="T">Type to be casted</typeparam>
+            <param name="obj">Object to cast</param>
+            <returns>Casted object</returns>
+        </member>
+        <member name="M:Helper.Extensions.ObjectExtensions.To``1(System.Object)">
+            <summary>
+            Converts given object to a value type using <see cref="M:System.Convert.ChangeType(System.Object,System.Type)"/> method.
+            </summary>
+            <param name="obj">Object to be converted</param>
+            <typeparam name="T">Type of the target object</typeparam>
+            <returns>Converted object</returns>
+        </member>
+        <member name="M:Helper.Extensions.ObjectExtensions.IsIn``1(``0,``0[])">
+            <summary>
+            Check if an item is in a list.
+            </summary>
+            <param name="item">Item to check</param>
+            <param name="list">List of items</param>
+            <typeparam name="T">Type of the items</typeparam>
+        </member>
+        <member name="M:Helper.Extensions.ObjectExtensions.IsIn``1(``0,System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Check if an item is in the given enumerable.
+            </summary>
+            <param name="item">Item to check</param>
+            <param name="items">Items</param>
+            <typeparam name="T">Type of the items</typeparam>
+        </member>
+        <member name="M:Helper.Extensions.ObjectExtensions.If``1(``0,System.Boolean,System.Func{``0,``0})">
+            <summary>
+            Can be used to conditionally perform a function
+            on an object and return the modified or the original object.
+            It is useful for chained calls.
+            </summary>
+            <param name="obj">An object</param>
+            <param name="condition">A condition</param>
+            <param name="func">A function that is executed only if the condition is <code>true</code></param>
+            <typeparam name="T">Type of the object</typeparam>
+            <returns>
+            Returns the modified object (by the <paramref name="func"/> if the <paramref name="condition"/> is <code>true</code>)
+            or the original object if the <paramref name="condition"/> is <code>false</code>
+            </returns>
+        </member>
+        <member name="M:Helper.Extensions.ObjectExtensions.If``1(``0,System.Boolean,System.Action{``0})">
+            <summary>
+            Can be used to conditionally perform an action
+            on an object and return the original object.
+            It is useful for chained calls on the object.
+            </summary>
+            <param name="obj">An object</param>
+            <param name="condition">A condition</param>
+            <param name="action">An action that is executed only if the condition is <code>true</code></param>
+            <typeparam name="T">Type of the object</typeparam>
+            <returns>
+            Returns the original object.
+            </returns>
         </member>
         <member name="M:Helper.Extensions.ModelExtensions.GetTableName(System.Type)">
             <summary>
             获取数据表名 TableAttribute
             </summary>
         </member>
-        <member name="M:Helper.Extensions.ModelExtensions.GetColumnName(System.Reflection.PropertyInfo)">
+        <member name="M:Helper.Extensions.ModelExtensions.GetColumnName(System.Reflection.MemberInfo)">
             <summary>
-            获取在该属性上标记的字符串， 用来修改列标题 ColumnAttribute
+            获取在该属性或字段上标记的ColumnAttribute
             </summary>
         </member>
         <member name="M:Helper.Extensions.ModelExtensions.GetEnumDescriptions(System.Type)">
@@ -129,6 +287,13 @@
             其次使用ColumnAttribute
             使用ColumnAttribute特性时 如果填入字符就是用，不填就获取Pascal命名
             </summary>
+        </member>
+        <member name="M:Helper.Extensions.StringExtensions.IsEmpty(System.String)">
+            <summary>
+            判断str是否为null或空格
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
         </member>
         <member name="M:Helper.Extensions.StringExtensions.ToPascal(System.String)">
             <summary>
@@ -233,6 +398,14 @@
             <param name="name">寻找该name的T控件或第一个T类型的无名控件</param> 
             <returns></returns> 
         </member>
+        <member name="M:Helper.Extensions.ViewExtensions.GetVisualChildObject``1(System.Windows.DependencyObject,System.Predicate{``0})">
+            <summary>
+            查找Visual子元素 
+            </summary> 
+            <typeparam name="T"></typeparam> 
+            <param name="obj"></param> 
+            <param name="name">按条件查找寻找该name的T控件或第一个T类型的无名控件</param>
+        </member>
         <member name="M:Helper.Extensions.ViewExtensions.GetLogicalChildObject``1(System.Windows.DependencyObject,System.String)">
             <summary>
             查找Logical子元素 
@@ -242,13 +415,383 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
+        <member name="M:Helper.Mail.Mail163Transfer.#ctor">
+            <summary>
+            只能用于接收邮件
+            </summary>
+        </member>
+        <member name="M:Helper.Mail.Mail163Transfer.#ctor(Helper.Mail.Mail)">
+            <summary>
+            接收和发送
+            </summary>
+            <param name="mail"></param>
+        </member>
+        <member name="P:Helper.Mail.Mail.AttachmentList">
+            <summary>
+            附件
+            </summary>
+        </member>
+        <member name="P:Helper.Mail.Mail.AlternateViews">
+            <summary>
+            存储消息正文的其他形式附件，如：图片
+            </summary>
+        </member>
+        <member name="M:Helper.Mail.MailQQTransfer.#ctor">
+            <summary>
+            只能用于接收邮件
+            </summary>
+        </member>
+        <member name="M:Helper.Mail.MailQQTransfer.#ctor(Helper.Mail.Mail)">
+            <summary>
+            接收和发送
+            </summary>
+            <param name="mail"></param>
+        </member>
+        <member name="M:Helper.Mail.MailTransfer.#ctor">
+            <summary>
+            只能用于接收邮件
+            </summary>
+        </member>
+        <member name="M:Helper.Mail.MailTransfer.#ctor(Helper.Mail.Mail)">
+            <summary>
+            用于发送和接收邮件
+            </summary>
+            <param name="mail"></param>
+        </member>
+        <member name="M:Helper.Mail.MailTransfer.GetMailMessage(System.String,System.String)">
+            <summary>
+            若没有发送需求，即没有初始化Mail
+            则务必在此处传入userName、password
+            </summary>
+            <param name="userName"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc1(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-4/ITU    x4+x+1
+             Poly: 0x03
+             Init: 0x00
+             Refin: true
+             Refout: true
+             Xorout: 0x00
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc2(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-5/EPC    x5+x3+1
+             Poly: 0x09
+             Init: 0x09
+             Refin: false
+             Refout: false
+             Xorout: 0x00
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc3(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-5/ITU    x5+x4+x2+1
+             Poly: 0x15
+             Init: 0x00
+             Refin: true
+             Refout: true
+             Xorout: 0x00
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc4(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-5/USB    x5+x2+1
+             Poly: 0x05
+             Init: 0x1F
+             Refin: true
+             Refout: true
+             Xorout: 0x1F
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc5(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-6/ITU    x6+x+1
+             Poly: 0x03
+             Init: 0x00
+             Refin: true
+             Refout: true
+             Xorout: 0x00
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc6(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-7/MMC    x7+x3+1
+             Poly: 0x09
+             Init: 0x00
+             Refin: false
+             Refout: false
+             Xorout: 0x00
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc7(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC8    x8+x2+x+1
+             Poly: 0x07
+             Init: 0x00
+             Refin: false
+             Refout: false
+             Xorout: 0x00
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc8(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-8/ITU    x8+x2+x+1
+             Poly: 0x07
+             Init: 0x00
+             Refin: false
+             Refout: false
+             Xorout: 0x55
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc9(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-8/MAXIM    x8+x5+x4+1
+             Poly: 0x31
+             Init: 0x00
+             Refin: true
+             Refout: true
+             Xorout: 0x00
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc10(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-8/ROHC    x8+x2+x+1
+             Poly: 0x07
+             Init: 0xFF
+             Refin: true
+             Refout: true
+             Xorout: 0x00
+            *************************************************************************
+        </member>
+        <member name="F:Helper.OthersUtils.Crc.table">
+            Z1协议校验码计算
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc11(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Crc11
+            </summary>
+            <param name="buffer"></param>
+            <param name="start"></param>
+            <param name="len"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc12(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-12    x16+x12+x5+1
+             Poly: 0x80
+             Init: 0x0000
+             Refin: true
+             Refout: true
+             Xorout: 0x0000
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc13(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-16/CCITT    x16+x12+x5+1
+             Poly: 0x1021
+             Init: 0x0000
+             Refin: true
+             Refout: true
+             Xorout: 0x0000
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc14(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-16/CCITT FALSE    x16+x12+x5+1
+             Poly: 0x1021
+             Init: 0xFFFF
+             Refin: false
+             Refout: false
+             Xorout: 0x0000
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc15(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-16/DNP    x16+x13+x12+x11+x10+x8+x6+x5+x2+1
+             Poly: 0x3D65
+             Init: 0x0000
+             Refin: true
+             Refout: true
+             Xorout: 0xFFFF
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc16(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-16/IBM    x16+x15+x2+1
+             Poly: 0x8005
+             Init: 0x0000
+             Refin: true
+             Refout: true
+             Xorout: 0x0000
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc17(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-16/MAXIM    x16+x15+x2+1
+             Poly: 0x8005
+             Init: 0x0000
+             Refin: true
+             Refout: true
+             Xorout: 0xFFFF
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc18(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-16/MODBUS    x16+x15+x2+1
+             Poly: 0x8005
+             Init: 0xFFFF
+             Refin: true
+             Refout: true
+             Xorout: 0x0000
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc19(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-16/USB    x16+x15+x2+1
+             Poly: 0x8005
+             Init: 0xFFFF
+             Refin: true
+             Refout: true
+             Xorout: 0xFFFF
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc20(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-16/X25    x16+x12+x5+1
+             Poly: 0x1021
+             Init: 0xFFFF
+             Refin: true
+             Refout: true
+             Xorout: 0xFFFF
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc21(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC-16/XMODEM    x16+x12+x5+1
+             Poly: 0x1021
+             Init: 0x0000
+             Refin: false
+             Refout: false
+             Xorout: 0x0000
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc22(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC32    x32+x26+x23+x22+x16+x12+x11+x10+x8+x7+x5+x4+x2+x+1
+             Poly: 0x04C11DB7
+             Init: 0xFFFFFFFF
+             Refin: true
+             Refout: true
+             Xorout: 0xFFFFFFFF
+            *************************************************************************
+        </member>
+        <member name="M:Helper.OthersUtils.Crc.Crc23(System.Byte[],System.Int32,System.Int32)">
+             **********************************************************************
+             Name: CRC32/MPEG-2    x32+x26+x23+x22+x16+x12+x11+x10+x8+x7+x5+x4+x2+x+1
+             Poly: 0x04C11DB7
+             Init: 0xFFFFFFFF
+             Refin: false
+             Refout: false
+             Xorout: 0x00000000
+            *************************************************************************
+        </member>
+        <member name="T:Helper.OthersUtils.MD5">
+            <summary>
+            MD5相关操作类
+            </summary>
+        </member>
+        <member name="M:Helper.OthersUtils.MD5.GetMD5Hash(System.String)">
+            <summary>
+            从字符串获取MD5值
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Helper.OthersUtils.MD5.GetMD5Hash(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            从字节获取MD5值
+            </summary>
+            <param name="buffer"></param>
+            <param name="offset"></param>
+            <param name="length"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Helper.OthersUtils.MD5.GetMD5Hash(System.Byte[])">
+            <summary>
+            从字节获取MD5值
+            </summary>
+            <param name="buffer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Helper.OthersUtils.MD5.VerifyMD5Hash(System.String,System.String)">
+            <summary>
+            验证MD5值。
+            </summary>
+            <param name="str"></param>
+            <param name="hash"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Helper.OthersUtils.SnowflakeIDGenerator.SequenceMask">
+            <summary>
+            一微秒内可以产生计数，如果达到该值则等到下一微妙在进行生成
+            </summary>
+        </member>
+        <member name="M:Helper.OthersUtils.SnowflakeIDGenerator.#ctor(System.Int64)">
+            <summary>
+            机器码
+            </summary>
+            <param name="workerId"></param>
+        </member>
+        <member name="P:Helper.OthersUtils.SnowflakeIDGenerator.MaxWorkerId">
+            <summary>
+            最大机器ID
+            </summary>
+        </member>
+        <member name="M:Helper.OthersUtils.SnowflakeIDGenerator.NextID">
+            <summary>
+            获取ID
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Helper.OthersUtils.SnowflakeIDGenerator.tillNextMillis(System.Int64)">
+            <summary>
+            获取下一微秒时间戳
+            </summary>
+            <param name="lastTimestamp"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Helper.OthersUtils.SnowflakeIDGenerator.timeGen">
+            <summary>
+            生成当前时间戳
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Helper.Statics.NotShowInViewAttribute">
+            <summary>
+            标记此特性的属性在使用ViewExtendMethod.AddWithoutTemplateByNotShowInView时不会显示在datagrid中
+            </summary>
+        </member>
+        <member name="T:Helper.Statics.NotShowInDataGridAttribute">
+            <summary>
+            标记此特性的属性在使用ViewExtendMethod.AddWithoutTemplateByNotShowInView时不会显示在datagrid中
+            </summary>
+        </member>
+        <member name="T:Helper.Statics.CanEditAttribute">
+            <summary>
+            标记此特性的属性ViewExtendMethod.AddWithoutTemplateByNotShowInView时可以被编辑
+            </summary>
+        </member>
         <member name="T:Helper.FileOperation.GeneralFileTool">
             <summary>
             包含一切常用目录及信息
             日志记录csv、txt
             </summary>
         </member>
-        <member name="M:Helper.FileOperation.GeneralFileTool.IsDirectory(System.String)">
+        <member name="M:Helper.FileOperation.GeneralFileTool.IsDirectoryPath(System.String)">
             <summary>
             允许目录不存在
             </summary>
@@ -256,23 +799,23 @@
             <returns></returns>
             <exception cref="T:System.ArgumentException">path为空时，路径的形式不合法</exception>
         </member>
-        <member name="M:Helper.FileOperation.GeneralFileTool.CheckFile(System.String,System.Predicate{System.String})">
+        <member name="M:Helper.FileOperation.GeneralFileTool.FileExist(System.String,System.Predicate{System.String})">
             <summary>
-            默认检查文件是否存在
+            file is exist
             </summary>
             <param name="file"></param>
             <param name="predicate"></param>
         </member>
-        <member name="M:Helper.FileOperation.GeneralFileTool.CheckFilePath(System.String,System.Predicate{System.String})">
+        <member name="M:Helper.FileOperation.GeneralFileTool.IsPathValid(System.String,System.Predicate{System.String})">
             <summary>
-            path!=null
+            path is not empty
             </summary>
             <param name="path"></param>
             <param name="predicate"></param>
         </member>
-        <member name="M:Helper.FileOperation.GeneralFileTool.CheckDirectory(System.String,System.Predicate{System.String})">
+        <member name="M:Helper.FileOperation.GeneralFileTool.IsDirectoryStyle(System.String,System.Predicate{System.String})">
             <summary>
-            directory!=null and directory.IsDirectory
+            path is directory style
             </summary>
             <param name="directory"></param>
             <param name="predicate"></param>
@@ -288,7 +831,6 @@
             <summary>
             递归删除文件夹
             </summary>
-            <returns>if dir exists,return true;else return false</returns>
         </member>
         <member name="M:Helper.FileOperation.GeneralFileTool.CreateDirectory(System.String)">
             <summary>
@@ -302,6 +844,14 @@
             在该目录下创建日期分类目录
             </summary>
             <param name="directory"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Helper.FileOperation.GeneralFileTool.CopyDirTo(System.String,System.String)">
+            <summary>
+            将文件夹复制到指定目录
+            </summary>
+            <param name="srcDir"></param>
+            <param name="destDir"></param>
             <returns></returns>
         </member>
         <member name="M:Helper.FileOperation.GeneralFileTool.CopyDirContentTo(System.String,System.String)">
@@ -508,58 +1058,6 @@
             <param name="key">键名</param>
             <returns>非零表示成功，零表示失败</returns>
         </member>
-        <member name="M:Helper.Mail.Mail163Transfer.#ctor">
-            <summary>
-            只能用于接收邮件
-            </summary>
-        </member>
-        <member name="M:Helper.Mail.Mail163Transfer.#ctor(Helper.Mail.Mail)">
-            <summary>
-            接收和发送
-            </summary>
-            <param name="mail"></param>
-        </member>
-        <member name="P:Helper.Mail.Mail.AttachmentList">
-            <summary>
-            附件
-            </summary>
-        </member>
-        <member name="P:Helper.Mail.Mail.AlternateViews">
-            <summary>
-            存储消息正文的其他形式附件，如：图片
-            </summary>
-        </member>
-        <member name="M:Helper.Mail.MailQQTransfer.#ctor">
-            <summary>
-            只能用于接收邮件
-            </summary>
-        </member>
-        <member name="M:Helper.Mail.MailQQTransfer.#ctor(Helper.Mail.Mail)">
-            <summary>
-            接收和发送
-            </summary>
-            <param name="mail"></param>
-        </member>
-        <member name="M:Helper.Mail.MailTransfer.#ctor">
-            <summary>
-            只能用于接收邮件
-            </summary>
-        </member>
-        <member name="M:Helper.Mail.MailTransfer.#ctor(Helper.Mail.Mail)">
-            <summary>
-            用于发送和接收邮件
-            </summary>
-            <param name="mail"></param>
-        </member>
-        <member name="M:Helper.Mail.MailTransfer.GetMailMessage(System.String,System.String)">
-            <summary>
-            若没有发送需求，即没有初始化Mail
-            则务必在此处传入userName、password
-            </summary>
-            <param name="userName"></param>
-            <param name="password"></param>
-            <returns></returns>
-        </member>
         <member name="M:Helper.ModelToTable.ModelHelper.ToModel``1(System.Data.DataTable)">
             <summary>
             当数据表列名和属性名不一致时可使用TableColumnNameAttribute为属性指定数据表列名
@@ -706,11 +1204,18 @@
             <param name="codeSizeInPixels"></param>
             <returns></returns>
         </member>
-        <member name="M:Helper.Utils.AppUtils.SetAutoStart(System.String,System.Boolean)">
+        <member name="M:Helper.Utils.AppUtils.OpenExplorer(System.String)">
             <summary>
+            用系统默认应用打开路径或文件
+            </summary>
+            <param name="dirOrFilePath"></param>
+        </member>
+        <member name="M:Helper.Utils.AppUtils.AutoStartWithDirectory(System.Boolean,System.String)">
+            <summary>
+            基于公共启动目录
             设置开机自动启动-只需要调用改方法就可以了参数里面的bool变量是控制开机启动的开关的，默认为开启自启启动
             </summary>
-            <param name="onOff">自启开关</param>
+            <param name="on">自启开关</param>
         </member>
         <member name="M:Helper.Utils.AppUtils.CreateDesktopQuick(System.String,System.String,System.String)">
             <summary>
@@ -746,6 +1251,22 @@
             <param name="shortcutPath"></param>
             <returns></returns>
         </member>
+        <member name="M:Helper.Utils.AppUtils.ShowWindowAsync(System.IntPtr,System.Int32)">
+            <summary>
+             该函数设置由不同线程产生的窗口的显示状态
+             </summary>
+             <param name="hWnd">窗口句柄</param>
+             <param name="cmdShow">指定窗口如何显示。查看允许值列表，请查阅ShowWindow函数的说明部分</param>
+             <returns>如果函数原来可见，返回值为非零；如果函数原来被隐藏，返回值为零</returns>
+        </member>
+        <member name="M:Helper.Utils.AppUtils.SetForegroundWindow(System.IntPtr)">
+            <summary>
+             该函数将创建指定窗口的线程设置到前台，并且激活该窗口。键盘输入转向该窗口，并为用户改各种可视的记号。
+             系统给创建前台窗口的线程分配的权限稍高于其他线程。 
+            </summary>
+            <param name="hWnd">将被激活并被调入前台的窗口句柄</param>
+            <returns>如果窗口设入了前台，返回值为非零；如果窗口未被设入前台，返回值为零</returns>
+        </member>
         <member name="T:Helper.Utils.ComputerInfo">
             <summary>
             电脑信息类 单例
@@ -763,7 +1284,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Helper.Utils.ComputerInfo.GetPhisicalMemory">
+        <member name="M:Helper.Utils.ComputerInfo.GetPhysicalMemory">
             <summary>
             获取系统内存大小
             </summary>
@@ -882,6 +1403,32 @@
             cpu核心数
             </summary>
         </member>
+        <member name="T:Helper.Utils.DisposeAction">
+            <summary>
+            This class can be used to provide an action when
+            Dispose method is called.
+            </summary>
+        </member>
+        <member name="M:Helper.Utils.DisposeAction.#ctor(System.Action)">
+            <summary>
+            Creates a new <see cref="T:Helper.Utils.DisposeAction"/> object.
+            </summary>
+            <param name="action">Action to be executed when this object is disposed.</param>
+        </member>
+        <member name="T:Helper.Utils.DisposeAction`1">
+            <summary>
+            This class can be used to provide an action when
+            Dispose method is called.
+            <typeparam name="T">The type of the parameter of the action.</typeparam>
+            </summary>
+        </member>
+        <member name="M:Helper.Utils.DisposeAction`1.#ctor(System.Action{`0},`0)">
+            <summary>
+            Creates a new <see cref="T:Helper.Utils.DisposeAction"/> object.
+            </summary>
+            <param name="action">Action to be executed when this object is disposed.</param>
+            <param name="parameter">The parameter of the action.</param>
+        </member>
         <member name="T:Helper.Utils.HttpClientHelper">
             <summary>
             http请求类
@@ -915,7 +1462,7 @@
             <param name="pwd">用户密码，当WebApi端不要求密码验证时，可传空串</param>
             <param name="uriString">The URI string.</param>
         </member>
-        <member name="M:Helper.Utils.HttpClientHelper.GetString(System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+        <member name="M:Helper.Utils.HttpClientHelper.GetStringAsync(System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
             <summary>
             Get请求数据
               /// <para>最终以url参数的方式提交</para>
@@ -924,7 +1471,7 @@
             <param name="requestUri">例如/api/Files/UploadFile</param>
             <returns></returns>
         </member>
-        <member name="M:Helper.Utils.HttpClientHelper.Get``1(System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+        <member name="M:Helper.Utils.HttpClientHelper.GetAsync``1(System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
             <summary>
             Get请求数据
             <para>最终以url参数的方式提交</para>
@@ -933,7 +1480,7 @@
             <param name="requestUri">例如/api/Files/UploadFile</param>
             <returns>实体对象</returns>
         </member>
-        <member name="M:Helper.Utils.HttpClientHelper.Put(System.Object,System.String)">
+        <member name="M:Helper.Utils.HttpClientHelper.PutAsync(System.Object,System.String)">
             <summary>
             put方式请求数据
             </summary>
@@ -941,7 +1488,7 @@
             <param name="requestUri"></param>
             <returns></returns>
         </member>
-        <member name="M:Helper.Utils.HttpClientHelper.Post(System.Object,System.String)">
+        <member name="M:Helper.Utils.HttpClientHelper.PostAsync(System.Object,System.String)">
             <summary>
             以json的方式Post数据 返回string类型
             <para>最终以json的方式放置在http体中</para>
@@ -950,21 +1497,21 @@
             <param name="requestUri">例如/api/Files/UploadFile</param>
             <returns></returns>
         </member>
-        <member name="M:Helper.Utils.HttpClientHelper.PostDicObj(System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
+        <member name="M:Helper.Utils.HttpClientHelper.PostDicObjAsync(System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
             <summary>
             提交字典类型的数据
             <para>最终以formurlencode的方式放置在http体中</para>
             </summary>
             <returns>System.String.</returns>
         </member>
-        <member name="M:Helper.Utils.HttpClientHelper.PostDic(System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+        <member name="M:Helper.Utils.HttpClientHelper.PostDicAsync(System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
             <summary>
             Post Form
             <para>最终以formurlencode的方式放置在http体中</para>        
             </summary>
             <returns>System.String.</returns>
         </member>
-        <member name="M:Helper.Utils.HttpClientHelper.PostDicWishStream(System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+        <member name="M:Helper.Utils.HttpClientHelper.PostDicWithStreamAsync(System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
             <summary>
             图片下载
             </summary>
@@ -972,7 +1519,7 @@
             <param name="requestUri"></param>
             <returns></returns>
         </member>
-        <member name="M:Helper.Utils.HttpClientHelper.PostByte(System.Byte[],System.String)">
+        <member name="M:Helper.Utils.HttpClientHelper.PostByteAsync(System.Byte[],System.String)">
             <summary>
             文件下载
             </summary>
@@ -980,7 +1527,7 @@
             <param name="requestUrl"></param>
             <returns></returns>
         </member>
-        <member name="M:Helper.Utils.HttpClientHelper.PostFormData(System.Collections.Generic.List{Helper.Utils.FormItemModel},System.String)">
+        <member name="M:Helper.Utils.HttpClientHelper.PostFormDataAsync(System.Collections.Generic.List{Helper.Utils.FormItemModel},System.String)">
             <summary>
             以multipart/form-data 方式请求
             </summary>
@@ -988,7 +1535,7 @@
             <param name="requestUrl"></param>
             <returns></returns>
         </member>
-        <member name="M:Helper.Utils.HttpClientHelper.Head(System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+        <member name="M:Helper.Utils.HttpClientHelper.HeadAsync(System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
             <summary>
             Head 方式请求数据
             </summary>
@@ -1053,6 +1600,11 @@
             <param name="ipStr"></param>
             <returns></returns>
         </member>
+        <member name="M:Helper.Utils.ObjectPool.CheckState">
+            <summary>
+            检查并设置对象池刷新过期元素功能状态
+            </summary>
+        </member>
         <member name="M:Helper.Utils.ObjectPool.OfferObject">
             <summary>
             申请对象
@@ -1067,18 +1619,6 @@
             <summary>
             某个功能耗时统计
             </summary>
-        </member>
-        <member name="M:Helper.ViewHelper.ScreenCapture.CaptureImage(System.String,System.Int32,System.Int32,System.String,System.Int32,System.Int32)">
-            <summary>
-            从大图中截取一部分图片
-            </summary>
-            <param name="fromImagePath">来源图片地址</param>        
-            <param name="offsetX">从偏移X坐标位置开始截取</param>
-            <param name="offsetY">从偏移Y坐标位置开始截取</param>
-            <param name="toImagePath">保存图片地址</param>
-            <param name="width">保存图片的宽度</param>
-            <param name="height">保存图片的高度</param>
-            <returns></returns>
         </member>
     </members>
 </doc>

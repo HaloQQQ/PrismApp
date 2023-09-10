@@ -1,0 +1,126 @@
+﻿using MusicPlayerModule.Utils;
+using System;
+using System.IO;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using TagLib;
+using WpfStyleResources.Helper;
+
+namespace MusicPlayerModule.Models;
+
+internal class MusicModel : IDisposable
+{
+    public MusicModel(string filePath)
+    {
+        this.FilePath = filePath;
+
+        var file = TagLib.File.Create(filePath);   // 打开音频文件
+
+        var arr = Path.GetFileNameWithoutExtension(filePath).Split(" - ");
+        if (arr.Length > 1)
+        {
+            this.Singer = arr[0];
+            this.Name = arr[1];
+        }
+
+        if (this.Name == null || this.Singer == null)
+        {
+            this.Singer = file.Tag.Performers.Length > 0 ? file.Tag.Performers[0] : null;   // 歌手名
+            this.Name = file.Tag.Title;             // 歌曲标题
+        }
+
+        this.Album = file.Tag.Album;             // 专辑名称
+        this.Year = (int)file.Tag.Year;             // 年份
+        this.TrackNum = (int)file.Tag.Track;        // 曲目号
+        this.Genre = file.Tag.Genres.Length > 0 ? file.Tag.Genres[0] : null;   // 流派
+
+        // 获取时长（单位为毫秒）
+        int duration = (int)file.Properties.Duration.TotalMilliseconds;
+        // 将毫秒数转换为TimeSpan类型
+        TimeSpan time = TimeSpan.FromMilliseconds(duration);
+        this.TotalMills = (int)time.TotalMilliseconds;
+        // 转换为分钟:秒数格式
+        this.Duration = time.FormatTimeSpan();
+
+        var size = new FileInfo(filePath).Length / 1024.0 / 1024;
+        this.Size = size.ToString("0.00");
+
+        // 获取封面
+        IPicture[] pictures = file.Tag.Pictures;
+        if (pictures.Length > 0)
+        {
+            IPicture picture = pictures[0];
+            BitmapImage bi = new BitmapImage();
+            bi.BeginInit();
+            bi.StreamSource = new MemoryStream(picture.Data.Data);
+            bi.CacheOption = BitmapCacheOption.OnLoad;
+            bi.EndInit();
+
+            this.ImageSource = bi;
+        }
+    }
+
+    public ImageSource ImageSource { get; private set; }
+
+    /// <summary>
+    /// 曲目号
+    /// </summary>
+    public int TrackNum { get; }
+    /// <summary>
+    /// 年份
+    /// </summary>
+    public int Year { get; }
+    /// <summary>
+    /// 专辑
+    /// </summary>
+    public string Album { get; }
+    /// <summary>
+    /// 流派
+    /// </summary>
+    public string Genre { get; }
+
+    public string Singer { get; }
+    public string Name { get; }
+    /// <summary>
+    /// MB
+    /// </summary>
+    public string Size { get; }
+
+    public string Duration { get; }
+
+    public int TotalMills { get; }
+
+    public KRCLyrics Lyric { get; set; }
+
+    public string FilePath { get; private set; }
+    public string FileDir => Directory.GetParent(this.FilePath).FullName;
+
+    public bool MoveTo(string targetDir)
+    {
+        if (Directory.Exists(targetDir))
+        {
+            var file = Path.GetFileName(FilePath);
+
+            var targetPath = Path.Combine(targetDir, file);
+
+            System.IO.File.Move(this.FilePath, targetPath);
+
+            this.FilePath = targetPath;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public void Dispose()
+    {
+        this.ImageSource = null;
+
+        if (Lyric != null)
+        {
+            Lyric.Dispose();
+            Lyric = null;
+        }
+    }
+}

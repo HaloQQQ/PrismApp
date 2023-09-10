@@ -1,11 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:models="clr-namespace:TcpSocket.Models"
-                    xmlns:processService="clr-namespace:TcpSocket.Models.ProcessService">
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="TextBlock.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-
+                    xmlns:models="clr-namespace:TcpSocket.Models">
     <!-- ImageList -->
     <DataTemplate x:Key="ImageList" DataType="models:MyImage">
         <Grid>
@@ -84,7 +79,7 @@
     <!-- ListImageDataTemplate -->
     <DataTemplate x:Key="ListImageDataTemplate" DataType="models:MyImage">
         <StackPanel Orientation="Horizontal">
-            <Image Margin="10,5" Width="40" Height="40" Source="{Binding URI}" />
+            <Image Margin="10,5" Width="80" Height="60" Source="{Binding URI}" />
 
             <TextBlock Text="{Binding Name}" Margin="0,2"
                        Foreground="{DynamicResource TextBlock.Foreground}"
@@ -94,32 +89,34 @@
 
     <!-- BlockImageDataTemplate -->
     <DataTemplate x:Key="BlockImageDataTemplate" DataType="models:MyImage">
-        <StackPanel HorizontalAlignment="Center">
-            <Image Width="80" Height="70" Source="{Binding URI}" />
+        <StackPanel HorizontalAlignment="Center" Width="100" Height="100">
+            <Image Width="80" Height="70" Source="{Binding URI}" Margin="0" />
 
-            <TextBlock Text="{Binding Name}" Margin="0,2"
-                       Foreground="{DynamicResource TextBlock.Foreground}"
-                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding Name}" FontSize="10" Padding="0"
+                       Foreground="{DynamicResource TextBlock.Foreground}" 
+                       HorizontalAlignment="Center" />
         </StackPanel>
     </DataTemplate>
 
     <!-- EmptyImageDataTemplate -->
     <DataTemplate x:Key="EmptyImageDataTemplate" DataType="models:MyImage">
-        <TextBlock Text="&#xe622;"
+        <Border MinWidth="98">
+            <TextBlock Text="&#xe622;"
                    Background="{DynamicResource TextBlock.Background}"
                    Foreground="{DynamicResource TextBlock.Foreground}"
                    FontSize="50" FontWeight="Bold"
                    Style="{StaticResource IconText}" />
+        </Border>
     </DataTemplate>
-    
-    <DataTemplate x:Key="ProcessDataTemplate" DataType="processService:ProcessContext">
+
+    <DataTemplate x:Key="ProcessDataTemplate" DataType="models:ProcessContext">
         <TextBlock>
             <TextBlock Text="{Binding Id}" Margin="5,2"/>
             <TextBlock Text="{Binding Name}" Margin="5,2"/>
         </TextBlock>
     </DataTemplate>
-    
-    <DataTemplate x:Key="ServiceDataTemplate" DataType="processService:ServiceContext">
+
+    <DataTemplate x:Key="ServiceDataTemplate" DataType="models:ServiceContext">
         <TextBlock>
             <TextBlock Text="{Binding ServiceName}" Margin="5,2"/>
             <TextBlock Text="{Binding DisplayName}" Margin="5,2"/>

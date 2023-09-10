@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using TcpSocket.Models;
+using TcpSocket.ViewModels;
 
 namespace TcpSocket.DataTemplateSelector
 {
@@ -10,7 +10,7 @@ namespace TcpSocket.DataTemplateSelector
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (item is MyImage {Name: null})
+            if (item is MyImage { Name: null })
             {
                 return this.Empty;
             }

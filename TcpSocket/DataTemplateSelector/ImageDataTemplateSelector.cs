@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using TcpSocket.Models;
+using TcpSocket.ViewModels;
 
 namespace TcpSocket.DataTemplateSelector
 {

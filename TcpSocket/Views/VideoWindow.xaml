@@ -1,0 +1,64 @@
+﻿<Window x:Class="TcpSocket.Views.VideoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="VideoWindow"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource WithoutTitleBar}"
+        xmlns:views="clr-namespace:TcpSocket.Views"
+        xmlns:prism="http://prismlibrary.com/" 
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        MinHeight="640" MinWidth="1200">
+
+    <Window.Resources>
+        <Style TargetType="ContentControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Border x:Name="PART_Border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="PART_Border" Property="BorderBrush" Value="Red"/>
+                                <Setter TargetName="PART_Border" Property="BorderThickness" Value="1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid VerticalAlignment="Stretch" Margin="7" ClipToBounds="True">
+        <Grid.Background>
+            <ImageBrush Stretch="UniformToFill" ImageSource="{Binding CurrentBkGrd}"/>
+        </Grid.Background>
+        <DockPanel Background="#33000000">
+            <views:WindowTitleBarView
+                x:Name="TitleBarSlider"
+                DockPanel.Dock="Top"
+                VerticalAlignment="Top"/>
+
+            <UniformGrid Rows="2">
+                <ContentControl TabIndex="1" prism:RegionManager.RegionName="Video1PlayerRegion"/>
+                <ContentControl TabIndex="2" prism:RegionManager.RegionName="Video2PlayerRegion"/>
+                <ContentControl TabIndex="3" prism:RegionManager.RegionName="Video3PlayerRegion"/>
+                <ContentControl TabIndex="4" prism:RegionManager.RegionName="Video4PlayerRegion"/>
+                <ContentControl TabIndex="5" prism:RegionManager.RegionName="Video5PlayerRegion"/>
+                <ContentControl TabIndex="6" prism:RegionManager.RegionName="Video6PlayerRegion"/>
+            </UniformGrid>
+        </DockPanel>
+
+        <views:SwitchBackgroundView Width="300" HorizontalAlignment="Right" Background="#FFCCCCCC">
+            <views:SwitchBackgroundView.RenderTransform>
+                <TranslateTransform X="300" />
+            </views:SwitchBackgroundView.RenderTransform>
+        </views:SwitchBackgroundView>
+    </Grid>
+</Window>

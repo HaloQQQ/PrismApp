@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Helper.Utils;
+using System;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using Helper.Utils;
-using TcpSocket.Models;
+using TcpSocket.ViewModels.BaseViewModels;
 
 namespace TcpSocket.Helper
 {
@@ -15,7 +15,7 @@ namespace TcpSocket.Helper
             txt.Document.Blocks.Clear();
         }
 
-        internal static void Info(this RichTextBox txt, BaseSocketContext context, string message)
+        internal static void Info(this RichTextBox txt, BaseSocketViewModel context, string message)
         {
             if (context.IsLogging)
             {
@@ -33,7 +33,7 @@ namespace TcpSocket.Helper
             });
         }
 
-        private static Paragraph GetParagraph(string type, EndPoint from, EndPoint to, BaseSocketContext context,
+        private static Paragraph GetParagraph(string type, EndPoint from, EndPoint to, BaseSocketViewModel context,
             string message)
         {
             if (context.IsLogging)
@@ -46,12 +46,14 @@ namespace TcpSocket.Helper
                                 Environment.NewLine);
             paragraph.Inlines.Add(title);
             Run item = new Run(message);
+            item.FontWeight = FontWeights.Bold;
+            item.FontSize = 16;
             paragraph.Inlines.Add(item);
 
             return paragraph;
         }
 
-        internal static void Send(this RichTextBox txt, EndPoint from, EndPoint to, BaseSocketContext context,
+        internal static void Send(this RichTextBox txt, EndPoint from, EndPoint to, BaseSocketViewModel context,
             string message)
         {
             Invoke(() =>
@@ -63,7 +65,7 @@ namespace TcpSocket.Helper
             });
         }
 
-        internal static void Recv(this RichTextBox txt, EndPoint from, EndPoint to, BaseSocketContext context,
+        internal static void Recv(this RichTextBox txt, EndPoint from, EndPoint to, BaseSocketViewModel context,
             string message)
         {
             Invoke(() =>
@@ -79,7 +81,8 @@ namespace TcpSocket.Helper
         private static void PrintMsg(this RichTextBox txt,
             Paragraph paragraph)
         {
-            txt.Document.LineHeight = 1;
+            paragraph.LineHeight = 5;
+            paragraph.FontSize = 14;
             txt.Document.Blocks.Add(paragraph);
 
             if (txt.Document.Blocks.Count > 500)

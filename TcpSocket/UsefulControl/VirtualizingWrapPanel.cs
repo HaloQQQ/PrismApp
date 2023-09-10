@@ -92,13 +92,13 @@ namespace TcpSocket.UsefulControl
             if (extent != this.extent)
             {
                 this.extent = extent;
-                this.ScrollOwner.InvalidateScrollInfo();
+                this.ScrollOwner?.InvalidateScrollInfo();
             }
 
             if (availableSize != this.viewPort)
             {
                 this.viewPort = availableSize;
-                this.ScrollOwner.InvalidateScrollInfo();
+                this.ScrollOwner?.InvalidateScrollInfo();
             }
         }
 
