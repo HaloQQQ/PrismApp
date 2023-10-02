@@ -23,6 +23,7 @@ namespace MusicPlayerModule.ViewModels
     internal class VideoPlayerViewModel : BindableBase
     {
         private bool _running;
+
         public bool Running
         {
             get { return _running; }
@@ -30,19 +31,30 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (SetProperty<bool>(ref _running, value))
                 {
-                    this._eventAggregator.GetEvent<VideoProgreeTimerIsEnableUpdatedEvent>().Publish(new MsgEvents.Video.Dtos.BoolAndGuid(value, this.Identity));
+                    this._eventAggregator.GetEvent<VideoProgreeTimerIsEnableUpdatedEvent>()
+                        .Publish(new BoolAndGuid(value, this.Identity));
                 }
             }
         }
 
+        private bool _isEditingStretch;
+
+        public bool IsEditingStretch
+        {
+            get => this._isEditingStretch;
+            set => SetProperty<bool>(ref _isEditingStretch, value);
+        }
+
         private Stretch _stretch;
+
         public Stretch Stretch
         {
             get => this._stretch;
-            set => SetProperty<Stretch>(ref _stretch, value);
+            set { SetProperty<Stretch>(ref _stretch, value); IsEditingStretch = false; }
         }
 
         private PlayingVideoViewModel _currentVideo;
+
         public PlayingVideoViewModel CurrentVideo
         {
             get { return _currentVideo; }
@@ -58,6 +70,34 @@ namespace MusicPlayerModule.ViewModels
                     if (this._currentVideo != null)
                     {
                         _currentVideo.IsPlayingVideo = true;
+
+                        if (!_currentVideo.LoadedABPoint)
+                        {
+                            int mills = 0;
+                            if (int.TryParse(
+                                    this._config.ReadConfigNode(new[]
+                                    {
+                                        "Video", "VideoABPoints", _currentVideo.Video.Name,
+                                        nameof(_currentVideo.PointAMills)
+                                    }), out mills))
+                            {
+                                _currentVideo.CurrentMills = mills;
+                                _currentVideo.SetPointA(mills);
+                            }
+
+                            mills = 0;
+                            if (int.TryParse(
+                                    this._config.ReadConfigNode(new[]
+                                    {
+                                        "Video", "VideoABPoints", _currentVideo.Video.Name,
+                                        nameof(_currentVideo.PointBMills)
+                                    }), out mills))
+                            {
+                                _currentVideo.SetPointB(mills);
+                            }
+
+                            _currentVideo.LoadedABPoint = true;
+                        }
                     }
                 }
             }
@@ -86,15 +126,17 @@ namespace MusicPlayerModule.ViewModels
                 Process.Start("explorer", videoDir);
             });
 
-            this.PointACommand = new DelegateCommand(() =>
-            {
-                this.CurrentVideo?.SetPointA();
-            }, () => this.CurrentVideo != null).ObservesProperty(() => this.CurrentVideo);
+            this.PointACommand =
+                new DelegateCommand(() => { this.CurrentVideo?.SetPointA(this.CurrentVideo.CurrentMills); }, () => this.CurrentVideo != null)
+                    .ObservesProperty(() => this.CurrentVideo);
 
-            this.PointBCommand = new DelegateCommand(() =>
-            {
-                this.CurrentVideo?.SetPointB();
-            }, () => this.CurrentVideo != null).ObservesProperty(() => this.CurrentVideo);
+            this.PointBCommand =
+                new DelegateCommand(() => { this.CurrentVideo?.SetPointB(this.CurrentVideo.CurrentMills); }, () => this.CurrentVideo != null)
+                    .ObservesProperty(() => this.CurrentVideo);
+
+            this.ResetPointABCommand =
+                new DelegateCommand(() => { this.CurrentVideo?.ResetABPoint(); }, () => this.CurrentVideo != null)
+                    .ObservesProperty(() => this.CurrentVideo);
 
             this.DeletePlayingCommand = new DelegateCommand<PlayingVideoViewModel>(video =>
             {
@@ -122,43 +164,48 @@ namespace MusicPlayerModule.ViewModels
             });
 
             this.StopPlayVideoCommand = new DelegateCommand(() =>
-            {
-                this.CurrentVideo = null;
-                this.Running = false;
-            }, () => !this.Running && this.CurrentVideo != null).ObservesProperty(() => this.CurrentVideo).ObservesProperty(() => this.Running);
+                {
+                    this.CurrentVideo = null;
+                    this.Running = false;
+                }, () => !this.Running && this.CurrentVideo != null).ObservesProperty(() => this.CurrentVideo)
+                .ObservesProperty(() => this.Running);
 
             this.AddFilesCommand = new DelegateCommand(AddVideoFromFileDialog);
 
             this.AddFolderCommand = new DelegateCommand(AddVideoFromFolderDialog);
 
-            this.DelayCommand = new DelegateCommand(() => { this.RefreshMediaOperation(OperationType.Rewind); }, () => this.CurrentVideo != null).ObservesProperty<PlayingVideoViewModel>(() => this.CurrentVideo);
+            this.DelayCommand =
+                new DelegateCommand(() => { this.RefreshMediaOperation(OperationType.Rewind); },
+                    () => this.CurrentVideo != null).ObservesProperty<PlayingVideoViewModel>(() => this.CurrentVideo);
 
             this.PrevCommand = new DelegateCommand<PlayingVideoViewModel>(
-                currentVideo =>
-                {
-                    if (currentVideo != null)
+                    currentVideo =>
                     {
-                        if (currentVideo.Index > 1)
+                        if (currentVideo != null)
                         {
-                            this.SetAndPlay(this.DisplayPlaying[currentVideo.Index - 2]);
+                            if (currentVideo.Index > 1)
+                            {
+                                this.SetAndPlay(this.DisplayPlaying[currentVideo.Index - 2]);
+                            }
+                            else
+                            {
+                                this.SetAndPlay(this.DisplayPlaying[this.DisplayPlaying.Count - 1]);
+                            }
                         }
-                        else
-                        {
-                            this.SetAndPlay(this.DisplayPlaying[this.DisplayPlaying.Count - 1]);
-                        }
-                    }
-                },
-                currentVideo => this.CurrentVideo != null && this.DisplayPlaying.Count > 0)
+                    },
+                    currentVideo => this.CurrentVideo != null && this.DisplayPlaying.Count > 0)
                 .ObservesProperty<PlayingVideoViewModel>(() => this.CurrentVideo)
                 .ObservesProperty<int>(() => this.DisplayPlaying.Count);
 
             this.NextCommand = new DelegateCommand<PlayingVideoViewModel>(
-                currentVideo => this.NextVideo(currentVideo),
-                currentVideo => this.CurrentVideo != null && this.DisplayPlaying.Count > 0
+                    currentVideo => this.NextVideo(currentVideo),
+                    currentVideo => this.CurrentVideo != null && this.DisplayPlaying.Count > 0
                 ).ObservesProperty<PlayingVideoViewModel>(() => this.CurrentVideo)
-                 .ObservesProperty<int>(() => this.DisplayPlaying.Count);
+                .ObservesProperty<int>(() => this.DisplayPlaying.Count);
 
-            this.AheadCommand = new DelegateCommand(() => { this.RefreshMediaOperation(OperationType.FastForward); }, () => this.CurrentVideo != null).ObservesProperty<PlayingVideoViewModel>(() => this.CurrentVideo);
+            this.AheadCommand =
+                new DelegateCommand(() => { this.RefreshMediaOperation(OperationType.FastForward); },
+                    () => this.CurrentVideo != null).ObservesProperty<PlayingVideoViewModel>(() => this.CurrentVideo);
 
             this.PlayPlayingCommand = new DelegateCommand<PlayingVideoViewModel>(video =>
             {
@@ -186,11 +233,12 @@ namespace MusicPlayerModule.ViewModels
             }, _ => this.CurrentVideo != null).ObservesProperty(() => this.CurrentVideo);
 
             this.CleanPlayingCommand = new DelegateCommand(() =>
-            {
-                this.DisplayPlaying.Clear();
-                this.CurrentVideo = null;
-                this.Running = false;
-            }, () => !this.Running && this.DisplayPlaying.Count > 0).ObservesProperty(() => this.Running).ObservesProperty<int>(() => this.DisplayPlaying.Count);
+                {
+                    this.DisplayPlaying.Clear();
+                    this.CurrentVideo = null;
+                    this.Running = false;
+                }, () => !this.Running && this.DisplayPlaying.Count > 0).ObservesProperty(() => this.Running)
+                .ObservesProperty<int>(() => this.DisplayPlaying.Count);
         }
 
         private void RefreshPlayingIndex()
@@ -219,6 +267,7 @@ namespace MusicPlayerModule.ViewModels
                                     this.SetAndPlay(null);
                                     return;
                                 }
+
                                 break;
                             case MediaPlayOrderModel.EnumOrderType.Loop:
                                 break;
@@ -263,14 +312,15 @@ namespace MusicPlayerModule.ViewModels
 
             if (this.Running = item != null)
             {
-                this.CurrentVideo.ResetABPoint();
+                // this.CurrentVideo.ResetABPoint();
                 this._eventAggregator.GetEvent<ResetPlayerAndPlayVideoEvent>().Publish(this.Identity);
             }
         }
 
         private void AddVideoFromFileDialog()
         {
-            System.Windows.Forms.OpenFileDialog openFileDialog = CommonFileUtils.OpenFileDialog(AppStatics.LastVideoDir, CommonFileUtils.MediaType.mp4);
+            System.Windows.Forms.OpenFileDialog openFileDialog =
+                CommonFileUtils.OpenFileDialog(AppStatics.LastVideoDir, CommonFileUtils.MediaType.mp4);
 
             if (openFileDialog != null)
             {
@@ -325,7 +375,7 @@ namespace MusicPlayerModule.ViewModels
 
             this.RefreshPlayingIndex();
 
-            if(this.CurrentVideo is null)
+            if (this.CurrentVideo is null)
             {
                 this.SetAndPlay(this.DisplayPlaying.FirstOrDefault());
             }
@@ -333,9 +383,12 @@ namespace MusicPlayerModule.ViewModels
 
         private VideoModelAndGuid _dto;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IConfigManager _config;
+
         public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config)
         {
             this._eventAggregator = eventAggregator;
+            this._config = config;
 
             this._dto = new VideoModelAndGuid(this.Identity);
 
@@ -346,18 +399,35 @@ namespace MusicPlayerModule.ViewModels
             this.SubscribeEvents(eventAggregator);
         }
 
-        public MediaPlayOrderModel CurrentPlayOrder { get; set; }
+        private bool _isEditingPlayOrder;
+
+        public bool IsEditingPlayOrder
+        {
+            get => this._isEditingPlayOrder;
+            set => SetProperty<bool>(ref _isEditingPlayOrder, value);
+        }
+
+        private MediaPlayOrderModel _mediaPlayOrder;
+
+        public MediaPlayOrderModel CurrentPlayOrder
+        {
+            get { return _mediaPlayOrder; }
+            set { _mediaPlayOrder = value; IsEditingPlayOrder = false; }
+        }
 
         private void LoadConfig(IConfigManager config)
         {
             var baseNode = "Video";
-            var videoKey = "VideoPlayOrder";
+            var videoPlayOrder = "VideoPlayOrder";
             var videoStretch = "VideoStretch";
+            var videoABPoints = "VideoABPoints";
 
-            var videoPlayOrder = config.ReadConfigNode(new[] { baseNode, videoKey });
-            if (!string.IsNullOrEmpty(videoPlayOrder))
+            var playOrder = config.ReadConfigNode(new[] { baseNode, videoPlayOrder });
+            if (!string.IsNullOrEmpty(playOrder))
             {
-                this.CurrentPlayOrder = AppStatics.MediaPlayOrderList.FirstOrDefault(item => item.Description == videoPlayOrder) ?? AppStatics.MediaPlayOrderList.First();
+                this.CurrentPlayOrder =
+                    AppStatics.MediaPlayOrderList.FirstOrDefault(item => item.Description == playOrder) ??
+                    AppStatics.MediaPlayOrderList.First();
             }
 
             var stretch = config.ReadConfigNode(new[] { baseNode, videoStretch });
@@ -366,13 +436,25 @@ namespace MusicPlayerModule.ViewModels
                 this.Stretch = result;
             }
 
-            AppStatics.LastVideoDir = config.ReadConfigNode(new[] { baseNode, nameof(AppStatics.LastVideoDir) }) ?? "E:/KuGou/";
+            AppStatics.LastVideoDir = config.ReadConfigNode(new[] { baseNode, nameof(AppStatics.LastVideoDir) });
 
             config.SetConfig += config =>
             {
-                config.WriteConfigNode(this.CurrentPlayOrder.Description, new[] { baseNode, videoKey });
+                config.WriteConfigNode(this.CurrentPlayOrder.Description, new[] { baseNode, videoPlayOrder });
                 config.WriteConfigNode(this.Stretch, new[] { baseNode, videoStretch });
                 config.WriteConfigNode(AppStatics.LastVideoDir, new[] { baseNode, nameof(AppStatics.LastVideoDir) });
+            };
+
+            config.SetConfig += config =>
+            {
+                foreach (var item in this.DisplayPlaying)
+                {
+                    config.WriteConfigNode(item.Video.Name, new[] { baseNode, videoABPoints, item.Video.Name });
+                    config.WriteConfigNode(item.PointAMills,
+                        new[] { baseNode, videoABPoints, item.Video.Name, nameof(item.PointAMills) });
+                    config.WriteConfigNode(item.PointBMills,
+                        new[] { baseNode, videoABPoints, item.Video.Name, nameof(item.PointBMills) });
+                }
             };
         }
 
@@ -380,14 +462,18 @@ namespace MusicPlayerModule.ViewModels
         private Random _random = new Random();
 
         #region Commands
+
         public ICommand OpenInExploreCommand { get; private set; }
 
         public ICommand PointACommand { get; private set; }
         public ICommand PointBCommand { get; private set; }
 
+        public ICommand ResetPointABCommand { get; private set; }
+
         public ICommand DeletePlayingCommand { get; private set; }
 
         public ICommand StopPlayVideoCommand { get; private set; }
+
         /// <summary>
         /// 从本地添加音乐到列表
         /// </summary>
@@ -397,24 +483,30 @@ namespace MusicPlayerModule.ViewModels
         /// 从文件夹添加音乐到列表
         /// </summary>
         public ICommand AddFolderCommand { get; private set; }
+
         /// <summary>
         /// 播放或暂停
         /// </summary>
         public ICommand PlayPlayingCommand { get; set; }
+
         public ICommand PrevCommand { get; private set; }
         public ICommand NextCommand { get; private set; }
+
         /// <summary>
         /// 歌曲进度后退,此地只为让前端按钮在该禁用时禁用
         /// </summary>
         public ICommand DelayCommand { get; private set; }
+
         /// <summary>
         /// 歌曲进度提前,此地只为让前端按钮在该禁用时禁用
         /// </summary>
         public ICommand AheadCommand { get; private set; }
+
         /// <summary>
         /// 清空播放队列
         /// </summary>
         public ICommand CleanPlayingCommand { get; private set; }
+
         #endregion
 
         public void Dispose()
@@ -423,6 +515,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 item.Dispose();
             }
+
             this.DisplayPlaying.Clear();
             this.DisplayPlaying = null;
 
@@ -438,6 +531,10 @@ namespace MusicPlayerModule.ViewModels
 
             this.DelayCommand = null;
             this.AheadCommand = null;
+
+            this.PointACommand = null;
+            this.PointBCommand = null;
+            this.ResetPointABCommand = null;
         }
     }
 }

@@ -3,10 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:attachs="clr-namespace:WpfStyleResources.Attachs;assembly=WpfStyleResources"
              xmlns:helper="clr-namespace:WpfStyleResources.Helper;assembly=WpfStyleResources"
+             xmlns:waitLoads="clr-namespace:WpfStyleResources.WaitLoads;assembly=WpfStyleResources"
              xmlns:common="clr-namespace:MusicPlayerModule.Common" FocusVisualStyle="{x:Null}"
              xmlns:commonModel="clr-namespace:MusicPlayerModule.Models.Common"
              xmlns:personalConverter="clr-namespace:MusicPlayerModule.Converters"
-             xmlns:prism="http://prismlibrary.com/" prism:ViewModelLocator.AutoWireViewModel="True">
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -73,6 +75,7 @@
 
             <KeyBinding Command="{Binding PointACommand}" Key="D1"  Modifiers="Ctrl"/>
             <KeyBinding Command="{Binding PointBCommand}" Key="D2" Modifiers="Ctrl"/>
+            <KeyBinding Command="{Binding ResetPointABCommand}" Key="Delete" Modifiers="Ctrl"/>
 
             <KeyBinding Command="{Binding AddFolderCommand}" Key="O" Modifiers="Ctrl"/>
 
@@ -184,9 +187,29 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <MediaElement Grid.Row="0" Source="{Binding CurrentMusic.Music.FilePath}" x:Name="mediaPlayer"/>
-
+            
             <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinHeight="400">
                 <FrameworkElement x:Name="dummyElement" Visibility="Collapsed"/>
+                
+                <waitLoads:NeedleWaitLoad Foreground="DodgerBlue" Width="80" Height="80">
+                    <waitLoads:NeedleWaitLoad.Style>
+                        <Style TargetType="UserControl">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Value="True" Binding="{Binding IsLoading}"/>
+                                        <Condition Value="0" Binding="{Binding DisplayFavorites.Count}"/>
+                                    </MultiDataTrigger.Conditions>
+                                    
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </waitLoads:NeedleWaitLoad.Style>
+                </waitLoads:NeedleWaitLoad>
+                
                 <Viewbox Grid.Row="0" Style="{StaticResource OnlyDownViewbox}" VerticalAlignment="Top">
                     <DataGrid x:Name="DataGrid_ShowBySong" Height="{Binding ActualHeight,RelativeSource={RelativeSource AncestorType=Grid},Mode=OneWay}" 
                               Visibility="{Binding IsChecked,ElementName=RadioBtnShowBySong,Converter={StaticResource BooleanToVisibilityConverter}}" 
@@ -859,7 +882,7 @@
                         </Grid>
 
                         <ToggleButton x:Name="volumeToggleButton" IsChecked="{Binding IsMuted,ElementName=mediaPlayer,Mode=TwoWay}" 
-                                   MouseEnter="ToggleButton_MouseEnter" MouseLeave="ToggleButton_MouseLeave"
+                                  MouseEnter="ToggleButton_MouseEnter" MouseLeave="ToggleButton_MouseLeave"
                                   Click="volumeToggleButton_Click"
                                   Style="{StaticResource VolumeIconToggleButton}"/>
                         <Popup Placement="Top" HorizontalOffset="-23" VerticalOffset="6"
@@ -878,14 +901,14 @@
                                                     Converter={StaticResource DigitDoubleConverter},
                                                     ConverterParameter=100}"/>
 
-                                    <TextBlock HorizontalAlignment="Center" Style="{StaticResource NotImportantTxt_White}">
+                                    <TextBlock x:Name="volumeStr" HorizontalAlignment="Center" Style="{StaticResource NotImportantTxt_White}">
                                         <TextBlock Text="{Binding Path=Value,ElementName=VolumeSlider,Mode=OneWay}" />%
                                     </TextBlock>
                                 </StackPanel>
                             </Border>
                         </Popup>
 
-                        <ToggleButton x:Name="listButton">
+                        <ToggleButton x:Name="listButton" IsChecked="{Binding IsEditingPlayOrder}">
                             <ToggleButton.Style>
                                 <Style TargetType="ToggleButton" BasedOn="{StaticResource IconButtonBase_Small}">
                                     <Setter Property="Margin" Value="2,0" />
@@ -974,7 +997,7 @@
 
                                     <DockPanel Grid.Row="0" LastChildFill="False" Margin="20,20,20,0">
                                         <DockPanel DockPanel.Dock="Top">
-                                            <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left">
+                                            <TextBlock Foreground="{x:Static helper:MyStaticResources.WhiteLight}" DockPanel.Dock="Left" HorizontalAlignment="Left">
                                                 共<TextBlock Text="{Binding DisplayPlaying.Count}"/>首
                                             </TextBlock>
 
@@ -991,7 +1014,7 @@
                                                      attachs:MyAttachProperty.PlaceHolder="请输入关键字" 
                                                      Background="Transparent" BorderThickness="1"
                                                      Padding="10,0,0,0" attachs:MyAttachProperty.CornerRadius="15"
-                                                     BorderBrush="#66FFFFFF" x:Name="PlayingKeyWordsTxt"
+                                                     BorderBrush="{x:Static helper:MyStaticResources.WhiteLight}" x:Name="PlayingKeyWordsTxt"
                                                      Margin="0,5,5,5" Width="310"/>
                                             <Button Content="消失" Command="Close" CommandParameter="StopPlayingListFilte" 
                                                     Style="{StaticResource ClosePlayingListFilter}"/>

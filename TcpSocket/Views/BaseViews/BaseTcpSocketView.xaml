@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:attachs="clr-namespace:WpfStyleResources.Attachs;assembly=WpfStyleResources"
              xmlns:helper="clr-namespace:WpfStyleResources.Helper;assembly=WpfStyleResources"
+             xmlns:viewModels="clr-namespace:TcpSocket.ViewModels.BaseViewModels"
              SnapsToDevicePixels="True">
 
     <UserControl.Resources>
@@ -43,11 +44,34 @@
 
             <Viewbox Style="{StaticResource OnlyDownViewbox}" Grid.Row="0" HorizontalAlignment="Left">
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <TextBlock Text="服务器IP：" Style="{StaticResource Lable}"/>
-                    <TextBox Text="{Binding IP,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ConnInput}" />
+                    <TextBlock Text="服务器IP：" Style="{StaticResource Lable}" />
+                    <!-- <TextBox Text="{Binding IP,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ConnInput}" /> -->
 
-                    <TextBlock Text="服务器监听端口：" Style="{StaticResource Lable}"/>
-                    <TextBox Text="{Binding Port,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ConnInput}" />
+                    <ComboBox ItemsSource="{x:Static viewModels:BaseSocketViewModel.Ips}"
+                              Text="{Binding IP}">
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                <Setter Property="IsEnabled" Value="False" />
+                                <Setter Property="Margin" Value="3,0" />
+
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsConnected}" Value="False" />
+                                            <Condition Binding="{Binding Connecting}" Value="False" />
+                                        </MultiDataTrigger.Conditions>
+
+                                        <Setter Property="IsEnabled" Value="True" />
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
+
+
+                    <TextBlock Text="服务器监听端口：" Style="{StaticResource Lable}" />
+                    <TextBox Text="{Binding Port,UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource ConnInput}" />
 
                     <Button Command="Open" CommandParameter="ConnButton" Style="{StaticResource ConnButton}">
                         <Button.CommandBindings>
@@ -97,12 +121,7 @@
                         </ListBox.Style>
                     </ListBox>
 
-                    <RichTextBox DockPanel.Dock="Bottom"
-                                 x:Name="rhTxt" ContextMenu="{StaticResource ForMessageBoard}">
-                        <RichTextBox.CommandBindings>
-                            <CommandBinding Command="Open" />
-                        </RichTextBox.CommandBindings>
-                    </RichTextBox>
+                    <RichTextBox DockPanel.Dock="Bottom" x:Name="rhTxt" ContextMenu="{StaticResource ForMessageBoard}"/>
                 </DockPanel>
             </Grid>
 
@@ -110,8 +129,8 @@
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
                     <TextBlock Text="发送：" Style="{StaticResource ThemeBlk}" />
                     <TextBox Text="{Binding SendMsg, UpdateSourceTrigger=PropertyChanged}"
-                         attachs:MyAttachProperty.PlaceHolder="待发送消息"
-                         MinWidth="200">
+                             attachs:MyAttachProperty.PlaceHolder="待发送消息"
+                             MinWidth="200">
                         <TextBox.Style>
                             <Style TargetType="TextBox" BasedOn="{StaticResource WidthAnimationWithoutPrefixTextBox}">
                                 <Style.Triggers>

@@ -215,10 +215,10 @@
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Text" Value="&#xe65e;" />
-        <Setter Property="Foreground" Value="#66FFFFFF" />
+        <Setter Property="Foreground" Value="{x:Static helper:MyStaticResources.WhiteLight}" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="#88FFFFFF" />
+                <Setter Property="Foreground" Value="{x:Static helper:MyStaticResources.HoveredTransparentButtonBackground}" />
             </Trigger>
         </Style.Triggers>
     </Style>

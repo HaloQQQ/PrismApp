@@ -1,9 +1,12 @@
 ﻿using Helper.ThirdPartyUtils;
 using Helper.Utils;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Ioc;
 using Prism.Mvvm;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
@@ -11,7 +14,9 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TcpSocket.Helper;
+using TcpSocket.Models;
 using TcpSocket.MsgEvents;
+using WpfStyleResources.Interfaces;
 
 namespace TcpSocket.ViewModels
 {
@@ -20,7 +25,8 @@ namespace TcpSocket.ViewModels
         public SoftwareViewModel(
             UserViewModel userContext,
             ImageDisplayViewModel imageDisplayViewModel,
-            WpfStyleResources.Interfaces.IConfigManager config,
+            IConfigManager config,
+            IContainerExtension containerExtension,
             IEventAggregator eventAggregator)
         {
             this.UserContext = userContext;
@@ -57,12 +63,40 @@ namespace TcpSocket.ViewModels
 
             this.SwitchThemeCommand = new DelegateCommand(() => this.RefreshTheme());
 
+            this.CancelCommand = new DelegateCommand(() =>
+            {
+                this.IsEditingSetting = false;
+
+                foreach (var item in this.HotKeys)
+                {
+                    item.GoBack();
+                }
+            });
+
+            this.SubmitCommand = new DelegateCommand(() =>
+            {
+                this.IsEditingSetting = false;
+
+                var resultStr = containerExtension.Resolve<HotKeyHelper>().RegisterGlobalHotKey(this.HotKeys);
+
+                resultStr = string.IsNullOrEmpty(resultStr) ? "注册快捷键无错误" : resultStr;
+
+                eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(resultStr, 4));
+            });
+
             eventAggregator.GetEvent<BackgroundImageUpdateEvent>().Subscribe(uri => this.CurrentBkGrd = uri);
 
             eventAggregator.GetEvent<FullScreenEvent>().Subscribe(() => this.IsTitleBarHidden = !this.IsTitleBarHidden);
 
+            eventAggregator.GetEvent<DialogMessageEvent>().Subscribe(item => this.DialogMessage = item);
+
+            this.InitHotkeys(config);
+
             this.InitBackgroundSwitchTimer();
         }
+
+        public ICommand CancelCommand { get; private set; }
+        public ICommand SubmitCommand { get; private set; }
 
         public ICommand SwitchThemeCommand { get; private set; }
 
@@ -143,6 +177,68 @@ namespace TcpSocket.ViewModels
             set => SetProperty<bool>(ref _isTitleBarHidden, value);
         }
 
+        private bool _isEditingSetting;
+
+        public bool IsEditingSetting
+        {
+            get => this._isEditingSetting;
+            set => SetProperty<bool>(ref _isEditingSetting, value);
+        }
+
+        private DialogMessage _dialogMessage;
+
+        public DialogMessage DialogMessage
+        {
+            get => this._dialogMessage;
+            set => SetProperty<DialogMessage>(ref _dialogMessage, value);
+        }
+
+        public List<HotKeyModel> HotKeys { get; private set; } = new List<HotKeyModel>();
+        //    = new Lazy<List<HotKeyModel>>(() => new List<HotKeyModel>()
+        //{
+        //    new HotKeyModel(Constants.HotKeys.Pause, false, false, true, false, Keys.S),
+        //    new HotKeyModel(Constants.HotKeys.Prev, false, false, true, false, Keys.Left),
+        //    new HotKeyModel(Constants.HotKeys.Next, false, false, true, false, Keys.Right),
+        //    new HotKeyModel(Constants.HotKeys.AppFull, true, false, false, false, Keys.F11)
+        //}).Value;
+
+        private void InitHotkeys(IConfigManager config)
+        {
+            var str = config.ReadConfigNode(Constants.Hotkeys);
+            if (!string.IsNullOrEmpty(str))
+            {
+                var hotkeyDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
+                if (hotkeyDic != null && hotkeyDic.Count > 0)
+                {
+                    foreach (var item in hotkeyDic.Values)
+                    {
+                        this.HotKeys.Add(HotKeyModel.Parse(item));
+                    }
+                }
+            }
+            else
+            {
+                this.HotKeys.AddRange(new List<HotKeyModel>() {
+                    new HotKeyModel(Constants.HotKeys.Pause, false, false, true, false, Keys.S),
+                    new HotKeyModel(Constants.HotKeys.Prev, false, false, true, false, Keys.Left),
+                    new HotKeyModel(Constants.HotKeys.Next, false, false, true, false, Keys.Right),
+                    new HotKeyModel(Constants.HotKeys.AppFull, true, false, false, false, Keys.F11)}
+                );
+            }
+
+            config.SetConfig += config =>
+            {
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+
+                foreach (var item in this.HotKeys)
+                {
+                    dic.Add(item.Name, item.ToString());
+                }
+
+                config.WriteConfigNode(JsonConvert.SerializeObject(dic), Constants.Hotkeys);
+            };
+        }
+
         private bool _onlyOneProcess;
 
         public bool OnlyOneProcess
@@ -221,6 +317,14 @@ namespace TcpSocket.ViewModels
 
                             this.CurrentBkGrd = _imageDisplayViewModel.Block[this.random.Next(0, totalCount)].URI;
                         }
+                    }
+                }
+
+                if (this.DialogMessage != null && !this.DialogMessage.StopHide)
+                {
+                    if (--this.DialogMessage.Seconds <= 0)
+                    {
+                        this.DialogMessage.IsDisplayingDialogMessage = false;
                     }
                 }
             };

@@ -1,7 +1,9 @@
 ﻿using Prism.Mvvm;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
+using Helper.Utils;
 using WpfStyleResources.Interfaces;
 
 namespace TcpSocket.ViewModels.BaseViewModels
@@ -13,7 +15,8 @@ namespace TcpSocket.ViewModels.BaseViewModels
             //config.SetConfig += (config, jsonObject) => 
             //    config.SetLogging(jsonObject, this.Name, this.IsLogging);
 
-            config.SetConfig += config => config.WriteConfigNode<bool>(this.IsLogging, new string[] { "IsLogging", this.Name });
+            config.SetConfig += config =>
+                config.WriteConfigNode<bool>(this.IsLogging, new string[] { "IsLogging", this.Name });
         }
 
         public string Name { get; set; } = "Socket";
@@ -84,5 +87,8 @@ namespace TcpSocket.ViewModels.BaseViewModels
         }
 
         public bool IsHex { get; set; }
+
+        public static IEnumerable<string> Ips { get; } =
+            AppUtils.GetIpAddressColl().Select(address => address.ToString());
     }
 }

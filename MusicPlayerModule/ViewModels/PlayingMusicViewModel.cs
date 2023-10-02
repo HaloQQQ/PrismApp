@@ -2,7 +2,6 @@
 using MusicPlayerModule.Utils;
 using MusicPlayerModule.ViewModels.Base;
 using System;
-using System.Windows.Controls;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -17,8 +16,22 @@ namespace MusicPlayerModule.ViewModels
 
         public MusicModel Music { get; private set; }
 
+        private bool _loadedLyric;
+
+        /// <summary>
+        /// 是否已尝试过加载歌词
+        /// </summary>
+        public bool LoadedLyric
+        {
+            get => this._loadedLyric;
+            set => SetProperty<bool>(ref _loadedLyric, value);
+        }
+
         private bool _isPlayingMusic;
 
+        /// <summary>
+        /// 当前音乐是否为正在播放的
+        /// </summary>
         public bool IsPlayingMusic
         {
             get { return _isPlayingMusic; }
@@ -26,7 +39,9 @@ namespace MusicPlayerModule.ViewModels
         }
 
         #region 当前歌曲进度相关
+
         private int _currentLineIndex = 0;
+
         private int GetCurrentLineIndex()
         {
             var currentIndex = -1;
@@ -68,10 +83,12 @@ namespace MusicPlayerModule.ViewModels
                 for (int i = 0; i < line.Chars.Count; i++)
                 {
                     tempChar = line.Chars[i];
-                    value = this._currentMills - tempChar.CharStart.Add(line.LineStart).Add(tempChar.CharDuring).TotalMilliseconds;
+                    value = this._currentMills - tempChar.CharStart.Add(line.LineStart).Add(tempChar.CharDuring)
+                        .TotalMilliseconds;
                     if (value <= 0)
                     {
-                        return i + (tempChar.CharDuring.TotalMilliseconds + value) / tempChar.CharDuring.TotalMilliseconds;
+                        return i + (tempChar.CharDuring.TotalMilliseconds + value) /
+                            tempChar.CharDuring.TotalMilliseconds;
                     }
                 }
 
@@ -181,21 +198,32 @@ namespace MusicPlayerModule.ViewModels
             {
                 this.OneLine = line;
             }
-            else   // 奇数
+            else // 奇数
             {
                 this.AnotherLine = line;
             }
         }
 
         private KRCLyricsLine _oneLine;
-        public KRCLyricsLine OneLine { get => this._oneLine; set => SetProperty<KRCLyricsLine>(ref this._oneLine, value); }
+
+        public KRCLyricsLine OneLine
+        {
+            get => this._oneLine;
+            set => SetProperty<KRCLyricsLine>(ref this._oneLine, value);
+        }
 
         private KRCLyricsLine _anotherLine;
-        public KRCLyricsLine AnotherLine { get => this._anotherLine; set => SetProperty<KRCLyricsLine>(ref this._anotherLine, value); }
+
+        public KRCLyricsLine AnotherLine
+        {
+            get => this._anotherLine;
+            set => SetProperty<KRCLyricsLine>(ref this._anotherLine, value);
+        }
 
         internal static event Action<int> ScrollBarMoveToLyric;
 
         internal static event Action<PlayingMusicViewModel> ToNextMusic;
+
         #endregion
 
         protected override void SetPointToTotalMills()

@@ -3,18 +3,17 @@ using System;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Prism.Mvvm;
 using TagLib;
 using WpfStyleResources.Helper;
 
 namespace MusicPlayerModule.Models;
 
-internal class MusicModel : IDisposable
+internal class MusicModel : BindableBase, IDisposable
 {
     public MusicModel(string filePath)
     {
         this.FilePath = filePath;
-
-        var file = TagLib.File.Create(filePath);   // 打开音频文件
 
         var arr = Path.GetFileNameWithoutExtension(filePath).Split(" - ");
         if (arr.Length > 1)
@@ -22,6 +21,11 @@ internal class MusicModel : IDisposable
             this.Singer = arr[0];
             this.Name = arr[1];
         }
+        
+        var size = new FileInfo(filePath).Length / 1024.0 / 1024;
+        this.Size = size.ToString("0.00");
+        
+        var file = TagLib.File.Create(filePath);   // 打开音频文件
 
         if (this.Name == null || this.Singer == null)
         {
@@ -41,9 +45,6 @@ internal class MusicModel : IDisposable
         this.TotalMills = (int)time.TotalMilliseconds;
         // 转换为分钟:秒数格式
         this.Duration = time.FormatTimeSpan();
-
-        var size = new FileInfo(filePath).Length / 1024.0 / 1024;
-        this.Size = size.ToString("0.00");
 
         // 获取封面
         IPicture[] pictures = file.Tag.Pictures;
@@ -90,9 +91,20 @@ internal class MusicModel : IDisposable
 
     public int TotalMills { get; }
 
-    public KRCLyrics Lyric { get; set; }
+    private KRCLyrics _krcLyrics;
 
-    public string FilePath { get; private set; }
+    public KRCLyrics Lyric
+    {
+        get => this._krcLyrics;
+        set => SetProperty<KRCLyrics>(ref _krcLyrics, value);
+    }
+
+    private string _filePath;
+    public string FilePath
+    {
+        get => this._filePath;
+        private set => SetProperty<string>(ref _filePath, value);
+    }
     public string FileDir => Directory.GetParent(this.FilePath).FullName;
 
     public bool MoveTo(string targetDir)

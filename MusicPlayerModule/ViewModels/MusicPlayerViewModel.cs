@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WpfStyleResources.Helper;
@@ -33,6 +32,12 @@ namespace MusicPlayerModule.ViewModels
             }
         }
 
+        public bool IsLoading
+        {
+            get => this._isLoading;
+            set => SetProperty<bool>(ref _isLoading, value);
+        }
+
         public int SelectedCount => this.DisplayFavorites.Count(item => item.IsDeleting);
 
         public PlayingMusicViewModel CurrentMusic
@@ -40,15 +45,22 @@ namespace MusicPlayerModule.ViewModels
             get { return _currentMusic; }
             set
             {
-                SetProperty<PlayingMusicViewModel>(ref _currentMusic, value);
-                foreach (var item in this.Playing)
+                if (SetProperty<PlayingMusicViewModel>(ref _currentMusic, value))
                 {
-                    item.IsPlayingMusic = false;
-                }
+                    if (this._currentMusic != null && !this._currentMusic.LoadedLyric)
+                    {
+                        LoadLyricToMusicModel.LoadAsync(AppStatics.LastMusicDir, this._currentMusic?.Music);
+                    }
 
-                if (this._currentMusic != null)
-                {
-                    _currentMusic.IsPlayingMusic = true;
+                    foreach (var item in this.Playing)
+                    {
+                        item.IsPlayingMusic = false;
+                    }
+
+                    if (this._currentMusic != null)
+                    {
+                        _currentMusic.IsPlayingMusic = true;
+                    }
                 }
             }
         }
@@ -74,13 +86,13 @@ namespace MusicPlayerModule.ViewModels
                     {
                         this.DisplayFavorites.AddRange(
                             this.Favorites.Where(item =>
-                                item.Music.Name.Contains(_favoriteListFilteKeyWords)
-                            )
-                            .Union(
-                                this.Favorites.Where(item =>
-                                    item.Music.Singer.Contains(_favoriteListFilteKeyWords)
+                                    item.Music.Name.Contains(_favoriteListFilteKeyWords)
                                 )
-                            )
+                                .Union(
+                                    this.Favorites.Where(item =>
+                                        item.Music.Singer.Contains(_favoriteListFilteKeyWords)
+                                    )
+                                )
                         );
                     }
                     else
@@ -112,13 +124,13 @@ namespace MusicPlayerModule.ViewModels
                     {
                         this.DisplayPlaying.AddRange(
                             this.Playing.Where(item =>
-                                item.Music.Name.Contains(_playingListFilteKeyWords)
-                            )
-                            .Union(
-                                this.Playing.Where(item =>
-                                    item.Music.Singer.Contains(_playingListFilteKeyWords)
+                                    item.Music.Name.Contains(_playingListFilteKeyWords)
                                 )
-                            )
+                                .Union(
+                                    this.Playing.Where(item =>
+                                        item.Music.Singer.Contains(_playingListFilteKeyWords)
+                                    )
+                                )
                         );
                     }
                     else
@@ -141,51 +153,59 @@ namespace MusicPlayerModule.ViewModels
                 Process.Start("explorer", musicDir);
             });
 
-            this.PointACommand = new DelegateCommand(() =>
-            {
-                this.CurrentMusic?.SetPointA();
-            }, () => this.CurrentMusic != null).ObservesProperty(() => this.CurrentMusic);
+            this.PointACommand =
+                new DelegateCommand(() => { this.CurrentMusic.SetPointA(this.CurrentMusic.CurrentMills); },
+                    () => this.CurrentMusic != null).ObservesProperty(() => this.CurrentMusic);
 
-            this.PointBCommand = new DelegateCommand(() =>
-            {
-                this.CurrentMusic?.SetPointB();
-            }, () => this.CurrentMusic != null).ObservesProperty(() => this.CurrentMusic);
+            this.PointBCommand =
+                new DelegateCommand(() => { this.CurrentMusic.SetPointB(this.CurrentMusic.CurrentMills); },
+                    () => this.CurrentMusic != null).ObservesProperty(() => this.CurrentMusic);
+
+            this.ResetPointABCommand =
+                new DelegateCommand(() => { this.CurrentMusic?.ResetABPoint(); }, () => this.CurrentMusic != null)
+                    .ObservesProperty(() => this.CurrentMusic);
 
             this.StopPlayMusicCommand = new DelegateCommand(() =>
-            {
-                this.CurrentMusic = null;
-                this.Running = false;
-            }, () => !this.Running && this.CurrentMusic != null).ObservesProperty(() => this.CurrentMusic).ObservesProperty(() => this.Running);
+                {
+                    this.CurrentMusic = null;
+                    this.Running = false;
+                }, () => !this.Running && this.CurrentMusic != null).ObservesProperty(() => this.CurrentMusic)
+                .ObservesProperty(() => this.Running);
 
             this.AddFilesCommand = new DelegateCommand(AddMusicFromFileDialog);
 
             this.AddFolderCommand = new DelegateCommand(AddMusicFromFolderDialog);
 
-            this.DelayCommand = new DelegateCommand(() => { }, () => this.CurrentMusic != null).ObservesProperty<PlayingMusicViewModel>(() => this.CurrentMusic);
+            this.DelayCommand =
+                new DelegateCommand(() => { }, () => this.CurrentMusic != null).ObservesProperty<PlayingMusicViewModel>(
+                    () => this.CurrentMusic);
 
             this.PrevCommand = new DelegateCommand<PlayingMusicViewModel>(
-                currentMusic => this.PrevMusic(currentMusic),
-                currentMusic => this.CurrentMusic != null && this.DisplayPlaying.Count > 0
+                    currentMusic => this.PrevMusic(currentMusic),
+                    currentMusic => this.CurrentMusic != null && this.DisplayPlaying.Count > 0
                 )
                 .ObservesProperty<PlayingMusicViewModel>(() => this.CurrentMusic)
                 .ObservesProperty<int>(() => this.DisplayPlaying.Count);
 
             this.NextCommand = new DelegateCommand<PlayingMusicViewModel>(
-                currentMusic => this.NextMusic(currentMusic),
-                currentMusic => this.CurrentMusic != null && this.DisplayPlaying.Count > 0
+                    currentMusic => this.NextMusic(currentMusic),
+                    currentMusic => this.CurrentMusic != null && this.DisplayPlaying.Count > 0
                 ).ObservesProperty<PlayingMusicViewModel>(() => this.CurrentMusic)
-                 .ObservesProperty<int>(() => this.DisplayPlaying.Count);
+                .ObservesProperty<int>(() => this.DisplayPlaying.Count);
 
-            this.AheadCommand = new DelegateCommand(() => { }, () => this.CurrentMusic != null).ObservesProperty<PlayingMusicViewModel>(() => this.CurrentMusic);
+            this.AheadCommand =
+                new DelegateCommand(() => { }, () => this.CurrentMusic != null).ObservesProperty<PlayingMusicViewModel>(
+                    () => this.CurrentMusic);
 
             this.PlayCurrentCategoryCommand = new DelegateCommand<MusicWithClassifyModel>(category =>
-            {
-                if (category != null && category.DisplayByClassifyKeyFavorites.Count > 0)
                 {
-                    this.BatchAddToPlay(new BatchAddAndPlayModel(category.DisplayByClassifyKeyFavorites.First(), category.DisplayByClassifyKeyFavorites));
+                    if (category != null && category.DisplayByClassifyKeyFavorites.Count > 0)
+                    {
+                        this.BatchAddToPlay(new BatchAddAndPlayModel(category.DisplayByClassifyKeyFavorites.First(),
+                            category.DisplayByClassifyKeyFavorites));
+                    }
                 }
-            }
-            , category => this.DisplayFavorites.Count > 0).ObservesProperty<int>(() => this.DisplayFavorites.Count);
+                , category => this.DisplayFavorites.Count > 0).ObservesProperty<int>(() => this.DisplayFavorites.Count);
 
             this.PlayAndAddCurrentFavoritesCommand = new DelegateCommand<BatchAddAndPlayModel>(model =>
             {
@@ -195,7 +215,9 @@ namespace MusicPlayerModule.ViewModels
                 }
             }, _ => this.DisplayFavorites.Count > 0).ObservesProperty<int>(() => this.DisplayFavorites.Count);
 
-            this.PlayAllCommand = new DelegateCommand(() => this.BatchAddToPlay(), () => this.DisplayFavorites.Count > 0).ObservesProperty<int>(() => this.DisplayFavorites.Count);
+            this.PlayAllCommand =
+                new DelegateCommand(() => this.BatchAddToPlay(), () => this.DisplayFavorites.Count > 0)
+                    .ObservesProperty<int>(() => this.DisplayFavorites.Count);
 
             this.PlayFavoriteCommand = new DelegateCommand<FavoriteMusicViewModel>(music =>
             {
@@ -267,12 +289,13 @@ namespace MusicPlayerModule.ViewModels
             this.DownLoadCommand = new DelegateCommand<MusicModel>(music => { });
 
             this.CleanPlayingCommand = new DelegateCommand(() =>
-            {
-                this.Playing.Clear();
-                this.DisplayPlaying.Clear();
-                this.CurrentMusic = null;
-                this.Running = false;
-            }, () => !this.Running && this.DisplayPlaying.Count > 0).ObservesProperty(() => this.Running).ObservesProperty<int>(() => this.DisplayPlaying.Count);
+                {
+                    this.Playing.Clear();
+                    this.DisplayPlaying.Clear();
+                    this.CurrentMusic = null;
+                    this.Running = false;
+                }, () => !this.Running && this.DisplayPlaying.Count > 0).ObservesProperty(() => this.Running)
+                .ObservesProperty<int>(() => this.DisplayPlaying.Count);
 
             this.BatchDeleteCommand = new DelegateCommand(() =>
             {
@@ -291,7 +314,6 @@ namespace MusicPlayerModule.ViewModels
                 this.IsBatchSelect = this.DisplayFavorites.Count > 0;
                 this.NotifyBatchDeleteCanExecute();
                 this.RaisePropertyChanged(nameof(SelectedCount));
-
             }, () => this.DisplayFavorites.Any(item => item.IsDeleting));
 
             this.DeleteFavoriteCommand = new DelegateCommand<FavoriteMusicViewModel>(music =>
@@ -311,6 +333,7 @@ namespace MusicPlayerModule.ViewModels
                 {
                     this.IsBatchSelect = false;
                 }
+
                 this.NotifyBatchDeleteCanExecute();
                 this.RaisePropertyChanged(nameof(SelectedCount));
             }, _ => this.DisplayFavorites.Count > 0).ObservesProperty<int>(() => this.DisplayFavorites.Count);
@@ -360,7 +383,8 @@ namespace MusicPlayerModule.ViewModels
 
             FavoriteMusicViewModel.DeleteStatusChanged += isDeleteing => this.NotifyBatchDeleteCanExecute();
 
-            FavoriteMusicViewModel.DeleteStatusChanged += isDeleting => this.RaisePropertyChanged(nameof(SelectedCount));
+            FavoriteMusicViewModel.DeleteStatusChanged +=
+                isDeleting => this.RaisePropertyChanged(nameof(SelectedCount));
 
             PlayingMusicViewModel.ToNextMusic += curentMusic =>
             {
@@ -375,6 +399,7 @@ namespace MusicPlayerModule.ViewModels
                                 this.SetAndPlay(null);
                                 return;
                             }
+
                             break;
                         case MediaPlayOrderModel.EnumOrderType.Loop:
                             break;
@@ -396,9 +421,11 @@ namespace MusicPlayerModule.ViewModels
                 }
             };
 
-            PlayingMusicViewModel.ScrollBarMoveToLyric += cureentLineIndex => eventAggregator.GetEvent<UpdateScrollBarToTargetLyricEvent>().Publish(cureentLineIndex);
+            PlayingMusicViewModel.ScrollBarMoveToLyric += cureentLineIndex =>
+                eventAggregator.GetEvent<UpdateScrollBarToTargetLyricEvent>().Publish(cureentLineIndex);
 
-            MusicWithClassifyModel.SelectStatusChanged += selected => this.DistributeMusicViewModel.CheckClassifySelectAllStatus();
+            MusicWithClassifyModel.SelectStatusChanged +=
+                selected => this.DistributeMusicViewModel.CheckClassifySelectAllStatus();
 
             eventAggregator.GetEvent<ToggeleCurrentMusicEvent>().Subscribe(() =>
             {
@@ -475,7 +502,8 @@ namespace MusicPlayerModule.ViewModels
         /// </summary>
         private void CheckSelectAllStatus()
         {
-            this.SelectFavoriteAll = this.DisplayFavorites.Count > 0 && this.SelectedCount == this.DisplayFavorites.Count;
+            this.SelectFavoriteAll =
+                this.DisplayFavorites.Count > 0 && this.SelectedCount == this.DisplayFavorites.Count;
             this.DistributeMusicViewModel.CheckClassifySelectAllStatus();
         }
 
@@ -489,9 +517,11 @@ namespace MusicPlayerModule.ViewModels
         }
 
         #region MusicFile
+
         private async void AddMusicFromFileDialog()
         {
-            System.Windows.Forms.OpenFileDialog openFileDialog = CommonFileUtils.OpenFileDialog(AppStatics.LastMusicDir, CommonFileUtils.MediaType.mp3);
+            System.Windows.Forms.OpenFileDialog openFileDialog =
+                CommonFileUtils.OpenFileDialog(AppStatics.LastMusicDir, CommonFileUtils.MediaType.mp3);
 
             if (openFileDialog != null)
             {
@@ -539,7 +569,13 @@ namespace MusicPlayerModule.ViewModels
                 return;
             }
 
+            this.IsLoading = true;
+
+            await Task.Delay(1);
+
             await this.MultiThreadBatchLoadMusic(list, directory);
+
+            this.IsLoading = false;
         }
 
         private async Task SingleThreadLoadMusic(List<string> filePathList, string directory)
@@ -553,7 +589,9 @@ namespace MusicPlayerModule.ViewModels
 
             this.Favorites.AddRange(this.DisplayFavorites);
 
-            await LoadLyricToMusicModel.LoadAsync(directory, this.DisplayFavorites.Select<FavoriteMusicViewModel, MusicModel>(fa => fa.Music)).ConfigureAwait(false);
+            // await LoadLyricToMusicModel
+            //     .LoadAsync(directory, this.DisplayFavorites.Select<FavoriteMusicViewModel, MusicModel>(fa => fa.Music))
+            //     .ConfigureAwait(false);
         }
 
         private async Task MultiThreadBatchLoadMusic(List<string> filePathList, string directory)
@@ -564,41 +602,44 @@ namespace MusicPlayerModule.ViewModels
 
             var newMusicList = new List<FavoriteMusicViewModel>();
 
-            var step = 20;
+            var step = 40;
             for (int i = 0; i < filePathList.Count / step + 1; i++)
             {
                 var index = i;
                 taskList.Add(
                     Task.Run(() =>
-                    {
-                        foreach (var item in filePathList
-                                                .Skip(index * step)
-                                                .Take(step))
                         {
-                            CommonFileUtils.InvokeAtOnce(() =>
+                            foreach (var item in filePathList
+                                         .Skip(index * step)
+                                         .Take(step))
                             {
-                                var musicModel = new FavoriteMusicViewModel(new MusicModel(item));
-                                this.DisplayFavorites.Add(musicModel);
-                            });
+                                CommonFileUtils.InvokeAtOnce(() =>
+                                {
+                                    var musicModel = new FavoriteMusicViewModel(new MusicModel(item));
+                                    this.DisplayFavorites.Add(musicModel);
+                                    this.DistributeMusicViewModel.AddNewMusic(musicModel);
+                                });
+                            }
                         }
-                    }
                     )
                 );
             }
 
             await Task.WhenAll(taskList)
-                .ContinueWith(task => LoadLyricToMusicModel.LoadAsync(AppStatics.LastMusicDir, this.DisplayFavorites.Select<FavoriteMusicViewModel, MusicModel>(fa => fa.Music)))
+                // .ContinueWith(task => LoadLyricToMusicModel.LoadAsync(AppStatics.LastMusicDir,
+                //     this.DisplayFavorites.Select<FavoriteMusicViewModel, MusicModel>(fa => fa.Music)))
                 .ConfigureAwait(false);
 
             foreach (var item in this.DisplayFavorites)
             {
-                this.DistributeMusicViewModel.AddNewMusic(item);
                 this.Favorites.Add(item);
             }
         }
+
         #endregion
 
         #region AddMusicToPlaying
+
         /// <summary>
         ///  默认播放列表第一个
         /// </summary>
@@ -654,9 +695,11 @@ namespace MusicPlayerModule.ViewModels
 
             return result;
         }
+
         #endregion
 
         #region NotifyCanExecute
+
         /// <summary>
         /// 检查是否允许批量删除
         /// </summary>
@@ -664,9 +707,11 @@ namespace MusicPlayerModule.ViewModels
         {
             ((DelegateCommandBase)this.BatchDeleteCommand).RaiseCanExecuteChanged();
         }
+
         #endregion
 
         #region General Props
+
         public DistributeMusicViewModel DistributeMusicViewModel { get; private set; }
 
         public Collection<FavoriteMusicViewModel> Favorites { get; private set; } = new();
@@ -677,22 +722,36 @@ namespace MusicPlayerModule.ViewModels
         public bool IsBatchSelect
         {
             get { return _isBatchSelect; }
-            set
-            {
-                SetProperty<bool>(ref _isBatchSelect, value);
-            }
+            set { SetProperty<bool>(ref _isBatchSelect, value); }
         }
 
-        public MediaPlayOrderModel CurrentPlayOrder { get; set; }
+        private bool _isEditingPlayOrder;
+
+        public bool IsEditingPlayOrder
+        {
+            get => this._isEditingPlayOrder;
+            set => SetProperty<bool>(ref _isEditingPlayOrder, value);
+        }
+
+        private MediaPlayOrderModel _mediaPlayOrder;
+
+        public MediaPlayOrderModel CurrentPlayOrder
+        {
+            get { return _mediaPlayOrder; }
+            set { _mediaPlayOrder = value; IsEditingPlayOrder = false; }
+        }
 
         public bool SelectFavoriteAll
         {
             get { return _selectFavoriteAll; }
             set { SetProperty<bool>(ref _selectFavoriteAll, value); }
         }
+
         #endregion
 
         #region Fields
+
+        private bool _isLoading;
         private bool _running;
         private bool _isBatchSelect;
         private PlayingMusicViewModel _currentMusic;
@@ -705,13 +764,17 @@ namespace MusicPlayerModule.ViewModels
         private readonly IEventAggregator _eventAggregator;
 
         private Random _random = new Random();
+
         #endregion
 
         #region Command
+
         public ICommand OpenInExploreCommand { get; private set; }
 
         public ICommand PointACommand { get; private set; }
         public ICommand PointBCommand { get; private set; }
+
+        public ICommand ResetPointABCommand { get; private set; }
 
         public ICommand StopPlayMusicCommand { get; private set; }
 
@@ -734,10 +797,12 @@ namespace MusicPlayerModule.ViewModels
         /// 添加当前选中Favorite列表到播放列表并播放当前音乐
         /// </summary>
         public ICommand PlayAndAddCurrentFavoritesCommand { get; private set; }
+
         /// <summary>
         /// 播放全部
         /// </summary>
         public ICommand PlayAllCommand { get; set; }
+
         /// <summary>
         /// 播放当前
         /// </summary>
@@ -747,6 +812,7 @@ namespace MusicPlayerModule.ViewModels
         /// 播放或暂停
         /// </summary>
         public ICommand PlayPlayingCommand { get; set; }
+
         public ICommand PrevCommand { get; private set; }
         public ICommand NextCommand { get; private set; }
 
@@ -754,6 +820,7 @@ namespace MusicPlayerModule.ViewModels
         /// 添加到下一首播放
         /// </summary>
         public ICommand AddNextCommand { get; private set; }
+
         /// <summary>
         /// 下载当前
         /// </summary>
@@ -764,6 +831,7 @@ namespace MusicPlayerModule.ViewModels
         /// 歌曲进度后退,此地只为让前端按钮在该禁用时禁用
         /// </summary>
         public ICommand DelayCommand { get; private set; }
+
         /// <summary>
         /// 歌曲进度提前,此地只为让前端按钮在该禁用时禁用
         /// </summary>
@@ -793,6 +861,7 @@ namespace MusicPlayerModule.ViewModels
         /// 清空播放队列
         /// </summary>
         public ICommand CleanPlayingCommand { get; private set; }
+
         #endregion
 
         public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config)
@@ -818,10 +887,13 @@ namespace MusicPlayerModule.ViewModels
 
             if (!string.IsNullOrEmpty(musicPlayOrder))
             {
-                this.CurrentPlayOrder = AppStatics.MediaPlayOrderList.FirstOrDefault(item => item.Description == musicPlayOrder) ?? AppStatics.MediaPlayOrderList.First();
+                this.CurrentPlayOrder =
+                    AppStatics.MediaPlayOrderList.FirstOrDefault(item => item.Description == musicPlayOrder) ??
+                    AppStatics.MediaPlayOrderList.First();
             }
 
-            AppStatics.LastMusicDir = config.ReadConfigNode(new[] { baseNode, nameof(AppStatics.LastMusicDir) }) ?? "G:/KuGou/";
+            AppStatics.LastMusicDir = config.ReadConfigNode(new[] { baseNode, nameof(AppStatics.LastMusicDir) }) ??
+                                      "G:/KuGou/";
 
             config.SetConfig += config =>
             {
@@ -844,6 +916,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 item.Dispose();
             }
+
             this.Favorites.Clear();
             this.Favorites = null;
 
@@ -853,6 +926,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 item.Dispose();
             }
+
             this.Playing.Clear();
             this.Playing = null;
 

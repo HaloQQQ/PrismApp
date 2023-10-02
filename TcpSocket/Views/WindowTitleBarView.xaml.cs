@@ -117,5 +117,25 @@ namespace TcpSocket.Views
 
             e.Handled = true;
         }
+
+        private void Border_MouseLeave(object sender, MouseEventArgs e)
+        {
+            e.Handled = true;
+
+            if (_softwareViewModel.DialogMessage != null)
+            {
+                _softwareViewModel.DialogMessage.StopHide = false;
+            }
+        }
+
+        private void Border_MouseEnter(object sender, MouseEventArgs e)
+        {
+            e.Handled = true;
+
+            if (_softwareViewModel.DialogMessage != null)
+            {
+                _softwareViewModel.DialogMessage.StopHide = true;
+            }
+        }
     }
 }

@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="TcpSocket.Views.Settings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:helper="clr-namespace:Helper.Utils;assembly=Helper"
+             MinWidth="800" MaxHeight="500"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="Keys" MethodName="GetValues" ObjectType="{x:Type helper:Keys}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="helper:Keys" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <DataTemplate DataType="{x:Type helper:HotKeyModel}">
+            <StackPanel Orientation="Horizontal" MinHeight="40">
+                <TextBlock TextAlignment="Right" MinWidth="80">
+                    <TextBlock Text="{Binding Name}"/>:
+                </TextBlock>
+
+                <TextBlock Text="Ctrl：" Margin="20,0,0,0"/>
+                <CheckBox IsChecked="{Binding IsSelectCtrl}" IsEnabled="{Binding IsUsable}"/>
+
+                <TextBlock Text="Shift：" Margin="20,0,0,0"/>
+                <CheckBox IsChecked="{Binding IsSelectShift}" IsEnabled="{Binding IsUsable}"/>
+
+                <TextBlock Text="Alt：" Margin="20,0,0,0"/>
+                <CheckBox IsChecked="{Binding IsSelectAlt}" IsEnabled="{Binding IsUsable}"/>
+
+                <TextBlock Text="Windows：" Margin="20,0,0,0"/>
+                <CheckBox IsChecked="{Binding IsSelectWindows}" IsEnabled="{Binding IsUsable}"/>
+
+                <TextBlock Text="Key：" Margin="20,0,0,0"/>
+                <ComboBox ItemsSource="{Binding Source={StaticResource Keys}}" IsReadOnly="True" 
+                          Text="{Binding SelectedKey}" IsEnabled="{Binding IsUsable}"/>
+
+                <CheckBox Style="{StaticResource SlideCheckBox}" IsChecked="{Binding IsUsable}"/>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Border CornerRadius="20" Padding="0,10" Background="LightBlue">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TabControl Style="{StaticResource TabControl_ScrollContent}"
+                        ItemContainerStyle="{StaticResource TabItem_Transparent}">
+                <TabItem Header="快捷键">
+                    <ListBox ItemsSource="{Binding DataContext.HotKeys}" HorizontalAlignment="Stretch"
+                             ItemContainerStyle="{StaticResource ListBoxItem_General}"/>
+                </TabItem>
+                <TabItem Header="测试1">
+                    <Grid Background="Blue" MinWidth="600" MinHeight="500"/>
+                </TabItem>
+                <TabItem Header="测试2">
+                    <StackPanel Background="Yellow" MinWidth="600" MinHeight="500"/>
+                </TabItem>
+                <TabItem Header="测试3">
+                    <StackPanel Background="Green" MinWidth="600" MinHeight="500"/>
+                </TabItem>
+                <TabItem Header="测试4">
+                    <StackPanel Background="Purple" MinWidth="600" MinHeight="500"/>
+                </TabItem>
+            </TabControl>
+
+            <DockPanel Grid.Row="1" LastChildFill="False">
+                <Button Margin="20,10" DockPanel.Dock="Right" Style="{StaticResource TransparentButtonBase}" Content="取消" Command="{Binding CancelCommand}"/>
+                <Button Margin="20,10" DockPanel.Dock="Right" Style="{StaticResource TransparentButtonBase}" Content="确认" Command="{Binding SubmitCommand}"/>
+            </DockPanel>
+        </Grid>
+    </Border>
+</UserControl>

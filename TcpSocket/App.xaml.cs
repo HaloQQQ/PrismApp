@@ -4,10 +4,10 @@ using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
+using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Windows;
 using TcpSocket.Helper;
@@ -81,7 +81,7 @@ namespace TcpSocket
                 ViewModelLocationProvider.Register<VideoWindow, SoftwareViewModel>();
 
                 return Container.Resolve<VideoWindow>();
-            }                            
+            }
 
             return Container.Resolve<MainWindow>();
         }
@@ -131,11 +131,15 @@ namespace TcpSocket
             containerRegistry.RegisterSingleton<ImageDisplayViewModel>();
             //containerRegistry.RegisterSingleton<UserViewModel>();
             containerRegistry.RegisterSingleton<SoftwareViewModel>();
-            
+
             ViewModelLocationProvider.Register<MainWindow, SoftwareViewModel>();
             ViewModelLocationProvider.Register<WindowTitleBarView, SoftwareViewModel>();
             ViewModelLocationProvider.Register<ImageDisplayView, ImageDisplayViewModel>();
             ViewModelLocationProvider.Register<SwitchBackgroundView, ImageDisplayViewModel>();
+
+            ViewModelLocationProvider.Register<Settings, SoftwareViewModel>();
+            containerRegistry.Register<Settings>();
+            this.Container.Resolve<IRegionManager>().RegisterViewWithRegion("SettingRegion", nameof(Settings));
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
@@ -147,35 +151,26 @@ namespace TcpSocket
         {
             base.OnInitialized();
 
-            /// 
-            /// 窗体回调函数，接收所有窗体消息的事件处理函数
-            /// 
-            /// 窗口句柄
-            /// 消息
-            /// 附加参数1
-            /// 附加参数2
-            /// 是否处理
-            /// 返回句柄
-            HotKeyHelper HotKeys = null;
-            HotKeys = new HotKeyHelper(this.MainWindow.RegistHotKeyManager(mid =>
+            HotKeyHelper hotKeyHelper = null;
+            hotKeyHelper = new HotKeyHelper(App.Current.MainWindow.RegistHotKeyManager(mid =>
             {
-                foreach (var item in HotKeys)
+                foreach (var item in hotKeyHelper)
                 {
                     if (item.Code == mid)
                     {
-                        if (item.Name == "暂停")
+                        if (item.Name == Constants.HotKeys.Pause)
                         {
                             this.Container.Resolve<IEventAggregator>().GetEvent<MusicPlayerModule.MsgEvents.ToggeleCurrentMusicEvent>().Publish();
                         }
-                        else if (item.Name == "上一个")
+                        else if (item.Name == Constants.HotKeys.Prev)
                         {
                             this.Container.Resolve<IEventAggregator>().GetEvent<MusicPlayerModule.MsgEvents.PrevMusicEvent>().Publish();
                         }
-                        else if (item.Name == "下一个")
+                        else if (item.Name == Constants.HotKeys.Next)
                         {
                             this.Container.Resolve<IEventAggregator>().GetEvent<MusicPlayerModule.MsgEvents.NextMusicEvent>().Publish();
                         }
-                        else if (item.Name == "全屏")
+                        else if (item.Name == Constants.HotKeys.AppFull)
                         {
                             this.Container.Resolve<IEventAggregator>().GetEvent<FullScreenEvent>().Publish();
                         }
@@ -183,36 +178,13 @@ namespace TcpSocket
                 }
             }));
 
-            var str = HotKeys.RegisterGlobalHotKey(new HotKeyModel[]{
-                new HotKeyModel
-                {
-                    Name = "暂停",
-                    IsSelectAlt = true,
-                    SelectKey = Keys.S
-                },
-                new HotKeyModel
-                {
-                    Name = "上一个",
-                    IsSelectAlt = true,
-                    SelectKey = Keys.Left
-                },
-                new HotKeyModel
-                {
-                    Name = "下一个",
-                    IsSelectAlt = true,
-                    SelectKey = Keys.Right
-                },
-                new HotKeyModel
-                {
-                    Name = "全屏",
-                    IsSelectCtrl = true,
-                    SelectKey = Keys.F11
-                }
-            });
+            ContainerLocator.Current.RegisterSingleton<HotKeyHelper>(() => hotKeyHelper);
+
+            var str = hotKeyHelper.RegisterGlobalHotKey(this.Container.Resolve<SoftwareViewModel>().HotKeys);
 
             if (str.Length > 0)
             {
-                MessageBox.Show(str);
+                this.Container.Resolve<IEventAggregator>().GetEvent<DialogMessageEvent>().Publish(new Models.DialogMessage(str, 2));
             }
         }
     }

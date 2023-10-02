@@ -5,7 +5,8 @@
              xmlns:attachs="clr-namespace:WpfStyleResources.Attachs;assembly=WpfStyleResources"
              xmlns:waitLoads="clr-namespace:WpfStyleResources.WaitLoads;assembly=WpfStyleResources"
              Panel.ZIndex="100" Cursor="SizeAll" Background="Transparent"
-             xmlns:prism="http://prismlibrary.com/"
+             xmlns:regions="http://prismlibrary.com/"
+             xmlns:prism="http://prismlibrary.com/" 
              prism:ViewModelLocator.AutoWireViewModel="True">
 
     <UserControl.Resources>
@@ -105,10 +106,41 @@
             </Popup>
 
             <Button Style="{StaticResource RestartIconButton}" DockPanel.Dock="Left" />
-            
+
             <Button Style="{StaticResource LockScreenIconButton}" DockPanel.Dock="Left" />
 
             <ToggleButton Style="{StaticResource TopMostIconToggleButton}" DockPanel.Dock="Left" />
+
+            <Popup Placement="Center"
+                   PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                   IsOpen="{Binding IsEditingSetting}">
+                <ContentControl regions:RegionManager.RegionName="SettingRegion"/>
+            </Popup>
+
+            <Popup Placement="Center"
+                   PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                   IsOpen="{Binding DialogMessage.IsDisplayingDialogMessage}">
+                <Border Background="Blue" CornerRadius="20"
+                        MouseLeave="Border_MouseLeave"
+                        MouseEnter="Border_MouseEnter"
+                        MinWidth="500" MinHeight="300">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" FontSize="24"
+                                   Style="{StaticResource ThemeBlk}" 
+                                   Text="{Binding DialogMessage.DisplayMessage}"/>
+
+                        <TextBlock Grid.Row="1" Margin="0,10" FontSize="15" 
+                                   Style="{StaticResource ThemeBlk}">
+                            <TextBlock Text="{Binding DialogMessage.Seconds}"/>秒后关闭
+                        </TextBlock>
+                    </Grid>
+                </Border>
+            </Popup>
         </DockPanel>
     </Grid>
 </UserControl>

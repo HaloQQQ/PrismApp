@@ -79,7 +79,7 @@
                         <TextBlock Style="{StaticResource ThemeBlk}" Text="服务端最大连接数:"/>
                     </TextBlock>
                         <ComboBox Text="{Binding MaxClientCount, Converter={StaticResource DigitToStringConverter}, Mode=OneWayToSource}"
-                              IsReadOnly="True"
+                              IsReadOnly="True" FontSize="20"
                               Style="{StaticResource TcpServerComboBoxEnableStyle}">
                             <ComboBoxItem Content="1" />
                             <ComboBoxItem Content="2" />

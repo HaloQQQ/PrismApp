@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:myConverter="clr-namespace:MusicPlayerModule.Converters"
                     xmlns:converters="clr-namespace:WpfStyleResources.Converters;assembly=WpfStyleResources"
+                    xmlns:helper="clr-namespace:WpfStyleResources.Helper;assembly=WpfStyleResources"
                     xmlns:attachs="clr-namespace:WpfStyleResources.Attachs;assembly=WpfStyleResources">
 
     <myConverter:MusicDistributeMultiConverter x:Key="MusicDistributeMultiConverter"/>
@@ -31,7 +32,7 @@
         <MenuItem CommandParameter="{Binding PlacementTarget.SelectedItem,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                   Command="{Binding PlacementTarget.DataContext.PlayFavoriteCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Header>
-                <TextBlock Style="{StaticResource IconText}">
+                <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                     <TextBlock Text="&#xea6d;" />
                     <TextBlock Text="播放" />
                 </TextBlock>
@@ -41,7 +42,7 @@
         <MenuItem CommandParameter="{Binding PlacementTarget.SelectedItem,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                   Command="{Binding PlacementTarget.DataContext.AddNextCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Header>
-                <TextBlock Style="{StaticResource IconText}">
+                <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                     <TextBlock Text="&#xe704;" />
                     <TextBlock Text="下一首播放" />
                 </TextBlock>
@@ -51,7 +52,7 @@
         <MenuItem CommandParameter="{Binding PlacementTarget.SelectedItem.Music.FileDir,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                   Command="{Binding PlacementTarget.DataContext.OpenInExploreCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Header>
-                <TextBlock Style="{StaticResource IconText}">
+                <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                     <TextBlock Text="&#xebdf;" />
                     <TextBlock Text="打开目录位置" />
                 </TextBlock>
@@ -61,7 +62,7 @@
         <MenuItem CommandParameter="{Binding PlacementTarget.SelectedItem.Music,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                   Command="{Binding PlacementTarget.DataContext.DownLoadCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Header>
-                <TextBlock Style="{StaticResource IconText}">
+                <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                     <TextBlock Text="&#xe63b;" />
                     <TextBlock Text="下载" />
                 </TextBlock>
@@ -71,7 +72,7 @@
         <MenuItem CommandParameter="{Binding PlacementTarget.SelectedItem,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                   Command="{Binding PlacementTarget.DataContext.DeleteFavoriteCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Header>
-                <TextBlock Style="{StaticResource IconText}">
+                <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                     <TextBlock Text="&#xec7b;" />
                     <TextBlock Text="从列表删除" />
                 </TextBlock>
@@ -80,7 +81,7 @@
 
         <MenuItem ItemsSource="{Binding PlacementTarget.DataContext.DistributeMusicViewModel.MusicDirs,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Header>
-                <TextBlock Style="{StaticResource IconText}">
+                <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                     <TextBlock Text="&#xe663;" />
                     <TextBlock Text="添加到" />
                 </TextBlock>
@@ -126,7 +127,7 @@
                 <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
                     <Setter Property="Header">
                         <Setter.Value>
-                            <TextBlock Style="{StaticResource IconText}">
+                            <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                 <TextBlock Text="&#xea6d;" />
                                 <TextBlock Text="播放" />
                             </TextBlock>
@@ -142,7 +143,7 @@
 
                             <Setter Property="Header">
                                 <Setter.Value>
-                                    <TextBlock Style="{StaticResource IconText}">
+                                    <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                         <TextBlock Text="&#xe62a;" />
                                         <TextBlock Text="暂停" />
                                     </TextBlock>
@@ -157,7 +158,7 @@
         <MenuItem CommandParameter="{Binding PlacementTarget.SelectedItem.Music.FileDir,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                   Command="{Binding PlacementTarget.DataContext.OpenInExploreCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Header>
-                <TextBlock Style="{StaticResource IconText}">
+                <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                     <TextBlock Text="&#xebdf;" />
                     <TextBlock Text="打开目录位置" />
                 </TextBlock>
@@ -167,7 +168,7 @@
         <MenuItem CommandParameter="{Binding PlacementTarget.SelectedItem.Music,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                   Command="{Binding PlacementTarget.DataContext.DownLoadCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Header>
-                <TextBlock Style="{StaticResource IconText}">
+                <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                     <TextBlock Text="&#xe63b;" />
                     <TextBlock Text="下载" />
                 </TextBlock>
@@ -177,7 +178,7 @@
         <MenuItem CommandParameter="{Binding PlacementTarget.SelectedItem,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                   Command="{Binding PlacementTarget.DataContext.DeletePlayingCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Header>
-                <TextBlock Style="{StaticResource IconText}">
+                <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                     <TextBlock Text="&#xec7b;" />
                     <TextBlock Text="从播放队列删除" />
                 </TextBlock>
@@ -186,7 +187,7 @@
 
         <MenuItem ItemsSource="{Binding PlacementTarget.DataContext.DistributeMusicViewModel.MusicDirs,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Header>
-                <TextBlock Style="{StaticResource IconText}">
+                <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                     <TextBlock Text="&#xe663;" />
                     <TextBlock Text="添加到" />
                 </TextBlock>
@@ -282,7 +283,7 @@
                             <MenuItem CommandParameter="{Binding DataContext,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                                       Command="{Binding PlacementTarget.Tag.PlayFavoriteCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                                 <MenuItem.Header>
-                                    <TextBlock Style="{StaticResource IconText}">
+                                    <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                         <TextBlock Text="&#xea6d;" />
                                         <TextBlock Text="播放" />
                                     </TextBlock>
@@ -292,7 +293,7 @@
                             <MenuItem CommandParameter="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                                       Command="{Binding PlacementTarget.Tag.AddNextCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                                 <MenuItem.Header>
-                                    <TextBlock Style="{StaticResource IconText}">
+                                    <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                         <TextBlock Text="&#xe704;" />
                                         <TextBlock Text="下一首播放" />
                                     </TextBlock>
@@ -302,7 +303,7 @@
                             <MenuItem CommandParameter="{Binding PlacementTarget.DataContext.Music.FileDir,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                                       Command="{Binding PlacementTarget.Tag.OpenInExploreCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                                 <MenuItem.Header>
-                                    <TextBlock Style="{StaticResource IconText}">
+                                    <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                         <TextBlock Text="&#xebdf;" />
                                         <TextBlock Text="打开目录位置" />
                                     </TextBlock>
@@ -312,7 +313,7 @@
                             <MenuItem CommandParameter="{Binding PlacementTarget.DataContext.Music,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                                       Command="{Binding PlacementTarget.Tag.DownLoadCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                                 <MenuItem.Header>
-                                    <TextBlock Style="{StaticResource IconText}">
+                                    <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                         <TextBlock Text="&#xe63b;" />
                                         <TextBlock Text="下载" />
                                     </TextBlock>
@@ -322,7 +323,7 @@
                             <MenuItem CommandParameter="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                                       Command="{Binding PlacementTarget.Tag.DeleteFavoriteCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                                 <MenuItem.Header>
-                                    <TextBlock Style="{StaticResource IconText}">
+                                    <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                         <TextBlock Text="&#xec7b;" />
                                         <TextBlock Text="从列表删除" />
                                     </TextBlock>
@@ -331,7 +332,7 @@
 
                             <MenuItem ItemsSource="{Binding PlacementTarget.Tag.DistributeMusicViewModel.MusicDirs,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                                 <MenuItem.Header>
-                                    <TextBlock Style="{StaticResource IconText}">
+                                    <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                         <TextBlock Text="&#xe663;" />
                                         <TextBlock Text="添加到" />
                                     </TextBlock>
@@ -424,7 +425,7 @@
                                     <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
                                         <Setter Property="Header">
                                             <Setter.Value>
-                                                <TextBlock Style="{StaticResource IconText}">
+                                                <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                                     <TextBlock Text="&#xea6d;" />
                                                     <TextBlock Text="播放" />
                                                 </TextBlock>
@@ -440,7 +441,7 @@
 
                                                 <Setter Property="Header">
                                                     <Setter.Value>
-                                                        <TextBlock Style="{StaticResource IconText}">
+                                                        <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                                             <TextBlock Text="&#xe62a;" />
                                                             <TextBlock Text="暂停" />
                                                         </TextBlock>
@@ -455,7 +456,7 @@
                             <MenuItem CommandParameter="{Binding PlacementTarget.DataContext.Music.FileDir,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                                       Command="{Binding PlacementTarget.Tag.OpenInExploreCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                                 <MenuItem.Header>
-                                    <TextBlock Style="{StaticResource IconText}">
+                                    <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                         <TextBlock Text="&#xebdf;" />
                                         <TextBlock Text="打开目录位置" />
                                     </TextBlock>
@@ -465,7 +466,7 @@
                             <MenuItem CommandParameter="{Binding PlacementTarget.DataContext.Music,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                                       Command="{Binding PlacementTarget.Tag.DownLoadCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                                 <MenuItem.Header>
-                                    <TextBlock Style="{StaticResource IconText}">
+                                    <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                         <TextBlock Text="&#xe63b;" />
                                         <TextBlock Text="下载" />
                                     </TextBlock>
@@ -475,7 +476,7 @@
                             <MenuItem CommandParameter="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                                       Command="{Binding PlacementTarget.Tag.DeletePlayingCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                                 <MenuItem.Header>
-                                    <TextBlock Style="{StaticResource IconText}">
+                                    <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                         <TextBlock Text="&#xec7b;" />
                                         <TextBlock Text="从播放队列删除" />
                                     </TextBlock>
@@ -484,7 +485,7 @@
 
                             <MenuItem ItemsSource="{Binding PlacementTarget.Tag.DistributeMusicViewModel.MusicDirs,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                                 <MenuItem.Header>
-                                    <TextBlock Style="{StaticResource IconText}">
+                                    <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                         <TextBlock Text="&#xe663;" />
                                         <TextBlock Text="添加到" />
                                     </TextBlock>
@@ -538,7 +539,7 @@
             </StackPanel>
 
             <TextBlock DockPanel.Dock="Right" Visibility="{Binding IsMouseOver,RelativeSource={RelativeSource AncestorType=DataGridRow},Converter={StaticResource BoolToCollapsedVisibleConverter}}" 
-                       Foreground="#66FFFFFF" TextAlignment="Right" Text="{Binding Music.Duration}"/>
+                       Foreground="{x:Static helper:MyStaticResources.WhiteLight}" TextAlignment="Right" Text="{Binding Music.Duration}"/>
 
             <TextBlock Text="{Binding Music.Name}" ToolTip="{Binding Music.Name}"/>
             <TextBlock Margin="5,0" Text="{Binding Music.Singer}" ToolTip="{Binding Music.Singer}"/>
@@ -552,7 +553,7 @@
                 <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
                     <Setter Property="Header">
                         <Setter.Value>
-                            <TextBlock Style="{StaticResource IconText}">
+                            <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                 <TextBlock Text="&#xea6d;" />
                                 <TextBlock Text="播放" />
                             </TextBlock>
@@ -568,7 +569,7 @@
 
                             <Setter Property="Header">
                                 <Setter.Value>
-                                    <TextBlock Style="{StaticResource IconText}">
+                                    <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                         <TextBlock Text="&#xe62a;" />
                                         <TextBlock Text="暂停" />
                                     </TextBlock>
@@ -583,7 +584,7 @@
         <MenuItem CommandParameter="{Binding PlacementTarget.DataContext.Video.FileDir,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                   Command="{Binding PlacementTarget.Tag.OpenInExploreCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Header>
-                <TextBlock Style="{StaticResource IconText}">
+                <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                     <TextBlock Text="&#xebdf;" />
                     <TextBlock Text="打开目录位置" />
                 </TextBlock>
@@ -593,7 +594,7 @@
         <MenuItem CommandParameter="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                   Command="{Binding PlacementTarget.Tag.DeletePlayingCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Header>
-                <TextBlock Style="{StaticResource IconText}">
+                <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                     <TextBlock Text="&#xec7b;" />
                     <TextBlock Text="从播放队列删除" />
                 </TextBlock>
@@ -608,7 +609,7 @@
                 <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
                     <Setter Property="Header">
                         <Setter.Value>
-                            <TextBlock Style="{StaticResource IconText}">
+                            <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                 <TextBlock Text="&#xea6d;" />
                                 <TextBlock Text="播放" />
                             </TextBlock>
@@ -624,7 +625,7 @@
 
                             <Setter Property="Header">
                                 <Setter.Value>
-                                    <TextBlock Style="{StaticResource IconText}">
+                                    <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                                         <TextBlock Text="&#xe62a;" />
                                         <TextBlock Text="暂停" />
                                     </TextBlock>
@@ -639,7 +640,7 @@
         <MenuItem CommandParameter="{Binding PlacementTarget.SelectedItem.Video.FileDir,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                   Command="{Binding PlacementTarget.DataContext.OpenInExploreCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Header>
-                <TextBlock Style="{StaticResource IconText}">
+                <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                     <TextBlock Text="&#xebdf;" />
                     <TextBlock Text="打开目录位置" />
                 </TextBlock>
@@ -649,7 +650,7 @@
         <MenuItem CommandParameter="{Binding PlacementTarget.SelectedItem,RelativeSource={RelativeSource AncestorType=ContextMenu}}" 
                   Command="{Binding PlacementTarget.DataContext.DeletePlayingCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Header>
-                <TextBlock Style="{StaticResource IconText}">
+                <TextBlock Style="{StaticResource IconTextNoForegroundChanged}">
                     <TextBlock Text="&#xec7b;" />
                     <TextBlock Text="从播放队列删除" />
                 </TextBlock>

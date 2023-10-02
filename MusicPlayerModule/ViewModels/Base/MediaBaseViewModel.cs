@@ -29,6 +29,8 @@ namespace MusicPlayerModule.ViewModels.Base
         #endregion
 
         #region 媒体AB点
+        public bool LoadedABPoint { get; set; }
+        
         private int _pointAMills;
 
         public int PointAMills
@@ -45,9 +47,9 @@ namespace MusicPlayerModule.ViewModels.Base
 
         public string PointATime => this.GetFormatTime(this._pointAMills);
 
-        public void SetPointA()
+        public void SetPointA(int mills)
         {
-            this.PointAMills = this.CurrentMills;
+            this.PointAMills = mills;
 
             if (this._pointBMills != 0 && this._pointBMills < this._pointAMills)
             {
@@ -73,9 +75,9 @@ namespace MusicPlayerModule.ViewModels.Base
 
         public string PointBTime => this.GetFormatTime(this._pointBMills);
 
-        public void SetPointB()
+        public void SetPointB(int mills)
         {
-            this.PointBMills = this.CurrentMills;
+            this.PointBMills = mills;
 
             if (this._pointAMills > this._pointBMills)
             {

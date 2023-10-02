@@ -93,13 +93,16 @@
         
         <MenuItem IsCheckable="True" IsChecked="{Binding IsVideoPlayer}"
                   Header="视频播放器" />
+
+        <MenuItem IsCheckable="True" IsChecked="{Binding IsEditingSetting}"
+          Header="设置" />
     </ContextMenu>
 
     <!-- 消息板Menu -->
     <ContextMenu x:Key="ForMessageBoard">
-        <MenuItem Header="清空" Command="Refresh" />
+        <MenuItem Header="清空" Command="Refresh" CommandTarget="{Binding PlacementTarget,RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
         <MenuItem Header="记录日志" IsCheckable="True" IsChecked="{Binding IsLogging}" />
-        <MenuItem Header="打开日志文件" Command="Open" CommandParameter="Log" />
+        <MenuItem Header="打开日志文件" Command="Open" CommandParameter="Log" CommandTarget="{Binding PlacementTarget,RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
     </ContextMenu>
 
     <!-- 不自动补全前缀的、聚焦时Width变化的TextBox -->

@@ -299,21 +299,24 @@ namespace MusicPlayerModule.ViewModels
                 var originDir = moveModel.Music.FileDir;
                 var targetDir = moveModel.MoveToDir;
 
-                if(originDir.Equals(targetDir, StringComparison.CurrentCultureIgnoreCase))
+                if (originDir.Equals(targetDir, StringComparison.CurrentCultureIgnoreCase))
                 {
                     return;
                 }
 
+                if (this.MusicDirFavorites.Count == 0)
+                {
+                    this.DistributeByDirectoryCommand.Execute(null);
+                }
 
                 if (moveModel.Music.MoveTo(moveModel.MoveToDir))
                 {
-
                     var originItem = this.MusicDirFavorites.First(item => item.ClassifyKey == originDir);
 
                     var orginCollection = originItem.DisplayByClassifyKeyFavorites;
                     var targetCollection = this.MusicDirFavorites.First(item => item.ClassifyKey == targetDir).DisplayByClassifyKeyFavorites;
 
-                    var item = orginCollection.First(item => item.Music == moveModel.Music);
+                    var item = orginCollection.FirstOrDefault(item => item.Music == moveModel.Music);
                     if (item != null)
                     {
                         orginCollection.Remove(item);
