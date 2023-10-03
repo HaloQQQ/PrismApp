@@ -53,6 +53,8 @@
 
             <KeyBinding Command="{Binding PlayPlayingCommand}" CommandParameter="{Binding CurrentVideo}" Key="F" Modifiers="Alt"/>
 
+            <KeyBinding Command="{Binding CleanPlayingCommand}" Key="D" Modifiers="Alt"/>
+            
             <KeyBinding Command="{Binding NextCommand}" 
                     CommandParameter="{Binding CurrentVideo}" Key="PageDown"/>
 

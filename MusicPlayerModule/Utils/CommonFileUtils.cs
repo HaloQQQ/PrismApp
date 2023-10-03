@@ -8,12 +8,12 @@ namespace MusicPlayerModule.Utils
     {
         internal static void InvokeAtOnce(Action action)
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(action);
+            System.Windows.Application.Current?.Dispatcher?.Invoke(action);
         }
 
         internal static void Invoke(Action action)
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, action);
+            System.Windows.Application.Current?.Dispatcher?.Invoke(DispatcherPriority.Background, action);
         }
 
         /// <summary>

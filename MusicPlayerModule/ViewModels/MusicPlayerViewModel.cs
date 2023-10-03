@@ -613,11 +613,13 @@ namespace MusicPlayerModule.ViewModels
                                          .Skip(index * step)
                                          .Take(step))
                             {
-                                CommonFileUtils.InvokeAtOnce(() =>
+                                CommonFileUtils.Invoke(() =>
                                 {
                                     var musicModel = new FavoriteMusicViewModel(new MusicModel(item));
                                     this.DisplayFavorites.Add(musicModel);
                                     this.DistributeMusicViewModel.AddNewMusic(musicModel);
+
+                                    this.Favorites.Add(musicModel);
                                 });
                             }
                         }
@@ -625,15 +627,10 @@ namespace MusicPlayerModule.ViewModels
                 );
             }
 
-            await Task.WhenAll(taskList)
-                // .ContinueWith(task => LoadLyricToMusicModel.LoadAsync(AppStatics.LastMusicDir,
-                //     this.DisplayFavorites.Select<FavoriteMusicViewModel, MusicModel>(fa => fa.Music)))
-                .ConfigureAwait(false);
-
-            foreach (var item in this.DisplayFavorites)
-            {
-                this.Favorites.Add(item);
-            }
+            //await Task.WhenAll(taskList)
+            //     //.ContinueWith(task => LoadLyricToMusicModel.LoadAsync(AppStatics.LastMusicDir,
+            //     //    this.DisplayFavorites.Select<FavoriteMusicViewModel, MusicModel>(fa => fa.Music)))
+            //    .ConfigureAwait(false);
         }
 
         #endregion

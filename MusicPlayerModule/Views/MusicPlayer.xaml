@@ -89,6 +89,8 @@
 
             <KeyBinding Command="{Binding PlayPlayingCommand}" CommandParameter="{Binding CurrentMusic}" Key="F" Modifiers="Alt"/>
 
+            <KeyBinding Command="{Binding CleanPlayingCommand}" Key="D" Modifiers="Alt"/>
+
             <KeyBinding Command="{Binding NextCommand}" CommandParameter="{Binding CurrentMusic}" Key="PageDown"/>
 
             <KeyBinding Command="{Binding StopPlayMusicCommand}" CommandParameter="{Binding CurrentMusic}" Key="W" Modifiers="Alt"/>
@@ -311,7 +313,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Width="*" MaxWidth="1000" SortMemberPath="Music.FilePath">
+                            <DataGridTemplateColumn Width="200" MaxWidth="1000" SortMemberPath="Music.FilePath">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <TextBlock>
@@ -403,11 +405,11 @@
                                     </DataGridTemplateColumn.CellStyle>
                                 </DataGridTemplateColumn>
 
-                                <DataGridTemplateColumn MinWidth="230" MaxWidth="400" SortMemberPath="Music.Name"
+                                <DataGridTemplateColumn MinWidth="230" Width="Auto" SortMemberPath="Music.Name"
                                                         CellTemplate="{StaticResource FavoriteDataGridFirstColumnCellTemplate}"
                                                         HeaderStyle="{StaticResource FavoriteDataGridFirstColumnHeaderStyle}"/>
 
-                                <DataGridTemplateColumn Width="*" MaxWidth="1000" SortMemberPath="Music.Singer">
+                                <DataGridTemplateColumn Width="Auto" MaxWidth="1000" SortMemberPath="Music.Singer">
                                     <DataGridTemplateColumn.HeaderTemplate>
                                         <DataTemplate>
                                             <TextBlock>
@@ -501,11 +503,11 @@
                                     </DataGridTemplateColumn.CellStyle>
                                 </DataGridTemplateColumn>
 
-                                <DataGridTemplateColumn MinWidth="230" MaxWidth="400" SortMemberPath="Music.Name"  
+                                <DataGridTemplateColumn MinWidth="230" Width="Auto" SortMemberPath="Music.Name"  
                                                         CellTemplate="{StaticResource FavoriteDataGridFirstColumnCellTemplate}"
                                                         HeaderStyle="{StaticResource FavoriteDataGridFirstColumnHeaderStyle}"/>
 
-                                <DataGridTemplateColumn Width="*" MaxWidth="1000" SortMemberPath="Music.Album">
+                                <DataGridTemplateColumn Width="Auto" MaxWidth="1000" SortMemberPath="Music.Album">
                                     <DataGridTemplateColumn.HeaderTemplate>
                                         <DataTemplate>
                                             <TextBlock>
@@ -557,7 +559,8 @@
                     </ListBox>
                     <!--</Viewbox>-->
 
-                    <Viewbox Grid.Column="1" Style="{StaticResource OnlyDownViewbox}" VerticalAlignment="Top">
+                    <Viewbox Grid.Column="1" Style="{StaticResource OnlyDownViewbox}"
+                             VerticalAlignment="Top">
                         <DataGrid x:Name="DataGrid_ShowByDir" Grid.Column="1"
                               Style="{StaticResource DataGrid_Transparent}" ContextMenu="{StaticResource FavoriteDataGridContextMenu}" 
                               HeadersVisibility="All" Height="{Binding ActualHeight,RelativeSource={RelativeSource AncestorType=Grid},Mode=OneWay}"
@@ -593,11 +596,11 @@
                                     </DataGridTemplateColumn.CellStyle>
                                 </DataGridTemplateColumn>
 
-                                <DataGridTemplateColumn MinWidth="230" MaxWidth="400" SortMemberPath="Music.Name"
+                                <DataGridTemplateColumn MinWidth="230" Width="Auto" SortMemberPath="Music.Name"
                                                         CellTemplate="{StaticResource FavoriteDataGridFirstColumnCellTemplate}"
                                                         HeaderStyle="{StaticResource FavoriteDataGridFirstColumnHeaderStyle}"/>
 
-                                <DataGridTemplateColumn Width="*" MaxWidth="1000" SortMemberPath="Music.Singer">
+                                <DataGridTemplateColumn Width="Auto" MaxWidth="1000" SortMemberPath="Music.Singer">
                                     <DataGridTemplateColumn.HeaderTemplate>
                                         <DataTemplate>
                                             <TextBlock>
