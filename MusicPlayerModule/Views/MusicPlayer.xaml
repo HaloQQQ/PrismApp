@@ -930,11 +930,11 @@
                                                 <Setter.Value>
                                                     <DataTemplate DataType="commonModel:MediaPlayOrderModel">
                                                         <TextBlock Style="{StaticResource IconText}" Margin="30,10">
-                                                        <TextBlock Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ListBoxItem}}" 
-                                                                   Text="{Binding IconString}" />
-                                                        <TextBlock Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ListBoxItem}}" 
-                                                                   Text="{Binding Description}" />
-                                                    </TextBlock>
+                                                            <TextBlock Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ListBoxItem}}" 
+                                                                       Text="{Binding IconString}" />
+                                                            <TextBlock Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ListBoxItem}}" 
+                                                                       Text="{Binding Description}" />
+                                                        </TextBlock>
                                                     </DataTemplate>
                                                 </Setter.Value>
                                             </Setter>

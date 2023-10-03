@@ -7,9 +7,11 @@
   <component name="ChangeListManager">
     <list default="true" id="5404ad60-6722-44e8-a7f2-721594e32dbf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TcpSocket/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TcpSocket/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket.sln" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicPlayerModule/MusicPlayerModule.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/MusicPlayerModule.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicPlayerModule/Resources/Resources.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/Resources/Resources.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicPlayerModule/Views/MusicPlayer.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/Views/MusicPlayer.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicPlayerModule/Views/VideoPlayerView.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/Views/VideoPlayerView.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TcpSocket/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/SocketHelper.dll" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/bin/Debug/SocketHelper.dll" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,7 +22,6 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../MySourceCode/SocketHelper/Base/BaseSocket.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../MySourceCode/SocketHelper/Tcp/BaseTcpSocket.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../MySourceCode/SocketHelper/Tcp/NewTcpServer.cs" root0="FORCE_HIGHLIGHTING" />
@@ -41,22 +42,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "XThreadsFramesViewSplitterKey": "0.36741766",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.36741766&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "E:\\JetBrainsCaches\\RiderCache\\config\\resharper-host\\DecompilerCache",
-      "E:\\JetBrainsCaches\\RiderCache\\config\\resharper-host\\SourcesCache",
-      "C:\\Users\\14543\\AppData\\Local\\Symbols\\src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;E:\\JetBrainsCaches\\RiderCache\\config\\resharper-host\\DecompilerCache&quot;,
+      &quot;E:\\JetBrainsCaches\\RiderCache\\config\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\14543\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Project.TcpSocket">
     <configuration name="Publish TcpSocket to folder" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="Portable" target_folder="$PROJECT_DIR$/TcpSocket/bin/publish" target_framework="net6.0-windows" uuid_high="-1715762118518685441" uuid_low="-5410763006549834522" />
@@ -108,6 +109,7 @@
       <workItem from="1671193115594" duration="1930000" />
       <workItem from="1671195179242" duration="762000" />
       <workItem from="1680446036933" duration="9043000" />
+      <workItem from="1696319363828" duration="442000" />
     </task>
     <servers />
   </component>

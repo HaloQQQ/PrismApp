@@ -17,10 +17,10 @@
     <GeometryGroup x:Key="PopupGeometryGroup_VideoStretchMode">
         <RectangleGeometry RadiusX="16" RadiusY="16">
             <RectangleGeometry.Rect>
-                <Rect Width="100" Height="170"/>
+                <Rect Width="100" Height="140"/>
             </RectangleGeometry.Rect>
         </RectangleGeometry>
-        <PathGeometry Figures="M40,170 L50,180 L60,170 Z" />
+        <PathGeometry Figures="M40,140 L50,150 L60,140 Z" />
     </GeometryGroup>
 
     <GeometryGroup x:Key="PopupGeometryGroup_Volume">

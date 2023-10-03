@@ -349,7 +349,7 @@
                         <Popup Placement="Top" HorizontalOffset="-13" VerticalOffset="-10"
                                IsOpen="{Binding IsChecked,ElementName=VideoStretchButton}"
                                PlacementTarget="{Binding ElementName=VideoStretchButton}">
-                            <Border Background="{x:Static helper:MyStaticResources.PopupBackground}" Height="180" Width="100" Clip="{StaticResource PopupGeometryGroup_VideoStretchMode}">
+                            <Border Background="{x:Static helper:MyStaticResources.PopupBackground}" Height="150" Width="100" Clip="{StaticResource PopupGeometryGroup_VideoStretchMode}">
                                 <ListBox SelectedItem="{Binding Stretch}" ItemsSource="{Binding Source={StaticResource StretchsData}}" x:Name="VideoStretchList">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
@@ -414,11 +414,11 @@
                                                 <Setter.Value>
                                                     <DataTemplate DataType="commonModel:MediaPlayOrderModel">
                                                         <TextBlock Style="{StaticResource IconText}" Margin="30,10">
-                                                        <TextBlock Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ListBoxItem}}" 
-                                                                   Text="{Binding IconString}" />
-                                                        <TextBlock Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ListBoxItem}}" 
-                                                                   Text="{Binding Description}" />
-                                                    </TextBlock>
+                                                            <TextBlock Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ListBoxItem}}" 
+                                                                       Text="{Binding IconString}" />
+                                                            <TextBlock Foreground="{Binding Foreground,RelativeSource={RelativeSource AncestorType=ListBoxItem}}" 
+                                                                       Text="{Binding Description}" />
+                                                        </TextBlock>
                                                     </DataTemplate>
                                                 </Setter.Value>
                                             </Setter>
