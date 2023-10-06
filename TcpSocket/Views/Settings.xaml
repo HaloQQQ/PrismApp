@@ -4,6 +4,7 @@
              xmlns:helper="clr-namespace:Helper.Utils;assembly=Helper"
              MinWidth="800" MaxHeight="500"
              xmlns:prism="http://prismlibrary.com/"
+             xmlns:attachs="clr-namespace:WpfStyleResources.Attachs;assembly=WpfStyleResources"
              prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
         <ObjectDataProvider x:Key="Keys" MethodName="GetValues" ObjectType="{x:Type helper:Keys}">
@@ -14,27 +15,35 @@
 
         <DataTemplate DataType="{x:Type helper:HotKeyModel}">
             <StackPanel Orientation="Horizontal" MinHeight="40">
-                <TextBlock TextAlignment="Right" MinWidth="80">
-                    <TextBlock Text="{Binding Name}"/>:
+                <TextBlock FontSize="16" TextAlignment="Right" MinWidth="86">
+                    <TextBlock Text="{Binding Name}" />:
                 </TextBlock>
 
-                <TextBlock Text="Ctrl：" Margin="20,0,0,0"/>
-                <CheckBox IsChecked="{Binding IsSelectCtrl}" IsEnabled="{Binding IsUsable}"/>
+                <CheckBox Margin="10,0,0,0" Content="Ctrl:" IsChecked="{Binding IsSelectCtrl}" IsEnabled="{Binding IsUsable}" />
 
-                <TextBlock Text="Shift：" Margin="20,0,0,0"/>
-                <CheckBox IsChecked="{Binding IsSelectShift}" IsEnabled="{Binding IsUsable}"/>
+                <CheckBox Margin="10,0,0,0" Content="Shift:" IsChecked="{Binding IsSelectShift}" IsEnabled="{Binding IsUsable}" />
 
-                <TextBlock Text="Alt：" Margin="20,0,0,0"/>
-                <CheckBox IsChecked="{Binding IsSelectAlt}" IsEnabled="{Binding IsUsable}"/>
+                <CheckBox Margin="10,0,0,0" Content="Alt:" IsChecked="{Binding IsSelectAlt}" IsEnabled="{Binding IsUsable}" />
 
-                <TextBlock Text="Windows：" Margin="20,0,0,0"/>
-                <CheckBox IsChecked="{Binding IsSelectWindows}" IsEnabled="{Binding IsUsable}"/>
+                <ComboBox Margin="10,0,0,0" ItemsSource="{Binding Source={StaticResource Keys}}" IsReadOnly="True"
+                          Text="{Binding SelectedKey}" IsEnabled="{Binding IsUsable}" />
 
-                <TextBlock Text="Key：" Margin="20,0,0,0"/>
-                <ComboBox ItemsSource="{Binding Source={StaticResource Keys}}" IsReadOnly="True" 
-                          Text="{Binding SelectedKey}" IsEnabled="{Binding IsUsable}"/>
+                <TextBox IsReadOnly="True" IsEnabled="{Binding IsUsable}" Text="{Binding CombineKeys, Mode=OneWay}"
+                         KeyUp="UIElement_OnKeyUp">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                            <Setter Property="attachs:MyAttachProperty.PlaceHolder" Value="组合键"/>
+                            
+                            <Style.Triggers>
+                                <DataTrigger Value="False" Binding="{Binding IsUsable}">
+                                    <Setter Property="Foreground" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
 
-                <CheckBox Style="{StaticResource SlideCheckBox}" IsChecked="{Binding IsUsable}"/>
+                <CheckBox Style="{StaticResource SlideCheckBox}" IsChecked="{Binding IsUsable}" />
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
@@ -42,32 +51,34 @@
     <Border CornerRadius="20" Padding="0,10" Background="LightBlue">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <TabControl Style="{StaticResource TabControl_ScrollContent}"
                         ItemContainerStyle="{StaticResource TabItem_Transparent}">
                 <TabItem Header="快捷键">
                     <ListBox ItemsSource="{Binding DataContext.HotKeys}" HorizontalAlignment="Stretch"
-                             ItemContainerStyle="{StaticResource ListBoxItem_General}"/>
+                             ItemContainerStyle="{StaticResource ListBoxItem_General}" />
                 </TabItem>
                 <TabItem Header="测试1">
-                    <Grid Background="Blue" MinWidth="600" MinHeight="500"/>
+                    <Grid Background="Blue" MinWidth="600" MinHeight="500" />
                 </TabItem>
                 <TabItem Header="测试2">
-                    <StackPanel Background="Yellow" MinWidth="600" MinHeight="500"/>
+                    <StackPanel Background="Yellow" MinWidth="600" MinHeight="500" />
                 </TabItem>
                 <TabItem Header="测试3">
-                    <StackPanel Background="Green" MinWidth="600" MinHeight="500"/>
+                    <StackPanel Background="Green" MinWidth="600" MinHeight="500" />
                 </TabItem>
                 <TabItem Header="测试4">
-                    <StackPanel Background="Purple" MinWidth="600" MinHeight="500"/>
+                    <StackPanel Background="Purple" MinWidth="600" MinHeight="500" />
                 </TabItem>
             </TabControl>
 
             <DockPanel Grid.Row="1" LastChildFill="False">
-                <Button Margin="20,10" DockPanel.Dock="Right" Style="{StaticResource TransparentButtonBase}" Content="取消" Command="{Binding CancelCommand}"/>
-                <Button Margin="20,10" DockPanel.Dock="Right" Style="{StaticResource TransparentButtonBase}" Content="确认" Command="{Binding SubmitCommand}"/>
+                <Button Margin="20,10" DockPanel.Dock="Right" Style="{StaticResource TransparentButtonBase}"
+                        Content="取消" Command="{Binding CancelCommand}" />
+                <Button Margin="20,10" DockPanel.Dock="Right" Style="{StaticResource TransparentButtonBase}"
+                        Content="确认" Command="{Binding SubmitCommand}" />
             </DockPanel>
         </Grid>
     </Border>

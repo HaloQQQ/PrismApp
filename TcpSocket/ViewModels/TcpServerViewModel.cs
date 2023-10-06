@@ -1,5 +1,5 @@
 ﻿using TcpSocket.ViewModels.BaseViewModels;
-using WpfStyleResources.Interfaces;
+using WpfStyleResources.Helper;
 
 namespace TcpSocket.ViewModels
 {

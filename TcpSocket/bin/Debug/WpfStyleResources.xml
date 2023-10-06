@@ -84,7 +84,14 @@
             InitializeComponent
             </summary>
         </member>
-        <member name="M:WpfStyleResources.Extensions.Extensions.GetVisualAncestor``1(System.Windows.DependencyObject)">
+        <member name="M:WpfStyleResources.Extensions.ListBoxExtensions.ListBox_SelectionChanged_ScrollIntoView(System.Object,System.Windows.Controls.SelectionChangedEventArgs)">
+            <summary>
+            滚动条滚动到选中项
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:WpfStyleResources.Extensions.UIExtensions.GetVisualAncestor``1(System.Windows.DependencyObject)">
             <summary>
             获取最近的指定类型Visual父元素
             </summary>
@@ -92,7 +99,7 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="M:WpfStyleResources.Extensions.Extensions.GetVisualAncestor``1(System.Windows.DependencyObject,System.Predicate{``0})">
+        <member name="M:WpfStyleResources.Extensions.UIExtensions.GetVisualAncestor``1(System.Windows.DependencyObject,System.Predicate{``0})">
             <summary>
             获取最近的指定类型Visual父元素
             </summary>
@@ -100,7 +107,7 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="M:WpfStyleResources.Extensions.Extensions.GetLogicalAncestor``1(System.Windows.DependencyObject,System.String)">
+        <member name="M:WpfStyleResources.Extensions.UIExtensions.GetLogicalAncestor``1(System.Windows.DependencyObject,System.String)">
             <summary>
             获取最近的指定类型Logical父元素
             </summary>
@@ -109,7 +116,7 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
-        <member name="M:WpfStyleResources.Extensions.Extensions.GetVisualChildObjects``1(System.Windows.DependencyObject)">
+        <member name="M:WpfStyleResources.Extensions.UIExtensions.GetVisualChildObjects``1(System.Windows.DependencyObject)">
             <summary> 
             获得指定元素的所有Visual子元素 
             </summary> 
@@ -117,7 +124,7 @@
             <param name="obj"></param> 
             <returns></returns> 
         </member>
-        <member name="M:WpfStyleResources.Extensions.Extensions.GetLogicalChildObjects``1(System.Windows.DependencyObject)">
+        <member name="M:WpfStyleResources.Extensions.UIExtensions.GetLogicalChildObjects``1(System.Windows.DependencyObject)">
             <summary> 
             获得指定元素的所有Visual子元素 
             </summary> 
@@ -125,7 +132,7 @@
             <param name="obj"></param> 
             <returns></returns> 
         </member>
-        <member name="M:WpfStyleResources.Extensions.Extensions.GetVisualChildObject``1(System.Windows.DependencyObject,System.String)">
+        <member name="M:WpfStyleResources.Extensions.UIExtensions.GetVisualChildObject``1(System.Windows.DependencyObject,System.String)">
             <summary>
             查找Visual子元素 
             </summary> 
@@ -134,7 +141,7 @@
             <param name="name">寻找该name的T控件或第一个T类型的无名控件</param> 
             <returns></returns> 
         </member>
-        <member name="M:WpfStyleResources.Extensions.Extensions.GetVisualChildObject``1(System.Windows.DependencyObject,System.Predicate{``0})">
+        <member name="M:WpfStyleResources.Extensions.UIExtensions.GetVisualChildObject``1(System.Windows.DependencyObject,System.Predicate{``0})">
             <summary>
             查找Visual子元素 
             </summary> 
@@ -142,7 +149,7 @@
             <param name="obj"></param> 
             <param name="name">按条件查找寻找该name的T控件或第一个T类型的无名控件</param>
         </member>
-        <member name="M:WpfStyleResources.Extensions.Extensions.GetLogicalChildObject``1(System.Windows.DependencyObject,System.String)">
+        <member name="M:WpfStyleResources.Extensions.UIExtensions.GetLogicalChildObject``1(System.Windows.DependencyObject,System.String)">
             <summary>
             查找Logical子元素 
             </summary>
@@ -150,13 +157,6 @@
             <param name="name"></param>
             <typeparam name="T"></typeparam>
             <returns></returns>
-        </member>
-        <member name="M:WpfStyleResources.Extensions.ListBoxExtensions.ListBox_SelectionChanged_ScrollIntoView(System.Object,System.Windows.Controls.SelectionChangedEventArgs)">
-            <summary>
-            滚动条滚动到选中项
-            </summary>
-            <param name="sender"></param>
-            <param name="e"></param>
         </member>
         <member name="M:WpfStyleResources.Helper.CommonUtils.ShowWindowAsync(System.IntPtr,System.Int32)">
             <summary>
@@ -174,6 +174,14 @@
             <param name="hWnd">将被激活并被调入前台的窗口句柄</param>
             <returns>如果窗口设入了前台，返回值为非零；如果窗口未被设入前台，返回值为零</returns>
         </member>
+        <member name="M:WpfStyleResources.Helper.CommonUtils.FormatTimeSpan(System.TimeSpan,System.Boolean)">
+            <summary>
+            isLong?"00:00:00":"00:00"
+            </summary>
+            <param name="time"></param>
+            <param name="isLong"></param>
+            <returns></returns>
+        </member>
         <member name="M:WpfStyleResources.Helper.ConfigManager.GetWholeReadKey(System.String[])">
             <summary>
             IConfigurationRoot，以:分割层级
@@ -181,17 +189,19 @@
             <param name="childKey"></param>
             <returns></returns>
         </member>
-        <member name="T:WpfStyleResources.UserControls.UserControl1">
+        <member name="P:WpfStyleResources.Helper.CustomCommands.OpenSettingCommand">
             <summary>
-            UserControl1.xaml 的交互逻辑
-            </summary>
-            <summary>
-            UserControl1
+            打开设置框
             </summary>
         </member>
-        <member name="M:WpfStyleResources.UserControls.UserControl1.InitializeComponent">
+        <member name="P:WpfStyleResources.Helper.CustomCommands.HideTitleBarCommand">
             <summary>
-            InitializeComponent
+            用于标题栏上滑隐藏
+            </summary>
+        </member>
+        <member name="P:WpfStyleResources.Helper.CustomCommands.LoginCommand">
+            <summary>
+            打开登录框
             </summary>
         </member>
         <member name="M:WpfStyleResources.UserControls.VirtualizingWrapPanel.CalculateExtent(System.Windows.Size,System.Int32)">
@@ -287,6 +297,36 @@
         <member name="M:WpfStyleResources.WaitLoads.VerticalLineWaitLoad.InitializeComponent">
             <summary>
             InitializeComponent
+            </summary>
+        </member>
+        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+            <summary>
+            GeneratedInternalTypeHelper
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            CreateInstance
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            GetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            SetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+            <summary>
+            CreateDelegate
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            AddEventHandler
             </summary>
         </member>
     </members>

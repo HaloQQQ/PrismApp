@@ -1,11 +1,12 @@
 ﻿using System;
 using TcpSocket.ViewModels.BaseViewModels;
+using WpfStyleResources.Helper;
 
 namespace TcpSocket.ViewModels
 {
     public class TcpClientViewModel : BaseSocketViewModel
     {
-        public TcpClientViewModel(WpfStyleResources.Interfaces.IConfigManager config) : base(config)
+        public TcpClientViewModel(IConfigManager config) : base(config)
         {
             IP = "127.0.0.1";
             Port = "50000";

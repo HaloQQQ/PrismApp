@@ -15,7 +15,6 @@ using TcpSocket.MsgEvents;
 using TcpSocket.ViewModels;
 using TcpSocket.Views;
 using WpfStyleResources.Helper;
-using WpfStyleResources.Interfaces;
 
 namespace TcpSocket
 {
@@ -87,7 +86,7 @@ namespace TcpSocket
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
-        {
+        {                                             
             App.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
@@ -95,31 +94,30 @@ namespace TcpSocket
 
             var config = this.Container.Resolve<IConfigManager>();
 
+            string processName = Process.GetCurrentProcess().ProcessName;
+
             if (config.IsTrue(Constants.ONLY_ONE_PROCESS))
             {
-                string processName = Process.GetCurrentProcess().ProcessName;
                 mutex = new Mutex(true, processName, out bool isNew);
+                if (!isNew)
                 {
-                    if (!isNew)
+                    Helper.Helper.Log(Constants.Software_Log_Dir, "当前已有软件运行，启动失败!");
+
+                    foreach (var process in Process.GetProcessesByName(processName))
                     {
-                        Helper.Helper.Log(Constants.Software_Log_Dir, "当前已有软件运行，启动失败!");
-
-                        foreach (var process in Process.GetProcessesByName(processName))
+                        if (process.Id != Process.GetCurrentProcess().Id)
                         {
-                            if (process.Id != Process.GetCurrentProcess().Id)
-                            {
-                                CommonUtils.ShowWindowAsync(process.MainWindowHandle, 1);
-                            }
+                            CommonUtils.ShowWindowAsync(process.MainWindowHandle, 1);
                         }
-
-                        MessageBox.Show("当前已有软件运行，启动失败!");
-
-                        Environment.Exit(1);
                     }
 
-                    Helper.Helper.Log(Constants.Software_Log_Dir, $"启动成功!");
+                    MessageBox.Show("当前已有软件运行，启动失败!");
+
+                    Environment.Exit(1);
                 }
             }
+
+            Helper.Helper.Log(Constants.Software_Log_Dir, $"进程{processName}启动成功!");
 
             containerRegistry.RegisterScoped<UDPViewModel>();
             containerRegistry.RegisterScoped<TcpClientViewModel>();
@@ -170,17 +168,17 @@ namespace TcpSocket
                         {
                             this.Container.Resolve<IEventAggregator>().GetEvent<MusicPlayerModule.MsgEvents.NextMusicEvent>().Publish();
                         }
-                        else if (item.Name == Constants.HotKeys.AppFull)
-                        {
-                            this.Container.Resolve<IEventAggregator>().GetEvent<FullScreenEvent>().Publish();
-                        }
+                        //else if (item.Name == Constants.HotKeys.AppFull)
+                        //{
+                        //    this.Container.Resolve<IEventAggregator>().GetEvent<FullScreenEvent>().Publish();
+                        //}
                     }
                 }
             }));
 
             ContainerLocator.Current.RegisterSingleton<HotKeyHelper>(() => hotKeyHelper);
 
-            var str = hotKeyHelper.RegisterGlobalHotKey(this.Container.Resolve<SoftwareViewModel>().HotKeys);
+            var str = hotKeyHelper.RegisterHotKeys(this.Container.Resolve<SoftwareViewModel>().HotKeys);
 
             if (str.Length > 0)
             {

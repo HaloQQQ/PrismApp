@@ -11,11 +11,7 @@ namespace TcpSocket.ViewModels
         public string Account
         {
             get => this._account;
-            set
-            {
-                this._account = value;
-                CallModel();
-            }
+            set => SetProperty<string>(ref _account, value);
         }
 
         private string _password;
@@ -23,11 +19,7 @@ namespace TcpSocket.ViewModels
         public string Password
         {
             get => this._password;
-            set
-            {
-                this._password = value;
-                CallModel();
-            }
+            set => SetProperty<string>(ref _password, value);
         }
     }
 }

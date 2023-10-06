@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TcpSocket.Helper;
+using WpfStyleResources.Helper;
 
 namespace TcpSocket.ViewModels
 {
@@ -89,7 +90,7 @@ namespace TcpSocket.ViewModels
             return list;
         }
 
-        public ImageDisplayViewModel(WpfStyleResources.Interfaces.IConfigManager config)
+        public ImageDisplayViewModel(IConfigManager config)
         {
             this.Data.Add(new MyImage());
 

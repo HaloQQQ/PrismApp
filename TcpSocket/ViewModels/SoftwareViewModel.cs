@@ -16,11 +16,12 @@ using System.Windows.Threading;
 using TcpSocket.Helper;
 using TcpSocket.Models;
 using TcpSocket.MsgEvents;
-using WpfStyleResources.Interfaces;
+using WpfStyleResources.Helper;
+using WpfStyleResources.Helper.MyEvents;
 
 namespace TcpSocket.ViewModels
 {
-    public class SoftwareViewModel : BindableBase, IDisposable
+    internal class SoftwareViewModel : BindableBase, IDisposable
     {
         public SoftwareViewModel(
             UserViewModel userContext,
@@ -31,35 +32,13 @@ namespace TcpSocket.ViewModels
         {
             this.UserContext = userContext;
             this._imageDisplayViewModel = imageDisplayViewModel;
-            this.OnlyOneProcess = config.IsTrue(Constants.ONLY_ONE_PROCESS);
-            this.AutoStart = config.IsTrue(Constants.AUTO_START);
-            this.BackgroundSwitch = config.IsTrue(Constants.BACKGROUND_SWITCH);
-
-            this.DefaultThemeURI = config.ReadConfigNode(Constants.DefaultThemeURI);
-            this.LoadDefaultTheme();
-
-            this.CurrentBkGrd = config.ReadConfigNode(Constants.BkgrdUri);
-            this.IsMusicPlayer = config.IsTrue(Constants.IsMusicPlayer);
-            this.IsVideoPlayer = config.IsTrue(Constants.IsVideoPlayer);
+            
 
             var bitmap = QRCodeUtil.GetColorfulQR("Hello 3Q", Color.GreenYellow, Color.White, 200);
 
             this.BitmapImage = bitmap;
 
-            config.SetConfig += config =>
-            {
-                config.WriteConfigNode<bool>(this.OnlyOneProcess, Constants.ONLY_ONE_PROCESS);
-                config.WriteConfigNode<bool>(this.AutoStart, Constants.AUTO_START);
-                config.WriteConfigNode<bool>(this.BackgroundSwitch, Constants.BACKGROUND_SWITCH);
-
-                config.WriteConfigNode(this.DefaultThemeURI, Constants.DefaultThemeURI);
-                config.WriteConfigNode(this.CurrentBkGrd, Constants.BkgrdUri);
-
-                config.WriteConfigNode(this.IsMusicPlayer, Constants.IsMusicPlayer);
-                config.WriteConfigNode(this.IsVideoPlayer, Constants.IsVideoPlayer);
-
-                AppUtils.AutoStartWithDirectory(this.AutoStart);
-            };
+            this.LoadConfig(config);
 
             this.SwitchThemeCommand = new DelegateCommand(() => this.RefreshTheme());
 
@@ -77,16 +56,16 @@ namespace TcpSocket.ViewModels
             {
                 this.IsEditingSetting = false;
 
-                var resultStr = containerExtension.Resolve<HotKeyHelper>().RegisterGlobalHotKey(this.HotKeys);
+                var resultStr = containerExtension.Resolve<HotKeyHelper>().RegisterHotKeys(this.HotKeys);
 
                 resultStr = string.IsNullOrEmpty(resultStr) ? "注册快捷键无错误" : resultStr;
 
                 eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(resultStr, 4));
             });
 
-            eventAggregator.GetEvent<BackgroundImageUpdateEvent>().Subscribe(uri => this.CurrentBkGrd = uri);
+            this.SubscribeCustomCommandEvent();
 
-            eventAggregator.GetEvent<FullScreenEvent>().Subscribe(() => this.IsTitleBarHidden = !this.IsTitleBarHidden);
+            eventAggregator.GetEvent<BackgroundImageUpdateEvent>().Subscribe(uri => this.CurrentBkGrd = uri);
 
             eventAggregator.GetEvent<DialogMessageEvent>().Subscribe(item => this.DialogMessage = item);
 
@@ -95,10 +74,45 @@ namespace TcpSocket.ViewModels
             this.InitBackgroundSwitchTimer();
         }
 
+        /// <summary>
+        /// 还原未提交的修改
+        /// </summary>
         public ICommand CancelCommand { get; private set; }
+        /// <summary>
+        /// 提交注册快捷键
+        /// </summary>
         public ICommand SubmitCommand { get; private set; }
 
         public ICommand SwitchThemeCommand { get; private set; }
+
+        private void LoadConfig(IConfigManager config)
+        {
+            this.OnlyOneProcess = config.IsTrue(Constants.ONLY_ONE_PROCESS);
+            this.AutoStart = config.IsTrue(Constants.AUTO_START);
+            this.BackgroundSwitch = config.IsTrue(Constants.BACKGROUND_SWITCH);
+
+            this.DefaultThemeURI = config.ReadConfigNode(Constants.DefaultThemeURI);
+            this.LoadDefaultTheme();
+
+            this.CurrentBkGrd = config.ReadConfigNode(Constants.BkgrdUri);
+            this.IsMusicPlayer = config.IsTrue(Constants.IsMusicPlayer);
+            this.IsVideoPlayer = config.IsTrue(Constants.IsVideoPlayer);
+
+            config.SetConfig += config =>
+            {
+                config.WriteConfigNode<bool>(this.OnlyOneProcess, Constants.ONLY_ONE_PROCESS);
+                config.WriteConfigNode<bool>(this.AutoStart, Constants.AUTO_START);
+                config.WriteConfigNode<bool>(this.BackgroundSwitch, Constants.BACKGROUND_SWITCH);
+
+                config.WriteConfigNode(this.DefaultThemeURI, Constants.DefaultThemeURI);
+                config.WriteConfigNode(this.CurrentBkGrd, Constants.BkgrdUri);
+
+                config.WriteConfigNode(this.IsMusicPlayer, Constants.IsMusicPlayer);
+                config.WriteConfigNode(this.IsVideoPlayer, Constants.IsVideoPlayer);
+
+                AppUtils.AutoStartWithDirectory(this.AutoStart);
+            };
+        }
 
         private void LoadDefaultTheme()
         {
@@ -122,8 +136,10 @@ namespace TcpSocket.ViewModels
             }
         }
 
+        #region 主题&背景
         private Collection<ResourceDictionary> _resourceDictionaries => Application.Current.Resources.MergedDictionaries;
 
+        public string DefaultThemeURI { get; set; } = null!;
         private void RefreshTheme()
         {
             var dict = _resourceDictionaries.FirstOrDefault(item => item == Constants.Light);
@@ -146,8 +162,16 @@ namespace TcpSocket.ViewModels
             this.DefaultThemeURI = dict.Source.ToString();
         }
 
+        private string _currentBkGrd;
+        public string CurrentBkGrd
+        {
+            get => this._currentBkGrd;
+            set => SetProperty<string>(ref _currentBkGrd, value);
+        }
+        #endregion
+
+        #region 周边信息
         public string Version { get; } = Application.ResourceAssembly.GetName().Version.ToString();
-        public string DefaultThemeURI { get; set; } = null!;
 
         private string _title;
         public string Title { get => this._title; set => SetProperty<string>(ref this._title, value); }
@@ -168,22 +192,13 @@ namespace TcpSocket.ViewModels
             set => SetProperty<string>(ref this._week, value);
         }
 
+        /// <summary>
+        /// QRCode
+        /// </summary>
+        public Bitmap BitmapImage { get; set; }
 
-        private bool _isTitleBarHidden;
-
-        public bool IsTitleBarHidden
-        {
-            get => _isTitleBarHidden;
-            set => SetProperty<bool>(ref _isTitleBarHidden, value);
-        }
-
-        private bool _isEditingSetting;
-
-        public bool IsEditingSetting
-        {
-            get => this._isEditingSetting;
-            set => SetProperty<bool>(ref _isEditingSetting, value);
-        }
+        public UserViewModel UserContext { get; }
+        #endregion
 
         private DialogMessage _dialogMessage;
 
@@ -194,13 +209,6 @@ namespace TcpSocket.ViewModels
         }
 
         public List<HotKeyModel> HotKeys { get; private set; } = new List<HotKeyModel>();
-        //    = new Lazy<List<HotKeyModel>>(() => new List<HotKeyModel>()
-        //{
-        //    new HotKeyModel(Constants.HotKeys.Pause, false, false, true, false, Keys.S),
-        //    new HotKeyModel(Constants.HotKeys.Prev, false, false, true, false, Keys.Left),
-        //    new HotKeyModel(Constants.HotKeys.Next, false, false, true, false, Keys.Right),
-        //    new HotKeyModel(Constants.HotKeys.AppFull, true, false, false, false, Keys.F11)
-        //}).Value;
 
         private void InitHotkeys(IConfigManager config)
         {
@@ -219,11 +227,10 @@ namespace TcpSocket.ViewModels
             else
             {
                 this.HotKeys.AddRange(new List<HotKeyModel>() {
-                    new HotKeyModel(Constants.HotKeys.Pause, false, false, true, false, Keys.S),
-                    new HotKeyModel(Constants.HotKeys.Prev, false, false, true, false, Keys.Left),
-                    new HotKeyModel(Constants.HotKeys.Next, false, false, true, false, Keys.Right),
-                    new HotKeyModel(Constants.HotKeys.AppFull, true, false, false, false, Keys.F11)}
-                );
+                    new HotKeyModel(Constants.HotKeys.Pause, false, false, true, Keys.S),
+                    new HotKeyModel(Constants.HotKeys.Prev, false, false, true, Keys.Left),
+                    new HotKeyModel(Constants.HotKeys.Next, false, false, true, Keys.Right) 
+                });
             }
 
             config.SetConfig += config =>
@@ -239,6 +246,7 @@ namespace TcpSocket.ViewModels
             };
         }
 
+        #region 辅助功能
         private bool _onlyOneProcess;
 
         public bool OnlyOneProcess
@@ -279,20 +287,30 @@ namespace TcpSocket.ViewModels
             set => SetProperty<bool>(ref _isVideoPlayer, value);
         }
 
-        private string _currentBkGrd;
-        public string CurrentBkGrd
+        private bool _isEditingSetting;
+
+        public bool IsEditingSetting
         {
-            get => this._currentBkGrd;
-            set => SetProperty<string>(ref _currentBkGrd, value);
+            get => this._isEditingSetting;
+            set => SetProperty<bool>(ref _isEditingSetting, value);
         }
 
-        /// <summary>
-        /// QRCode
-        /// </summary>
-        public Bitmap BitmapImage { get; set; }
+        private bool _isTitleBarHidden;
 
-        public UserViewModel UserContext { get; }
+        public bool IsTitleBarHidden
+        {
+            get => _isTitleBarHidden;
+            set => SetProperty<bool>(ref _isTitleBarHidden, value);
+        }
 
+        private bool _isLogin;
+
+        public bool IsLogin
+        {
+            get => this._isLogin;
+            set => SetProperty<bool>(ref _isLogin, value);
+        }
+        #endregion
 
         private Random random = new Random();
         private DispatcherTimer _timer = null;
@@ -330,6 +348,13 @@ namespace TcpSocket.ViewModels
             };
             this._timer.Interval = TimeSpan.FromMilliseconds(1000);
             this._timer.Start();
+        }
+
+        private void SubscribeCustomCommandEvent()
+        {
+            MyEventManager.Default.GetEvent<OpenSettingEvent>().Execute += () => this.IsEditingSetting = true;
+            MyEventManager.Default.GetEvent<HideTitleBarEvent>().Execute += () => this.IsTitleBarHidden = !this.IsTitleBarHidden;
+            MyEventManager.Default.GetEvent<LoginEvent>().Execute += () => this.IsLogin = !this.IsLogin;
         }
 
         public void Dispose()

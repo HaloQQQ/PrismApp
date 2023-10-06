@@ -6,7 +6,7 @@
              xmlns:waitLoads="clr-namespace:WpfStyleResources.WaitLoads;assembly=WpfStyleResources"
              Panel.ZIndex="100" Cursor="SizeAll" Background="Transparent"
              xmlns:regions="http://prismlibrary.com/"
-             xmlns:prism="http://prismlibrary.com/" 
+             xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True">
 
     <UserControl.Resources>
@@ -60,12 +60,12 @@
                           Style="{StaticResource SlideIconToggleButton}"/>
 
 
-            <ToggleButton Style="{StaticResource IconButtonBase_Small_Scale}"
+            <ToggleButton Style="{StaticResource LoginIconToggleButton}"
                           DockPanel.Dock="Right" x:Name="ToggleButtonUser"
-                          Content="&#xe62e;" ToolTip="登录" />
+                          IsChecked="{Binding IsLogin}" />
             <Popup Placement="Center"
                    PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                   IsOpen="{Binding IsChecked, ElementName=ToggleButtonUser}">
+                   IsOpen="{Binding IsLogin}">
                 <Border MinWidth="500" MinHeight="400" CornerRadius="20" Background="#CCC">
                     <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
                         <Grid.RowDefinitions>
@@ -111,7 +111,7 @@
 
             <ToggleButton Style="{StaticResource TopMostIconToggleButton}" DockPanel.Dock="Left" />
 
-            <Popup Placement="Center"
+            <Popup Placement="Center" StaysOpen="True"
                    PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
                    IsOpen="{Binding IsEditingSetting}">
                 <ContentControl regions:RegionManager.RegionName="SettingRegion"/>

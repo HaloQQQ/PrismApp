@@ -8,6 +8,12 @@
     <myConverter:MusicDistributeMultiConverter x:Key="MusicDistributeMultiConverter"/>
     <converters:MultiConverter_IsStringEquals x:Key="MultiConverter_IsStringEquals"/>
 
+    <Style TargetType="TextBlock" x:Key="IconTextNoForegroundChanged" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="FontFamily" Value="{StaticResource Iconfont}" />
+        <!--<Setter Property="FontSize" Value="{Binding FontSize,RelativeSource={RelativeSource AncestorType=MenuItem}}" />-->
+        <!--<Setter Property="Cursor" Value="Hand" />-->
+    </Style>
+
     <Style TargetType="ToggleButton" x:Key="Love" BasedOn="{StaticResource IconFillToggleButton}">
         <Setter Property="Content" Value="&#xe644;" />
         <Setter Property="ToolTip" Value="收藏" />
@@ -86,11 +92,13 @@
                     <TextBlock Text="添加到" />
                 </TextBlock>
             </MenuItem.Header>
-            <MenuItem.ItemTemplate>
-                <DataTemplate>
-                    <MenuItem Header="{Binding DirName}" 
-                              Command="{Binding PlacementTarget.DataContext.DistributeMusicViewModel.DistributeToCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-                        <MenuItem.CommandParameter>
+            <MenuItem.ItemContainerStyle>
+                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                    <Setter Property="Header" Value="{Binding DirName}"/>
+                    <Setter Property="Command" Value="{Binding PlacementTarget.DataContext.DistributeMusicViewModel.DistributeToCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+
+                    <Setter Property="CommandParameter">
+                        <Setter.Value>
                             <MultiBinding Converter="{StaticResource MusicDistributeMultiConverter}">
                                 <MultiBinding.Bindings>
                                     <Binding Path="PlacementTarget.SelectedItem.Music" 
@@ -98,25 +106,25 @@
                                     <Binding Path="DirPath" />
                                 </MultiBinding.Bindings>
                             </MultiBinding>
-                        </MenuItem.CommandParameter>
-                    </MenuItem>
+                        </Setter.Value>
+                    </Setter>
 
-                    <DataTemplate.Triggers>
+                    <Style.Triggers>
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>
                                 <MultiBinding Converter="{StaticResource MultiConverter_IsStringEquals}">
                                     <MultiBinding.Bindings>
                                         <Binding Path="PlacementTarget.SelectedItem.Music.FileDir" 
-                                             RelativeSource="{RelativeSource AncestorType=ContextMenu}" />
+                                                 RelativeSource="{RelativeSource AncestorType=ContextMenu}" />
                                         <Binding Path="DirPath" />
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </DataTrigger.Binding>
                             <Setter Property="IsEnabled" Value="False" />
                         </DataTrigger>
-                    </DataTemplate.Triggers>
-                </DataTemplate>
-            </MenuItem.ItemTemplate>
+                    </Style.Triggers>
+                </Style>
+            </MenuItem.ItemContainerStyle>
         </MenuItem>
     </ContextMenu>
 
@@ -192,11 +200,13 @@
                     <TextBlock Text="添加到" />
                 </TextBlock>
             </MenuItem.Header>
-            <MenuItem.ItemTemplate>
-                <DataTemplate>
-                    <MenuItem Header="{Binding DirName}" 
-                              Command="{Binding PlacementTarget.DataContext.DistributeMusicViewModel.DistributeToCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-                        <MenuItem.CommandParameter>
+            <MenuItem.ItemContainerStyle>
+                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                    <Setter Property="Header" Value="{Binding DirName}" />
+                    <Setter Property="Command" Value="{Binding PlacementTarget.DataContext.DistributeMusicViewModel.DistributeToCommand,RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+
+                    <Setter Property="CommandParameter">
+                        <Setter.Value>
                             <MultiBinding Converter="{StaticResource MusicDistributeMultiConverter}">
                                 <MultiBinding.Bindings>
                                     <Binding Path="PlacementTarget.SelectedItem.Music" 
@@ -204,25 +214,25 @@
                                     <Binding Path="DirPath" />
                                 </MultiBinding.Bindings>
                             </MultiBinding>
-                        </MenuItem.CommandParameter>
-                    </MenuItem>
+                        </Setter.Value>
+                    </Setter>
 
-                    <DataTemplate.Triggers>
+                    <Style.Triggers>
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>
                                 <MultiBinding Converter="{StaticResource MultiConverter_IsStringEquals}">
                                     <MultiBinding.Bindings>
                                         <Binding Path="PlacementTarget.SelectedItem.Music.FileDir" 
-                                             RelativeSource="{RelativeSource AncestorType=ContextMenu}" />
+                                                 RelativeSource="{RelativeSource AncestorType=ContextMenu}" />
                                         <Binding Path="DirPath" />
                                     </MultiBinding.Bindings>
                                 </MultiBinding>
                             </DataTrigger.Binding>
                             <Setter Property="IsEnabled" Value="False" />
                         </DataTrigger>
-                    </DataTemplate.Triggers>
-                </DataTemplate>
-            </MenuItem.ItemTemplate>
+                    </Style.Triggers>
+                </Style>
+            </MenuItem.ItemContainerStyle>
         </MenuItem>
     </ContextMenu>
 

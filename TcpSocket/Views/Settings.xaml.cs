@@ -1,4 +1,7 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using Helper.Utils;
 
 namespace TcpSocket.Views
 {
@@ -10,6 +13,15 @@ namespace TcpSocket.Views
         public Settings()
         {
             InitializeComponent();
+        }
+
+        private void UIElement_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is FrameworkElement element && element.DataContext is HotKeyModel model)
+            {
+                model.Fill(e);
+            }
         }
     }
 }

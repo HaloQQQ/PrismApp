@@ -14,7 +14,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WpfStyleResources.Helper;
-using WpfStyleResources.Interfaces;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -386,40 +385,7 @@ namespace MusicPlayerModule.ViewModels
             FavoriteMusicViewModel.DeleteStatusChanged +=
                 isDeleting => this.RaisePropertyChanged(nameof(SelectedCount));
 
-            PlayingMusicViewModel.ToNextMusic += curentMusic =>
-            {
-                if (this.CurrentPlayOrder != null)
-                {
-                    switch (this.CurrentPlayOrder.OrderType)
-                    {
-                        case MediaPlayOrderModel.EnumOrderType.Order:
-                            if (curentMusic.Index == this.Playing.Count)
-                            {
-                                this._eventAggregator.GetEvent<ResetPlayerEvent>().Publish();
-                                this.SetAndPlay(null);
-                                return;
-                            }
-
-                            break;
-                        case MediaPlayOrderModel.EnumOrderType.Loop:
-                            break;
-                        case MediaPlayOrderModel.EnumOrderType.Random:
-                            this.SetAndPlay(this.DisplayPlaying[this._random.Next(this.DisplayPlaying.Count)]);
-                            return;
-                        case MediaPlayOrderModel.EnumOrderType.SingleCycle:
-                            this._eventAggregator.GetEvent<ResetPlayerAndPlayMusicEvent>().Publish();
-                            return;
-                        case MediaPlayOrderModel.EnumOrderType.SingleOnce:
-                            this._eventAggregator.GetEvent<ResetPlayerEvent>().Publish();
-                            this.SetAndPlay(null);
-                            return;
-                        default:
-                            throw new IndexOutOfRangeException();
-                    }
-
-                    this.NextMusic(curentMusic);
-                }
-            };
+            PlayingMusicViewModel.ToNextMusic += NextMusic;
 
             PlayingMusicViewModel.ScrollBarMoveToLyric += cureentLineIndex =>
                 eventAggregator.GetEvent<UpdateScrollBarToTargetLyricEvent>().Publish(cureentLineIndex);
@@ -450,6 +416,12 @@ namespace MusicPlayerModule.ViewModels
         {
             if (currentMusic != null && this.DisplayPlaying.Count > 0)
             {
+                if (this.CurrentPlayOrder != null && this.CurrentPlayOrder.OrderType == MediaPlayOrderModel.EnumOrderType.Random)
+                {
+                    this.SetAndPlay(this.DisplayPlaying[this._random.Next(this.DisplayPlaying.Count)]);
+                    return;
+                }
+
                 if (currentMusic.Index > 1)
                 {
                     this.SetAndPlay(this.Playing[currentMusic.Index - 2]);
@@ -465,6 +437,36 @@ namespace MusicPlayerModule.ViewModels
         {
             if (currentMusic != null && this.DisplayPlaying.Count > 0)
             {
+                if (this.CurrentPlayOrder != null)
+                {
+                    switch (this.CurrentPlayOrder.OrderType)
+                    {
+                        case MediaPlayOrderModel.EnumOrderType.Order:
+                            if (currentMusic.Index == this.Playing.Count)
+                            {
+                                this._eventAggregator.GetEvent<ResetPlayerEvent>().Publish();
+                                this.SetAndPlay(null);
+                                return;
+                            }
+
+                            break;
+                        case MediaPlayOrderModel.EnumOrderType.Loop:
+                            break;
+                        case MediaPlayOrderModel.EnumOrderType.Random:
+                            this.SetAndPlay(this.DisplayPlaying[this._random.Next(this.DisplayPlaying.Count)]);
+                            return;
+                        case MediaPlayOrderModel.EnumOrderType.SingleCycle:
+                            this._eventAggregator.GetEvent<ResetPlayerAndPlayMusicEvent>().Publish();
+                            return;
+                        case MediaPlayOrderModel.EnumOrderType.SingleOnce:
+                            this._eventAggregator.GetEvent<ResetPlayerEvent>().Publish();
+                            this.SetAndPlay(null);
+                            return;
+                        default:
+                            throw new IndexOutOfRangeException();
+                    }
+                }
+
                 if (currentMusic.Index < this.Playing.Count)
                 {
                     this.SetAndPlay(this.Playing[currentMusic.Index]);

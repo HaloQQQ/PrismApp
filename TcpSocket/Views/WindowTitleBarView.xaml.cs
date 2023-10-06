@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using TcpSocket.MsgEvents;
 using TcpSocket.ViewModels;
+using WpfStyleResources.Helper;
 using Point = System.Windows.Point;
 
 namespace TcpSocket.Views

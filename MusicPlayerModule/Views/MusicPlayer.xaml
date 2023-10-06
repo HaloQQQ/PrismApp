@@ -253,7 +253,7 @@
                                                     CellTemplate="{StaticResource FavoriteDataGridFirstColumnCellTemplate}" 
                                                     HeaderStyle="{StaticResource FavoriteDataGridFirstColumnHeaderStyle}"/>
 
-                            <DataGridTemplateColumn SortMemberPath="Music.Singer">
+                            <DataGridTemplateColumn MaxWidth="150" SortMemberPath="Music.Singer">
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <TextBlock>
@@ -272,9 +272,9 @@
                                 <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
                                         <TextBlock>
-                                                <TextBlock Text="专辑" />
-                                                <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
-                                            </TextBlock>
+                                            <TextBlock Text="专辑" />
+                                            <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                        </TextBlock>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
                                 <DataGridTemplateColumn.CellTemplate>
@@ -857,9 +857,9 @@
                                     <Border Background="{x:Static helper:MyStaticResources.PopupBackground}" Padding="10,15" Width="280" Height="100" Clip="{StaticResource PopupGeometryGroup_MediaSpeedRatio}">
                                         <StackPanel>
                                             <TextBlock VerticalAlignment="Top" FontSize="16" Foreground="{x:Static helper:MyStaticResources.WhiteLight}" TextAlignment="Center">
-                                            <TextBlock Text="{Binding Value,ElementName=MusicSpeedRatioSlider}"/>
-                                            倍速播放
-                                        </TextBlock>
+                                                <TextBlock Text="{Binding Value,ElementName=MusicSpeedRatioSlider}"/>
+                                                倍速播放
+                                            </TextBlock>
 
                                             <Slider Margin="0,10" VerticalAlignment="Center" x:Name="MusicSpeedRatioSlider"
                                                 ValueChanged="MusicSpeedRatioSlider_ValueChanged"

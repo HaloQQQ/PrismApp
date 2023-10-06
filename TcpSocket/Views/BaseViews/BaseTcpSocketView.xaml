@@ -121,7 +121,7 @@
                         </ListBox.Style>
                     </ListBox>
 
-                    <RichTextBox DockPanel.Dock="Bottom" x:Name="rhTxt" ContextMenu="{StaticResource ForMessageBoard}"/>
+                    <RichTextBox DockPanel.Dock="Bottom" Background="Transparent" x:Name="rhTxt" ContextMenu="{StaticResource ForMessageBoard}"/>
                 </DockPanel>
             </Grid>
 

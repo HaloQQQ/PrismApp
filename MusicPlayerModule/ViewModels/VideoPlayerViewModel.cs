@@ -16,7 +16,6 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using WpfStyleResources.Helper;
-using WpfStyleResources.Interfaces;
 
 namespace MusicPlayerModule.ViewModels
 {

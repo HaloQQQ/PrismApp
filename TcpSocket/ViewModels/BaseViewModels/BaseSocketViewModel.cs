@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Helper.Utils;
-using WpfStyleResources.Interfaces;
+using WpfStyleResources.Helper;
 
 namespace TcpSocket.ViewModels.BaseViewModels
 {

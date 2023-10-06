@@ -57,9 +57,9 @@
                 <CheckBox DockPanel.Dock="Left" IsChecked="{Binding IsTcp}"
                       Style="{StaticResource CheckBoxEnableStyle}">
                     <TextBlock>
-                    <TextBlock Style="{StaticResource IconText}" Text="&#xec6f;" />
-                    <TextBlock Text="Tcp：" />
-                </TextBlock>
+                        <TextBlock Style="{StaticResource IconText}" Text="&#xec6f;" />
+                        <TextBlock Text="Tcp：" />
+                    </TextBlock>
                 </CheckBox>
 
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal"
@@ -67,17 +67,17 @@
                     <CheckBox IsChecked="{Binding IsTcpServer}" 
                           Style="{StaticResource CheckBoxEnableStyle}">
                         <TextBlock>
-                        <TextBlock Style="{StaticResource IconText}" FontSize="18" Text="&#xe98e;" />
-                        <TextBlock Text="服务器：" />
-                    </TextBlock>
+                            <TextBlock Style="{StaticResource IconText}" FontSize="18" Text="&#xe98e;" />
+                            <TextBlock Text="服务器：" />
+                        </TextBlock>
                     </CheckBox>
 
                     <StackPanel Orientation="Horizontal"
                             Visibility="{Binding IsTcpServer,Converter={StaticResource BoolToVisibleCollapsedConverter}}">
                         <TextBlock>
-                        <TextBlock Style="{StaticResource IconText}" Text="&#xe653;" />
-                        <TextBlock Style="{StaticResource ThemeBlk}" Text="服务端最大连接数:"/>
-                    </TextBlock>
+                            <TextBlock Style="{StaticResource IconText}" Text="&#xe653;" />
+                            <TextBlock Style="{StaticResource ThemeBlk}" Text="服务端最大连接数："/>
+                        </TextBlock>
                         <ComboBox Text="{Binding MaxClientCount, Converter={StaticResource DigitToStringConverter}, Mode=OneWayToSource}"
                               IsReadOnly="True" FontSize="20"
                               Style="{StaticResource TcpServerComboBoxEnableStyle}">
