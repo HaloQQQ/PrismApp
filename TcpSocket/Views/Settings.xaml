@@ -19,11 +19,11 @@
                     <TextBlock Text="{Binding Name}" />:
                 </TextBlock>
 
-                <CheckBox Margin="10,0,0,0" Content="Ctrl:" IsChecked="{Binding IsSelectCtrl}" IsEnabled="{Binding IsUsable}" />
+                <CheckBox Margin="10,0,0,0" Content="Ctrl:" IsChecked="{Binding IsSelectCtrl,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsUsable}" />
 
-                <CheckBox Margin="10,0,0,0" Content="Shift:" IsChecked="{Binding IsSelectShift}" IsEnabled="{Binding IsUsable}" />
+                <CheckBox Margin="10,0,0,0" Content="Shift:" IsChecked="{Binding IsSelectShift,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsUsable}" />
 
-                <CheckBox Margin="10,0,0,0" Content="Alt:" IsChecked="{Binding IsSelectAlt}" IsEnabled="{Binding IsUsable}" />
+                <CheckBox Margin="10,0,0,0" Content="Alt:" IsChecked="{Binding IsSelectAlt,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsUsable}" />
 
                 <ComboBox Margin="10,0,0,0" ItemsSource="{Binding Source={StaticResource Keys}}" IsReadOnly="True"
                           Text="{Binding SelectedKey}" IsEnabled="{Binding IsUsable}" />
@@ -43,7 +43,7 @@
                     </TextBox.Style>
                 </TextBox>
 
-                <CheckBox Style="{StaticResource SlideCheckBox}" IsChecked="{Binding IsUsable}" />
+                <CheckBox Style="{StaticResource SlideCheckBox}" IsChecked="{Binding IsUsable,UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>

@@ -119,6 +119,9 @@
       <Reference Include="SocketHelper">
         <HintPath>bin\Debug\SocketHelper.dll</HintPath>
       </Reference>
+      <Reference Include="WpfStyleResources">
+        <HintPath>bin\Debug\WpfStyleResources.dll</HintPath>
+      </Reference>
       <Reference Include="zxing, Version=0.16.8.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60">
         <HintPath>bin\Debug\zxing.dll</HintPath>
       </Reference>
@@ -134,7 +137,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\MySourceCode\WpfStyleResources\WpfStyleResources.csproj" />
       <ProjectReference Include="..\MusicPlayerModule\MusicPlayerModule.csproj" />
     </ItemGroup>
 

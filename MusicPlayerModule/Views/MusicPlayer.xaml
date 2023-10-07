@@ -215,10 +215,20 @@
                 <Viewbox Grid.Row="0" Style="{StaticResource OnlyDownViewbox}" VerticalAlignment="Top">
                     <DataGrid x:Name="DataGrid_ShowBySong" Height="{Binding ActualHeight,RelativeSource={RelativeSource AncestorType=Grid},Mode=OneWay}" 
                               Visibility="{Binding IsChecked,ElementName=RadioBtnShowBySong,Converter={StaticResource BooleanToVisibilityConverter}}" 
-                              Style="{StaticResource DataGrid_Transparent}" 
-                              HeadersVisibility="All" ContextMenu="{StaticResource FavoriteDataGridContextMenu}"
+                              HeadersVisibility="All" 
                               attachs:MyAttachProperty.DisplayRowNumber="True"
                               ItemsSource="{Binding DisplayFavorites}">
+                        <DataGrid.Style>
+                            <Style TargetType="DataGrid" BasedOn="{StaticResource DataGrid_Transparent}">
+                                <Setter Property="ContextMenu" Value="{StaticResource FavoriteDataGridContextMenu}" />
+                                
+                                <Style.Triggers>
+                                    <DataTrigger Value="0" Binding="{Binding DisplayFavorites.Count}">
+                                        <Setter Property="ContextMenu" Value="{x:Null}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Style>
                         <DataGrid.RowStyle>
                             <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                                 <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_Favorites_MouseDoubleClick"/>
@@ -371,10 +381,20 @@
 
                     <Viewbox Grid.Column="1" Style="{StaticResource OnlyDownViewbox}" VerticalAlignment="Top">
                         <DataGrid x:Name="DataGrid_ShowByAlbum" Grid.Column="1"
-                              Style="{StaticResource DataGrid_Transparent}" ContextMenu="{StaticResource FavoriteDataGridContextMenu}"
                               HeadersVisibility="All" Height="{Binding ActualHeight,RelativeSource={RelativeSource AncestorType=Grid},Mode=OneWay}" 
                               attachs:MyAttachProperty.DisplayRowNumber="True"
                               ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites,ElementName=MusicByAlbumListBox}">
+                            <DataGrid.Style>
+                                <Style TargetType="DataGrid" BasedOn="{StaticResource DataGrid_Transparent}">
+                                    <Setter Property="ContextMenu" Value="{StaticResource FavoriteDataGridContextMenu}" />
+
+                                    <Style.Triggers>
+                                        <DataTrigger Value="0" Binding="{Binding DisplayFavorites.Count}">
+                                            <Setter Property="ContextMenu" Value="{x:Null}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.Style>
                             <DataGrid.RowStyle>
                                 <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                                     <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_Favorites_MouseDoubleClick"/>
@@ -469,10 +489,20 @@
 
                     <Viewbox Grid.Column="1" Style="{StaticResource OnlyDownViewbox}" VerticalAlignment="Top">
                         <DataGrid x:Name="DataGrid_ShowBySinger" Grid.Column="1"
-                              Style="{StaticResource DataGrid_Transparent}" ContextMenu="{StaticResource FavoriteDataGridContextMenu}" 
                               HeadersVisibility="All" Height="{Binding ActualHeight,RelativeSource={RelativeSource AncestorType=Grid},Mode=OneWay}" 
                               attachs:MyAttachProperty.DisplayRowNumber="True"
                               ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites,ElementName=MusicBySingerListBox}">
+                            <DataGrid.Style>
+                                <Style TargetType="DataGrid" BasedOn="{StaticResource DataGrid_Transparent}">
+                                    <Setter Property="ContextMenu" Value="{StaticResource FavoriteDataGridContextMenu}" />
+
+                                    <Style.Triggers>
+                                        <DataTrigger Value="0" Binding="{Binding DisplayFavorites.Count}">
+                                            <Setter Property="ContextMenu" Value="{x:Null}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.Style>
                             <DataGrid.RowStyle>
                                 <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                                     <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_Favorites_MouseDoubleClick"/>
@@ -562,10 +592,20 @@
                     <Viewbox Grid.Column="1" Style="{StaticResource OnlyDownViewbox}"
                              VerticalAlignment="Top">
                         <DataGrid x:Name="DataGrid_ShowByDir" Grid.Column="1"
-                              Style="{StaticResource DataGrid_Transparent}" ContextMenu="{StaticResource FavoriteDataGridContextMenu}" 
                               HeadersVisibility="All" Height="{Binding ActualHeight,RelativeSource={RelativeSource AncestorType=Grid},Mode=OneWay}"
                               attachs:MyAttachProperty.DisplayRowNumber="True"
                               ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites,ElementName=MusicByDirListBox}">
+                            <DataGrid.Style>
+                                <Style TargetType="DataGrid" BasedOn="{StaticResource DataGrid_Transparent}">
+                                    <Setter Property="ContextMenu" Value="{StaticResource FavoriteDataGridContextMenu}" />
+
+                                    <Style.Triggers>
+                                        <DataTrigger Value="0" Binding="{Binding DisplayFavorites.Count}">
+                                            <Setter Property="ContextMenu" Value="{x:Null}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.Style>
                             <DataGrid.RowStyle>
                                 <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                                     <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_Favorites_MouseDoubleClick"/>

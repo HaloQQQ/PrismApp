@@ -80,11 +80,11 @@ namespace TcpSocket.ViewModels
 
             this.SubmitCommand = new DelegateCommand(() =>
             {
-                this.IsEditingSetting = false;
-
                 var resultStr = containerProvider.Resolve<HotKeyHelper>().RegisterHotKeys(this.HotKeys);
 
                 resultStr = string.IsNullOrEmpty(resultStr) ? "注册快捷键无错误" : resultStr;
+
+                this.IsEditingSetting = false;
 
                 eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(resultStr, 4));
             });
