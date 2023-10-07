@@ -9,22 +9,11 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Threading;
 
 namespace TcpSocket.Helper
 {
     internal static partial class Helper
     {
-        internal static void Invoke(Action action)
-        {
-            App.Current.Dispatcher.Invoke(DispatcherPriority.Background, action);
-        }
-
-        internal static void BeginInvoke(Action action)
-        {
-            App.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, action);
-        }
-
         internal static bool IsInPopup(FrameworkElement element)
         {
             var current = element;

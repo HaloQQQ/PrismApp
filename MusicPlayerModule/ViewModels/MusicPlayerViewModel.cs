@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using WpfStyleResources.Helper;
+using WpfStyleResources.Helper.MediaInfo;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -523,7 +524,7 @@ namespace MusicPlayerModule.ViewModels
         private async void AddMusicFromFileDialog()
         {
             System.Windows.Forms.OpenFileDialog openFileDialog =
-                CommonFileUtils.OpenFileDialog(AppStatics.LastMusicDir, CommonFileUtils.MediaType.mp3);
+                CommonUtils.OpenFileDialog(AppStatics.LastMusicDir, new MusicMedia());
 
             if (openFileDialog != null)
             {
@@ -533,10 +534,16 @@ namespace MusicPlayerModule.ViewModels
 
         private async void AddMusicFromFolderDialog()
         {
-            var selectedPath = CommonFileUtils.OpenFolderDialog(AppStatics.LastMusicDir);
+            var selectedPath = CommonUtils.OpenFolderDialog(AppStatics.LastMusicDir);
             if (!string.IsNullOrEmpty(selectedPath))
             {
-                AppStatics.LastMusicDir = selectedPath + "/";
+                selectedPath = selectedPath.EnsureEndsWith("/");
+                if (!selectedPath.Equals(AppStatics.LastMusicDir, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    _config.WriteConfigNode(selectedPath, new[] { "Music", nameof(AppStatics.LastMusicDir) });
+                    
+                    AppStatics.LastMusicDir = selectedPath;
+                }
 
                 var list = new List<string>();
 
@@ -590,10 +597,6 @@ namespace MusicPlayerModule.ViewModels
             }
 
             this.Favorites.AddRange(this.DisplayFavorites);
-
-            // await LoadLyricToMusicModel
-            //     .LoadAsync(directory, this.DisplayFavorites.Select<FavoriteMusicViewModel, MusicModel>(fa => fa.Music))
-            //     .ConfigureAwait(false);
         }
 
         private async Task MultiThreadBatchLoadMusic(List<string> filePathList, string directory)
@@ -615,7 +618,7 @@ namespace MusicPlayerModule.ViewModels
                                          .Skip(index * step)
                                          .Take(step))
                             {
-                                CommonFileUtils.Invoke(() =>
+                                CommonUtils.Invoke(() =>
                                 {
                                     var musicModel = new FavoriteMusicViewModel(new MusicModel(item));
                                     this.DisplayFavorites.Add(musicModel);
@@ -628,11 +631,6 @@ namespace MusicPlayerModule.ViewModels
                     )
                 );
             }
-
-            //await Task.WhenAll(taskList)
-            //     //.ContinueWith(task => LoadLyricToMusicModel.LoadAsync(AppStatics.LastMusicDir,
-            //     //    this.DisplayFavorites.Select<FavoriteMusicViewModel, MusicModel>(fa => fa.Music)))
-            //    .ConfigureAwait(false);
         }
 
         #endregion
@@ -863,8 +861,10 @@ namespace MusicPlayerModule.ViewModels
 
         #endregion
 
+        private IConfigManager _config;
         public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config)
         {
+            this._config = config;
             this._eventAggregator = eventAggregator;
 
             this.LoadConfig(config);
@@ -897,7 +897,6 @@ namespace MusicPlayerModule.ViewModels
             config.SetConfig += config =>
             {
                 config.WriteConfigNode(this.CurrentPlayOrder.Description, new[] { baseNode, musicKey });
-                config.WriteConfigNode(AppStatics.LastMusicDir, new[] { baseNode, nameof(AppStatics.LastMusicDir) });
             };
         }
 

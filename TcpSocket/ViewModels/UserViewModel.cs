@@ -2,7 +2,7 @@
 
 namespace TcpSocket.ViewModels
 {
-    public class UserViewModel : BaseNotifyModel
+    internal class UserViewModel : BaseNotifyModel
     {
         public bool SignIn { get; set; }
 

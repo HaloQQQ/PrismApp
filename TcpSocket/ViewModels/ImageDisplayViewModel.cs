@@ -1,17 +1,29 @@
 ﻿using Helper.AbstractModel;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using TcpSocket.Helper;
+using TcpSocket.MsgEvents;
 using WpfStyleResources.Helper;
 
 namespace TcpSocket.ViewModels
 {
-    public class MyImage
+    public class MyImage : BaseNotifyModel
     {
+        public bool InList { get; set; }
+
+        private bool _selected;
+
+        public bool Selected
+        {
+            get => this._selected;
+            set => SetProperty<bool>(ref _selected, value);
+        }
+
+
         public string URI { get; set; } = null!;
         public string FileType { get; set; } = null!;
         public string Name { get; set; } = null!;
@@ -30,81 +42,43 @@ namespace TcpSocket.ViewModels
         }
     }
 
-    public class MyImageBlock : MyImage
+    internal class ImageDisplayViewModel : BaseNotifyModel, IDisposable
     {
-        public MyImageBlock(string path) : base(path)
-        {
-        }
-    }
+        public ObservableCollection<MyImage> Data { get; private set; } = new ObservableCollection<MyImage>();
 
-    public class ImageDisplayViewModel : BaseNotifyModel, IDisposable
-    {
-        public string ImageDir { get; set; }
-        public ObservableCollection<MyImage> List { get; set; } = new ObservableCollection<MyImage>();
-        public ObservableCollection<MyImage> Data { get; set; } = new ObservableCollection<MyImage>();
-        public ObservableCollection<MyImageBlock> Block { get; set; } = new ObservableCollection<MyImageBlock>();
+        public IEnumerable<MyImage> ActualData => Data.SkipWhile(item => item.Name == null);
 
         private bool _showInList;
 
         public bool ShowInList
         {
             get => _showInList;
-            set
-            {
-                _showInList = value;
-                CallModel();
-            }
+            set => SetProperty<bool>(ref _showInList, value);
         }
 
-
-        private void GetFiles(string directoryPath, List<string> filePaths)
-        {
-            foreach (string d in Directory.GetFileSystemEntries(directoryPath))
-            {
-                if (File.Exists(d))
-                {
-                    System.Drawing.Image img = System.Drawing.Image.FromFile(d);
-                    if (img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Jpeg) || img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Png))
-                    {
-                        filePaths.Add(d);
-                    }
-                }
-                else
-                {
-                    GetFiles(d, filePaths);
-                }
-            }
-        }
-
-        private IEnumerable<string> GetImageUris()
+        private IEnumerable<string> GetImageUris(string imageDir)
         {
             List<string> list = new List<string>();
 
-            if (!Directory.Exists(ImageDir))
+            CommonUtils.GetFiles(imageDir, list, file =>
             {
-                ImageDir = Constants.Image_Dir;
-            }
-
-            GetFiles(ImageDir, list);
+                System.Drawing.Image img = System.Drawing.Image.FromFile(file);
+                return img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Jpeg) || img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Png);
+            });
 
             return list;
         }
 
-        public ImageDisplayViewModel(IConfigManager config)
+        public ImageDisplayViewModel(IConfigManager config, IEventAggregator eventAggregator)
         {
             this.Data.Add(new MyImage());
 
-            this.ImageDir = config.ReadConfigNode("ImageDir");//config.GetImageDir();
-            //config.SetConfig += (config, jsonObject) => 
-            //    config.SetImageDir(jsonObject, this.ImageDir);
-
-            config.SetConfig += config =>
-                config.WriteConfigNode(this.ImageDir, "ImageDir");
-
+            this.Data.CollectionChanged += (sender, e) => CallModel(nameof(this.ActualData));
 
             Task.Run(async () =>
             {
-                var coll = GetImageUris();
+                var dir = config.ReadConfigNode(nameof(SettingsViewModel.ImageDir));
+                var coll = GetImageUris(dir);
                 foreach (var item in coll)
                 {
                     if (_disposed)
@@ -114,27 +88,20 @@ namespace TcpSocket.ViewModels
 
                     var image = new MyImage(item);
 
-                    Helper.Helper.Invoke(() =>
+                    CommonUtils.Invoke(() =>
                     {
-                        List.Add(image);
                         Data.Add(image);
-
-                        Block.Add(new MyImageBlock(item));
                     });
 
-                    await Task.Delay(100);
+                    await Task.Delay(20);
                 }
-            });
+            }).ContinueWith(task => eventAggregator.GetEvent<BackgroundImageUpdateEvent>().Publish(null));
         }
 
         private bool _disposed;
         public void Dispose()
         {
             _disposed = true;
-            Block.Clear();
-            Block = null;
-            List.Clear();
-            List = null;
             Data.Clear();
             Data = null;
         }

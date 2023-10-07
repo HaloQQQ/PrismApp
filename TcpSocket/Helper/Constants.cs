@@ -38,8 +38,6 @@ namespace TcpSocket.Helper
 
         internal const string Software_Log_Dir = "软件启停记录";
 
-        internal const string Image_Dir = "E:\\图片";
-
         internal static readonly Brush SendBrush = Brushes.LightSkyBlue;
         internal static readonly Brush RecvBrush = Brushes.LightGreen;
 
@@ -58,7 +56,6 @@ namespace TcpSocket.Helper
             internal const string Pause = "暂停";
             internal const string Prev = "上一个";
             internal const string Next = "下一个";
-            internal const string AppFull = "程序全覆盖";
             internal const string ClearAB = "清空AB点";
         }
     }

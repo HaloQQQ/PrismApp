@@ -33,7 +33,7 @@
                     <TextBox.Style>
                         <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
                             <Setter Property="attachs:MyAttachProperty.PlaceHolder" Value="组合键"/>
-                            
+
                             <Style.Triggers>
                                 <DataTrigger Value="False" Binding="{Binding IsUsable}">
                                     <Setter Property="Foreground" Value="Red"/>
@@ -60,8 +60,28 @@
                     <ListBox ItemsSource="{Binding DataContext.HotKeys}" HorizontalAlignment="Stretch"
                              ItemContainerStyle="{StaticResource ListBoxItem_General}" />
                 </TabItem>
-                <TabItem Header="测试1">
-                    <Grid Background="Blue" MinWidth="600" MinHeight="500" />
+                <TabItem Header="默认目录">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="图片默认目录：" Style="{StaticResource ThemeBlk}"/>
+                            <TextBox IsReadOnly="True" Text="{Binding DataContext.ImageDir}" attachs:MyAttachProperty.PlaceHolder="空目录"/>
+                            <Button Style="{StaticResource TransparentButtonBase}" Content="浏览" 
+                                    Command="{Binding DataContext.FindImageDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="音乐默认目录：" Style="{StaticResource ThemeBlk}"/>
+                            <TextBox IsReadOnly="True" Text="{Binding DataContext.LastMusicDir}" attachs:MyAttachProperty.PlaceHolder="空目录"/>
+                            <Button Style="{StaticResource TransparentButtonBase}" Content="浏览" 
+                                    Command="{Binding DataContext.FindMusicDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="视频默认目录：" Style="{StaticResource ThemeBlk}"/>
+                            <TextBox IsReadOnly="True" Text="{Binding DataContext.LastVideoDir}" attachs:MyAttachProperty.PlaceHolder="空目录"/>
+                            <Button Style="{StaticResource TransparentButtonBase}" 
+                                    Content="浏览" Command="{Binding DataContext.FindVideoDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
+                        </StackPanel>
+                    </StackPanel>
                 </TabItem>
                 <TabItem Header="测试2">
                     <StackPanel Background="Yellow" MinWidth="600" MinHeight="500" />

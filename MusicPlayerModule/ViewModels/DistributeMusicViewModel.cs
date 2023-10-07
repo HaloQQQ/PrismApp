@@ -1,6 +1,5 @@
 ﻿using MusicPlayerModule.Common;
 using MusicPlayerModule.Models;
-using MusicPlayerModule.Utils;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
@@ -8,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using WpfStyleResources.Helper;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -133,7 +133,7 @@ namespace MusicPlayerModule.ViewModels
 
             this.BatchMoveMusicDirCommand = new DelegateCommand<string>(originDir =>
             {
-                var selectedPath = CommonFileUtils.OpenFolderDialog(AppStatics.LastMusicDir);
+                var selectedPath = CommonUtils.OpenFolderDialog(AppStatics.LastMusicDir);
 
                 if (!string.IsNullOrEmpty(selectedPath))
                 {
@@ -145,7 +145,7 @@ namespace MusicPlayerModule.ViewModels
 
             this.AddMusicDirCommand = new DelegateCommand(() =>
             {
-                var selectedPath = CommonFileUtils.OpenFolderDialog(AppStatics.LastMusicDir);
+                var selectedPath = CommonUtils.OpenFolderDialog(AppStatics.LastMusicDir);
 
                 if (!string.IsNullOrEmpty(selectedPath))
                 {
@@ -165,7 +165,7 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
-                var selectedPath = CommonFileUtils.OpenFolderDialog(AppStatics.LastMusicDir);
+                var selectedPath = CommonUtils.OpenFolderDialog(AppStatics.LastMusicDir);
 
                 if (!string.IsNullOrEmpty(selectedPath))
                 {

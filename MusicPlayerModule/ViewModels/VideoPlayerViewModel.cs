@@ -4,7 +4,6 @@ using MusicPlayerModule.Models.Common;
 using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.MsgEvents.Video;
 using MusicPlayerModule.MsgEvents.Video.Dtos;
-using MusicPlayerModule.Utils;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -16,6 +15,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using WpfStyleResources.Helper;
+using WpfStyleResources.Helper.MediaInfo;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -319,7 +319,7 @@ namespace MusicPlayerModule.ViewModels
         private void AddVideoFromFileDialog()
         {
             System.Windows.Forms.OpenFileDialog openFileDialog =
-                CommonFileUtils.OpenFileDialog(AppStatics.LastVideoDir, CommonFileUtils.MediaType.mp4);
+                CommonUtils.OpenFileDialog(AppStatics.LastVideoDir, new VideoMedia());
 
             if (openFileDialog != null)
             {
@@ -329,10 +329,16 @@ namespace MusicPlayerModule.ViewModels
 
         private void AddVideoFromFolderDialog()
         {
-            var selectedPath = CommonFileUtils.OpenFolderDialog(AppStatics.LastVideoDir);
+            var selectedPath = CommonUtils.OpenFolderDialog(AppStatics.LastVideoDir);
             if (!string.IsNullOrEmpty(selectedPath))
             {
-                AppStatics.LastVideoDir = selectedPath + "/";
+                selectedPath = selectedPath.EnsureEndsWith("/");
+                if (!selectedPath.Equals(AppStatics.LastVideoDir, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    _config.WriteConfigNode(selectedPath, new[] { "Video", nameof(AppStatics.LastVideoDir) });
+
+                    AppStatics.LastVideoDir = selectedPath;
+                }
 
                 var list = new List<string>();
 
@@ -441,10 +447,9 @@ namespace MusicPlayerModule.ViewModels
             {
                 config.WriteConfigNode(this.CurrentPlayOrder.Description, new[] { baseNode, videoPlayOrder });
                 config.WriteConfigNode(this.Stretch, new[] { baseNode, videoStretch });
-                config.WriteConfigNode(AppStatics.LastVideoDir, new[] { baseNode, nameof(AppStatics.LastVideoDir) });
             };
 
-            config.SetConfig += config =>
+            config.PostSetConfig += config =>
             {
                 foreach (var item in this.DisplayPlaying)
                 {

@@ -3,6 +3,7 @@ using SocketHelper.Tcp;
 using TcpSocket.Helper;
 using TcpSocket.ViewModels;
 using TcpSocket.Views.BaseViews;
+using WpfStyleResources.Helper;
 
 namespace TcpSocket.Views
 {
@@ -49,7 +50,7 @@ namespace TcpSocket.Views
             {
                 this.rhTxt.Info(this._tcpSocketContext, $"{socket}连接成功");
 
-                Helper.Helper.Invoke(() =>
+                CommonUtils.Invoke(() =>
                 {
                     base._tcpSocketContext.ConnList.Add($"{base._tcpSocketContext.IP}:{port}");
                 });
@@ -64,7 +65,7 @@ namespace TcpSocket.Views
 
             base._tcpSocket.ExceptionOccurred += (socketName, exception) =>
             {
-                Helper.Helper.Invoke(() =>
+                CommonUtils.Invoke(() =>
                 {
                     if (base._tcpSocketContext.ConnList.Contains(socketName))
                     {

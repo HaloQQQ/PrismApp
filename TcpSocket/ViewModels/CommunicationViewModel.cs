@@ -5,7 +5,7 @@ using TcpSocket.Views;
 
 namespace TcpSocket.ViewModels
 {
-    public class CommunicationViewModel : BindableBase
+    internal class CommunicationViewModel : BindableBase
     {
         public CommunicationViewModel(UDPViewModel udpContext,
             TcpClientViewModel applicationClientContext,

@@ -2,7 +2,7 @@
 
 namespace TcpSocket.ViewModels
 {
-    public class AnotherTcpServerViewModel : TcpServerViewModel
+    internal class AnotherTcpServerViewModel : TcpServerViewModel
     {
         public AnotherTcpServerViewModel(IConfigManager config) : base(config)
         {

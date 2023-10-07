@@ -1,6 +1,6 @@
 ﻿namespace TcpSocket.Views
 {
-    public class AnotherTcpServerView : TcpServerView
+    internal class AnotherTcpServerView : TcpServerView
     {
     }
 }

@@ -4,7 +4,7 @@ using WpfStyleResources.Helper;
 
 namespace TcpSocket.ViewModels
 {
-    public class TcpClientViewModel : BaseSocketViewModel
+    internal class TcpClientViewModel : BaseSocketViewModel
     {
         public TcpClientViewModel(IConfigManager config) : base(config)
         {

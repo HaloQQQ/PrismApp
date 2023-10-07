@@ -34,7 +34,7 @@
     </DataTemplate>
 
     <!-- ImageBlock -->
-    <DataTemplate x:Key="ImageBlock" DataType="viewModels:MyImageBlock">
+    <DataTemplate x:Key="ImageBlock" DataType="viewModels:MyImage">
         <Grid>
             <DockPanel>
                 <Image DockPanel.Dock="Left" Margin="10" Width="80" Height="80" Source="{Binding URI}" />

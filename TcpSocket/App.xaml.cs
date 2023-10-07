@@ -119,6 +119,8 @@ namespace TcpSocket
 
             Helper.Helper.Log(Constants.Software_Log_Dir, $"进程{processName}启动成功!");
 
+            containerRegistry.RegisterSingleton<SettingsViewModel>();
+
             containerRegistry.RegisterScoped<UDPViewModel>();
             containerRegistry.RegisterScoped<TcpClientViewModel>();
             containerRegistry.RegisterScoped<TcpServerViewModel>();
@@ -135,7 +137,6 @@ namespace TcpSocket
             ViewModelLocationProvider.Register<ImageDisplayView, ImageDisplayViewModel>();
             ViewModelLocationProvider.Register<SwitchBackgroundView, ImageDisplayViewModel>();
 
-            ViewModelLocationProvider.Register<Settings, SoftwareViewModel>();
             containerRegistry.Register<Settings>();
             this.Container.Resolve<IRegionManager>().RegisterViewWithRegion("SettingRegion", nameof(Settings));
         }
@@ -178,7 +179,7 @@ namespace TcpSocket
 
             ContainerLocator.Current.RegisterSingleton<HotKeyHelper>(() => hotKeyHelper);
 
-            var str = hotKeyHelper.RegisterHotKeys(this.Container.Resolve<SoftwareViewModel>().HotKeys);
+            var str = hotKeyHelper.RegisterHotKeys(this.Container.Resolve<SettingsViewModel>().HotKeys);
 
             if (str.Length > 0)
             {

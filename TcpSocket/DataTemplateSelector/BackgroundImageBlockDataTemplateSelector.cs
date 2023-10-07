@@ -10,7 +10,7 @@ namespace TcpSocket.DataTemplateSelector
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (item is MyImage { Name: null })
+            if (item is MyImage image && image.Name is null)
             {
                 return this.Empty;
             }

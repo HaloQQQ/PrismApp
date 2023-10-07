@@ -19,9 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="WpfStyleResources">
-      <HintPath>..\TcpSocket\bin\Debug\WpfStyleResources.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\MySourceCode\WpfStyleResources\WpfStyleResources.csproj" />
   </ItemGroup>
 
   <ItemGroup>

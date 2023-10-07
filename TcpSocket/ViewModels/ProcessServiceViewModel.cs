@@ -9,10 +9,11 @@ using System.ServiceProcess;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TcpSocket.Models;
+using WpfStyleResources.Helper;
 
 namespace TcpSocket.ViewModels
 {
-    public class ProcessServiceViewModel : BaseNotifyModel, IDisposable
+    internal class ProcessServiceViewModel : BaseNotifyModel, IDisposable
     {
         public ObservableCollection<ProcessContext> ProcessList { get; private set; } = new ObservableCollection<ProcessContext>();
 
@@ -26,7 +27,7 @@ namespace TcpSocket.ViewModels
                     ProcessContext processContext;
                     if (ProcessList.Count > 0)
                     {
-                        Helper.Helper.Invoke(() => ProcessList.Clear());
+                        CommonUtils.Invoke(() => ProcessList.Clear());
                     }
 
                     foreach (var process in ProcessUtil.GetAllProcessList().OrderBy(p => p.Key))
@@ -37,7 +38,7 @@ namespace TcpSocket.ViewModels
                         }
 
                         processContext = new ProcessContext(process.Value);
-                        Helper.Helper.Invoke(() => ProcessList.Add(processContext));
+                        CommonUtils.Invoke(() => ProcessList.Add(processContext));
 
                         await Task.Delay(50);
                     }
@@ -59,7 +60,7 @@ namespace TcpSocket.ViewModels
                     ServiceContext serviceContext;
                     if (ServiceList.Count > 0)
                     {
-                        Helper.Helper.Invoke(() => ServiceList.Clear());
+                        CommonUtils.Invoke(() => ServiceList.Clear());
                     }
 
                     foreach (var service in ServiceUtil.GetAllNormalServiceList().OrderBy(s => s.Key))
@@ -70,7 +71,7 @@ namespace TcpSocket.ViewModels
                         }
 
                         serviceContext = new ServiceContext(service.Value);
-                        Helper.Helper.Invoke(() => { ServiceList.Add(serviceContext); });
+                        CommonUtils.Invoke(() => { ServiceList.Add(serviceContext); });
 
                         await Task.Delay(50);
                     }

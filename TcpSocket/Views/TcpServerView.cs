@@ -5,10 +5,11 @@ using System;
 using TcpSocket.Helper;
 using TcpSocket.ViewModels;
 using TcpSocket.Views.BaseViews;
+using WpfStyleResources.Helper;
 
 namespace TcpSocket.Views
 {
-    public class TcpServerView : BaseTcpSocketView
+    internal class TcpServerView : BaseTcpSocketView
     {
         private CommunicationViewModel _mediatorContext = null!;
 
@@ -63,7 +64,7 @@ namespace TcpSocket.Views
 
                 if (socket.RemoteEndPoint != null)
                 {
-                    Helper.Helper.Invoke(() =>
+                    CommonUtils.Invoke(() =>
                         tcpServerViewModel.ConnList.Add(socket.RemoteEndPoint.ToString()!)
                     );
                 }
@@ -84,7 +85,7 @@ namespace TcpSocket.Views
 
             this._tcpSocket.ExceptionOccurred += (socketName, exception) =>
             {
-                Helper.Helper.Invoke(() =>
+                CommonUtils.Invoke(() =>
                 {
                     if (tcpServerViewModel.ConnList.Contains(socketName))
                     {

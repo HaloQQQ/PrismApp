@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using Prism.Events;
+﻿using Prism.Events;
 using Prism.Ioc;
 using System;
 using System.IO;
@@ -8,9 +7,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using TcpSocket.Helper;
 using TcpSocket.MsgEvents;
 using TcpSocket.ViewModels;
+using WpfStyleResources.Helper;
+using WpfStyleResources.Helper.MediaInfo;
 
 namespace TcpSocket.Views
 {
@@ -96,18 +96,19 @@ namespace TcpSocket.Views
 
         private void OpenFileDialog()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Title = "选择背景图片";
-            openFileDialog.Multiselect = false;
-            openFileDialog.InitialDirectory = Constants.Image_Dir;
-            openFileDialog.Filter = "图像文件|*.jpg|图像文件|*.png|所有文件|*.*";
+            var setting = ContainerLocator.Current.Resolve<SettingsViewModel>();
 
-            bool? result = openFileDialog.ShowDialog();
-            if (result != null && (bool)result)
+            var openFileDialog = CommonUtils.OpenFileDialog(setting.ImageDir, new PictureMedia());
+
+            if (openFileDialog != null)
             {
-                SetBackgroundImage(openFileDialog.FileName);
+                var file = openFileDialog.FileName;
+                
+                this._imagesContext.Data.Add(new MyImage(file));
 
-                this._imagesContext.ImageDir = Directory.GetParent(openFileDialog.FileName)?.ToString()!;
+                SetBackgroundImage(file);
+
+                setting.ImageDir = Directory.GetParent(file)?.ToString()!;
             }
         }
 

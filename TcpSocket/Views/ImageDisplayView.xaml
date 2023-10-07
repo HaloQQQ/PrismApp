@@ -7,18 +7,31 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
-            <selector:ImageDataTemplateSelector x:Key="ImageDataTemplateSelector">
-                <selector:ImageDataTemplateSelector.List>
+            <selector:ListImageDataTemplateSelector x:Key="ListImageDataTemplateSelector">
+                <selector:ListImageDataTemplateSelector.List>
                     <DataTemplate>
                         <ContentPresenter ContentTemplate="{StaticResource ImageList}"/>
                     </DataTemplate>
-                </selector:ImageDataTemplateSelector.List>
-                <selector:ImageDataTemplateSelector.Block>
+                </selector:ListImageDataTemplateSelector.List>
+                <selector:ListImageDataTemplateSelector.Block>
                     <DataTemplate>
                         <ContentPresenter ContentTemplate="{StaticResource ImageBlock}"/>
                     </DataTemplate>
-                </selector:ImageDataTemplateSelector.Block>
-            </selector:ImageDataTemplateSelector>
+                </selector:ListImageDataTemplateSelector.Block>
+            </selector:ListImageDataTemplateSelector>
+
+            <selector:BlockImageDataTemplateSelector x:Key="BlockImageDataTemplateSelector">
+                <selector:BlockImageDataTemplateSelector.List>
+                    <DataTemplate>
+                        <ContentPresenter ContentTemplate="{StaticResource ImageList}"/>
+                    </DataTemplate>
+                </selector:BlockImageDataTemplateSelector.List>
+                <selector:BlockImageDataTemplateSelector.Block>
+                    <DataTemplate>
+                        <ContentPresenter ContentTemplate="{StaticResource ImageBlock}"/>
+                    </DataTemplate>
+                </selector:BlockImageDataTemplateSelector.Block>
+            </selector:BlockImageDataTemplateSelector>
 
             <Style TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItem_Split}"/>
         </ResourceDictionary>
@@ -32,12 +45,12 @@
 
         <ListBox Style="{StaticResource VerticalScrollVirtualItemsControl}"
                  HorizontalContentAlignment="Left" x:Name="list1" 
-                 Grid.Column="0" ItemsSource="{Binding List}"
-                 ItemTemplateSelector="{StaticResource ImageDataTemplateSelector}" />
+                 Grid.Column="0" ItemsSource="{Binding ActualData}"
+                 ItemTemplateSelector="{StaticResource ListImageDataTemplateSelector}" />
 
         <ListBox Style="{StaticResource VerticalScrollVirtualItemsControl}"
-                 x:Name="list2" Grid.Column="1" ItemsSource="{Binding Block}"
-                 ItemTemplateSelector="{StaticResource ImageDataTemplateSelector}" />
+                 x:Name="list2" Grid.Column="1" ItemsSource="{Binding ActualData}"
+                 ItemTemplateSelector="{StaticResource BlockImageDataTemplateSelector}" />
 
     </Grid>
 </UserControl>

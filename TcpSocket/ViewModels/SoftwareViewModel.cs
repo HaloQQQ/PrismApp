@@ -1,15 +1,13 @@
 ﻿using Helper.ThirdPartyUtils;
 using Helper.Utils;
-using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Ioc;
 using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -26,62 +24,30 @@ namespace TcpSocket.ViewModels
         public SoftwareViewModel(
             UserViewModel userContext,
             ImageDisplayViewModel imageDisplayViewModel,
+            SettingsViewModel settings,
             IConfigManager config,
-            IContainerExtension containerExtension,
             IEventAggregator eventAggregator)
         {
             this.UserContext = userContext;
+            this.Settings = settings;
             this._imageDisplayViewModel = imageDisplayViewModel;
-            
 
             var bitmap = QRCodeUtil.GetColorfulQR("Hello 3Q", Color.GreenYellow, Color.White, 200);
 
             this.BitmapImage = bitmap;
 
-            this.LoadConfig(config);
-
             this.SwitchThemeCommand = new DelegateCommand(() => this.RefreshTheme());
 
-            this.CancelCommand = new DelegateCommand(() =>
-            {
-                this.IsEditingSetting = false;
-
-                foreach (var item in this.HotKeys)
-                {
-                    item.GoBack();
-                }
-            });
-
-            this.SubmitCommand = new DelegateCommand(() =>
-            {
-                this.IsEditingSetting = false;
-
-                var resultStr = containerExtension.Resolve<HotKeyHelper>().RegisterHotKeys(this.HotKeys);
-
-                resultStr = string.IsNullOrEmpty(resultStr) ? "注册快捷键无错误" : resultStr;
-
-                eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(resultStr, 4));
-            });
-
-            this.SubscribeCustomCommandEvent();
-
-            eventAggregator.GetEvent<BackgroundImageUpdateEvent>().Subscribe(uri => this.CurrentBkGrd = uri);
+            eventAggregator.GetEvent<BackgroundImageUpdateEvent>().Subscribe(uri => this.SetBackgroundImage(uri));
 
             eventAggregator.GetEvent<DialogMessageEvent>().Subscribe(item => this.DialogMessage = item);
 
-            this.InitHotkeys(config);
+            this.LoadConfig(config);
+
+            this.SubscribeCustomCommandEvent();
 
             this.InitBackgroundSwitchTimer();
         }
-
-        /// <summary>
-        /// 还原未提交的修改
-        /// </summary>
-        public ICommand CancelCommand { get; private set; }
-        /// <summary>
-        /// 提交注册快捷键
-        /// </summary>
-        public ICommand SubmitCommand { get; private set; }
 
         public ICommand SwitchThemeCommand { get; private set; }
 
@@ -94,7 +60,7 @@ namespace TcpSocket.ViewModels
             this.DefaultThemeURI = config.ReadConfigNode(Constants.DefaultThemeURI);
             this.LoadDefaultTheme();
 
-            this.CurrentBkGrd = config.ReadConfigNode(Constants.BkgrdUri);
+            this.SetBackgroundImage(config.ReadConfigNode(Constants.BkgrdUri));
             this.IsMusicPlayer = config.IsTrue(Constants.IsMusicPlayer);
             this.IsVideoPlayer = config.IsTrue(Constants.IsVideoPlayer);
 
@@ -112,6 +78,27 @@ namespace TcpSocket.ViewModels
 
                 AppUtils.AutoStartWithDirectory(this.AutoStart);
             };
+        }
+
+        private void SetBackgroundImage(string url)
+        {
+            if (!string.IsNullOrEmpty(url))
+            {
+                this.CurrentBkGrd = url;
+            }
+
+            if (!string.IsNullOrEmpty(this.CurrentBkGrd))
+            {
+                this.TrySelectedImage();
+            }
+        }
+
+        internal void TrySelectedImage()
+        {
+            foreach (var item in this._imageDisplayViewModel.ActualData)
+            {
+                item.Selected = item.URI == this.CurrentBkGrd;
+            }
         }
 
         private void LoadDefaultTheme()
@@ -208,43 +195,7 @@ namespace TcpSocket.ViewModels
             set => SetProperty<DialogMessage>(ref _dialogMessage, value);
         }
 
-        public List<HotKeyModel> HotKeys { get; private set; } = new List<HotKeyModel>();
-
-        private void InitHotkeys(IConfigManager config)
-        {
-            var str = config.ReadConfigNode(Constants.Hotkeys);
-            if (!string.IsNullOrEmpty(str))
-            {
-                var hotkeyDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
-                if (hotkeyDic != null && hotkeyDic.Count > 0)
-                {
-                    foreach (var item in hotkeyDic.Values)
-                    {
-                        this.HotKeys.Add(HotKeyModel.Parse(item));
-                    }
-                }
-            }
-            else
-            {
-                this.HotKeys.AddRange(new List<HotKeyModel>() {
-                    new HotKeyModel(Constants.HotKeys.Pause, false, false, true, Keys.S),
-                    new HotKeyModel(Constants.HotKeys.Prev, false, false, true, Keys.Left),
-                    new HotKeyModel(Constants.HotKeys.Next, false, false, true, Keys.Right) 
-                });
-            }
-
-            config.SetConfig += config =>
-            {
-                Dictionary<string, string> dic = new Dictionary<string, string>();
-
-                foreach (var item in this.HotKeys)
-                {
-                    dic.Add(item.Name, item.ToString());
-                }
-
-                config.WriteConfigNode(JsonConvert.SerializeObject(dic), Constants.Hotkeys);
-            };
-        }
+        public SettingsViewModel Settings { get; }
 
         #region 辅助功能
         private bool _onlyOneProcess;
@@ -287,14 +238,6 @@ namespace TcpSocket.ViewModels
             set => SetProperty<bool>(ref _isVideoPlayer, value);
         }
 
-        private bool _isEditingSetting;
-
-        public bool IsEditingSetting
-        {
-            get => this._isEditingSetting;
-            set => SetProperty<bool>(ref _isEditingSetting, value);
-        }
-
         private bool _isTitleBarHidden;
 
         public bool IsTitleBarHidden
@@ -327,13 +270,13 @@ namespace TcpSocket.ViewModels
 
                 if (this.BackgroundSwitch)
                 {
-                    if (_imageDisplayViewModel.Block.Count > 0)
+                    if (_imageDisplayViewModel.Data.Count > 0)
                     {
                         if (now.TimeOfDay.Seconds == 0 || now.TimeOfDay.Seconds == 30)
                         {
-                            var totalCount = _imageDisplayViewModel.Block.Count;
+                            var totalCount = _imageDisplayViewModel.Data.Count;
 
-                            this.CurrentBkGrd = _imageDisplayViewModel.Block[this.random.Next(0, totalCount)].URI;
+                            this.SetBackgroundImage(_imageDisplayViewModel.Data[this.random.Next(0, totalCount)].URI);
                         }
                     }
                 }
@@ -352,7 +295,7 @@ namespace TcpSocket.ViewModels
 
         private void SubscribeCustomCommandEvent()
         {
-            MyEventManager.Default.GetEvent<OpenSettingEvent>().Execute += () => this.IsEditingSetting = true;
+            MyEventManager.Default.GetEvent<OpenSettingEvent>().Execute += () => this.Settings.IsEditingSetting = true;
             MyEventManager.Default.GetEvent<HideTitleBarEvent>().Execute += () => this.IsTitleBarHidden = !this.IsTitleBarHidden;
             MyEventManager.Default.GetEvent<LoginEvent>().Execute += () => this.IsLogin = !this.IsLogin;
         }

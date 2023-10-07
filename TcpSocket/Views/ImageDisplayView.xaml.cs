@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using TcpSocket.ViewModels;
 
@@ -20,20 +22,14 @@ namespace TcpSocket.Views
 
             if (sender is Grid grid)
             {
-                if (grid.Children[0] is ListBox firstListBox
-                    && grid.Children[1] is ListBox secondListBox
-                )
+                foreach (var item in this._context.ActualData)
                 {
-                    if (firstListBox.ItemsSource == _context.List)
-                    {
-                        firstListBox.ItemsSource = _context.Block;
-                        secondListBox.ItemsSource = _context.List;
-                    }
-                    else
-                    {
-                        firstListBox.ItemsSource = _context.List;
-                        secondListBox.ItemsSource = _context.Block;
-                    }
+                    item.InList = !item.InList;
+                }
+
+                foreach (var item in grid.Children.OfType<ListBox>())
+                {
+                    item.ItemsSource = _context.ActualData;
                 }
             }
         }

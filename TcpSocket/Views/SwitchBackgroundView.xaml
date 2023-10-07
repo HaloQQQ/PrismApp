@@ -61,6 +61,9 @@
                     <EventSetter Event="MouseDoubleClick" Handler="ChangeBackground_OnMouseLeftButtonDown"/>
                     <EventSetter Event="MouseLeftButtonUp" Handler="ChangeBackground_OnMouseLeftButtonDown"/>
 
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="1" />
+
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding URI}" Value="{x:Null}">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -69,6 +72,9 @@
                             <Setter Property="Padding" Value="0" />
                             <Setter Property="Width" Value="100" />
                             <Setter Property="Height" Value="100"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Selected}" Value="True">
+                            <Setter Property="BorderBrush" Value="{DynamicResource TextBox.Focused.BorderBrush}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

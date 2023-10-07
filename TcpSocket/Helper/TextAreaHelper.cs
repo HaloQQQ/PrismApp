@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using TcpSocket.ViewModels.BaseViewModels;
+using WpfStyleResources.Helper;
 
 namespace TcpSocket.Helper
 {
@@ -22,7 +23,7 @@ namespace TcpSocket.Helper
                 Helper.Log(context.Name, message);
             }
 
-            Invoke(() =>
+            CommonUtils.Invoke(() =>
             {
                 Paragraph paragraph = new Paragraph();
                 paragraph.Inlines.Add(
@@ -56,7 +57,7 @@ namespace TcpSocket.Helper
         internal static void Send(this RichTextBox txt, EndPoint from, EndPoint to, BaseSocketViewModel context,
             string message)
         {
-            Invoke(() =>
+            CommonUtils.Invoke(() =>
             {
                 var paragraph = GetParagraph("Send", from, to, context, message);
                 paragraph.Inlines.LastInline.Foreground = Constants.SendBrush;
@@ -68,7 +69,7 @@ namespace TcpSocket.Helper
         internal static void Recv(this RichTextBox txt, EndPoint from, EndPoint to, BaseSocketViewModel context,
             string message)
         {
-            Invoke(() =>
+            CommonUtils.Invoke(() =>
             {
                 var paragraph = GetParagraph("Recv", from, to, context, message);
                 paragraph.Inlines.LastInline.Foreground = Constants.RecvBrush;

@@ -94,11 +94,13 @@
                         <Image Grid.Row="1" Source="{Binding BitmapImage,Converter={StaticResource BitmapToImageSourceConverter}}" />
                         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBlock Text="用户名：" />
-                            <TextBox Width="250" TabIndex="1" MaxLength="12" attachs:MyAttachProperty.PlaceHolder="请输入用户名" />
+                            <TextBox Width="250" Text="{Binding UserContext.Account}" TabIndex="1" 
+                                     MaxLength="12" attachs:MyAttachProperty.PlaceHolder="请输入用户名" />
                         </StackPanel>
                         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBlock Text="密   码：" />
-                            <PasswordBox x:Name="Pwd" Width="250" TabIndex="2" attachs:MyAttachProperty.PlaceHolder="请输入密码" />
+                            <PasswordBox x:Name="Pwd" attachs:MyAttachProperty.Password="{Binding UserContext.Password}" 
+                                         Width="250" TabIndex="2" attachs:MyAttachProperty.PlaceHolder="请输入密码" />
                         </StackPanel>
                         <Button Grid.Row="4" Content="登录" HorizontalAlignment="Center" />
                     </Grid>
@@ -111,9 +113,9 @@
 
             <ToggleButton Style="{StaticResource TopMostIconToggleButton}" DockPanel.Dock="Left" />
 
-            <Popup Placement="Center" StaysOpen="True"
+            <Popup Placement="Center"
                    PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                   IsOpen="{Binding IsEditingSetting}">
+                   IsOpen="{Binding Settings.IsEditingSetting}">
                 <ContentControl regions:RegionManager.RegionName="SettingRegion"/>
             </Popup>
 
