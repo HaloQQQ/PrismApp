@@ -411,6 +411,8 @@ namespace MusicPlayerModule.ViewModels
 
             eventAggregator.GetEvent<PrevMusicEvent>().Subscribe(() => this.PrevMusic(this.CurrentMusic));
             eventAggregator.GetEvent<NextMusicEvent>().Subscribe(() => this.NextMusic(this.CurrentMusic));
+
+            eventAggregator.GetEvent<BatchAddToPlayingEvent>().Subscribe(coll => this.AddAllToPlaying(new BatchAddAndPlayModel(null, coll), false));
         }
 
         private void PrevMusic(PlayingMusicViewModel currentMusic)
@@ -541,7 +543,7 @@ namespace MusicPlayerModule.ViewModels
                 if (!selectedPath.Equals(AppStatics.LastMusicDir, StringComparison.CurrentCultureIgnoreCase))
                 {
                     _config.WriteConfigNode(selectedPath, new[] { "Music", nameof(AppStatics.LastMusicDir) });
-                    
+
                     AppStatics.LastMusicDir = selectedPath;
                 }
 
@@ -649,11 +651,7 @@ namespace MusicPlayerModule.ViewModels
                 aggregate.TargetToPlay = this.DisplayFavorites.First();
             }
 
-            var playing = this.AddAllToPlaying(aggregate);
-
-            this.RefreshPlayingIndex();
-
-            this.SetAndPlay(playing);
+            this.AddAllToPlaying(aggregate);
         }
 
         private PlayingMusicViewModel AddOneToPlayingList(FavoriteMusicViewModel music)
@@ -667,30 +665,49 @@ namespace MusicPlayerModule.ViewModels
             return item;
         }
 
-        private PlayingMusicViewModel AddAllToPlaying(BatchAddAndPlayModel aggregate)
+        private void AddAllToPlaying(BatchAddAndPlayModel aggregate, bool replace = true)
         {
             PlayingMusicViewModel result = null;
 
             if (this.DisplayFavorites.Count > 0)
             {
-                this.Playing.Clear();
-                this.DisplayPlaying.Clear();
+                bool isFirstNotReplace = !replace && this.Playing.Count == 0;
+                if (replace)
+                {
+                    this.Playing.Clear();
+                    this.DisplayPlaying.Clear();
+                }
 
-                PlayingMusicViewModel temp = null;
                 foreach (var item in aggregate.Collection)
                 {
-                    temp = new PlayingMusicViewModel(item.Music);
-                    this.Playing.Add(temp);
-                    this.DisplayPlaying.Add(temp);
-
-                    if (temp.Music == aggregate.TargetToPlay.Music)
+                    if (this.Playing.FirstOrDefault(m => m.Music == item.Music) == null)
                     {
-                        result = temp;
+                        PlayingMusicViewModel temp = new PlayingMusicViewModel(item.Music);
+                        if (result == null)
+                        {
+                            result = temp;
+                        }
+
+                        this.Playing.Add(temp);
+                        this.DisplayPlaying.Add(temp);
+
+                        if (replace && temp.Music == aggregate.TargetToPlay?.Music)
+                        {
+                            result = temp;
+                        }
+                    }
+                }
+
+                if (result != null)
+                {
+                    this.RefreshPlayingIndex();
+
+                    if (isFirstNotReplace || aggregate.TargetToPlay != null)
+                    {
+                        this.SetAndPlay(result);
                     }
                 }
             }
-
-            return result;
         }
 
         #endregion
@@ -873,7 +890,7 @@ namespace MusicPlayerModule.ViewModels
 
             this.SubscribeEvents(eventAggregator);
 
-            this.DistributeMusicViewModel = new DistributeMusicViewModel(this.Favorites);
+            this.DistributeMusicViewModel = new DistributeMusicViewModel(this.Favorites, eventAggregator);
             this.DistributeMusicViewModel.ClearFavoriteListFilteKeyWords += TryClearFavoriteListFilteKeyWords;
         }
 

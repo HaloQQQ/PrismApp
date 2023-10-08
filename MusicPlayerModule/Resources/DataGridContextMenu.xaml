@@ -32,6 +32,7 @@
         <MenuItem Header="移动内容" Command="{Binding DistributeMusicViewModel.BatchMoveMusicDirCommand}" CommandParameter="{Binding PlacementTarget.SelectedItem.ClassifyKey,RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
         <MenuItem Header="移除目录" Command="{Binding DistributeMusicViewModel.RemoveMusicDirCommand}" CommandParameter="{Binding PlacementTarget.SelectedItem.ClassifyKey,RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
         <MenuItem Header="修改目录名" Command="{Binding DistributeMusicViewModel.RenameMusicDirCommand}" CommandParameter="{Binding PlacementTarget.SelectedItem,RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+        <MenuItem Header="添加到播放队列" Command="{Binding DistributeMusicViewModel.AddToPlayingCommand}" CommandParameter="{Binding PlacementTarget.SelectedItem,RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
     </ContextMenu>
 
     <ContextMenu x:Key="FavoriteDataGridContextMenu">

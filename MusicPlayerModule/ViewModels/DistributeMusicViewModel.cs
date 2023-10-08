@@ -1,8 +1,11 @@
 ﻿using MusicPlayerModule.Common;
 using MusicPlayerModule.Models;
+using MusicPlayerModule.MsgEvents;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -75,7 +78,7 @@ namespace MusicPlayerModule.ViewModels
         {
             if (!this.MusicDirs.Any(item => item.DirPath == path))
             {
-                var current = new MusicWithClassifyModel(path, new ObservableCollection<FavoriteMusicViewModel>());
+                var current = new MusicWithClassifyModel(path, new ObservableCollection<FavoriteMusicViewModel>(), MusicClassifyType.Dir);
                 current.IsSelected = true;
 
                 this.MusicDirFavorites.Add(current);
@@ -127,9 +130,32 @@ namespace MusicPlayerModule.ViewModels
 
         private readonly Collection<FavoriteMusicViewModel> _collection;
 
-        public DistributeMusicViewModel(Collection<FavoriteMusicViewModel> collection)
+        public DistributeMusicViewModel(Collection<FavoriteMusicViewModel> collection, IEventAggregator eventAggregator)
         {
             this._collection = collection;
+
+            this.AddToPlayingCommand = new DelegateCommand<MusicWithClassifyModel>(item =>
+            {
+                IEnumerable<FavoriteMusicViewModel> coll = null;
+                if (item.ClassifyType == MusicClassifyType.Album)
+                {
+                    coll = this.MusicAlbumFavorites.FirstOrDefault(i => i == item)?.DisplayByClassifyKeyFavorites;
+                }
+                else if (item.ClassifyType == MusicClassifyType.Singer)
+                {
+                    coll = this.MusicSingerFavorites.FirstOrDefault(i => i == item)?.DisplayByClassifyKeyFavorites;
+                }
+                else
+                {
+                    coll = this.MusicDirFavorites.FirstOrDefault(i => i == item)?.DisplayByClassifyKeyFavorites;
+                }
+
+                if (coll != null)
+                {
+                    eventAggregator.GetEvent<BatchAddToPlayingEvent>().Publish(coll);
+                }
+
+            });
 
             this.BatchMoveMusicDirCommand = new DelegateCommand<string>(originDir =>
             {
@@ -222,7 +248,8 @@ namespace MusicPlayerModule.ViewModels
                                                                 .Select<IGrouping<string, FavoriteMusicViewModel>, MusicWithClassifyModel>(group =>
                                                                         new MusicWithClassifyModel(
                                                                             group.Key,
-                                                                            new ObservableCollection<FavoriteMusicViewModel>().AddRange(group)
+                                                                            new ObservableCollection<FavoriteMusicViewModel>().AddRange(group),
+                                                                            MusicClassifyType.Dir
                                                                         )
                                                                 )
                                                             );
@@ -250,7 +277,8 @@ namespace MusicPlayerModule.ViewModels
                                                                 .Select<IGrouping<string, FavoriteMusicViewModel>, MusicWithClassifyModel>(group =>
                                                                         new MusicWithClassifyModel(
                                                                             group.Key,
-                                                                            new ObservableCollection<FavoriteMusicViewModel>().AddRange(group)
+                                                                            new ObservableCollection<FavoriteMusicViewModel>().AddRange(group),
+                                                                            MusicClassifyType.Singer
                                                                         )
                                                                 )
                                                             );
@@ -282,7 +310,8 @@ namespace MusicPlayerModule.ViewModels
                                                                 .Select<IGrouping<string, FavoriteMusicViewModel>, MusicWithClassifyModel>(group =>
                                                                         new MusicWithClassifyModel(
                                                                             group.Key,
-                                                                            new ObservableCollection<FavoriteMusicViewModel>().AddRange(group)
+                                                                            new ObservableCollection<FavoriteMusicViewModel>().AddRange(group),
+                                                                            MusicClassifyType.Album
                                                                         )
                                                                 )
                                                             );
@@ -405,7 +434,7 @@ namespace MusicPlayerModule.ViewModels
                 }
                 else
                 {
-                    this.MusicDirFavorites.Add(new MusicWithClassifyModel(musicModel.Music.FileDir, new ObservableCollection<FavoriteMusicViewModel>(new[] { musicModel })));
+                    this.MusicDirFavorites.Add(new MusicWithClassifyModel(musicModel.Music.FileDir, new ObservableCollection<FavoriteMusicViewModel>(new[] { musicModel }), MusicClassifyType.Dir));
                     this.MusicDirs.Add(new MusicDirModel(musicModel.Music.FileDir));
                 }
             }
@@ -419,7 +448,7 @@ namespace MusicPlayerModule.ViewModels
                 }
                 else
                 {
-                    this.MusicSingerFavorites.Add(new MusicWithClassifyModel(musicModel.Music.Singer, new ObservableCollection<FavoriteMusicViewModel>(new[] { musicModel })));
+                    this.MusicSingerFavorites.Add(new MusicWithClassifyModel(musicModel.Music.Singer, new ObservableCollection<FavoriteMusicViewModel>(new[] { musicModel }), MusicClassifyType.Singer));
                 }
             }
 
@@ -432,7 +461,7 @@ namespace MusicPlayerModule.ViewModels
                 }
                 else
                 {
-                    this.MusicAlbumFavorites.Add(new MusicWithClassifyModel(musicModel.Music.Album, new ObservableCollection<FavoriteMusicViewModel>(new[] { musicModel })));
+                    this.MusicAlbumFavorites.Add(new MusicWithClassifyModel(musicModel.Music.Album, new ObservableCollection<FavoriteMusicViewModel>(new[] { musicModel }), MusicClassifyType.Album));
                 }
             }
         }
@@ -578,6 +607,8 @@ namespace MusicPlayerModule.ViewModels
         #endregion
 
         #region Commands
+        public ICommand AddToPlayingCommand { get; private set; }
+
         public ICommand BatchMoveMusicDirCommand { get; private set; }
         public ICommand AddMusicDirCommand { get; private set; }
         public ICommand RemoveMusicDirCommand { get; private set; }

@@ -5,6 +5,7 @@ using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using TcpSocket.Helper;
 using TcpSocket.Models;
@@ -70,7 +71,10 @@ namespace TcpSocket.ViewModels
 
             this.CancelCommand = new DelegateCommand(() =>
             {
-                this.IsEditingSetting = false;
+                if (this.IsEditingSetting)
+                {
+                    this.IsEditingSetting = false;
+                }
 
                 foreach (var item in this.HotKeys)
                 {
@@ -88,11 +92,20 @@ namespace TcpSocket.ViewModels
 
                 eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(resultStr, 4));
             });
+
+            this.ResetHotKeysCommand = new DelegateCommand(() =>
+            {
+                this.ResetHotKeys();
+
+                this.SubmitCommand.Execute(null);
+            });
         }
 
         public ICommand FindImageDirCommand { get; private set; }
         public ICommand FindMusicDirCommand { get; private set; }
         public ICommand FindVideoDirCommand { get; private set; }
+
+        public ICommand ResetHotKeysCommand { get; private set; }
 
         /// <summary>
         /// 还原未提交的修改
@@ -117,8 +130,21 @@ namespace TcpSocket.ViewModels
             }
         }
 
+        public ObservableCollection<HotKeyModel> HotKeys { get; private set; } = new ObservableCollection<HotKeyModel>();
 
-        public List<HotKeyModel> HotKeys { get; private set; } = new List<HotKeyModel>();
+        private void ResetHotKeys()
+        {
+            var arr = new HotKeyModel[] {
+                    new HotKeyModel(Constants.HotKeys.Pause, false, false, true, Keys.S),
+                    new HotKeyModel(Constants.HotKeys.Prev, false, false, true, Keys.Left),
+                    new HotKeyModel(Constants.HotKeys.Next, false, false, true, Keys.Right),
+                    new HotKeyModel(Constants.HotKeys.UpScreenBright, false, false, true, Keys.F3),
+                    new HotKeyModel(Constants.HotKeys.DownScreenBright, false, false, true, Keys.F2),
+                };
+
+            this.HotKeys.Clear();
+            this.HotKeys.AddRange(arr);
+        }
 
         private void InitHotkeys(IConfigManager config)
         {
@@ -136,11 +162,7 @@ namespace TcpSocket.ViewModels
             }
             else
             {
-                this.HotKeys.AddRange(new List<HotKeyModel>() {
-                    new HotKeyModel(Constants.HotKeys.Pause, false, false, true, Keys.S),
-                    new HotKeyModel(Constants.HotKeys.Prev, false, false, true, Keys.Left),
-                    new HotKeyModel(Constants.HotKeys.Next, false, false, true, Keys.Right)
-                });
+                this.ResetHotKeys();
             }
 
             config.SetConfig += config =>
@@ -163,7 +185,7 @@ namespace TcpSocket.ViewModels
             get => this._imageDir;
             set
             {
-                if(SetProperty<string>(ref _imageDir, value))
+                if (SetProperty<string>(ref _imageDir, value))
                 {
                     _config.WriteConfigNode(this.ImageDir.EnsureEndsWith("/"), nameof(this.ImageDir));
                 }
@@ -177,7 +199,7 @@ namespace TcpSocket.ViewModels
             get => this._lastMusicDir;
             set
             {
-                if(SetProperty<string>(ref _lastMusicDir, value))
+                if (SetProperty<string>(ref _lastMusicDir, value))
                 {
                     _config.WriteConfigNode(this.LastMusicDir.EnsureEndsWith("/"), "Music", nameof(this.LastMusicDir));
                 }
@@ -191,7 +213,7 @@ namespace TcpSocket.ViewModels
             get => this._lastVideoDir;
             set
             {
-                if(SetProperty<string>(ref _lastVideoDir, value))
+                if (SetProperty<string>(ref _lastVideoDir, value))
                 {
                     _config.WriteConfigNode(this.LastVideoDir.EnsureEndsWith("/"), "Video", nameof(this.LastVideoDir));
                 }

@@ -21,11 +21,7 @@ namespace MusicPlayerModule.ViewModels
         /// <summary>
         /// 是否已尝试过加载歌词
         /// </summary>
-        public bool LoadedLyric
-        {
-            get => this._loadedLyric;
-            set => SetProperty<bool>(ref _loadedLyric, value);
-        }
+        public bool LoadedLyric => _loadedLyric ? _loadedLyric : !(_loadedLyric = true);
 
         private bool _isPlayingMusic;
 

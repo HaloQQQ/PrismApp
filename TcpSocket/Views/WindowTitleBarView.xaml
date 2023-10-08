@@ -5,6 +5,7 @@
              xmlns:attachs="clr-namespace:WpfStyleResources.Attachs;assembly=WpfStyleResources"
              xmlns:waitLoads="clr-namespace:WpfStyleResources.WaitLoads;assembly=WpfStyleResources"
              Panel.ZIndex="100" Cursor="SizeAll" Background="Transparent"
+             xmlns:helper="clr-namespace:WpfStyleResources.Helper;assembly=WpfStyleResources"
              xmlns:regions="http://prismlibrary.com/"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True">
@@ -104,6 +105,30 @@
                         </StackPanel>
                         <Button Grid.Row="4" Content="登录" HorizontalAlignment="Center" />
                     </Grid>
+                </Border>
+            </Popup>
+
+            <ToggleButton x:Name="brightToggleButton" IsChecked="{Binding IsLeastBright}" 
+                                  MouseEnter="ToggleButton_MouseEnter" MouseLeave="ToggleButton_MouseLeave"
+                                  Click="BrightToggleButton_Click" MouseWheel="Button_MouseWheel"
+                                  Style="{StaticResource BrightIconToggleButton}"/>
+            <Popup Placement="Bottom" HorizontalOffset="-112" VerticalOffset="-15"
+                    StaysOpen="True" x:Name="brightPopup" 
+                    PlacementTarget="{Binding ElementName=volumeToggleButton}">
+                <!--亮度调节模态框-->
+                <Border x:Name="brightControl" Visibility="{Binding IsOpen,ElementName=brightPopup,Converter={StaticResource BoolToVisibleCollapsedConverter},Mode=TwoWay}"
+                        Clip="{StaticResource PopupGeometryGroup_Bright}"
+                        Background="{x:Static helper:MyStaticResources.PopupBackground}" Width="250" Height="80">
+                    <StackPanel Orientation="Horizontal" MouseLeave="Popup_MouseLeave" Background="Transparent">
+                        <Slider Margin="15,0,12,0" MinHeight="4" TickFrequency="5"
+                                Style="{StaticResource Slider_ObviousThumb}"
+                                Width="180" x:Name="brightSlider" Value="{Binding CurrentBright}"
+                                attachs:MyAttachProperty.IsSliderThumbObvious="True" />
+
+                        <TextBlock x:Name="brightStr" HorizontalAlignment="Center" Style="{StaticResource NotImportantTxt_White}">
+                            <TextBlock Text="{Binding Path=Value,ElementName=brightSlider,Mode=OneWay}" />%
+                        </TextBlock>
+                    </StackPanel>
                 </Border>
             </Popup>
 

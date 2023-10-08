@@ -7,7 +7,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
-using System.Security.Policy;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -38,15 +37,15 @@ namespace TcpSocket.ViewModels
 
             this.SwitchThemeCommand = new DelegateCommand(() => this.RefreshTheme());
 
-            eventAggregator.GetEvent<BackgroundImageUpdateEvent>().Subscribe(uri => this.SetBackgroundImage(uri));
-
             eventAggregator.GetEvent<DialogMessageEvent>().Subscribe(item => this.DialogMessage = item);
 
             this.LoadConfig(config);
 
             this.SubscribeCustomCommandEvent();
 
-            this.InitBackgroundSwitchTimer();
+            this.InitScreenBright(eventAggregator);
+
+            this.InitBackgroundSwitch(eventAggregator);
         }
 
         public ICommand SwitchThemeCommand { get; private set; }
@@ -187,6 +186,53 @@ namespace TcpSocket.ViewModels
         public UserViewModel UserContext { get; }
         #endregion
 
+        #region 屏幕亮度
+        private void InitScreenBright(IEventAggregator eventAggregator)
+        {
+            this._brightManager = new ScreenBrightManager();
+
+            this.CurrentBright = this._brightManager.GetBrightness();
+
+            eventAggregator.GetEvent<UpdateScreenBrightEvent>().Subscribe(step => this.CurrentBright += step);
+        }
+
+        private ScreenBrightManager _brightManager;
+        private bool _isLeastBright;
+
+        public bool IsLeastBright
+        {
+            get => this._isLeastBright;
+            set => SetProperty<bool>(ref _isLeastBright, value);
+        }
+
+        private double _currentBright;
+        /// <summary>
+        /// 当前屏幕亮度
+        /// </summary>
+        public double CurrentBright
+        {
+            get => this._currentBright;
+            set
+            {
+                var newValue = Convert.ToInt32(value);
+                if (newValue < 0)
+                {
+                    newValue = 0;
+                }
+
+                if (newValue > 100)
+                {
+                    newValue = 100;
+                }
+
+                if (newValue != Convert.ToInt32(_currentBright) && SetProperty<double>(ref _currentBright, value))
+                {
+                    this._brightManager.SetBrightness(newValue);
+                }
+            }
+        }
+        #endregion
+
         private DialogMessage _dialogMessage;
 
         public DialogMessage DialogMessage
@@ -259,8 +305,10 @@ namespace TcpSocket.ViewModels
         private DispatcherTimer _timer = null;
         private readonly ImageDisplayViewModel _imageDisplayViewModel;
 
-        private void InitBackgroundSwitchTimer()
+        private void InitBackgroundSwitch(IEventAggregator eventAggregator)
         {
+            eventAggregator.GetEvent<BackgroundImageUpdateEvent>().Subscribe(uri => this.SetBackgroundImage(uri));
+
             this._timer = new DispatcherTimer();
             this._timer.Tick += (sender, e) =>
             {

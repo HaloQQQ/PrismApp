@@ -5,12 +5,23 @@ using System.Collections.ObjectModel;
 
 namespace MusicPlayerModule.Models
 {
+    enum MusicClassifyType
+    {
+        Album,
+        Singer,
+        Dir
+    }
+
     internal class MusicWithClassifyModel : BindableBase
     {
-        public MusicWithClassifyModel(string classifyKey, Collection<FavoriteMusicViewModel> displayByAlbumFavorites)
+        public MusicClassifyType ClassifyType { get; }
+
+        public MusicWithClassifyModel(string classifyKey, Collection<FavoriteMusicViewModel> displayByClassifyKeyFavorites, MusicClassifyType musicClassifyType)
         {
             ClassifyKey = classifyKey;
-            DisplayByClassifyKeyFavorites = displayByAlbumFavorites;
+            DisplayByClassifyKeyFavorites = displayByClassifyKeyFavorites;
+
+            ClassifyType = musicClassifyType;
         }
 
         private bool _isSelected;

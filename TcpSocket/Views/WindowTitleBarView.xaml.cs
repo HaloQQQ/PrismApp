@@ -7,8 +7,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using Helper.Utils;
 using TcpSocket.MsgEvents;
 using TcpSocket.ViewModels;
+using WpfStyleResources.Extensions;
 using Point = System.Windows.Point;
 
 namespace TcpSocket.Views
@@ -16,6 +18,7 @@ namespace TcpSocket.Views
     public partial class WindowTitleBarView : UserControl
     {
         private SoftwareViewModel _softwareViewModel;
+        private ScreenBrightManager _brightManager;
 
         public WindowTitleBarView()
         {
@@ -89,6 +92,7 @@ namespace TcpSocket.Views
         #endregion
 
         #region 更换主题、背景
+
         private void SwitchBackSliderMoveOut_OnMouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
@@ -118,6 +122,8 @@ namespace TcpSocket.Views
             e.Handled = true;
         }
 
+        #region 消息框
+
         private void Border_MouseLeave(object sender, MouseEventArgs e)
         {
             e.Handled = true;
@@ -137,5 +143,73 @@ namespace TcpSocket.Views
                 _softwareViewModel.DialogMessage.StopHide = true;
             }
         }
+
+        #endregion
+
+        #region 屏幕亮度调节
+        private double _lastBright;
+        private void BrightToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+
+            if (this._softwareViewModel.IsLeastBright)
+            {
+                this._lastBright = this.brightSlider.Value;
+                this.brightSlider.Value = 0;
+            }
+            else
+            {
+                this.brightSlider.Value = this._lastBright;
+            }
+        }
+
+        private void ToggleButton_MouseEnter(object sender, MouseEventArgs e)
+        {
+            e.Handled = true;
+
+            this.brightControl.Visibility = Visibility.Visible;
+        }
+
+        private void ToggleButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+            e.Handled = true;
+
+            if (!this.brightControl.IsMouseIn())
+            {
+                this.brightControl.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void Popup_MouseLeave(object sender, MouseEventArgs e)
+        {
+            this.brightControl.Visibility = Visibility.Collapsed;
+        }
+
+        private void Button_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (this.brightControl.IsVisible)
+            {
+                int baseValue = e.Delta < 0 ? -1 : 1;
+
+                var value = this.brightSlider.Value + 5 * baseValue;
+
+                if (value > 100)
+                {
+                    value = 100;
+                }
+                else if (value < 0)
+                {
+                    value = 0;
+                }
+
+                if (this.brightSlider.Value != value)
+                {
+                    this.brightSlider.Value = value;
+                }
+
+                e.Handled = true;
+            }
+        }
+        #endregion
     }
 }

@@ -82,6 +82,8 @@ namespace TcpSocket
                 return Container.Resolve<VideoWindow>();
             }
 
+            ViewModelLocationProvider.Register<MainWindow, SoftwareViewModel>();
+
             return Container.Resolve<MainWindow>();
         }
 
@@ -132,7 +134,6 @@ namespace TcpSocket
             //containerRegistry.RegisterSingleton<UserViewModel>();
             containerRegistry.RegisterSingleton<SoftwareViewModel>();
 
-            ViewModelLocationProvider.Register<MainWindow, SoftwareViewModel>();
             ViewModelLocationProvider.Register<WindowTitleBarView, SoftwareViewModel>();
             ViewModelLocationProvider.Register<ImageDisplayView, ImageDisplayViewModel>();
             ViewModelLocationProvider.Register<SwitchBackgroundView, ImageDisplayViewModel>();
@@ -169,10 +170,14 @@ namespace TcpSocket
                         {
                             this.Container.Resolve<IEventAggregator>().GetEvent<MusicPlayerModule.MsgEvents.NextMusicEvent>().Publish();
                         }
-                        //else if (item.Name == Constants.HotKeys.AppFull)
-                        //{
-                        //    this.Container.Resolve<IEventAggregator>().GetEvent<FullScreenEvent>().Publish();
-                        //}
+                        else if (item.Name == Constants.HotKeys.UpScreenBright)
+                        {
+                            this.Container.Resolve<IEventAggregator>().GetEvent<UpdateScreenBrightEvent>().Publish(5);
+                        }
+                        else if (item.Name == Constants.HotKeys.DownScreenBright)
+                        {
+                            this.Container.Resolve<IEventAggregator>().GetEvent<UpdateScreenBrightEvent>().Publish(-5);
+                        }
                     }
                 }
             }));

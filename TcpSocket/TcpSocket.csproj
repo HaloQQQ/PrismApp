@@ -119,12 +119,6 @@
       <Reference Include="SocketHelper">
         <HintPath>bin\Debug\SocketHelper.dll</HintPath>
       </Reference>
-      <Reference Include="WpfStyleResources">
-        <HintPath>bin\Debug\WpfStyleResources.dll</HintPath>
-      </Reference>
-      <Reference Include="zxing, Version=0.16.8.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60">
-        <HintPath>bin\Debug\zxing.dll</HintPath>
-      </Reference>
     </ItemGroup>
 
     <ItemGroup>
@@ -133,6 +127,7 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
       <PackageReference Include="prism.dryioc" Version="8.1.97" />
+      <PackageReference Include="System.Management" Version="7.0.2" />
       <PackageReference Include="System.ServiceProcess.ServiceController" Version="7.0.0" />
     </ItemGroup>
 

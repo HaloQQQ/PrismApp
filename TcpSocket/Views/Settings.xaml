@@ -15,15 +15,15 @@
 
         <DataTemplate DataType="{x:Type helper:HotKeyModel}">
             <StackPanel Orientation="Horizontal" MinHeight="40">
-                <TextBlock FontSize="16" TextAlignment="Right" MinWidth="86">
+                <TextBlock FontSize="16" TextAlignment="Right" MinWidth="100">
                     <TextBlock Text="{Binding Name}" />:
                 </TextBlock>
 
-                <CheckBox Margin="10,0,0,0" Content="Ctrl:" IsChecked="{Binding IsSelectCtrl,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsUsable}" />
+                <CheckBox Margin="10,0,0,0" Content="Ctrl:" IsChecked="{Binding IsSelectCtrl}" IsEnabled="{Binding IsUsable}" />
 
-                <CheckBox Margin="10,0,0,0" Content="Shift:" IsChecked="{Binding IsSelectShift,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsUsable}" />
+                <CheckBox Margin="10,0,0,0" Content="Shift:" IsChecked="{Binding IsSelectShift}" IsEnabled="{Binding IsUsable}" />
 
-                <CheckBox Margin="10,0,0,0" Content="Alt:" IsChecked="{Binding IsSelectAlt,UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsUsable}" />
+                <CheckBox Margin="10,0,0,0" Content="Alt:" IsChecked="{Binding IsSelectAlt}" IsEnabled="{Binding IsUsable}" />
 
                 <ComboBox Margin="10,0,0,0" ItemsSource="{Binding Source={StaticResource Keys}}" IsReadOnly="True"
                           Text="{Binding SelectedKey}" IsEnabled="{Binding IsUsable}" />
@@ -43,7 +43,7 @@
                     </TextBox.Style>
                 </TextBox>
 
-                <CheckBox Style="{StaticResource SlideCheckBox}" IsChecked="{Binding IsUsable,UpdateSourceTrigger=PropertyChanged}" />
+                <CheckBox Style="{StaticResource SlideCheckBox}" IsChecked="{Binding IsUsable}" />
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
@@ -57,8 +57,12 @@
             <TabControl Style="{StaticResource TabControl_ScrollContent}"
                         ItemContainerStyle="{StaticResource TabItem_Transparent}">
                 <TabItem Header="快捷键">
-                    <ListBox ItemsSource="{Binding DataContext.HotKeys}" HorizontalAlignment="Stretch"
+                    <StackPanel>
+                        <Button Command="{Binding DataContext.ResetHotKeysCommand}" HorizontalAlignment="Right" 
+                                Style="{StaticResource IconButtonBase_Expand}" Margin="0,10,20,0" Content="&#xe614;" ToolTip="重置快捷键"/>
+                        <ListBox ItemsSource="{Binding DataContext.HotKeys}" HorizontalAlignment="Stretch"
                              ItemContainerStyle="{StaticResource ListBoxItem_General}" />
+                    </StackPanel>
                 </TabItem>
                 <TabItem Header="默认目录">
                     <StackPanel>

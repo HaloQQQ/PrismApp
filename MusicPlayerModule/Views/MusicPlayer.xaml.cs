@@ -121,21 +121,10 @@ namespace MusicPlayerModule.Views
         {
             e.Handled = true;
 
-            if (!IsMouseOverVolumePopup())
+            if (!this.VolumeControl.IsMouseIn())
             {
                 this.VolumeControl.Visibility = Visibility.Collapsed;
             }
-        }
-
-        private bool IsMouseOverVolumePopup()
-        {
-            Point mousePos = Mouse.GetPosition(VolumeControl);
-
-            var width = VolumeControl.RenderSize.Width;
-            var height = VolumeControl.RenderSize.Height;
-
-            return mousePos.X >= 0 && mousePos.X < width
-                && mousePos.Y >= 0 && mousePos.Y < height;
         }
 
         private void ToggleButton_MouseEnter(object sender, MouseEventArgs e)
@@ -466,7 +455,10 @@ namespace MusicPlayerModule.Views
                     value = 0;
                 }
 
-                this.mediaPlayer.Volume = value;
+                if (this.mediaPlayer.Volume != value)
+                {
+                    this.mediaPlayer.Volume = value;
+                }
 
                 e.Handled = true;
             }

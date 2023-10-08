@@ -203,4 +203,15 @@
         </Setter>
     </Style>
 
+    <GeometryGroup x:Key="PopupGeometryGroup_Bright">
+        <PathGeometry Figures="M115,10 L125,5 L135,10 Z" />
+        <RectangleGeometry RadiusX="10" RadiusY="10">
+            <RectangleGeometry.Rect>
+                <Rect Width="250" Height="55"/>
+            </RectangleGeometry.Rect>
+            <RectangleGeometry.Transform>
+                <TranslateTransform Y="10"/>
+            </RectangleGeometry.Transform>
+        </RectangleGeometry>
+    </GeometryGroup>
 </ResourceDictionary>

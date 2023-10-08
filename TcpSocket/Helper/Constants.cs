@@ -56,7 +56,8 @@ namespace TcpSocket.Helper
             internal const string Pause = "暂停";
             internal const string Prev = "上一个";
             internal const string Next = "下一个";
-            internal const string ClearAB = "清空AB点";
+            internal const string UpScreenBright = "提高屏幕亮度";
+            internal const string DownScreenBright = "降低屏幕亮度";
         }
     }
 }
