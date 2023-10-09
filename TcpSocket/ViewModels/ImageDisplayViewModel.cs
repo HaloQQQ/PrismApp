@@ -1,4 +1,4 @@
-﻿using Helper.AbstractModel;
+﻿using Helper.NetCore.AbstractModel;
 using Prism.Events;
 using System;
 using System.Collections.Generic;

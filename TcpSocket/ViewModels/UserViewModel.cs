@@ -1,4 +1,4 @@
-﻿using Helper.AbstractModel;
+﻿using Helper.NetCore.AbstractModel;
 
 namespace TcpSocket.ViewModels
 {

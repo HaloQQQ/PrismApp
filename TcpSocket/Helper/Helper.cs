@@ -1,7 +1,7 @@
 ﻿using Hardcodet.Wpf.TaskbarNotification;
-using Helper.FileOperation;
-using Helper.Statics;
-using Helper.Utils;
+using Helper.NetCore.FileOperation;
+using Helper.NetCore.Statics;
+using Helper.NetCore.Utils;
 using System;
 using System.Diagnostics;
 using System.IO;

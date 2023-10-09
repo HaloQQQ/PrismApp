@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="TcpSocket.Views.Settings"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:helper="clr-namespace:Helper.Utils;assembly=Helper"
+             xmlns:helper="clr-namespace:Helper.NetCore.Utils;assembly=Helper.NetCore"
              MinWidth="800" MaxHeight="500"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:attachs="clr-namespace:WpfStyleResources.Attachs;assembly=WpfStyleResources"

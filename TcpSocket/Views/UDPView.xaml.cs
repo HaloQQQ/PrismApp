@@ -1,4 +1,4 @@
-﻿using Helper.Extensions;
+﻿using Helper.NetCore.Extensions;
 using SocketHelper.Base;
 using SocketHelper.Udp;
 using System;

@@ -1,5 +1,5 @@
-﻿using Helper.Extensions;
-using Helper.Utils;
+﻿using Helper.NetCore.Extensions;
+using Helper.NetCore.Utils;
 using Prism.Mvvm;
 using SocketHelper.Base;
 using SocketHelper.Tcp;

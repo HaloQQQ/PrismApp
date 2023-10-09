@@ -5,9 +5,11 @@
         <TargetFramework>net6.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
-        <AssemblyVersion>1.0.0.10</AssemblyVersion>
+        <AssemblyVersion>1.0.0.11</AssemblyVersion>
         <ApplicationIcon>Resources\apple.ico</ApplicationIcon>
         <GenerateDocumentationFile>False</GenerateDocumentationFile>
+        <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     </PropertyGroup>
 
     <ItemGroup>
@@ -107,9 +109,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Helper">
-        <HintPath>bin\Debug\Helper.dll</HintPath>
-      </Reference>
       <Reference Include="Microsoft.Expression.Drawing">
         <HintPath>..\..\..\..\NuGetPackages\netcore5.0.microsoft.expression.drawing\1.0.0\lib\net5.0-windows7.0\Microsoft.Expression.Drawing.dll</HintPath>
       </Reference>
@@ -123,12 +122,13 @@
 
     <ItemGroup>
       <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
+      <PackageReference Include="IceTea.Net6.Helper" Version="1.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
       <PackageReference Include="prism.dryioc" Version="8.1.97" />
       <PackageReference Include="System.Management" Version="7.0.2" />
-      <PackageReference Include="System.ServiceProcess.ServiceController" Version="7.0.0" />
+      <PackageReference Include="System.ServiceProcess.ServiceController" Version="7.0.1" />
     </ItemGroup>
 
     <ItemGroup>

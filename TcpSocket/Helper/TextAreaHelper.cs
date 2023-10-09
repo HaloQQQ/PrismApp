@@ -1,4 +1,4 @@
-﻿using Helper.Utils;
+﻿using Helper.NetCore.Utils;
 using System;
 using System.Net;
 using System.Windows;

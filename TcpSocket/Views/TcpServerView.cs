@@ -1,5 +1,5 @@
-﻿using Helper.Extensions;
-using Helper.Utils;
+﻿using Helper.NetCore.Extensions;
+using Helper.NetCore.Utils;
 using SocketHelper.Tcp;
 using System;
 using TcpSocket.Helper;

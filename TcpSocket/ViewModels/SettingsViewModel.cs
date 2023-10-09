@@ -1,4 +1,4 @@
-﻿using Helper.Utils;
+﻿using Helper.NetCore.Utils;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;

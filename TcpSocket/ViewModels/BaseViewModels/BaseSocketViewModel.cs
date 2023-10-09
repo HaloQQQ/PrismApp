@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using Helper.Utils;
+using Helper.NetCore.Utils;
 using WpfStyleResources.Helper;
 
 namespace TcpSocket.ViewModels.BaseViewModels

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Helper.Utils;
+using Helper.NetCore.Utils;
 
 namespace TcpSocket.Views
 {

@@ -1,5 +1,6 @@
-﻿using Helper.ThirdPartyUtils;
-using Helper.Utils;
+﻿using Helper.NetCore.ThirdPartyUtils;
+using Helper.NetCore.ThirdPartyUtils.QRCodes.QRCoder;
+using Helper.NetCore.Utils;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -31,7 +32,12 @@ namespace TcpSocket.ViewModels
             this.Settings = settings;
             this._imageDisplayViewModel = imageDisplayViewModel;
 
-            var bitmap = QRCodeUtil.GetColorfulQR("Hello 3Q", Color.GreenYellow, Color.White, 200);
+            //var bitmap = QRCodeUtil.GetColorfulQR("Hello 3Q", Color.GreenYellow, Color.White, 200);
+
+            var bitmap = new QRCodeCreator().GenerateQRCodeImage(new QRModel("Hello3Q",
+                    Color.GreenYellow, Color.White, 20,
+                    null,
+                    false));
 
             this.BitmapImage = bitmap;
 

@@ -1,4 +1,4 @@
-﻿using Helper.Extensions;
+﻿using Helper.NetCore.Extensions;
 using SocketHelper.Tcp;
 using TcpSocket.Helper;
 using TcpSocket.ViewModels;

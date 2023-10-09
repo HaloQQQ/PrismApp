@@ -1,5 +1,5 @@
-﻿using Helper.AbstractModel;
-using Helper.ProcessServices;
+﻿using Helper.NetCore.AbstractModel;
+using Helper.NetCore.ProcessServices;
 using Prism.Commands;
 using System;
 using System.Collections.ObjectModel;

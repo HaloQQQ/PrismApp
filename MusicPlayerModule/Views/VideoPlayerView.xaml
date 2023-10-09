@@ -60,6 +60,8 @@
 
             <KeyBinding Command="{Binding StopPlayVideoCommand}" CommandParameter="{Binding CurrentVideo}" Key="W" Modifiers="Alt"/>
 
+            <KeyBinding Command="{Binding CleanPlayingCommand}" Key="A" Modifiers="Alt"/>
+
             <KeyBinding Command="{x:Static MediaCommands.IncreaseVolume}" Modifiers="Ctrl" Key="Up" />
 
             <KeyBinding Command="{x:Static MediaCommands.FastForward}" Key="Right" />

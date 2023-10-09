@@ -1,4 +1,4 @@
-﻿using Helper.Utils;
+﻿using Helper.NetCore.Utils;
 using Prism.DryIoc;
 using Prism.Events;
 using Prism.Ioc;
