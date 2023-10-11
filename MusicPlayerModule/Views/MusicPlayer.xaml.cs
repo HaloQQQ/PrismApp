@@ -3,8 +3,6 @@ using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.Utils;
 using MusicPlayerModule.ViewModels;
 using Prism.Events;
-using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -12,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using WpfStyleResources.Extensions;
+using IceTea.Wpf.Core.Extensions;
 
 namespace MusicPlayerModule.Views
 {

@@ -1,0 +1,155 @@
+﻿<UserControl x:Class="MyApp.Prisms.Views.CommunicationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:views="clr-namespace:MyApp.Prisms.Views"
+             xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core"
+             attachs:MyAttachProperty.IsElementFocused="True"
+             xmlns:prism="http://prismlibrary.com/" FocusVisualStyle="{x:Null}"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style x:Key="TcpServerComboBoxEnableStyle" TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                <Setter Property="IsEnabled" Value="False"/>
+
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Value="False"
+                                       Binding="{Binding MachineServerContext.IsConnected}" />
+                            <Condition Value="False"
+                                       Binding="{Binding ApplicationServerContext.IsConnected}" />
+                        </MultiDataTrigger.Conditions>
+
+                        <Setter Property="ComboBox.IsEnabled" Value="True" />
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="CheckBoxEnableStyle" TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                <Setter Property="IsEnabled" Value="False"/>
+
+                <Style.Triggers>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Value="False"
+                                       Binding="{Binding MachineServerContext.IsConnected}" />
+                            <Condition Value="False"
+                                       Binding="{Binding ApplicationServerContext.IsConnected}" />
+                            <Condition Value="False"
+                                       Binding="{Binding ApplicationClientContext.IsConnected}" />
+                            <Condition Value="False"
+                                       Binding="{Binding ApplicationClientContext.Connecting}" />
+                            <Condition Value="False"
+                                       Binding="{Binding UdpContext.IsConnected}" />
+                        </MultiDataTrigger.Conditions>
+
+                        <Setter Property="CheckBox.IsEnabled" Value="True" />
+                    </MultiDataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <Viewbox Style="{StaticResource OnlyDownViewbox}" DockPanel.Dock="Top" HorizontalAlignment="Left" MinHeight="35">
+            <DockPanel DockPanel.Dock="Top" MinHeight="35" LastChildFill="False">
+                <CheckBox DockPanel.Dock="Left" IsChecked="{Binding IsTcp}"
+                      Style="{StaticResource CheckBoxEnableStyle}">
+                    <TextBlock>
+                        <TextBlock Style="{StaticResource IconText}" Text="&#xec6f;" />
+                        <TextBlock Text="Tcp：" />
+                    </TextBlock>
+                </CheckBox>
+
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal"
+                        Visibility="{Binding IsTcp, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
+                    <CheckBox IsChecked="{Binding IsTcpServer}" 
+                          Style="{StaticResource CheckBoxEnableStyle}">
+                        <TextBlock>
+                            <TextBlock Style="{StaticResource IconText}" FontSize="18" Text="&#xe98e;" />
+                            <TextBlock Text="服务器：" />
+                        </TextBlock>
+                    </CheckBox>
+
+                    <StackPanel Orientation="Horizontal"
+                            Visibility="{Binding IsTcpServer,Converter={StaticResource BoolToVisibleCollapsedConverter}}">
+                        <TextBlock>
+                            <TextBlock Style="{StaticResource IconText}" Text="&#xe653;" />
+                            <TextBlock Style="{StaticResource ThemeBlk}" Text="服务端最大连接数："/>
+                        </TextBlock>
+                        <ComboBox Text="{Binding MaxClientCount, Converter={StaticResource DigitToStringConverter}, Mode=OneWayToSource}"
+                              IsReadOnly="True" FontSize="20"
+                              Style="{StaticResource TcpServerComboBoxEnableStyle}">
+                            <ComboBoxItem Content="1" />
+                            <ComboBoxItem Content="2" />
+                            <ComboBoxItem Content="3" />
+                            <ComboBoxItem Content="5" IsSelected="True" />
+                            <ComboBoxItem Content="10" />
+                            <ComboBoxItem Content="20" />
+                            <ComboBoxItem Content="50" />
+                            <ComboBoxItem Content="100" />
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+
+                <CheckBox DockPanel.Dock="Left"
+                      IsChecked="{Binding ApplicationClientContext.CanReConnect,Mode=OneWayToSource}">
+                    <CheckBox.Style>
+                        <Style TargetType="CheckBox" BasedOn="{StaticResource SlideCheckBox}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Value="False" Binding="{Binding IsTcpServer}" />
+                                        <Condition Value="True" Binding="{Binding IsTcp}" />
+                                    </MultiDataTrigger.Conditions>
+
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </CheckBox.Style>
+
+                    <TextBlock>
+                    <TextBlock Style="{StaticResource IconText}" Text="&#xe627;" />
+                    <TextBlock Style="{StaticResource ThemeBlk}" Text="重连服务器：" />
+                </TextBlock>
+                </CheckBox>
+
+                <CheckBox DockPanel.Dock="Left" IsChecked="{Binding IsHex}" Style="{StaticResource SlideCheckBox}">
+                    <TextBlock>
+                    <TextBlock Style="{StaticResource IconText}" Text="&#xe653;" />
+                    <TextBlock Style="{StaticResource ThemeBlk}" Text="HEX：" />
+                </TextBlock>
+                </CheckBox>
+            </DockPanel>
+        </Viewbox>
+
+        <Grid DockPanel.Dock="Bottom">
+            <Grid>
+                <Grid Visibility="{Binding IsTcp, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
+                    <Grid Visibility="{Binding IsTcpServer,Converter={StaticResource BoolToVisibleCollapsedConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <views:TcpServerView x:Name="MachineServer" Grid.Column="0" />
+
+                        <views:AnotherTcpServerView x:Name="AppServer" Grid.Column="1" />
+                    </Grid>
+
+                    <Grid Visibility="{Binding IsTcpServer,Converter={StaticResource BoolToCollapsedVisibleConverter}}">
+                        <views:TcpClientView />
+                    </Grid>
+                </Grid>
+
+                <Grid Visibility="{Binding IsTcp, Converter={StaticResource BoolToCollapsedVisibleConverter}}">
+                    <views:UDPView />
+                </Grid>
+            </Grid>
+        </Grid>
+    </DockPanel>
+</UserControl>

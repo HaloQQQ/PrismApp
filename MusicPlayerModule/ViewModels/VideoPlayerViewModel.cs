@@ -1,4 +1,5 @@
-﻿using MusicPlayerModule.Common;
+﻿using IceTea.Core.Extensions;
+using MusicPlayerModule.Common;
 using MusicPlayerModule.Models;
 using MusicPlayerModule.Models.Common;
 using MusicPlayerModule.MsgEvents;
@@ -7,15 +8,12 @@ using MusicPlayerModule.MsgEvents.Video.Dtos;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
-using WpfStyleResources.Helper;
-using WpfStyleResources.Helper.MediaInfo;
+using IceTea.Wpf.Core.Helper;
+using IceTea.Wpf.Core.Helper.MediaInfo;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -342,7 +340,7 @@ namespace MusicPlayerModule.ViewModels
 
                 var list = new List<string>();
 
-                CommonUtils.GetFiles(selectedPath, list, str => str.EndsWith(".mp4"));
+                selectedPath.GetFiles(str => str.EndsWith(".mp4"));
 
                 this.LoadVideo(list, selectedPath);
             }

@@ -1,5 +1,4 @@
 ﻿using Prism.Events;
-using System;
 
 namespace MusicPlayerModule.MsgEvents
 {

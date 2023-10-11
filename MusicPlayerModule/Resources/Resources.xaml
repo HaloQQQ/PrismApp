@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:converter="clr-namespace:WpfStyleResources.Converters;assembly=WpfStyleResources"
-                    xmlns:attachs="clr-namespace:WpfStyleResources.Attachs;assembly=WpfStyleResources"
-                    xmlns:helper="clr-namespace:WpfStyleResources.Helper;assembly=WpfStyleResources"
+                    xmlns:converter="clr-namespace:IceTea.Wpf.Core.Converters;assembly=IceTea.Wpf.Core"
+                    xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core"
+                    xmlns:helper="clr-namespace:IceTea.Wpf.Core.Helper;assembly=IceTea.Wpf.Core"
                     xmlns:utils="clr-namespace:MusicPlayerModule.Utils">
 
     <GeometryGroup x:Key="PopupGeometryGroup_PlayOrder">

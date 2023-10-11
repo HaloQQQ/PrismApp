@@ -1,5 +1,4 @@
 ﻿using MusicPlayerModule.ViewModels;
-using System;
 
 namespace MusicPlayerModule.MsgEvents.Video.Dtos
 {

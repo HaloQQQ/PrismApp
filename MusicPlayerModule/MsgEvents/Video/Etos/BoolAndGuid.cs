@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MusicPlayerModule.MsgEvents.Video.Dtos
+﻿namespace MusicPlayerModule.MsgEvents.Video.Dtos
 {
     internal struct BoolAndGuid
     {

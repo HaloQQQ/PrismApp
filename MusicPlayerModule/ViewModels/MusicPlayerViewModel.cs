@@ -1,4 +1,5 @@
-﻿using MusicPlayerModule.Common;
+﻿using IceTea.Core.Extensions;
+using MusicPlayerModule.Common;
 using MusicPlayerModule.Models;
 using MusicPlayerModule.Models.Common;
 using MusicPlayerModule.MsgEvents;
@@ -6,15 +7,11 @@ using MusicPlayerModule.Utils;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using WpfStyleResources.Helper;
-using WpfStyleResources.Helper.MediaInfo;
+using IceTea.Wpf.Core.Helper;
+using IceTea.Wpf.Core.Helper.MediaInfo;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -547,9 +544,7 @@ namespace MusicPlayerModule.ViewModels
                     AppStatics.LastMusicDir = selectedPath;
                 }
 
-                var list = new List<string>();
-
-                CommonUtils.GetFiles(selectedPath, list, str => str.EndsWith(".mp3"));
+                var list = selectedPath.GetFiles(str => str.EndsWith(".mp3"));
 
                 await this.LoadMusicAsync(list, selectedPath);
             }
@@ -559,7 +554,7 @@ namespace MusicPlayerModule.ViewModels
         {
             foreach (var filePath in filePaths)
             {
-                if (!this.Favorites.Any(item => item.Music.FilePath == filePath))
+                if (!this.Favorites.Any(item => item.Music.FilePath.GetFileNameWithoutExtension() == filePath.GetFileNameWithoutExtension() || item.Music.FilePath == filePath))
                 {
                     yield return filePath;
                 }
@@ -582,7 +577,7 @@ namespace MusicPlayerModule.ViewModels
 
             this.IsLoading = true;
 
-            await Task.Delay(1);
+            //await Task.Delay(1);
 
             await this.MultiThreadBatchLoadMusic(list, directory);
 
@@ -633,6 +628,8 @@ namespace MusicPlayerModule.ViewModels
                     )
                 );
             }
+
+            await Task.WhenAll(taskList);
         }
 
         #endregion

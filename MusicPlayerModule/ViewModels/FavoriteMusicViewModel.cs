@@ -1,6 +1,5 @@
 ﻿using MusicPlayerModule.Models;
 using Prism.Mvvm;
-using System;
 
 namespace MusicPlayerModule.ViewModels
 {

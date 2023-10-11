@@ -1,5 +1,4 @@
 ﻿using MusicPlayerModule.Models.Common;
-using System.Collections.Generic;
 
 namespace MusicPlayerModule.Common
 {

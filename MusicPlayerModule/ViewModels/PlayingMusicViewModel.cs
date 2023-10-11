@@ -1,7 +1,6 @@
 ﻿using MusicPlayerModule.Models;
 using MusicPlayerModule.Utils;
 using MusicPlayerModule.ViewModels.Base;
-using System;
 
 namespace MusicPlayerModule.ViewModels
 {

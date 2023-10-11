@@ -1,12 +1,13 @@
 ﻿<UserControl x:Class="MusicPlayerModule.Views.VideoPlayerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:attachs="clr-namespace:WpfStyleResources.Attachs;assembly=WpfStyleResources"
-             xmlns:helper="clr-namespace:WpfStyleResources.Helper;assembly=WpfStyleResources"
+             xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core"
+             xmlns:helper="clr-namespace:IceTea.Wpf.Core.Helper;assembly=IceTea.Wpf.Core"
              xmlns:core="clr-namespace:System.Windows.Media;assembly=PresentationCore"
              xmlns:common="clr-namespace:MusicPlayerModule.Common"
              xmlns:commonModel="clr-namespace:MusicPlayerModule.Models.Common"
-             xmlns:prism="http://prismlibrary.com/" prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:prism="http://prismlibrary.com/" FocusVisualStyle="{x:Null}" 
+             prism:ViewModelLocator.AutoWireViewModel="True"
              Background="Transparent">
     <UserControl.Resources>
         <ResourceDictionary>

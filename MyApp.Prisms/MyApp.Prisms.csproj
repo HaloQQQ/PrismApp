@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\apple.ico</ApplicationIcon>
+    <Version>1.0.1.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+    <None Remove="Resources\apple.ico" />
+    <None Remove="Resources\iconfont.ttf" />
+    <None Remove="Resources\网络.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\apple.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IceTea.NetCore" Version="1.0.3" />
+    <PackageReference Include="IceTea.SocketHelper" Version="1.0.3" />
+    <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MusicPlayerModule\MusicPlayerModule.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Windows.Forms.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Resources\apple.ico" />
+    <Resource Include="Resources\iconfont.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\网络.png" />
+  </ItemGroup>
+
+</Project>

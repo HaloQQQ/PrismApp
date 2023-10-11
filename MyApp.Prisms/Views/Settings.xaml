@@ -1,0 +1,109 @@
+﻿<UserControl x:Class="MyApp.Prisms.Views.Settings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:helper="clr-namespace:IceTea.NetCore.Utils;assembly=IceTea.NetCore"
+             MinWidth="800" MaxHeight="500"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core"
+             prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="Keys" MethodName="GetValues" ObjectType="{x:Type helper:Keys}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="helper:Keys" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <DataTemplate DataType="{x:Type helper:HotKeyModel}">
+            <StackPanel Orientation="Horizontal" MinHeight="40">
+                <TextBlock FontSize="16" TextAlignment="Right" MinWidth="100">
+                    <TextBlock Text="{Binding Name}" />:
+                </TextBlock>
+
+                <CheckBox Margin="10,0,0,0" Content="Ctrl:" IsChecked="{Binding IsSelectCtrl}" IsEnabled="{Binding IsUsable}" />
+
+                <CheckBox Margin="10,0,0,0" Content="Shift:" IsChecked="{Binding IsSelectShift}" IsEnabled="{Binding IsUsable}" />
+
+                <CheckBox Margin="10,0,0,0" Content="Alt:" IsChecked="{Binding IsSelectAlt}" IsEnabled="{Binding IsUsable}" />
+
+                <ComboBox Margin="10,0,0,0" ItemsSource="{Binding Source={StaticResource Keys}}" IsReadOnly="True"
+                          Text="{Binding SelectedKey}" IsEnabled="{Binding IsUsable}" />
+
+                <TextBox IsReadOnly="True" IsEnabled="{Binding IsUsable}" Text="{Binding CombineKeys, Mode=OneWay}"
+                         KeyUp="UIElement_OnKeyUp">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                            <Setter Property="attachs:MyAttachProperty.PlaceHolder" Value="组合键"/>
+
+                            <Style.Triggers>
+                                <DataTrigger Value="False" Binding="{Binding IsUsable}">
+                                    <Setter Property="Foreground" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+
+                <CheckBox Style="{StaticResource SlideCheckBox}" IsChecked="{Binding IsUsable}" />
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Border CornerRadius="20" Padding="0,10" Background="LightBlue">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TabControl Style="{StaticResource TabControl_ScrollContent}"
+                        ItemContainerStyle="{StaticResource TabItem_Transparent}">
+                <TabItem Header="快捷键">
+                    <StackPanel>
+                        <Button Command="{Binding DataContext.ResetHotKeysCommand}" HorizontalAlignment="Right" 
+                                Style="{StaticResource IconButtonBase_Expand}" Margin="0,10,20,0" Content="&#xe614;" ToolTip="重置快捷键"/>
+                        <ListBox ItemsSource="{Binding DataContext.HotKeys}" HorizontalAlignment="Stretch"
+                             ItemContainerStyle="{StaticResource ListBoxItem_General}" />
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="默认目录">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="图片默认目录：" Style="{StaticResource ThemeBlk}"/>
+                            <TextBox IsReadOnly="True" Text="{Binding DataContext.ImageDir}" attachs:MyAttachProperty.PlaceHolder="空目录"/>
+                            <Button Style="{StaticResource TransparentButtonBase}" Content="浏览" 
+                                    Command="{Binding DataContext.FindImageDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="音乐默认目录：" Style="{StaticResource ThemeBlk}"/>
+                            <TextBox IsReadOnly="True" Text="{Binding DataContext.LastMusicDir}" attachs:MyAttachProperty.PlaceHolder="空目录"/>
+                            <Button Style="{StaticResource TransparentButtonBase}" Content="浏览" 
+                                    Command="{Binding DataContext.FindMusicDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="视频默认目录：" Style="{StaticResource ThemeBlk}"/>
+                            <TextBox IsReadOnly="True" Text="{Binding DataContext.LastVideoDir}" attachs:MyAttachProperty.PlaceHolder="空目录"/>
+                            <Button Style="{StaticResource TransparentButtonBase}" 
+                                    Content="浏览" Command="{Binding DataContext.FindVideoDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="测试2">
+                    <StackPanel Background="Yellow" MinWidth="600" MinHeight="500" />
+                </TabItem>
+                <TabItem Header="测试3">
+                    <StackPanel Background="Green" MinWidth="600" MinHeight="500" />
+                </TabItem>
+                <TabItem Header="测试4">
+                    <StackPanel Background="Purple" MinWidth="600" MinHeight="500" />
+                </TabItem>
+            </TabControl>
+
+            <DockPanel Grid.Row="1" LastChildFill="False">
+                <Button Margin="20,10" DockPanel.Dock="Right" Style="{StaticResource TransparentButtonBase}"
+                        Content="取消" Command="{Binding CancelCommand}" />
+                <Button Margin="20,10" DockPanel.Dock="Right" Style="{StaticResource TransparentButtonBase}"
+                        Content="确认" Command="{Binding SubmitCommand}" />
+            </DockPanel>
+        </Grid>
+    </Border>
+</UserControl>

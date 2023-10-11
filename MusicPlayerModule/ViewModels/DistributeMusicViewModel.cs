@@ -4,13 +4,11 @@ using MusicPlayerModule.MsgEvents;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Windows.Input;
-using WpfStyleResources.Helper;
+using IceTea.Wpf.Core.Helper;
+using IceTea.Core.Extensions;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -92,17 +90,27 @@ namespace MusicPlayerModule.ViewModels
 
         private void MoveMusicsTo(string originDir, string targetDir)
         {
-            var colls = this.MusicDirFavorites.First(item => item.ClassifyKey == originDir).DisplayByClassifyKeyFavorites;
-            this.MusicDirFavorites.First(item => item.ClassifyKey == targetDir).DisplayByClassifyKeyFavorites.AddRange(colls);
+            var targetColls = this.MusicDirFavorites.First(item => item.ClassifyKey == targetDir).DisplayByClassifyKeyFavorites;
 
-            foreach (var favorite in colls)
+            var originColls = this.MusicDirFavorites.First(item => item.ClassifyKey == originDir)
+                                                    .DisplayByClassifyKeyFavorites
+                                                    .SkipWhile(item => targetColls.Any(m => m.Music.Name == item.Music.Name));
+
+            if (originColls.Any())
             {
-                favorite.Music.MoveTo(targetDir);
+                targetColls.AddRange(originColls);
+
+                foreach (var favorite in originColls)
+                {
+                    favorite.Music.MoveTo(targetDir);
+                }
+
+                this.TryRemoveMusicWithClassifyModel(originDir);
             }
-
-            colls.Clear();
-
-            this.TryRemoveMusicWithClassifyModel(originDir);
+            else
+            {
+                System.Windows.MessageBox.Show("目标目录已包含源目录所有内容，不允许重复");
+            }
         }
 
         /// <summary>
@@ -119,10 +127,14 @@ namespace MusicPlayerModule.ViewModels
 
                 this.MusicDirs.Remove(this.MusicDirs.First(item => item.DirPath == originDir));
 
-                if (!Directory.EnumerateFileSystemEntries(originDir).Any())
+                if (originDir.IsDirectoryEmpty())
                 {
                     Directory.Delete(originDir);
                 }
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("目录不为空，不允许删除");
             }
         }
 
@@ -224,24 +236,24 @@ namespace MusicPlayerModule.ViewModels
 
             this.DistributeByDirectoryCommand = new DelegateCommand(() =>
             {
-                if (this._collection.Count == 0)
+                if (this._collection.IsNullOrEmpty())
                 {
                     return;
                 }
 
                 this.ClearFavoriteListFilteKeyWords?.Invoke();
 
-                if (!string.IsNullOrEmpty(this.AlbumMusicFilteKeyWords))
+                if (!this.AlbumMusicFilteKeyWords.IsNullOrEmpty())
                 {
                     this.AlbumMusicFilteKeyWords = null;
                 }
 
-                if (!string.IsNullOrEmpty(this.SingerMusicFilteKeyWords))
+                if (!this.SingerMusicFilteKeyWords.IsNullOrEmpty())
                 {
                     this.SingerMusicFilteKeyWords = null;
                 }
 
-                if (this.MusicDirFavorites.Count == 0)
+                if (this.MusicDirFavorites.IsNullOrEmpty())
                 {
                     this.MusicDirFavorites.AddRange(this._collection
                                                                 .GroupBy<FavoriteMusicViewModel, string>(item => item.Music.FileDir ?? "未知目录")
@@ -258,19 +270,19 @@ namespace MusicPlayerModule.ViewModels
 
             this.DistributeBySingerCommand = new DelegateCommand(() =>
             {
-                if (this._collection.Count == 0)
+                if (this._collection.IsNullOrEmpty())
                 {
                     return;
                 }
 
                 this.ClearFavoriteListFilteKeyWords?.Invoke();
 
-                if (!string.IsNullOrEmpty(this.AlbumMusicFilteKeyWords))
+                if (!this.AlbumMusicFilteKeyWords.IsNullOrEmpty())
                 {
                     this.AlbumMusicFilteKeyWords = null;
                 }
 
-                if (this.MusicSingerFavorites.Count == 0)
+                if (this.MusicSingerFavorites.IsNullOrEmpty())
                 {
                     this.MusicSingerFavorites.AddRange(this._collection
                                                                 .GroupBy<FavoriteMusicViewModel, string>(item => item.Music.Singer ?? "未知歌手")
@@ -291,19 +303,19 @@ namespace MusicPlayerModule.ViewModels
 
             this.DistributeByAlbumCommand = new DelegateCommand(() =>
             {
-                if (this._collection.Count == 0)
+                if (this._collection.IsNullOrEmpty())
                 {
                     return;
                 }
 
                 this.ClearFavoriteListFilteKeyWords?.Invoke();
 
-                if (!string.IsNullOrEmpty(this.SingerMusicFilteKeyWords))
+                if (!this.SingerMusicFilteKeyWords.IsNullOrEmpty())
                 {
                     this.SingerMusicFilteKeyWords = null;
                 }
 
-                if (this.MusicAlbumFavorites.Count == 0)
+                if (this.MusicAlbumFavorites.IsNullOrEmpty())
                 {
                     this.MusicAlbumFavorites.AddRange(this._collection
                                                                 .GroupBy<FavoriteMusicViewModel, string>(item => item.Music.Album ?? "未知专辑")
@@ -328,12 +340,12 @@ namespace MusicPlayerModule.ViewModels
                 var originDir = moveModel.Music.FileDir;
                 var targetDir = moveModel.MoveToDir;
 
-                if (originDir.Equals(targetDir, StringComparison.CurrentCultureIgnoreCase))
+                if (originDir.EqualsIgnoreCase(targetDir))
                 {
                     return;
                 }
 
-                if (this.MusicDirFavorites.Count == 0)
+                if (this.MusicDirFavorites.IsNullOrEmpty())
                 {
                     this.DistributeByDirectoryCommand.Execute(null);
                 }
@@ -350,7 +362,7 @@ namespace MusicPlayerModule.ViewModels
                     {
                         orginCollection.Remove(item);
 
-                        if (orginCollection.Count == 0)
+                        if (orginCollection.IsNullOrEmpty())
                         {
                             this.TryRemoveMusicWithClassifyModel(originDir);
                         }

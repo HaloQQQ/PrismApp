@@ -3,13 +3,12 @@ using MusicPlayerModule.MsgEvents.Video;
 using MusicPlayerModule.MsgEvents.Video.Dtos;
 using MusicPlayerModule.ViewModels;
 using Prism.Events;
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using WpfStyleResources.Extensions;
+using IceTea.Wpf.Core.Extensions;
 
 namespace MusicPlayerModule.Views
 {

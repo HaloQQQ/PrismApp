@@ -32,8 +32,8 @@ Thumbs.db
 *.cache
 *.ilk
 *.log
-# [Bb]in
-# [Dd]ebug*/
+[Bb]in
+[Dd]ebug*/
 *.lib
 *.sbr
 obj/
@@ -54,7 +54,7 @@ TestProject/
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 # Build results
-# [Dd]ebug/
+[Dd]ebug/
 net6.0-windows/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -63,8 +63,8 @@ net6.0-windows/
 [Xx]86/
 [Bb]uild/
 bld/
-# [Bb]in/
-# [Oo]bj/
+[Bb]in/
+[Oo]bj/
 [Oo]utput/
 # Visual Studio 2015 cache/options directory
 .vs/

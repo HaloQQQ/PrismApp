@@ -1,0 +1,129 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:models="clr-namespace:MyApp.Prisms.Models"
+                    xmlns:viewModels="clr-namespace:MyApp.Prisms.ViewModels">
+    <!-- ImageList -->
+    <DataTemplate x:Key="ImageList" DataType="viewModels:MyImage">
+        <Grid>
+            <StackPanel Orientation="Horizontal">
+                <Image Margin="20,10" Width="80" Height="80" Source="{Binding URI}" />
+                <Grid Margin="30,20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0">
+                        名称：<TextBlock Text="{Binding Name}" />
+                    </TextBlock>
+                    <TextBlock Grid.Row="1">
+                        文件类型：<TextBlock Text="{Binding FileType}" />
+                    </TextBlock>
+                    <TextBlock Grid.Row="2">
+                        大小：<TextBlock Text="{Binding Size}" /> KB
+                    </TextBlock>
+                </Grid>
+            </StackPanel>
+        </Grid>
+        <DataTemplate.Triggers>
+            <Trigger Property="ListBoxItem.IsMouseOver" Value="True">
+                <Setter Property="ListBoxItem.Background" Value="BlueViolet" />
+            </Trigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <!-- ImageBlock -->
+    <DataTemplate x:Key="ImageBlock" DataType="viewModels:MyImage">
+        <Grid>
+            <DockPanel>
+                <Image DockPanel.Dock="Left" Margin="10" Width="80" Height="80" Source="{Binding URI}" />
+                <Grid DockPanel.Dock="Right" Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" VerticalAlignment="Center" TextAlignment="Center">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Margin="0,5" Text="名称" FontSize="18" FontWeight="Bold" />
+                            <TextBlock Margin="0,5" Text="{Binding Name}" />
+                        </StackPanel>
+                    </TextBlock>
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" TextAlignment="Center">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Margin="0,5" Text="文件类型" FontSize="18" FontWeight="Bold" />
+                            <TextBlock Margin="0,5" Text="{Binding FileType}" />
+                        </StackPanel>
+                    </TextBlock>
+                    <TextBlock Grid.Column="2" VerticalAlignment="Center" TextAlignment="Center">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Margin="0,5" Text="大小" FontSize="18" FontWeight="Bold" />
+                            <TextBlock Margin="0,5">
+                                <TextBlock>
+                                    <TextBlock Text="{Binding Size}" />KB
+                                </TextBlock>
+                            </TextBlock>
+                        </StackPanel>
+                    </TextBlock>
+                </Grid>
+            </DockPanel>
+        </Grid>
+        <DataTemplate.Triggers>
+            <Trigger Property="ListBoxItem.IsMouseOver" Value="True">
+                <Setter Property="ListBoxItem.Background" Value="BlueViolet" />
+            </Trigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <!-- ListImageDataTemplate -->
+    <DataTemplate x:Key="ListImageDataTemplate" DataType="viewModels:MyImage">
+        <StackPanel Orientation="Horizontal">
+            <Image Margin="10,5" Width="80" Height="60" Source="{Binding URI}" />
+
+            <TextBlock Text="{Binding Name}" Margin="0,2"
+                       Foreground="{DynamicResource TextBlock.Foreground}"
+                       VerticalAlignment="Center" />
+        </StackPanel>
+    </DataTemplate>
+
+    <!-- BlockImageDataTemplate -->
+    <DataTemplate x:Key="BlockImageDataTemplate" DataType="viewModels:MyImage">
+        <StackPanel HorizontalAlignment="Center" Width="100" Height="100">
+            <Image Width="80" Height="70" Source="{Binding URI}" Margin="0" />
+
+            <TextBlock Text="{Binding Name}" FontSize="10" Padding="0"
+                       Foreground="{DynamicResource TextBlock.Foreground}" 
+                       HorizontalAlignment="Center" />
+        </StackPanel>
+    </DataTemplate>
+
+    <!-- EmptyImageDataTemplate -->
+    <DataTemplate x:Key="EmptyImageDataTemplate" DataType="viewModels:MyImage">
+        <Border MinWidth="98">
+            <TextBlock Text="&#xe622;"
+                   Background="{DynamicResource TextBlock.Background}"
+                   Foreground="{DynamicResource TextBlock.Foreground}"
+                   FontSize="50" FontWeight="Bold"
+                   Style="{StaticResource IconText}" />
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ProcessDataTemplate" DataType="models:ProcessContext">
+        <TextBlock>
+            <TextBlock Text="{Binding Id}" Margin="5,2"/>
+            <TextBlock Text="{Binding Name}" Margin="5,2"/>
+        </TextBlock>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ServiceDataTemplate" DataType="models:ServiceContext">
+        <TextBlock>
+            <TextBlock Text="{Binding ServiceName}" Margin="5,2"/>
+            <TextBlock Text="{Binding DisplayName}" Margin="5,2"/>
+            <TextBlock Text="{Binding ServiceControllerStatus}" Margin="5,2"/>
+            <TextBlock Text="{Binding ServiceType}" Margin="5,2"/>
+            <TextBlock Text="{Binding ServiceStartMode}" Margin="5,2"/>
+        </TextBlock>
+    </DataTemplate>
+</ResourceDictionary>

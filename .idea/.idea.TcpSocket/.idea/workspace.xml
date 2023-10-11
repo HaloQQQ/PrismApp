@@ -6,12 +6,92 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5404ad60-6722-44e8-a7f2-721594e32dbf" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TcpSocket/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TcpSocket/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicPlayerModule/Models/MusicModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/Models/MusicModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicPlayerModule/Models/VideoModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/Models/VideoModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MusicPlayerModule/MusicPlayerModule.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/MusicPlayerModule.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicPlayerModule/Resources/DataGridContextMenu.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/Resources/DataGridContextMenu.xaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MusicPlayerModule/Resources/Resources.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/Resources/Resources.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicPlayerModule/Utils/LoadLyricToMusicModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/Utils/LoadLyricToMusicModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicPlayerModule/ViewModels/Base/MediaBaseViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/ViewModels/Base/MediaBaseViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicPlayerModule/ViewModels/DistributeMusicViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/ViewModels/DistributeMusicViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicPlayerModule/ViewModels/MusicPlayerViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/ViewModels/MusicPlayerViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicPlayerModule/ViewModels/VideoPlayerViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/ViewModels/VideoPlayerViewModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MusicPlayerModule/Views/MusicPlayer.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/Views/MusicPlayer.xaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicPlayerModule/Views/MusicPlayer.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/Views/MusicPlayer.xaml.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MusicPlayerModule/Views/VideoPlayerView.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/Views/VideoPlayerView.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TcpSocket/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/TcpSocket/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicPlayerModule/Views/VideoPlayerView.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MusicPlayerModule/Views/VideoPlayerView.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket.sln" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/App.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/App.xaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/AssemblyInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Commands/NotifyIconCommand.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Converters/BitmapToImageSourceConverter.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/DataTemplateSelector/BackgroundImageBlockDataTemplateSelector.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/DataTemplateSelector/BackgroundImageListDataTemplateSelector.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/DataTemplateSelector/ImageDataTemplateSelector.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Helper/Constants.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Helper/Helper.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Helper/TextAreaHelper.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Helper/WindowResizeAdorner.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Models/DisplayMessage.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Models/ProcessContext.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/MsgEvents/BackgroundImageSelectorShowEvent.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/MsgEvents/BackgroundImageUpdateEvent.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/MsgEvents/DialogMessageEvent.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/MsgEvents/UpdateScreenBrightEvent.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/MyCustomPopupPlacement/PopupPlacement.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Resources/DenpendencyTaskbarIcon.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Resources/MyDataTemplate.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Resources/MyDictionary.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Resources/apple.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Resources/iconfont.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Resources/网络.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/TcpSocket.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/UsefulControl/VirtualizingWrapPanel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/UsefulControl/WindowResizeAdorner.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/ViewModels/AnotherTcpServerViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/ViewModels/BaseViewModels/BaseSocketViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/ViewModels/CommunicationViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/ViewModels/ImageDisplayViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/ViewModels/ProcessServiceViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/ViewModels/SettingsViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/ViewModels/SoftwareViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/ViewModels/TcpClientViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/ViewModels/TcpServerViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/ViewModels/UDPViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/ViewModels/UserViewModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/AnotherTcpServerView.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/BaseViews/BaseTcpSocketView.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/BaseViews/BaseTcpSocketView.xaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/CommunicationView.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/CommunicationView.xaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/ImageDisplayView.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/ImageDisplayView.xaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/MainWindow.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/MainWindow.xaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/MusicWindow.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/MusicWindow.xaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/ProcessServiceView.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/ProcessServiceView.xaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/Settings.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/Settings.xaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/SwitchBackgroundView.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/SwitchBackgroundView.xaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/TcpClientView.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/TcpServerView.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/UDPView.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/UDPView.xaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/VideoWindow.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/VideoWindow.xaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/WindowTitleBarView.xaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/Views/WindowTitleBarView.xaml.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/appsettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/Helper.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/Helper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/SocketHelper.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/SocketHelper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/zxing.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TcpSocket/bin/Debug/zxing.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,6 +190,7 @@
       <workItem from="1671195179242" duration="762000" />
       <workItem from="1680446036933" duration="9043000" />
       <workItem from="1696319363828" duration="442000" />
+      <workItem from="1697028824550" duration="213000" />
     </task>
     <servers />
   </component>

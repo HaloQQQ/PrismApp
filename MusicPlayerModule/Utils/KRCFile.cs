@@ -1,7 +1,6 @@
 ﻿using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace MusicPlayerModule.Utils

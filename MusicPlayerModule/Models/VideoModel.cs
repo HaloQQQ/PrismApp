@@ -1,7 +1,6 @@
 ﻿using Prism.Mvvm;
-using System;
 using System.IO;
-using WpfStyleResources.Helper;
+using IceTea.Wpf.Core.Helper;
 
 namespace MusicPlayerModule.Models;
 

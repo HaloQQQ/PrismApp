@@ -1,9 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:myConverter="clr-namespace:MusicPlayerModule.Converters"
-                    xmlns:converters="clr-namespace:WpfStyleResources.Converters;assembly=WpfStyleResources"
-                    xmlns:helper="clr-namespace:WpfStyleResources.Helper;assembly=WpfStyleResources"
-                    xmlns:attachs="clr-namespace:WpfStyleResources.Attachs;assembly=WpfStyleResources">
+                    xmlns:converters="clr-namespace:IceTea.Wpf.Core.Converters;assembly=IceTea.Wpf.Core"
+                    xmlns:helper="clr-namespace:IceTea.Wpf.Core.Helper;assembly=IceTea.Wpf.Core"
+                    xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core">
 
     <myConverter:MusicDistributeMultiConverter x:Key="MusicDistributeMultiConverter"/>
     <converters:MultiConverter_IsStringEquals x:Key="MultiConverter_IsStringEquals"/>

@@ -1,11 +1,11 @@
 ﻿using MusicPlayerModule.Utils;
-using System;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Prism.Mvvm;
 using TagLib;
-using WpfStyleResources.Helper;
+using IceTea.Wpf.Core.Helper;
+using IceTea.Core.Extensions;
 
 namespace MusicPlayerModule.Models;
 
@@ -15,7 +15,7 @@ internal class MusicModel : BindableBase, IDisposable
     {
         this.FilePath = filePath;
 
-        var arr = Path.GetFileNameWithoutExtension(filePath).Split(" - ");
+        var arr = filePath.GetFileNameWithoutExtension().Split(" - ");
         if (arr.Length > 1)
         {
             this.Singer = arr[0];

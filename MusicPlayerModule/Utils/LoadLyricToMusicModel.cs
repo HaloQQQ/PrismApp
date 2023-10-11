@@ -1,11 +1,7 @@
-﻿using MusicPlayerModule.Models;
-using System;
-using System.Collections.Generic;
+﻿using IceTea.Core.Extensions;
+using MusicPlayerModule.Models;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using WpfStyleResources.Helper;
 
 namespace MusicPlayerModule.Utils
 {
@@ -79,9 +75,7 @@ namespace MusicPlayerModule.Utils
 
             Debug.Assert(Directory.Exists(directoryPath), "目录不存在");
 
-            List<string> paths = new List<string>();
-
-            CommonUtils.GetFiles(directoryPath, paths, predicate);
+            List<string> paths = directoryPath.GetFiles(predicate);
 
             if (paths != null && paths.Count > 0)
             {
