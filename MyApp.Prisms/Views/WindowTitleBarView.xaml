@@ -86,11 +86,11 @@
                                 <!--<ColumnDefinition />-->
                             </Grid.ColumnDefinitions>
                             <!--<waitLoads:ArcWaitLoad Grid.Column="0" Foreground="DodgerBlue" />-->
-                            <waitLoads:NeedleWaitLoad Grid.Column="1" Foreground="DodgerBlue" />
-                            <waitLoads:PointHorizonLineWaitLoad Grid.Column="2" Foreground="DodgerBlue" />
-                            <waitLoads:PointWaitLoad Grid.Column="3" Foreground="DodgerBlue" />
-                            <waitLoads:SquareFlipWaitLoad Grid.Column="4" Foreground="DodgerBlue" />
-                            <waitLoads:VerticalLineWaitLoad Grid.Column="5" Foreground="DodgerBlue" />
+                            <waitLoads:NeedleWaitLoad Grid.Column="0" Foreground="DodgerBlue" />
+                            <waitLoads:PointHorizonLineWaitLoad Grid.Column="1" Foreground="DodgerBlue" />
+                            <waitLoads:PointWaitLoad Grid.Column="2" Foreground="DodgerBlue" />
+                            <waitLoads:SquareFlipWaitLoad Grid.Column="3" Foreground="DodgerBlue" />
+                            <waitLoads:VerticalLineWaitLoad Grid.Column="4" Foreground="DodgerBlue" />
                         </Grid>
                         <Image Grid.Row="1" Source="{Binding BitmapImage,Converter={StaticResource BitmapToImageSourceConverter}}" />
                         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
