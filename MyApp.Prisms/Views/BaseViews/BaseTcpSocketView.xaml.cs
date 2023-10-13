@@ -8,10 +8,10 @@ using System.Windows.Input;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using IceTea.Wpf.Core.Helper;
-using SocketHelper.Base;
 using IceTea.Core.Extensions;
-using SocketHelper.Tcp;
 using IceTea.Core.Utils;
+using IceTea.SocketStandard.Base;
+using IceTea.SocketStandard.Tcp;
 
 namespace MyApp.Prisms.Views.BaseViews
 {

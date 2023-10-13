@@ -1,6 +1,6 @@
 ﻿using IceTea.Core.Extensions;
-using SocketHelper.Base;
-using SocketHelper.Udp;
+using IceTea.SocketStandard.Base;
+using IceTea.SocketStandard.Udp;
 using System;
 using System.Net.Sockets;
 using System.Windows;

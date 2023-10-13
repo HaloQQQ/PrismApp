@@ -1,5 +1,5 @@
 ﻿using IceTea.Core.Extensions;
-using SocketHelper.Tcp;
+using IceTea.SocketStandard.Tcp;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.ViewModels;
 using MyApp.Prisms.Views.BaseViews;

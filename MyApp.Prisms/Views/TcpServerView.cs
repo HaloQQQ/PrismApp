@@ -1,6 +1,6 @@
 ﻿using IceTea.Core.Extensions;
 using IceTea.Core.Utils;
-using SocketHelper.Tcp;
+using IceTea.SocketStandard.Tcp;
 using System;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.ViewModels;

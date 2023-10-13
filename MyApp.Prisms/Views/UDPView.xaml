@@ -66,7 +66,7 @@
                     <CheckBox IsEnabled="{Binding IsConnected}" IsChecked="{Binding UnreachableDisconnect}">
                         <TextBlock FontSize="14">
                             <TextBlock Style="{StaticResource IconText}" Text="&#xec6f;" />
-                            <TextBlock Text="自动断开：" />
+                            <TextBlock Text="失败断开：" />
                         </TextBlock>
                     </CheckBox>
 
