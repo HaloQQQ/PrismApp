@@ -14,6 +14,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using IceTea.Wpf.Core.Helper;
 using IceTea.Wpf.Core.Helper.MediaInfo;
+using System.IO;
+using IceTea.Core.Utils;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -322,6 +324,8 @@ namespace MusicPlayerModule.ViewModels
             if (openFileDialog != null)
             {
                 this.LoadVideo(openFileDialog.FileNames, openFileDialog.InitialDirectory);
+
+                this.TryRefreshLastVideoDir(openFileDialog.FileName.GetParentPath());
             }
         }
 
@@ -330,19 +334,26 @@ namespace MusicPlayerModule.ViewModels
             var selectedPath = CommonUtils.OpenFolderDialog(AppStatics.LastVideoDir);
             if (!string.IsNullOrEmpty(selectedPath))
             {
-                selectedPath = selectedPath.EnsureEndsWith("/");
-                if (!selectedPath.Equals(AppStatics.LastVideoDir, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    _config.WriteConfigNode(selectedPath, new[] { "Video", nameof(AppStatics.LastVideoDir) });
-
-                    AppStatics.LastVideoDir = selectedPath;
-                }
+                this.TryRefreshLastVideoDir(selectedPath);
 
                 var list = new List<string>();
 
                 selectedPath.GetFiles(str => str.EndsWith(".mp4"));
 
                 this.LoadVideo(list, selectedPath);
+            }
+        }
+
+        private void TryRefreshLastVideoDir(string dir)
+        {
+            AppUtils.AssertDataValidation(dir.IsDirectoryPath(), $"{dir}必须为存在的目录");
+
+            dir = dir.EnsureEndsWith("/");
+            if (!dir.EqualsIgnoreCase(AppStatics.LastVideoDir))
+            {
+                _config.WriteConfigNode(dir, new[] { "Video", nameof(AppStatics.LastVideoDir) });
+
+                AppStatics.LastVideoDir = dir;
             }
         }
 

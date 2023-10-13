@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Windows.Input;
 using IceTea.Wpf.Core.Helper;
 using IceTea.Wpf.Core.Helper.MediaInfo;
+using IceTea.Core.Utils;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -528,6 +529,8 @@ namespace MusicPlayerModule.ViewModels
             if (openFileDialog != null)
             {
                 await this.LoadMusicAsync(openFileDialog.FileNames, openFileDialog.InitialDirectory);
+
+                this.TryRefreshLastMusicDir(openFileDialog.FileName.GetParentPath());
             }
         }
 
@@ -536,17 +539,24 @@ namespace MusicPlayerModule.ViewModels
             var selectedPath = CommonUtils.OpenFolderDialog(AppStatics.LastMusicDir);
             if (!string.IsNullOrEmpty(selectedPath))
             {
-                selectedPath = selectedPath.EnsureEndsWith("/");
-                if (!selectedPath.Equals(AppStatics.LastMusicDir, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    _config.WriteConfigNode(selectedPath, new[] { "Music", nameof(AppStatics.LastMusicDir) });
-
-                    AppStatics.LastMusicDir = selectedPath;
-                }
+                this.TryRefreshLastMusicDir(selectedPath);
 
                 var list = selectedPath.GetFiles(str => str.EndsWith(".mp3"));
 
                 await this.LoadMusicAsync(list, selectedPath);
+            }
+        }
+
+        private void TryRefreshLastMusicDir(string dir)
+        {
+            AppUtils.AssertDataValidation(dir.IsDirectoryPath(), $"{dir}必须为存在的目录");
+
+            dir = dir.EnsureEndsWith("/");
+            if (!dir.EqualsIgnoreCase(AppStatics.LastMusicDir))
+            {
+                _config.WriteConfigNode(dir, new[] { "Music", nameof(AppStatics.LastMusicDir) });
+
+                AppStatics.LastMusicDir = dir;
             }
         }
 
@@ -905,8 +915,7 @@ namespace MusicPlayerModule.ViewModels
                     AppStatics.MediaPlayOrderList.First();
             }
 
-            AppStatics.LastMusicDir = config.ReadConfigNode(new[] { baseNode, nameof(AppStatics.LastMusicDir) }) ??
-                                      "G:/KuGou/";
+            AppStatics.LastMusicDir = config.ReadConfigNode(new[] { baseNode, nameof(AppStatics.LastMusicDir) });
 
             config.SetConfig += config =>
             {
