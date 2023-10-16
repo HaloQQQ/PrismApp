@@ -17,6 +17,7 @@ using IceTea.Wpf.Core.Helper;
 using IceTea.Wpf.Core.Helper.MyEvents;
 using IceTea.NetCore.Utils.QRCodes.QRCoder;
 using System.Reflection;
+using IceTea.Core.Extensions;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -32,8 +33,6 @@ namespace MyApp.Prisms.ViewModels
             this.UserContext = userContext;
             this.Settings = settings;
             this._imageDisplayViewModel = imageDisplayViewModel;
-
-            //var bitmap = QRCodeUtil.GetColorfulQR("Hello 3Q", Color.GreenYellow, Color.White, 200);
 
             var bitmap = new QRCodeCreator().GenerateQRCodeImage(new QRModel("Hello3Q",
                     Color.GreenYellow, Color.White, 20,
@@ -88,12 +87,12 @@ namespace MyApp.Prisms.ViewModels
 
         private void SetBackgroundImage(string url)
         {
-            if (!string.IsNullOrEmpty(url))
+            if (!url.IsNullOrEmpty())
             {
                 this.CurrentBkGrd = url;
             }
 
-            if (!string.IsNullOrEmpty(this.CurrentBkGrd))
+            if (!this.CurrentBkGrd.IsNullOrEmpty())
             {
                 this.TrySelectedImage();
             }
@@ -110,7 +109,7 @@ namespace MyApp.Prisms.ViewModels
         private void LoadDefaultTheme()
         {
             var defaultThemeUri = this.DefaultThemeURI;
-            if (string.IsNullOrEmpty(defaultThemeUri))
+            if (defaultThemeUri.IsNullOrEmpty())
             {
                 this.RefreshTheme();
             }
@@ -118,7 +117,7 @@ namespace MyApp.Prisms.ViewModels
             {
                 var currentUri = new Uri(defaultThemeUri, UriKind.RelativeOrAbsolute);
 
-                if (Helper.Helper.Equals(Constants.Dark.Source.ToString(), currentUri.ToString()))
+                if (Constants.Dark.Source.ToString().EqualsIgnoreCase(currentUri.ToString()))
                 {
                     _resourceDictionaries.Add(Constants.Dark);
                 }

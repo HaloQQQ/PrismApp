@@ -188,7 +188,7 @@ namespace MyApp.Prisms.ViewModels
             {
                 if (SetProperty<string>(ref _imageDir, value))
                 {
-                    _config.WriteConfigNode(this.ImageDir.EnsureEndsWith("/"), nameof(this.ImageDir));
+                    _config.WriteConfigNode(this.ImageDir, nameof(this.ImageDir));
                 }
             }
         }
@@ -202,7 +202,7 @@ namespace MyApp.Prisms.ViewModels
             {
                 if (SetProperty<string>(ref _lastMusicDir, value))
                 {
-                    _config.WriteConfigNode(this.LastMusicDir.EnsureEndsWith("/"), "Music", nameof(this.LastMusicDir));
+                    _config.WriteConfigNode(this.LastMusicDir, "Music", nameof(this.LastMusicDir));
                 }
             }
         }
@@ -216,7 +216,7 @@ namespace MyApp.Prisms.ViewModels
             {
                 if (SetProperty<string>(ref _lastVideoDir, value))
                 {
-                    _config.WriteConfigNode(this.LastVideoDir.EnsureEndsWith("/"), "Video", nameof(this.LastVideoDir));
+                    _config.WriteConfigNode(this.LastVideoDir, "Video", nameof(this.LastVideoDir));
                 }
             }
         }

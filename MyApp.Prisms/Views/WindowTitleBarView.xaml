@@ -83,9 +83,7 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition />
                                 <ColumnDefinition />
-                                <!--<ColumnDefinition />-->
                             </Grid.ColumnDefinitions>
-                            <!--<waitLoads:ArcWaitLoad Grid.Column="0" Foreground="DodgerBlue" />-->
                             <waitLoads:NeedleWaitLoad Grid.Column="0" Foreground="DodgerBlue" />
                             <waitLoads:PointHorizonLineWaitLoad Grid.Column="1" Foreground="DodgerBlue" />
                             <waitLoads:PointWaitLoad Grid.Column="2" Foreground="DodgerBlue" />

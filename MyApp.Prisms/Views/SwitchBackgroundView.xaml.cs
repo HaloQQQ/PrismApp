@@ -1,7 +1,6 @@
 ﻿using Prism.Events;
 using Prism.Ioc;
 using System;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,6 +10,8 @@ using MyApp.Prisms.MsgEvents;
 using MyApp.Prisms.ViewModels;
 using IceTea.Wpf.Core.Helper;
 using IceTea.Wpf.Core.Helper.MediaInfo;
+using IceTea.Core.Extensions;
+using System.Linq;
 
 namespace MyApp.Prisms.Views
 {
@@ -103,12 +104,14 @@ namespace MyApp.Prisms.Views
             if (openFileDialog != null)
             {
                 var file = openFileDialog.FileName;
-                
-                this._imagesContext.Data.Add(new MyImage(file));
+
+                var data = this._imagesContext.Data;
+
+                data.AddIfNotContainsOrNotWhile(new MyImage(file), item => data.FirstOrDefault(i => file.EqualsIgnoreCase(i.URI)) != null);
 
                 SetBackgroundImage(file);
 
-                setting.ImageDir = Directory.GetParent(file)?.ToString()!;
+                setting.ImageDir = file.GetParentPath();
             }
         }
 

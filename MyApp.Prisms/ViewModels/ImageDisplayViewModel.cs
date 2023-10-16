@@ -28,7 +28,7 @@ namespace MyApp.Prisms.ViewModels
         public string URI { get; set; } = null!;
         public string FileType { get; set; } = null!;
         public string Name { get; set; } = null!;
-        public double Size { get; set; }
+        public string Size { get; set; }
 
         public MyImage()
         {
@@ -36,10 +36,10 @@ namespace MyApp.Prisms.ViewModels
 
         public MyImage(string path)
         {
-            URI = path;
+            URI = path?.GetFullPath();
             FileType = path.Split('.').LastOrDefault("(*^▽^*)");
-            Name = Path.GetFileNameWithoutExtension(path);
-            Size = (double)File.ReadAllBytes(path).Length / 1024;
+            Name = path.GetFileNameWithoutExtension();
+            Size = ((double)new FileInfo(path).Length / 1024).ToString("0.00");
         }
     }
 

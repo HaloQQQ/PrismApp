@@ -16,6 +16,7 @@ using IceTea.Wpf.Core.Helper;
 using IceTea.Wpf.Core.Helper.MediaInfo;
 using System.IO;
 using IceTea.Core.Utils;
+using Microsoft.Win32;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -72,19 +73,17 @@ namespace MusicPlayerModule.ViewModels
 
                         if (!_currentVideo.LoadedABPoint)
                         {
-                            int mills = 0;
                             if (int.TryParse(
                                     this._config.ReadConfigNode(new[]
                                     {
                                         "Video", "VideoABPoints", _currentVideo.Video.Name,
                                         nameof(_currentVideo.PointAMills)
-                                    }), out mills))
+                                    }), out int mills))
                             {
                                 _currentVideo.CurrentMills = mills;
                                 _currentVideo.SetPointA(mills);
                             }
 
-                            mills = 0;
                             if (int.TryParse(
                                     this._config.ReadConfigNode(new[]
                                     {
@@ -318,12 +317,12 @@ namespace MusicPlayerModule.ViewModels
 
         private void AddVideoFromFileDialog()
         {
-            System.Windows.Forms.OpenFileDialog openFileDialog =
+            OpenFileDialog openFileDialog =
                 CommonUtils.OpenFileDialog(AppStatics.LastVideoDir, new VideoMedia());
 
             if (openFileDialog != null)
             {
-                this.LoadVideo(openFileDialog.FileNames, openFileDialog.InitialDirectory);
+                this.LoadVideo(openFileDialog.FileNames);
 
                 this.TryRefreshLastVideoDir(openFileDialog.FileName.GetParentPath());
             }
@@ -332,15 +331,13 @@ namespace MusicPlayerModule.ViewModels
         private void AddVideoFromFolderDialog()
         {
             var selectedPath = CommonUtils.OpenFolderDialog(AppStatics.LastVideoDir);
-            if (!string.IsNullOrEmpty(selectedPath))
+            if (!selectedPath.IsNullOrEmpty())
             {
                 this.TryRefreshLastVideoDir(selectedPath);
 
-                var list = new List<string>();
+                var list = selectedPath.GetFiles(str => str.EndsWith(".mp4"));
 
-                selectedPath.GetFiles(str => str.EndsWith(".mp4"));
-
-                this.LoadVideo(list, selectedPath);
+                this.LoadVideo(list);
             }
         }
 
@@ -348,7 +345,6 @@ namespace MusicPlayerModule.ViewModels
         {
             AppUtils.AssertDataValidation(dir.IsDirectoryPath(), $"{dir}必须为存在的目录");
 
-            dir = dir.EnsureEndsWith("/");
             if (!dir.EqualsIgnoreCase(AppStatics.LastVideoDir))
             {
                 _config.WriteConfigNode(dir, new[] { "Video", nameof(AppStatics.LastVideoDir) });
@@ -368,7 +364,7 @@ namespace MusicPlayerModule.ViewModels
             }
         }
 
-        private void LoadVideo(IEnumerable<string> filePaths, string directory)
+        private void LoadVideo(IEnumerable<string> filePaths)
         {
             if (filePaths == null || !filePaths.Any())
             {

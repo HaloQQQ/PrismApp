@@ -13,6 +13,7 @@ using System.Windows.Input;
 using IceTea.Wpf.Core.Helper;
 using IceTea.Wpf.Core.Helper.MediaInfo;
 using IceTea.Core.Utils;
+using Microsoft.Win32;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -523,7 +524,7 @@ namespace MusicPlayerModule.ViewModels
 
         private async void AddMusicFromFileDialog()
         {
-            System.Windows.Forms.OpenFileDialog openFileDialog =
+            OpenFileDialog openFileDialog =
                 CommonUtils.OpenFileDialog(AppStatics.LastMusicDir, new MusicMedia());
 
             if (openFileDialog != null)
@@ -537,7 +538,7 @@ namespace MusicPlayerModule.ViewModels
         private async void AddMusicFromFolderDialog()
         {
             var selectedPath = CommonUtils.OpenFolderDialog(AppStatics.LastMusicDir);
-            if (!string.IsNullOrEmpty(selectedPath))
+            if (!selectedPath.IsNullOrEmpty())
             {
                 this.TryRefreshLastMusicDir(selectedPath);
 
@@ -551,7 +552,6 @@ namespace MusicPlayerModule.ViewModels
         {
             AppUtils.AssertDataValidation(dir.IsDirectoryPath(), $"{dir}必须为存在的目录");
 
-            dir = dir.EnsureEndsWith("/");
             if (!dir.EqualsIgnoreCase(AppStatics.LastMusicDir))
             {
                 _config.WriteConfigNode(dir, new[] { "Music", nameof(AppStatics.LastMusicDir) });
@@ -587,16 +587,14 @@ namespace MusicPlayerModule.ViewModels
 
             this.IsLoading = true;
 
-            //await Task.Delay(1);
-
-            await this.MultiThreadBatchLoadMusic(list, directory);
+            await this.MultiThreadBatchLoadMusic(list);
 
             this.IsLoading = false;
         }
 
-        private async Task SingleThreadLoadMusic(List<string> filePathList, string directory)
+        private async Task SingleThreadLoadMusic(List<string> filePathList)
         {
-            Debug.Assert(filePathList != null && filePathList.Count > 0);
+            AppUtils.AssertNotEmpty(filePathList, nameof(filePathList));
 
             foreach (var file in filePathList)
             {
@@ -606,9 +604,9 @@ namespace MusicPlayerModule.ViewModels
             this.Favorites.AddRange(this.DisplayFavorites);
         }
 
-        private async Task MultiThreadBatchLoadMusic(List<string> filePathList, string directory)
+        private async Task MultiThreadBatchLoadMusic(List<string> filePathList)
         {
-            Debug.Assert(filePathList != null && filePathList.Count > 0);
+            AppUtils.AssertNotEmpty(filePathList, nameof(filePathList));
 
             var taskList = new List<Task>();
 
