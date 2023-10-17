@@ -1,5 +1,4 @@
-﻿using IceTea.Core.Extensions;
-using IceTea.SocketStandard.Base;
+﻿using IceTea.SocketStandard.Base;
 using IceTea.SocketStandard.Udp;
 using System;
 using System.Net.Sockets;
@@ -9,6 +8,7 @@ using System.Windows.Input;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.ViewModels;
 using IceTea.Wpf.Core.Helper;
+using IceTea.Atom.Extensions;
 
 namespace MyApp.Prisms.Views
 {

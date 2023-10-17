@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using IceTea.Wpf.Core.Helper;
-using IceTea.Core.Utils;
+using IceTea.Atom.Utils;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {

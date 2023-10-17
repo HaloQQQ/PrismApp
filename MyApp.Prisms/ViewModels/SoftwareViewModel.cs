@@ -1,6 +1,4 @@
-﻿using IceTea.Core.Utils;
-using IceTea.Core.Utils.OS;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
@@ -15,9 +13,13 @@ using MyApp.Prisms.Models;
 using MyApp.Prisms.MsgEvents;
 using IceTea.Wpf.Core.Helper;
 using IceTea.Wpf.Core.Helper.MyEvents;
-using IceTea.NetCore.Utils.QRCodes.QRCoder;
 using System.Reflection;
-using IceTea.Core.Extensions;
+using IceTea.Atom.Utils;
+using IceTea.Atom.Extensions;
+using IceTea.Core.Utils.OS;
+using IceTea.Core.Utils.QRCodes;
+using IceTea.NetCore.Utils;
+using System.Threading.Tasks;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -34,10 +36,8 @@ namespace MyApp.Prisms.ViewModels
             this.Settings = settings;
             this._imageDisplayViewModel = imageDisplayViewModel;
 
-            var bitmap = new QRCodeCreator().GenerateQRCodeImage(new QRModel("Hello3Q",
-                    Color.GreenYellow, Color.White, 20,
-                    null,
-                    false));
+            var bitmap = new QRCoderCreator().GenerateQRCodeImage(new QRModel("Hello3Q",
+                                        Color.GreenYellow, Color.White, 20, null));
 
             this.BitmapImage = bitmap;
 
@@ -163,7 +163,23 @@ namespace MyApp.Prisms.ViewModels
         #endregion
 
         #region 周边信息
-        public string Version { get; } = Assembly.GetExecutingAssembly().GetName().Version.ToString();  
+        public string Version { get; } = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+        private double _cpuRate;
+
+        public double CpuRate
+        {
+            get => this._cpuRate;
+            set => SetProperty<double>(ref _cpuRate, value);
+        }
+
+        private double _ramRate;
+
+        public double RamRate
+        {
+            get => this._ramRate;
+            set => SetProperty<double>(ref _ramRate, value);
+        }
 
         private string _title;
         public string Title { get => this._title; set => SetProperty<string>(ref this._title, value); }
@@ -322,11 +338,13 @@ namespace MyApp.Prisms.ViewModels
                 this.CurrentTime = now.FormatTime();
                 this.Week = now.GetWeek();
 
+                var seconds = now.TimeOfDay.Seconds;
+
                 if (this.BackgroundSwitch)
                 {
                     if (_imageDisplayViewModel.Data.Count > 0)
                     {
-                        if (now.TimeOfDay.Seconds == 0 || now.TimeOfDay.Seconds == 30)
+                        if (seconds == 0 || seconds == 30)
                         {
                             var totalCount = _imageDisplayViewModel.Data.Count;
 
@@ -345,6 +363,17 @@ namespace MyApp.Prisms.ViewModels
             };
             this._timer.Interval = TimeSpan.FromMilliseconds(1000);
             this._timer.Start();
+
+            Task.Run(async () =>
+            {
+                while (this._timer != null && this._timer.IsEnabled)
+                {
+                    this.CpuRate = ComputerInfo.GetCpuUsedRate();
+                    this.RamRate = ComputerInfo.GetMemoryUsedRate();
+
+                    await Task.Delay(2000);
+                }
+            });
         }
 
         private void SubscribeCustomCommandEvent()

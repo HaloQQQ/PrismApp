@@ -1,4 +1,4 @@
-﻿using IceTea.Core.AbstractModel;
+﻿using IceTea.Atom.BaseModels;
 using System;
 using System.Diagnostics;
 using System.ServiceProcess;

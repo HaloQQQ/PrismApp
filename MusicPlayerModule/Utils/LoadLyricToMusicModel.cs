@@ -1,4 +1,4 @@
-﻿using IceTea.Core.Extensions;
+﻿using IceTea.Atom.Extensions;
 using MusicPlayerModule.Models;
 using System.Diagnostics;
 using System.IO;

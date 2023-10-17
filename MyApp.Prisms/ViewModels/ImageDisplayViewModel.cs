@@ -1,6 +1,4 @@
-﻿using IceTea.Core.AbstractModel;
-using IceTea.Core.Extensions;
-using Prism.Events;
+﻿using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,6 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using MyApp.Prisms.MsgEvents;
 using IceTea.Wpf.Core.Helper;
+using IceTea.Atom.Extensions;
+using IceTea.Atom.BaseModels;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -37,7 +37,7 @@ namespace MyApp.Prisms.ViewModels
         public MyImage(string path)
         {
             URI = path?.GetFullPath();
-            FileType = path.Split('.').LastOrDefault("(*^▽^*)");
+            FileType = path.GetFileType();
             Name = path.GetFileNameWithoutExtension();
             Size = ((double)new FileInfo(path).Length / 1024).ToString("0.00");
         }

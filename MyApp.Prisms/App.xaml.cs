@@ -1,5 +1,4 @@
-﻿using IceTea.Core.Utils;
-using Prism.DryIoc;
+﻿using Prism.DryIoc;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -15,7 +14,9 @@ using MyApp.Prisms.MsgEvents;
 using MyApp.Prisms.ViewModels;
 using MyApp.Prisms.Views;
 using IceTea.Wpf.Core.Helper;
+using IceTea.Atom.Utils;
 using IceTea.NetCore.Utils;
+using IceTea.Core.Utils.HotKey;
 
 namespace MyApp.Prisms
 {
@@ -152,10 +153,10 @@ namespace MyApp.Prisms
         {
             base.OnInitialized();
 
-            HotKeyHelper hotKeyHelper = null;
-            hotKeyHelper = new HotKeyHelper(App.Current.MainWindow.RegistHotKeyManager(mid =>
+            HotKeyManager hotKeyManager = null;
+            hotKeyManager = new HotKeyManager(App.Current.MainWindow.RegistHotKeyManager(mid =>
             {
-                foreach (var item in hotKeyHelper)
+                foreach (var item in hotKeyManager)
                 {
                     if (item.Code == mid)
                     {
@@ -183,9 +184,9 @@ namespace MyApp.Prisms
                 }
             }));
 
-            ContainerLocator.Current.RegisterSingleton<HotKeyHelper>(() => hotKeyHelper);
+            ContainerLocator.Current.RegisterSingleton<HotKeyManager>(() => hotKeyManager);
 
-            var str = hotKeyHelper.RegisterHotKeys(this.Container.Resolve<SettingsViewModel>().HotKeys);
+            var str = hotKeyManager.RegisterHotKeys(this.Container.Resolve<SettingsViewModel>().HotKeys);
 
             if (str.Length > 0)
             {

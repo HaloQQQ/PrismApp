@@ -1,4 +1,4 @@
-﻿using IceTea.Core.AbstractModel;
+﻿using IceTea.Atom.BaseModels;
 
 namespace MyApp.Prisms.ViewModels
 {

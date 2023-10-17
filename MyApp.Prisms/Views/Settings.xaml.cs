@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using IceTea.Core.Utils.HotKey;
+using IceTea.NetCore.Utils;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -17,7 +19,7 @@ namespace MyApp.Prisms.Views
         private void UIElement_OnKeyUp(object sender, KeyEventArgs e)
         {
             e.Handled = true;
-            if (sender is FrameworkElement element && element.DataContext is IceTea.NetCore.Utils.HotKeyModel model)
+            if (sender is FrameworkElement element && element.DataContext is HotKeyModel model)
             {
                 model.Fill(e);
             }

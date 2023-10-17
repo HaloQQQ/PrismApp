@@ -1,11 +1,11 @@
-﻿using IceTea.Core.Utils;
-using System;
+﻿using System;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using IceTea.Wpf.Core.Helper;
+using IceTea.Atom.Utils;
 
 namespace MyApp.Prisms.Helper
 {

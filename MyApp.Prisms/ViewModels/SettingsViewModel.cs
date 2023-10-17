@@ -1,5 +1,4 @@
-﻿using IceTea.Core.Extensions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
@@ -11,7 +10,7 @@ using MyApp.Prisms.Helper;
 using MyApp.Prisms.Models;
 using MyApp.Prisms.MsgEvents;
 using IceTea.Wpf.Core.Helper;
-using IceTea.NetCore.Utils;
+using IceTea.Core.Utils.HotKey;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -85,7 +84,7 @@ namespace MyApp.Prisms.ViewModels
 
             this.SubmitCommand = new DelegateCommand(() =>
             {
-                var resultStr = containerProvider.Resolve<HotKeyHelper>().RegisterHotKeys(this.HotKeys);
+                var resultStr = containerProvider.Resolve<HotKeyManager>().RegisterHotKeys(this.HotKeys);
 
                 resultStr = string.IsNullOrEmpty(resultStr) ? "注册快捷键无错误" : resultStr;
 
@@ -136,11 +135,11 @@ namespace MyApp.Prisms.ViewModels
         private void ResetHotKeys()
         {
             var arr = new HotKeyModel[] {
-                    new HotKeyModel(Constants.HotKeys.Pause, false, false, true, Keys.S),
-                    new HotKeyModel(Constants.HotKeys.Prev, false, false, true, Keys.Left),
-                    new HotKeyModel(Constants.HotKeys.Next, false, false, true, Keys.Right),
-                    new HotKeyModel(Constants.HotKeys.UpScreenBright, false, false, true, Keys.F3),
-                    new HotKeyModel(Constants.HotKeys.DownScreenBright, false, false, true, Keys.F2),
+                    new HotKeyModel(Constants.HotKeys.Pause, false, false, true, CustomKeys.S),
+                    new HotKeyModel(Constants.HotKeys.Prev, false, false, true, CustomKeys.Left),
+                    new HotKeyModel(Constants.HotKeys.Next, false, false, true, CustomKeys.Right),
+                    new HotKeyModel(Constants.HotKeys.UpScreenBright, false, false, true, CustomKeys.F3),
+                    new HotKeyModel(Constants.HotKeys.DownScreenBright, false, false, true, CustomKeys.F2),
                 };
 
             this.HotKeys.Clear();

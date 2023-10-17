@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows.Input;
 using IceTea.Wpf.Core.Helper;
-using IceTea.Core.Extensions;
+using IceTea.Atom.Extensions;
 
 namespace MusicPlayerModule.ViewModels
 {

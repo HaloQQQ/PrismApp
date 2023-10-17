@@ -1,7 +1,4 @@
-﻿using IceTea.Core.Constants;
-using IceTea.Core.Extensions;
-using IceTea.Core.Utils;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,6 +8,9 @@ using System.Windows.Controls.Primitives;
 using Prism.Events;
 using Prism.Ioc;
 using MyApp.Prisms.MsgEvents;
+using IceTea.Atom.Constants;
+using IceTea.Atom.Utils;
+using IceTea.Atom.Extensions;
 
 namespace MyApp.Prisms.Helper
 {

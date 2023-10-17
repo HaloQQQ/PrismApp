@@ -1,11 +1,11 @@
-﻿using IceTea.Core.Extensions;
-using IceTea.Core.Utils;
-using IceTea.SocketStandard.Tcp;
+﻿using IceTea.SocketStandard.Tcp;
 using System;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.ViewModels;
 using MyApp.Prisms.Views.BaseViews;
 using IceTea.Wpf.Core.Helper;
+using IceTea.Atom.Extensions;
+using IceTea.Atom.Utils;
 
 namespace MyApp.Prisms.Views
 {
@@ -110,7 +110,7 @@ namespace MyApp.Prisms.Views
         {
             try
             {
-                AppUtils.Assert(_tcpSocket != null, "Socket未初始化!");
+                _tcpSocket.AssertArgumentNotNull("Socket未初始化!");
 
                 var server = _tcpSocket as NewTcpServer;
 

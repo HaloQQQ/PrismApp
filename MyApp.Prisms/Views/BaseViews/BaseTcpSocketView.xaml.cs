@@ -8,10 +8,10 @@ using System.Windows.Input;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using IceTea.Wpf.Core.Helper;
-using IceTea.Core.Extensions;
-using IceTea.Core.Utils;
 using IceTea.SocketStandard.Base;
 using IceTea.SocketStandard.Tcp;
+using IceTea.Atom.Extensions;
+using IceTea.Atom.Utils;
 
 namespace MyApp.Prisms.Views.BaseViews
 {
@@ -74,7 +74,7 @@ namespace MyApp.Prisms.Views.BaseViews
 
                 this.InitTcpSocket(port);
 
-                AppUtils.Assert(this._tcpSocket != null, "Socket连接未初始化..");
+                this._tcpSocket.AssertArgumentNotNull("Socket连接未初始化..");
 
                 this._tcpSocket!.ReceivedMessage += (from, to, bytes) =>
                 {

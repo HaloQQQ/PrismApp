@@ -31,6 +31,18 @@
                     <TextBlock Text="{Binding CurrentTime}" FontSize="18" />
                     <TextBlock Text="{Binding Week}" FontSize="18" />
                 </TextBlock>
+                
+                <TextBlock Style="{StaticResource ThemeBlk}">
+                    <TextBlock Text="Cpu:"/>
+                    <TextBlock Text="{Binding CpuRate}"/>
+                    <TextBlock Text="%"/>
+                </TextBlock>
+                
+                <TextBlock Style="{StaticResource ThemeBlk}">
+                    <TextBlock Text="Ram:"/>
+                    <TextBlock Text="{Binding RamRate}"/>
+                    <TextBlock Text="%"/>
+                </TextBlock>
             </TextBlock>
         </DockPanel>
 

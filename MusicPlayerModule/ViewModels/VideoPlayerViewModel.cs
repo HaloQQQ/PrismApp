@@ -1,5 +1,4 @@
-﻿using IceTea.Core.Extensions;
-using MusicPlayerModule.Common;
+﻿using MusicPlayerModule.Common;
 using MusicPlayerModule.Models;
 using MusicPlayerModule.Models.Common;
 using MusicPlayerModule.MsgEvents;
@@ -14,9 +13,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using IceTea.Wpf.Core.Helper;
 using IceTea.Wpf.Core.Helper.MediaInfo;
-using System.IO;
-using IceTea.Core.Utils;
 using Microsoft.Win32;
+using IceTea.Atom.Extensions;
+using IceTea.Atom.Utils;
 
 namespace MusicPlayerModule.ViewModels
 {

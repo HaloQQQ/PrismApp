@@ -1,9 +1,9 @@
-﻿using IceTea.Core.Extensions;
-using IceTea.SocketStandard.Tcp;
+﻿using IceTea.SocketStandard.Tcp;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.ViewModels;
 using MyApp.Prisms.Views.BaseViews;
 using IceTea.Wpf.Core.Helper;
+using IceTea.Atom.Extensions;
 
 namespace MyApp.Prisms.Views
 {
