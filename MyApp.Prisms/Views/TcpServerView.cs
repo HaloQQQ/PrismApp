@@ -78,11 +78,6 @@ namespace MyApp.Prisms.Views
 
             server.ReceivedMessage += (from, to, data) => _mediatorContext.TransmitFrom(this, data);
 
-            //server.DestoryClient += client =>
-            //{
-            //    rhTxt.Info(_tcpSocketContext, $"客户端{client}已销毁");
-            //};
-
             this._tcpSocket.ExceptionOccurred += (socketName, exception) =>
             {
                 CommonUtils.Invoke(() =>
@@ -110,7 +105,7 @@ namespace MyApp.Prisms.Views
         {
             try
             {
-                _tcpSocket.AssertArgumentNotNull("Socket未初始化!");
+                AppUtils.Assert(_tcpSocket != null, "Socket未初始化!");
 
                 var server = _tcpSocket as NewTcpServer;
 

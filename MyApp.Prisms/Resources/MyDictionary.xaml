@@ -154,9 +154,9 @@
             <DataTrigger Binding="{Binding Connecting}" Value="True">
                 <Setter Property="IsEnabled" Value="False" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding IsConnected}" Value="True">
+            <!--<DataTrigger Binding="{Binding IsConnected}" Value="True">
                 <Setter Property="Background" Value="Gray" />
-            </DataTrigger>
+            </DataTrigger>-->
         </Style.Triggers>
     </Style>
 
