@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using IceTea.Wpf.Core.Helper;
 using IceTea.Atom.Utils;
+using IceTea.Atom.Interfaces;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {

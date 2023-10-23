@@ -13,10 +13,11 @@ using MyApp.Prisms.Helper;
 using MyApp.Prisms.MsgEvents;
 using MyApp.Prisms.ViewModels;
 using MyApp.Prisms.Views;
-using IceTea.Wpf.Core.Helper;
 using IceTea.Atom.Utils;
 using IceTea.NetCore.Utils;
-using IceTea.Core.Utils.HotKey;
+using IceTea.NetCore.Utils.AppHotKey;
+using IceTea.Atom.Interfaces;
+using IceTea.Atom.Utils.HotKey.GlobalHotKey;
 
 namespace MyApp.Prisms
 {
@@ -31,7 +32,7 @@ namespace MyApp.Prisms
         {
             base.OnExit(e);
 
-            Helper.Helper.Log(Constants.Software_Log_Dir, $"退出成功!");
+            Helper.Helper.Log(CustomConstants.Software_Log_Dir, $"退出成功!");
         }
 
         private IEnumerable<string> GetMessageList(Exception exception)
@@ -70,14 +71,14 @@ namespace MyApp.Prisms
         {
             var config = this.Container.Resolve<IConfigManager>();
 
-            if (config.IsTrue(Constants.IsMusicPlayer))
+            if (config.IsTrue(CustomConstants.IsMusicPlayer))
             {
                 ViewModelLocationProvider.Register<MusicWindow, SoftwareViewModel>();
 
                 return Container.Resolve<MusicWindow>();
             }
 
-            if (config.IsTrue(Constants.IsVideoPlayer))
+            if (config.IsTrue(CustomConstants.IsVideoPlayer))
             {
                 ViewModelLocationProvider.Register<VideoWindow, SoftwareViewModel>();
 
@@ -94,18 +95,18 @@ namespace MyApp.Prisms
             App.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            containerRegistry.RegisterSingleton<IConfigManager, ConfigManager>();
+            containerRegistry.RegisterSingleton<IConfigManager, WpfConfigManager>();
 
             var config = this.Container.Resolve<IConfigManager>();
 
             string processName = Process.GetCurrentProcess().ProcessName;
 
-            if (config.IsTrue(Constants.ONLY_ONE_PROCESS))
+            if (config.IsTrue(CustomConstants.ONLY_ONE_PROCESS))
             {
                 mutex = new Mutex(true, processName, out bool isNew);
                 if (!isNew)
                 {
-                    Helper.Helper.Log(Constants.Software_Log_Dir, "当前已有软件运行，启动失败!");
+                    Helper.Helper.Log(CustomConstants.Software_Log_Dir, "当前已有软件运行，启动失败!");
 
                     foreach (var process in Process.GetProcessesByName(processName))
                     {
@@ -121,7 +122,9 @@ namespace MyApp.Prisms
                 }
             }
 
-            Helper.Helper.Log(Constants.Software_Log_Dir, $"进程{processName}启动成功!");
+            Helper.Helper.Log(CustomConstants.Software_Log_Dir, $"进程{processName}启动成功!");
+
+            containerRegistry.RegisterSingleton<IAppHotKeyManager, AppHotKeyManager>();
 
             containerRegistry.RegisterSingleton<SettingsViewModel>();
 
@@ -153,30 +156,30 @@ namespace MyApp.Prisms
         {
             base.OnInitialized();
 
-            HotKeyManager hotKeyManager = null;
-            hotKeyManager = new HotKeyManager(App.Current.MainWindow.RegistHotKeyManager(mid =>
+            GlobalHotKeyManager hotKeyManager = null;
+            hotKeyManager = new GlobalHotKeyManager(App.Current.MainWindow.RegistHotKeyManager(mid =>
             {
                 foreach (var item in hotKeyManager)
                 {
                     if (item.Code == mid)
                     {
-                        if (item.Name == Constants.HotKeys.Pause)
+                        if (item.Name == CustomConstants.GlobalHotKeysConst.Pause)
                         {
                             this.Container.Resolve<IEventAggregator>().GetEvent<MusicPlayerModule.MsgEvents.ToggeleCurrentMusicEvent>().Publish();
                         }
-                        else if (item.Name == Constants.HotKeys.Prev)
+                        else if (item.Name == CustomConstants.GlobalHotKeysConst.Prev)
                         {
                             this.Container.Resolve<IEventAggregator>().GetEvent<MusicPlayerModule.MsgEvents.PrevMusicEvent>().Publish();
                         }
-                        else if (item.Name == Constants.HotKeys.Next)
+                        else if (item.Name == CustomConstants.GlobalHotKeysConst.Next)
                         {
                             this.Container.Resolve<IEventAggregator>().GetEvent<MusicPlayerModule.MsgEvents.NextMusicEvent>().Publish();
                         }
-                        else if (item.Name == Constants.HotKeys.UpScreenBright)
+                        else if (item.Name == CustomConstants.GlobalHotKeysConst.UpScreenBright)
                         {
                             this.Container.Resolve<IEventAggregator>().GetEvent<UpdateScreenBrightEvent>().Publish(5);
                         }
-                        else if (item.Name == Constants.HotKeys.DownScreenBright)
+                        else if (item.Name == CustomConstants.GlobalHotKeysConst.DownScreenBright)
                         {
                             this.Container.Resolve<IEventAggregator>().GetEvent<UpdateScreenBrightEvent>().Publish(-5);
                         }
@@ -184,9 +187,9 @@ namespace MyApp.Prisms
                 }
             }));
 
-            ContainerLocator.Current.RegisterSingleton<HotKeyManager>(() => hotKeyManager);
+            ContainerLocator.Current.RegisterSingleton<GlobalHotKeyManager>(() => hotKeyManager);
 
-            var str = hotKeyManager.RegisterHotKeys(this.Container.Resolve<SettingsViewModel>().HotKeys);
+            var str = hotKeyManager.RegisterHotKeys(this.Container.Resolve<SettingsViewModel>().GlobalHotKeys);
 
             if (str.Length > 0)
             {

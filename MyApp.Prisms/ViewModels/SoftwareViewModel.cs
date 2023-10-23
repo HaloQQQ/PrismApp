@@ -11,7 +11,6 @@ using System.Windows.Threading;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.Models;
 using MyApp.Prisms.MsgEvents;
-using IceTea.Wpf.Core.Helper;
 using IceTea.Wpf.Core.Helper.MyEvents;
 using System.Reflection;
 using IceTea.Atom.Utils;
@@ -20,17 +19,22 @@ using IceTea.Core.Utils.OS;
 using IceTea.Core.Utils.QRCodes;
 using IceTea.NetCore.Utils;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using IceTea.NetCore.Utils.AppHotKey;
+using IceTea.Atom.Interfaces;
 
 namespace MyApp.Prisms.ViewModels
 {
     internal class SoftwareViewModel : BindableBase, IDisposable
     {
         public SoftwareViewModel(
-            UserViewModel userContext,
-            ImageDisplayViewModel imageDisplayViewModel,
-            SettingsViewModel settings,
-            IConfigManager config,
-            IEventAggregator eventAggregator)
+                UserViewModel userContext,
+                ImageDisplayViewModel imageDisplayViewModel,
+                SettingsViewModel settings,
+                IConfigManager config,
+                IAppHotKeyManager appHotKeyManager,
+                IEventAggregator eventAggregator
+            )
         {
             this.UserContext = userContext;
             this.Settings = settings;
@@ -46,6 +50,7 @@ namespace MyApp.Prisms.ViewModels
             eventAggregator.GetEvent<DialogMessageEvent>().Subscribe(item => this.DialogMessage = item);
 
             this.LoadConfig(config);
+            this.InitHotkeys(config, appHotKeyManager);
 
             this.SubscribeCustomCommandEvent();
 
@@ -58,28 +63,28 @@ namespace MyApp.Prisms.ViewModels
 
         private void LoadConfig(IConfigManager config)
         {
-            this.OnlyOneProcess = config.IsTrue(Constants.ONLY_ONE_PROCESS);
-            this.AutoStart = config.IsTrue(Constants.AUTO_START);
-            this.BackgroundSwitch = config.IsTrue(Constants.BACKGROUND_SWITCH);
+            this.OnlyOneProcess = config.IsTrue(CustomConstants.ONLY_ONE_PROCESS);
+            this.AutoStart = config.IsTrue(CustomConstants.AUTO_START);
+            this.BackgroundSwitch = config.IsTrue(CustomConstants.BACKGROUND_SWITCH);
 
-            this.DefaultThemeURI = config.ReadConfigNode(Constants.DefaultThemeURI);
+            this.DefaultThemeURI = config.ReadConfigNode(CustomConstants.DefaultThemeURI);
             this.LoadDefaultTheme();
 
-            this.SetBackgroundImage(config.ReadConfigNode(Constants.BkgrdUri));
-            this.IsMusicPlayer = config.IsTrue(Constants.IsMusicPlayer);
-            this.IsVideoPlayer = config.IsTrue(Constants.IsVideoPlayer);
+            this.SetBackgroundImage(config.ReadConfigNode(CustomConstants.BkgrdUri));
+            this.IsMusicPlayer = config.IsTrue(CustomConstants.IsMusicPlayer);
+            this.IsVideoPlayer = config.IsTrue(CustomConstants.IsVideoPlayer);
 
             config.SetConfig += config =>
             {
-                config.WriteConfigNode<bool>(this.OnlyOneProcess, Constants.ONLY_ONE_PROCESS);
-                config.WriteConfigNode<bool>(this.AutoStart, Constants.AUTO_START);
-                config.WriteConfigNode<bool>(this.BackgroundSwitch, Constants.BACKGROUND_SWITCH);
+                config.WriteConfigNode<bool>(this.OnlyOneProcess, CustomConstants.ONLY_ONE_PROCESS);
+                config.WriteConfigNode<bool>(this.AutoStart, CustomConstants.AUTO_START);
+                config.WriteConfigNode<bool>(this.BackgroundSwitch, CustomConstants.BACKGROUND_SWITCH);
 
-                config.WriteConfigNode(this.DefaultThemeURI, Constants.DefaultThemeURI);
-                config.WriteConfigNode(this.CurrentBkGrd, Constants.BkgrdUri);
+                config.WriteConfigNode(this.DefaultThemeURI, CustomConstants.DefaultThemeURI);
+                config.WriteConfigNode(this.CurrentBkGrd, CustomConstants.BkgrdUri);
 
-                config.WriteConfigNode(this.IsMusicPlayer, Constants.IsMusicPlayer);
-                config.WriteConfigNode(this.IsVideoPlayer, Constants.IsVideoPlayer);
+                config.WriteConfigNode(this.IsMusicPlayer, CustomConstants.IsMusicPlayer);
+                config.WriteConfigNode(this.IsVideoPlayer, CustomConstants.IsVideoPlayer);
 
                 AppUtils.AutoStartWithDirectory(this.AutoStart);
             };
@@ -94,15 +99,11 @@ namespace MyApp.Prisms.ViewModels
 
             if (!this.CurrentBkGrd.IsNullOrEmpty())
             {
-                this.TrySelectedImage();
-            }
-        }
-
-        internal void TrySelectedImage()
-        {
-            foreach (var item in this._imageDisplayViewModel.ActualData)
-            {
-                item.Selected = item.URI == this.CurrentBkGrd;
+                // TrySelectedImage
+                foreach (var item in this._imageDisplayViewModel.ActualData)
+                {
+                    item.Selected = item.URI == this.CurrentBkGrd;
+                }
             }
         }
 
@@ -117,13 +118,13 @@ namespace MyApp.Prisms.ViewModels
             {
                 var currentUri = new Uri(defaultThemeUri, UriKind.RelativeOrAbsolute);
 
-                if (Constants.Dark.Source.ToString().EqualsIgnoreCase(currentUri.ToString()))
+                if (CustomConstants.Dark.Source.ToString().EqualsIgnoreCase(currentUri.ToString()))
                 {
-                    _resourceDictionaries.Add(Constants.Dark);
+                    _resourceDictionaries.Add(CustomConstants.Dark);
                 }
                 else
                 {
-                    _resourceDictionaries.Add(Constants.Light);
+                    _resourceDictionaries.Add(CustomConstants.Light);
                 }
             }
         }
@@ -134,21 +135,21 @@ namespace MyApp.Prisms.ViewModels
         public string DefaultThemeURI { get; set; } = null!;
         private void RefreshTheme()
         {
-            var dict = _resourceDictionaries.FirstOrDefault(item => item == Constants.Light);
+            var dict = _resourceDictionaries.FirstOrDefault(item => item == CustomConstants.Light);
 
             if (dict == null)
             {
-                _resourceDictionaries.Remove(Constants.Dark);
-                _resourceDictionaries.Add(Constants.Light);
+                _resourceDictionaries.Remove(CustomConstants.Dark);
+                _resourceDictionaries.Add(CustomConstants.Light);
 
-                dict = Constants.Light;
+                dict = CustomConstants.Light;
             }
             else
             {
-                _resourceDictionaries.Remove(Constants.Light);
-                _resourceDictionaries.Add(Constants.Dark);
+                _resourceDictionaries.Remove(CustomConstants.Light);
+                _resourceDictionaries.Add(CustomConstants.Dark);
 
-                dict = Constants.Dark;
+                dict = CustomConstants.Dark;
             }
 
             this.DefaultThemeURI = dict.Source.ToString();
@@ -252,6 +253,15 @@ namespace MyApp.Prisms.ViewModels
                     this._brightManager.SetBrightness(newValue);
                 }
             }
+        }
+        #endregion
+
+        #region 窗口标题栏快捷键
+        public Dictionary<string, AppHotKeyModel> WindowKeyBindingMap { get; private set; }
+
+        private void InitHotkeys(IConfigManager config, IAppHotKeyManager appHotKeyManager)
+        {
+            this.WindowKeyBindingMap = HotKeyUtils.Provide(config, appHotKeyManager, new AppHotKeyGroupInfo("窗口", PreDefinedHotKeys.ConfigWindowAppHotkeys, PreDefinedHotKeys.WindowAppHotKeys));
         }
         #endregion
 

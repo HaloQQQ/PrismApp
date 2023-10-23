@@ -124,7 +124,7 @@
                                   Style="{StaticResource BrightIconToggleButton}"/>
             <Popup Placement="Bottom" HorizontalOffset="-112" VerticalOffset="-15"
                     StaysOpen="True" x:Name="brightPopup" 
-                    PlacementTarget="{Binding ElementName=volumeToggleButton}">
+                    PlacementTarget="{Binding ElementName=brightToggleButton}">
                 <!--亮度调节模态框-->
                 <Border x:Name="brightControl" Visibility="{Binding IsOpen,ElementName=brightPopup,Converter={StaticResource BoolToVisibleCollapsedConverter},Mode=TwoWay}"
                         Clip="{StaticResource PopupGeometryGroup_Bright}"

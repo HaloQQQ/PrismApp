@@ -1,4 +1,5 @@
-﻿using IceTea.Core.Utils.HotKey;
+﻿using IceTea.Atom.Utils.HotKey;
+using IceTea.Atom.Utils.HotKey.GlobalHotKey;
 using IceTea.NetCore.Utils;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,10 +17,19 @@ namespace MyApp.Prisms.Views
             InitializeComponent();
         }
 
-        private void UIElement_OnKeyUp(object sender, KeyEventArgs e)
+        private void GlobalHotKeyTextBox_OnKeyUp(object sender, KeyEventArgs e)
         {
             e.Handled = true;
-            if (sender is FrameworkElement element && element.DataContext is HotKeyModel model)
+            if (sender is FrameworkElement element && element.DataContext is IHotKey<CustomKeys, CustomModifierKeys> model)
+            {
+                model.Fill(e);
+            }
+        }
+
+        private void AppHotKeyTextBox_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            e.Handled = true;
+            if (sender is FrameworkElement element && element.DataContext is IHotKey<Key, ModifierKeys> model)
             {
                 model.Fill(e);
             }

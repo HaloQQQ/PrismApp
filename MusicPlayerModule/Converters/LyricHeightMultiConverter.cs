@@ -3,7 +3,10 @@ using System.Windows.Data;
 
 namespace MusicPlayerModule.Converters
 {
-    internal class LyricHeightConverter : IMultiValueConverter
+    /// <summary>
+    /// 歌词可见部分高度
+    /// </summary>
+    internal class LyricHeightMultiConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

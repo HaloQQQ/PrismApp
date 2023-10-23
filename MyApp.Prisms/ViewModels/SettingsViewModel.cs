@@ -1,28 +1,34 @@
-﻿using Newtonsoft.Json;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.Models;
 using MyApp.Prisms.MsgEvents;
 using IceTea.Wpf.Core.Helper;
-using IceTea.Core.Utils.HotKey;
+using IceTea.NetCore.Utils.AppHotKey;
+using IceTea.Atom.Interfaces;
+using IceTea.Atom.Utils;
+using System.Linq;
+using IceTea.Atom.Utils.HotKey.GlobalHotKey;
+using IceTea.NetCore.Utils;
 
 namespace MyApp.Prisms.ViewModels
 {
     internal class SettingsViewModel : BindableBase
     {
         public SettingsViewModel(
-            IConfigManager config,
-            IContainerProvider containerProvider,
-            IEventAggregator eventAggregator
+                IConfigManager config,
+                IAppHotKeyManager appHotKeyManager,
+                IContainerProvider containerProvider,
+                IEventAggregator eventAggregator
             )
         {
-            this._config = config;
+            this._config = config.AssertNotNull(nameof(IConfigManager));
+            this.AppHotKeyManager = appHotKeyManager.AssertNotNull(nameof(IAppHotKeyManager));
+
             this.ImageDir = config.ReadConfigNode(nameof(this.ImageDir));
             this.LastMusicDir = config.ReadConfigNode("Music", nameof(this.LastMusicDir));
             this.LastVideoDir = config.ReadConfigNode("Video", nameof(this.LastVideoDir));
@@ -31,6 +37,8 @@ namespace MyApp.Prisms.ViewModels
 
             this.InitCommands(containerProvider, eventAggregator);
         }
+
+        public IAppHotKeyManager AppHotKeyManager { get; private set; }
 
         private IConfigManager _config;
 
@@ -76,7 +84,7 @@ namespace MyApp.Prisms.ViewModels
                     this.IsEditingSetting = false;
                 }
 
-                foreach (var item in this.HotKeys)
+                foreach (var item in this.GlobalHotKeys)
                 {
                     item.GoBack();
                 }
@@ -84,7 +92,7 @@ namespace MyApp.Prisms.ViewModels
 
             this.SubmitCommand = new DelegateCommand(() =>
             {
-                var resultStr = containerProvider.Resolve<HotKeyManager>().RegisterHotKeys(this.HotKeys);
+                var resultStr = containerProvider.Resolve<GlobalHotKeyManager>().RegisterHotKeys(this.GlobalHotKeys);
 
                 resultStr = string.IsNullOrEmpty(resultStr) ? "注册快捷键无错误" : resultStr;
 
@@ -93,29 +101,55 @@ namespace MyApp.Prisms.ViewModels
                 eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(resultStr, 4));
             });
 
-            this.ResetHotKeysCommand = new DelegateCommand(() =>
+            this.ResetGlobalHotKeysCommand = new DelegateCommand(() =>
             {
-                this.ResetHotKeys();
+                this.GlobalHotKeys.Clear();
+                this.GlobalHotKeys.AddRange(CustomConstants.GlobalHotKeys);
 
                 this.SubmitCommand.Execute(null);
             });
+
+            this.ResetGroupHotKeysCommand = new DelegateCommand<HotKeyGroup>(groupHotKey =>
+            {
+                if (groupHotKey != null&& groupHotKey.KeyBindings.Any())
+                {
+                    foreach (var keyBinding in groupHotKey.KeyBindings)
+                    {
+                        keyBinding.Reset();
+                    }
+                }
+            });
         }
 
+        #region GlobalHotKeys
+        public ObservableCollection<GlobalHotKeyModel> GlobalHotKeys { get; private set; }
+
+        private void InitHotkeys(IConfigManager config)
+        {
+            this.GlobalHotKeys = HotKeyUtils.Provide(config, CustomConstants.ConfigGlobalHotkeys, CustomConstants.GlobalHotKeys);
+        }
+        #endregion
+
+        #region Commands
         public ICommand FindImageDirCommand { get; private set; }
         public ICommand FindMusicDirCommand { get; private set; }
         public ICommand FindVideoDirCommand { get; private set; }
 
-        public ICommand ResetHotKeysCommand { get; private set; }
+        public ICommand ResetGlobalHotKeysCommand { get; private set; }
+
+        public ICommand ResetGroupHotKeysCommand { get; private set; }
 
         /// <summary>
         /// 还原未提交的修改
         /// </summary>
         public ICommand CancelCommand { get; private set; }
         /// <summary>
-        /// 提交注册快捷键
+        /// 提交注册全局快捷键
         /// </summary>
         public ICommand SubmitCommand { get; private set; }
+        #endregion
 
+        #region Props
         private bool _isEditingSetting;
 
         public bool IsEditingSetting
@@ -128,54 +162,6 @@ namespace MyApp.Prisms.ViewModels
                     this.CancelCommand.Execute(null);
                 }
             }
-        }
-
-        public ObservableCollection<HotKeyModel> HotKeys { get; private set; } = new ObservableCollection<HotKeyModel>();
-
-        private void ResetHotKeys()
-        {
-            var arr = new HotKeyModel[] {
-                    new HotKeyModel(Constants.HotKeys.Pause, false, false, true, CustomKeys.S),
-                    new HotKeyModel(Constants.HotKeys.Prev, false, false, true, CustomKeys.Left),
-                    new HotKeyModel(Constants.HotKeys.Next, false, false, true, CustomKeys.Right),
-                    new HotKeyModel(Constants.HotKeys.UpScreenBright, false, false, true, CustomKeys.F3),
-                    new HotKeyModel(Constants.HotKeys.DownScreenBright, false, false, true, CustomKeys.F2),
-                };
-
-            this.HotKeys.Clear();
-            this.HotKeys.AddRange(arr);
-        }
-
-        private void InitHotkeys(IConfigManager config)
-        {
-            var str = config.ReadConfigNode(Constants.Hotkeys);
-            if (!string.IsNullOrEmpty(str))
-            {
-                var hotkeyDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(str);
-                if (hotkeyDic != null && hotkeyDic.Count > 0)
-                {
-                    foreach (var item in hotkeyDic.Values)
-                    {
-                        this.HotKeys.Add(HotKeyModel.Parse(item));
-                    }
-                }
-            }
-            else
-            {
-                this.ResetHotKeys();
-            }
-
-            config.SetConfig += config =>
-            {
-                Dictionary<string, string> dic = new Dictionary<string, string>();
-
-                foreach (var item in this.HotKeys)
-                {
-                    dic.Add(item.Name, item.ToString());
-                }
-
-                config.WriteConfigNode(JsonConvert.SerializeObject(dic), Constants.Hotkeys);
-            };
         }
 
         private string _imageDir;
@@ -219,5 +205,6 @@ namespace MyApp.Prisms.ViewModels
                 }
             }
         }
+        #endregion
     }
 }

@@ -23,39 +23,6 @@
         <Setter Property="VerticalAlignment" Value="Stretch" />
     </Style>
 
-    <!-- SlideIconText -->
-    <Style TargetType="ToggleButton" x:Key="SlideIconToggleButton" BasedOn="{StaticResource IconButtonBase_Small}">
-        <Setter Property="Content" Value="&#xe65d;" />
-
-        <Setter Property="ToolTip">
-            <Setter.Value>
-                <TextBlock>
-                    隐藏(<TextBlock Text="{Binding Source={x:Static helper:CustomCommands.HideTitleBarCommand},Converter={StaticResource RoutedCommandToKeysConverter},Mode=OneWay}"/>)
-                </TextBlock>
-            </Setter.Value>
-        </Setter>
-
-        <Setter Property="RenderTransform">
-            <Setter.Value>
-                <TranslateTransform Y="0" />
-            </Setter.Value>
-        </Setter>
-
-        <Style.Triggers>
-            <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Content" Value="&#xe65e;" />
-
-                <Setter Property="ToolTip" Value="呈现"/>
-
-                <Setter Property="Opacity" Value="0" />
-            </Trigger>
-
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Opacity" Value="1" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
     <!-- 菜单 -->
     <ContextMenu x:Key="MainMenu">
         <MenuItem IsCheckable="True" IsChecked="{Binding OnlyOneProcess}"

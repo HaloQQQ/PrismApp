@@ -60,7 +60,7 @@ namespace MyApp.Prisms.Helper
             CommonUtils.Invoke(() =>
             {
                 var paragraph = GetParagraph("Send", from, to, context, message);
-                paragraph.Inlines.LastInline.Foreground = Constants.SendBrush;
+                paragraph.Inlines.LastInline.Foreground = CustomConstants.SendBrush;
 
                 PrintMsg(txt, paragraph);
             });
@@ -72,7 +72,7 @@ namespace MyApp.Prisms.Helper
             CommonUtils.Invoke(() =>
             {
                 var paragraph = GetParagraph("Recv", from, to, context, message);
-                paragraph.Inlines.LastInline.Foreground = Constants.RecvBrush;
+                paragraph.Inlines.LastInline.Foreground = CustomConstants.RecvBrush;
                 paragraph.TextAlignment = TextAlignment.Right;
 
                 PrintMsg(txt, paragraph);

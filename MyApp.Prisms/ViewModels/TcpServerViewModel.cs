@@ -1,5 +1,5 @@
 ﻿using MyApp.Prisms.ViewModels.BaseViewModels;
-using IceTea.Wpf.Core.Helper;
+using IceTea.Atom.Interfaces;
 
 namespace MyApp.Prisms.ViewModels
 {

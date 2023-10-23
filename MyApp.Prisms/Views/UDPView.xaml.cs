@@ -138,7 +138,7 @@ namespace MyApp.Prisms.Views
                 }
                 else if (e.Command == ApplicationCommands.Open)
                 {
-                    if (e.Source == this.rhTxt || Constants.LOG.EqualsIgnoreCase(e.Parameter?.ToString()))
+                    if (e.Source == this.rhTxt || CustomConstants.LOG.EqualsIgnoreCase(e.Parameter?.ToString()))
                     {
                         Helper.Helper.OpenLog(this._socketContext.Name);
 

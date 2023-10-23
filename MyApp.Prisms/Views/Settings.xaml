@@ -1,19 +1,44 @@
 ﻿<UserControl x:Class="MyApp.Prisms.Views.Settings"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:hotkey="clr-namespace:IceTea.Core.Utils.HotKey;assembly=IceTea.Core"
+             xmlns:globalhotkey="clr-namespace:IceTea.Atom.Utils.HotKey.GlobalHotKey;assembly=IceTea.Atom"
+             xmlns:appHotKey="clr-namespace:IceTea.NetCore.Utils.AppHotKey;assembly=IceTea.NetCore"
+             xmlns:converters="clr-namespace:IceTea.Wpf.Core.Converters;assembly=IceTea.Wpf.Core"
              MinWidth="800" MaxHeight="500"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core"
+             xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core" 
              prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
-        <ObjectDataProvider x:Key="Keys" MethodName="GetValues" ObjectType="{x:Type hotkey:CustomKeys}">
+        <converters:Key2StringConverter x:Key="Key2StringConverter"/>
+
+        <ObjectDataProvider x:Key="CustomKeys" MethodName="GetValues" ObjectType="{x:Type globalhotkey:CustomKeys}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="hotkey:CustomKeys" />
+                <x:Type TypeName="globalhotkey:CustomKeys" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
-        <DataTemplate DataType="{x:Type hotkey:HotKeyModel}">
+        <ObjectDataProvider x:Key="AppKeys" MethodName="GetValues" ObjectType="{x:Type Key}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="{x:Type Key}"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <DataTemplate DataType="{x:Type appHotKey:HotKeyGroup}">
+            <GroupBox Header="{Binding GroupName}">
+                <StackPanel>
+                    <TextBlock Text="{Binding Description}"/>
+
+                    <Button Command="{Binding DataContext.ResetGroupHotKeysCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                            CommandParameter="{Binding}" HorizontalAlignment="Right" 
+                            Style="{StaticResource IconButtonBase_Expand}" Margin="0,10,20,0" Content="&#xe614;" ToolTip="重置快捷键"/>
+                    
+                    <ListBox ItemsSource="{Binding KeyBindings}" HorizontalAlignment="Stretch"
+                             ItemContainerStyle="{StaticResource ListBoxItem_General}" />
+                </StackPanel>
+            </GroupBox>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type appHotKey:AppHotKeyModel}">
             <StackPanel Orientation="Horizontal" MinHeight="40">
                 <TextBlock FontSize="16" TextAlignment="Right" MinWidth="100">
                     <TextBlock Text="{Binding Name}" />:
@@ -25,11 +50,45 @@
 
                 <CheckBox Margin="10,0,0,0" Content="Alt:" IsChecked="{Binding IsSelectAlt}" IsEnabled="{Binding IsUsable}" />
 
-                <ComboBox Margin="10,0,0,0" ItemsSource="{Binding Source={StaticResource Keys}}" IsReadOnly="True"
+                <ComboBox Margin="10,0,0,0" ItemsSource="{Binding Source={StaticResource AppKeys}}" IsReadOnly="True"
+                      Text="{Binding SelectedKey,Converter={StaticResource Key2StringConverter}}" IsEnabled="{Binding IsUsable}" />
+
+                <TextBox IsReadOnly="True" IsEnabled="{Binding IsUsable}" Text="{Binding CombineKeys, Mode=OneWay}"
+                      KeyUp="AppHotKeyTextBox_OnKeyUp">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                            <Setter Property="attachs:MyAttachProperty.PlaceHolder" Value="组合键"/>
+
+                            <Style.Triggers>
+                                <DataTrigger Value="False" Binding="{Binding IsUsable}">
+                                    <Setter Property="Foreground" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+
+                <CheckBox Style="{StaticResource SlideCheckBox}" IsChecked="{Binding IsUsable}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type globalhotkey:GlobalHotKeyModel}">
+            <StackPanel Orientation="Horizontal" MinHeight="40">
+                <TextBlock FontSize="16" TextAlignment="Right" MinWidth="100">
+                    <TextBlock Text="{Binding Name}" />:
+                </TextBlock>
+
+                <CheckBox Margin="10,0,0,0" Content="Ctrl:" IsChecked="{Binding IsSelectCtrl}" IsEnabled="{Binding IsUsable}" />
+
+                <CheckBox Margin="10,0,0,0" Content="Shift:" IsChecked="{Binding IsSelectShift}" IsEnabled="{Binding IsUsable}" />
+
+                <CheckBox Margin="10,0,0,0" Content="Alt:" IsChecked="{Binding IsSelectAlt}" IsEnabled="{Binding IsUsable}" />
+
+                <ComboBox Margin="10,0,0,0" ItemsSource="{Binding Source={StaticResource CustomKeys}}" IsReadOnly="True"
                           Text="{Binding SelectedKey}" IsEnabled="{Binding IsUsable}" />
 
                 <TextBox IsReadOnly="True" IsEnabled="{Binding IsUsable}" Text="{Binding CombineKeys, Mode=OneWay}"
-                         KeyUp="UIElement_OnKeyUp">
+                         KeyUp="GlobalHotKeyTextBox_OnKeyUp">
                     <TextBox.Style>
                         <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
                             <Setter Property="attachs:MyAttachProperty.PlaceHolder" Value="组合键"/>
@@ -49,61 +108,53 @@
     </UserControl.Resources>
 
     <Border CornerRadius="20" Padding="0,10" Background="LightBlue">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <TabControl Style="{StaticResource TabControl_ScrollContent}"
+        <TabControl Style="{StaticResource TabControl_ScrollContent}"
                         ItemContainerStyle="{StaticResource TabItem_Transparent}">
-                <TabItem Header="快捷键">
-                    <StackPanel>
-                        <Button Command="{Binding DataContext.ResetHotKeysCommand}" HorizontalAlignment="Right" 
-                                Style="{StaticResource IconButtonBase_Expand}" Margin="0,10,20,0" Content="&#xe614;" ToolTip="重置快捷键"/>
-                        <ListBox ItemsSource="{Binding DataContext.HotKeys}" HorizontalAlignment="Stretch"
-                             ItemContainerStyle="{StaticResource ListBoxItem_General}" />
-                    </StackPanel>
-                </TabItem>
-                <TabItem Header="默认目录">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="图片默认目录：" Style="{StaticResource ThemeBlk}"/>
-                            <TextBox IsReadOnly="True" Text="{Binding DataContext.ImageDir}" attachs:MyAttachProperty.PlaceHolder="空目录"/>
-                            <Button Style="{StaticResource TransparentButtonBase}" Content="浏览" 
+            <TabItem Header="默认目录">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="图片默认目录：" Style="{StaticResource ThemeBlk}"/>
+                        <TextBox IsReadOnly="True" Text="{Binding DataContext.ImageDir}" attachs:MyAttachProperty.PlaceHolder="空目录"/>
+                        <Button Style="{StaticResource TransparentButtonBase}" Content="浏览" 
                                     Command="{Binding DataContext.FindImageDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="音乐默认目录：" Style="{StaticResource ThemeBlk}"/>
-                            <TextBox IsReadOnly="True" Text="{Binding DataContext.LastMusicDir}" attachs:MyAttachProperty.PlaceHolder="空目录"/>
-                            <Button Style="{StaticResource TransparentButtonBase}" Content="浏览" 
-                                    Command="{Binding DataContext.FindMusicDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="视频默认目录：" Style="{StaticResource ThemeBlk}"/>
-                            <TextBox IsReadOnly="True" Text="{Binding DataContext.LastVideoDir}" attachs:MyAttachProperty.PlaceHolder="空目录"/>
-                            <Button Style="{StaticResource TransparentButtonBase}" 
-                                    Content="浏览" Command="{Binding DataContext.FindVideoDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
-                        </StackPanel>
                     </StackPanel>
-                </TabItem>
-                <TabItem Header="测试2">
-                    <StackPanel Background="Yellow" MinWidth="600" MinHeight="500" />
-                </TabItem>
-                <TabItem Header="测试3">
-                    <StackPanel Background="Green" MinWidth="600" MinHeight="500" />
-                </TabItem>
-                <TabItem Header="测试4">
-                    <StackPanel Background="Purple" MinWidth="600" MinHeight="500" />
-                </TabItem>
-            </TabControl>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="音乐默认目录：" Style="{StaticResource ThemeBlk}"/>
+                        <TextBox IsReadOnly="True" Text="{Binding DataContext.LastMusicDir}" attachs:MyAttachProperty.PlaceHolder="空目录"/>
+                        <Button Style="{StaticResource TransparentButtonBase}" Content="浏览" 
+                                    Command="{Binding DataContext.FindMusicDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
+                    </StackPanel>
 
-            <DockPanel Grid.Row="1" LastChildFill="False">
-                <Button Margin="20,10" DockPanel.Dock="Right" Style="{StaticResource TransparentButtonBase}"
-                        Content="取消" Command="{Binding CancelCommand}" />
-                <Button Margin="20,10" DockPanel.Dock="Right" Style="{StaticResource TransparentButtonBase}"
-                        Content="确认" Command="{Binding SubmitCommand}" />
-            </DockPanel>
-        </Grid>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="视频默认目录：" Style="{StaticResource ThemeBlk}"/>
+                        <TextBox IsReadOnly="True" Text="{Binding DataContext.LastVideoDir}" attachs:MyAttachProperty.PlaceHolder="空目录"/>
+                        <Button Style="{StaticResource TransparentButtonBase}" 
+                                    Content="浏览" Command="{Binding DataContext.FindVideoDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="全局快捷键">
+                <GroupBox Header="全局" Foreground="{DynamicResource TextBlock.Foreground}">
+                    <StackPanel>
+                        <Button Command="{Binding DataContext.ResetGlobalHotKeysCommand}" HorizontalAlignment="Right" 
+                                Style="{StaticResource IconButtonBase_Expand}" Margin="0,10,20,0" Content="&#xe614;" ToolTip="重置快捷键"/>
+                        
+                        <ListBox ItemsSource="{Binding DataContext.GlobalHotKeys}" HorizontalAlignment="Stretch"
+                                 ItemContainerStyle="{StaticResource ListBoxItem_General}" />
+
+                        <DockPanel LastChildFill="False">
+                            <Button Margin="20,10" DockPanel.Dock="Right" Style="{StaticResource TransparentButtonBase}"
+                                    Content="取消" Command="{Binding DataContext.CancelCommand}" />
+                            <Button Margin="20,10" DockPanel.Dock="Right" Style="{StaticResource TransparentButtonBase}"
+                                    Content="确认" Command="{Binding DataContext.SubmitCommand}" />
+                        </DockPanel>
+                    </StackPanel>
+                </GroupBox>
+            </TabItem>
+            <TabItem Header="应用快捷键">
+                <ListBox ItemsSource="{Binding DataContext.AppHotKeyManager}" HorizontalAlignment="Stretch"
+                             ItemContainerStyle="{StaticResource ListBoxItem_General}" />
+            </TabItem>
+        </TabControl>
     </Border>
 </UserControl>

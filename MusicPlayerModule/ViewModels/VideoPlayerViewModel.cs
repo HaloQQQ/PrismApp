@@ -16,6 +16,9 @@ using IceTea.Wpf.Core.Helper.MediaInfo;
 using Microsoft.Win32;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
+using IceTea.NetCore.Utils.AppHotKey;
+using IceTea.Atom.Interfaces;
+using IceTea.NetCore.Utils;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -247,7 +250,7 @@ namespace MusicPlayerModule.ViewModels
             }
         }
 
-        private void SubscribeEvents(IEventAggregator eventAggregator)
+        private void SubscribeEvents()
         {
             PlayingVideoViewModel.ToNextVideo += dto =>
             {
@@ -394,7 +397,7 @@ namespace MusicPlayerModule.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private readonly IConfigManager _config;
 
-        public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config)
+        public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppHotKeyManager appHotKeyManager)
         {
             this._eventAggregator = eventAggregator;
             this._config = config;
@@ -404,9 +407,19 @@ namespace MusicPlayerModule.ViewModels
             this.LoadConfig(config);
 
             this.InitCommands();
+            this.InitHotkeys(config, appHotKeyManager);
 
-            this.SubscribeEvents(eventAggregator);
+            this.SubscribeEvents();
         }
+
+        #region 应用内快捷键
+        public Dictionary<string, AppHotKeyModel> KeyGestureDic { get; private set; }
+
+        private void InitHotkeys(IConfigManager config, IAppHotKeyManager appHotKeyManager)
+        {
+            this.KeyGestureDic = HotKeyUtils.Provide(config, appHotKeyManager, new AppHotKeyGroupInfo("视频", AppStatics.AppVideoHotkeys, AppStatics.VideoHotKeys));
+        }
+        #endregion
 
         private bool _isEditingPlayOrder;
 

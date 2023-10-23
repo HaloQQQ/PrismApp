@@ -16,7 +16,9 @@
                 <ResourceDictionary Source="/MusicPlayerModule;component/Resources/DataGridContextMenu.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <personalConverter:LyricHeightConverter x:Key="LyricHeightConverter"/>
+            <personalConverter:LyricHeightMultiConverter x:Key="LyricHeightMultiConverter"/>
+            <personalConverter:KeyGestureDicConverter x:Key="KeyGestureDicConverter"/>
+            <personalConverter:ModifierKeyGestureDicConverter x:Key="ModifierKeyGestureDicConverter"/>
 
             <Style TargetType="Image" x:Key="MusicImage">
                 <Setter Property="Width" Value="60" />
@@ -42,8 +44,7 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-
-
+            
             <Style TargetType="TextBlock" x:Key="Music_PointABTextBlock" BasedOn="{StaticResource PointABTextBlock}">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding CurrentMusic}" Value="{x:Null}">
@@ -65,43 +66,81 @@
     <Grid CommandManager.Executed="UserControl_Executed" MouseWheel="Grid_MouseWheel"
           attachs:MyAttachProperty.IsElementFocused="True" FocusVisualStyle="{x:Null}">
         <Grid.InputBindings>
-            <KeyBinding Key="Space" Command="{Binding PlayPlayingCommand}" CommandParameter="{Binding CurrentMusic}"/>
+            <KeyBinding Command="GoToPage" 
+                        Modifiers="{Binding KeyGestureDic[歌词封面].ModifierKey}" 
+                        Key="{Binding KeyGestureDic[歌词封面].SelectedKey}"/>
 
-            <KeyBinding Command="GoToPage" Key="Esc"/>
+            <KeyBinding Command="Close" CommandParameter="CloseDesktopLyricPanel" 
+                        Modifiers="{Binding KeyGestureDic[桌面歌词].ModifierKey}" 
+                        Key="{Binding KeyGestureDic[桌面歌词].SelectedKey}"/>
 
-            <KeyBinding Command="Close" CommandParameter="CloseDesktopLyricPanel" Modifiers="Alt" Key="C"/>
+            <KeyBinding Command="Open" 
+                        Modifiers="{Binding KeyGestureDic[播放列表].ModifierKey}" 
+                        Key="{Binding KeyGestureDic[播放列表].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding PlayAllCommand}" Gesture="Alt+P"/>
+            <KeyBinding Command="{Binding PlayAllCommand}"
+                        Modifiers="{Binding KeyGestureDic[播放所有音乐].ModifierKey}"
+                        Key="{Binding KeyGestureDic[播放所有音乐].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding PointACommand}" Key="D1"  Modifiers="Ctrl"/>
-            <KeyBinding Command="{Binding PointBCommand}" Key="D2" Modifiers="Ctrl"/>
-            <KeyBinding Command="{Binding ResetPointABCommand}" Key="Delete" Modifiers="Ctrl"/>
+                           
+            <KeyBinding Command="{Binding PointACommand}"
+                        Modifiers="{Binding KeyGestureDic[设置A点].ModifierKey}" 
+                        Key="{Binding KeyGestureDic[设置A点].SelectedKey}"/>
+            <KeyBinding Command="{Binding PointBCommand}"
+                        Modifiers="{Binding KeyGestureDic[设置B点].ModifierKey}" 
+                        Key="{Binding KeyGestureDic[设置B点].SelectedKey}"/>
+            <KeyBinding Command="{Binding ResetPointABCommand}" 
+                        Modifiers="{Binding KeyGestureDic[重置AB点].ModifierKey}" 
+                        Key="{Binding KeyGestureDic[重置AB点].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding AddFolderCommand}" Key="O" Modifiers="Ctrl"/>
+            <KeyBinding Command="{Binding AddFolderCommand}" 
+                        Modifiers="{Binding KeyGestureDic[打开文件夹].ModifierKey}"
+                        Key="{Binding KeyGestureDic[打开文件夹].SelectedKey}"/>
 
-            <KeyBinding Command="{x:Static ComponentCommands.MoveToHome}" Key="Home" />
 
-            <KeyBinding Command="{x:Static MediaCommands.Rewind}" Key="Left" />
+            <KeyBinding Command="{x:Static ComponentCommands.MoveToHome}" 
+                        Modifiers="{Binding KeyGestureDic[返回开头].ModifierKey}"
+                        Key="{Binding KeyGestureDic[返回开头].SelectedKey}"/>
 
-            <KeyBinding Command="{x:Static MediaCommands.DecreaseVolume}" Modifiers="Ctrl" Key="Down" />
+            <KeyBinding Command="{x:Static MediaCommands.Rewind}" 
+                        Modifiers="{Binding KeyGestureDic[快退].ModifierKey}"
+                        Key="{Binding KeyGestureDic[快退].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding PrevCommand}" CommandParameter="{Binding CurrentMusic}" Key="PageUp"/>
+            <KeyBinding Command="{x:Static MediaCommands.DecreaseVolume}"
+                        Modifiers="{Binding KeyGestureDic[降低音量].ModifierKey}" 
+                        Key="{Binding KeyGestureDic[降低音量].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding PlayPlayingCommand}" CommandParameter="{Binding CurrentMusic}" Key="F" Modifiers="Alt"/>
+            <KeyBinding Command="{Binding PrevCommand}" CommandParameter="{Binding CurrentMusic}" 
+                        Modifiers="{Binding KeyGestureDic[上一个].ModifierKey}"
+                        Key="{Binding KeyGestureDic[上一个].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding CleanPlayingCommand}" Key="D" Modifiers="Alt"/>
+            <KeyBinding Command="{Binding PlayPlayingCommand}" CommandParameter="{Binding CurrentMusic}"
+                        Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}"
+                        Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding NextCommand}" CommandParameter="{Binding CurrentMusic}" Key="PageDown"/>
+            <KeyBinding Command="{Binding CleanPlayingCommand}"
+                        Modifiers="{Binding KeyGestureDic[清空播放队列].ModifierKey}"
+                        Key="{Binding KeyGestureDic[清空播放队列].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding StopPlayMusicCommand}" CommandParameter="{Binding CurrentMusic}" Key="W" Modifiers="Alt"/>
+            <KeyBinding Command="{Binding NextCommand}" CommandParameter="{Binding CurrentMusic}" 
+                        Modifiers="{Binding KeyGestureDic[下一个].ModifierKey}"
+                        Key="{Binding KeyGestureDic[下一个].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding CleanPlayingCommand}" Key="A" Modifiers="Alt"/>
+            <KeyBinding Command="{Binding StopPlayMusicCommand}" CommandParameter="{Binding CurrentMusic}"
+                        Modifiers="{Binding KeyGestureDic[停止].ModifierKey}"
+                        Key="{Binding KeyGestureDic[停止].SelectedKey}"/>
 
-            <KeyBinding Command="{x:Static MediaCommands.IncreaseVolume}" Modifiers="Ctrl" Key="Up" />
+            <KeyBinding Command="{x:Static MediaCommands.IncreaseVolume}"
+                        Modifiers="{Binding KeyGestureDic[提高音量].ModifierKey}" 
+                        Key="{Binding KeyGestureDic[提高音量].SelectedKey}"/>
 
-            <KeyBinding Command="{x:Static MediaCommands.FastForward}" Key="Right" />
+            <KeyBinding Command="{x:Static MediaCommands.FastForward}" 
+                        Modifiers="{Binding KeyGestureDic[快进].ModifierKey}"
+                        Key="{Binding KeyGestureDic[快进].SelectedKey}"/>
 
-            <KeyBinding Command="{x:Static ComponentCommands.MoveToEnd}" Key="End" />
+            <KeyBinding Command="{x:Static ComponentCommands.MoveToEnd}" 
+                        Modifiers="{Binding KeyGestureDic[跳至结尾].ModifierKey}"
+                        Key="{Binding KeyGestureDic[跳至结尾].SelectedKey}"/>
         </Grid.InputBindings>
 
         <Grid.RowDefinitions>
@@ -119,14 +158,14 @@
 
             <Viewbox Grid.Column="0" HorizontalAlignment="Left" Style="{StaticResource OnlyDownViewbox}">
                 <StackPanel Orientation="Horizontal">
-                    <Button Command="{Binding PlayAllCommand}" ToolTip="Alt+P" Style="{StaticResource PlayAllButton}"/>
+                    <Button Command="{Binding PlayAllCommand}" ToolTip="{Binding KeyGestureDic[播放所有音乐].ToolTip}" Style="{StaticResource PlayAllButton}"/>
 
                     <ToggleButton x:Name="ToggleBatch" Style="{StaticResource BatchOperateToggleButton}"
                                   IsChecked="{Binding IsBatchSelect,Mode=TwoWay}"/>
 
                     <Button Command="{Binding DownLoadCommand}" Style="{StaticResource DownloadButton}"/>
 
-                    <Button Command="{Binding AddFilesCommand}" ToolTip="Ctrl+O" Style="{StaticResource AddMusicButton}">
+                    <Button Command="{Binding AddFilesCommand}" ToolTip="{Binding KeyGestureDic[打开文件夹].ToolTip}" Style="{StaticResource AddMusicButton}">
                         <Button.InputBindings>
                             <MouseBinding MouseAction="RightClick" Command="{Binding AddFolderCommand}"/>
                         </Button.InputBindings>
@@ -191,29 +230,29 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <MediaElement Grid.Row="0" Source="{Binding CurrentMusic.Music.FilePath}" x:Name="mediaPlayer"/>
-            
+
             <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinHeight="400">
                 <FrameworkElement x:Name="dummyElement" Visibility="Collapsed"/>
-                
+
                 <waitLoads:NeedleWaitLoad Foreground="DodgerBlue" Width="80" Height="80">
                     <waitLoads:NeedleWaitLoad.Style>
                         <Style TargetType="UserControl">
                             <Setter Property="Visibility" Value="Collapsed"/>
-                            
+
                             <Style.Triggers>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition Value="True" Binding="{Binding IsLoading}"/>
                                         <Condition Value="0" Binding="{Binding DisplayFavorites.Count}"/>
                                     </MultiDataTrigger.Conditions>
-                                    
+
                                     <Setter Property="Visibility" Value="Visible"/>
                                 </MultiDataTrigger>
                             </Style.Triggers>
                         </Style>
                     </waitLoads:NeedleWaitLoad.Style>
                 </waitLoads:NeedleWaitLoad>
-                
+
                 <Viewbox Grid.Row="0" Style="{StaticResource OnlyDownViewbox}" VerticalAlignment="Top">
                     <DataGrid x:Name="DataGrid_ShowBySong" Height="{Binding ActualHeight,RelativeSource={RelativeSource AncestorType=Grid},Mode=OneWay}" 
                               Visibility="{Binding IsChecked,ElementName=RadioBtnShowBySong,Converter={StaticResource BooleanToVisibilityConverter}}" 
@@ -223,7 +262,7 @@
                         <DataGrid.Style>
                             <Style TargetType="DataGrid" BasedOn="{StaticResource DataGrid_Transparent}">
                                 <Setter Property="ContextMenu" Value="{StaticResource FavoriteDataGridContextMenu}" />
-                                
+
                                 <Style.Triggers>
                                     <DataTrigger Value="0" Binding="{Binding DisplayFavorites.Count}">
                                         <Setter Property="ContextMenu" Value="{x:Null}" />
@@ -681,7 +720,7 @@
                            VerticalAlignment="Top">
                     <!--Height="{Binding ActualHeight,RelativeSource={RelativeSource AncestorType=Border},Converter={StaticResource DigitSubConverter},ConverterParameter=0.65}"-->
                     <DockPanel.Height>
-                        <MultiBinding Converter="{StaticResource LyricHeightConverter}">
+                        <MultiBinding Converter="{StaticResource LyricHeightMultiConverter}">
                             <MultiBinding.Bindings>
                                 <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=Border}" />
                                 <Binding Path="ActualHeight" ElementName="OperatrionPanel" />
@@ -871,9 +910,9 @@
                         <Button Command="{Binding PrevCommand}" CommandParameter="{Binding CurrentMusic}" 
                             Style="{StaticResource PrevOneIconButton}"/>
 
-                        <ToggleButton Command="{Binding PlayPlayingCommand}" CommandParameter="{Binding CurrentMusic}" 
-                                  Style="{StaticResource PlayIconToggleButton}"
-                                  IsChecked="{Binding Running,Mode=OneWay}" />
+                        <ToggleButton Command="{Binding PlayPlayingCommand}" CommandParameter="{Binding CurrentMusic}"
+                                      Style="{StaticResource PlayIconToggleButton}"
+                                      IsChecked="{Binding Running,Mode=OneWay}" />
 
                         <Button Command="{Binding NextCommand}" CommandParameter="{Binding CurrentMusic}" 
                             Style="{StaticResource NextOneIconButton}"/>
@@ -927,9 +966,10 @@
                         </Grid>
 
                         <ToggleButton x:Name="volumeToggleButton" IsChecked="{Binding IsMuted,ElementName=mediaPlayer,Mode=TwoWay}" 
-                                  MouseEnter="ToggleButton_MouseEnter" MouseLeave="ToggleButton_MouseLeave"
-                                  Click="volumeToggleButton_Click"
-                                  Style="{StaticResource VolumeIconToggleButton}"/>
+                                      MouseEnter="ToggleButton_MouseEnter" MouseLeave="ToggleButton_MouseLeave"
+                                      Click="volumeToggleButton_Click"
+                                      Style="{StaticResource VolumeIconToggleButton}"/>
+
                         <Popup Placement="Top" HorizontalOffset="-23" VerticalOffset="6"
                                StaysOpen="True" x:Name="VolumePopup"
                                PlacementTarget="{Binding ElementName=volumeToggleButton}">
@@ -1001,7 +1041,7 @@
                         </Popup>
 
                         <TextBlock Style="{StaticResource IconText}" Text="&#xe607;" ToolTip="一起听" />
-                        <ToggleButton x:Name="DesktopLyricToggleButton" Content="&#xe671;" ToolTip="桌面歌词 Alt+C">
+                        <ToggleButton x:Name="DesktopLyricToggleButton" Content="&#xe671;" ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
                             <ToggleButton.Style>
                                 <Style TargetType="ToggleButton" BasedOn="{StaticResource ExpandIconToggleButton}">
                                     <Style.Triggers>
@@ -1013,7 +1053,9 @@
                             </ToggleButton.Style>
                         </ToggleButton>
 
-                        <ToggleButton x:Name="PlayingListButton" Click="playingList_PreviewMouseLeftButtonDown">
+                        <ToggleButton x:Name="PlayingListButton"
+                                      Click="PlayingListButton_Click"
+                                      ToolTip="{Binding KeyGestureDic[播放列表].ToolTip}">
                             <ToggleButton.Style>
                                 <Style TargetType="ToggleButton" BasedOn="{StaticResource IconButtonBase_Small}">
                                     <Style.Triggers>
@@ -1024,7 +1066,7 @@
                                 </Style>
                             </ToggleButton.Style>
                             <TextBlock>
-                                <TextBlock Text="&#xea6f;" ToolTip="播放队列"/>
+                                <TextBlock Text="&#xea6f;"/>
                                 <TextBlock Width="30" Text="{Binding DisplayPlaying.Count}"/>
                             </TextBlock>
                         </ToggleButton>
@@ -1049,7 +1091,7 @@
                                             <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right">
                                               <ToggleButton x:Name="QueryButton" Content="&#xe632;" ToolTip="搜索" Style="{StaticResource IconButtonBase_Small}"/>
                                               <Button Content="&#xe622;" ToolTip="添加到" Style="{StaticResource IconButtonBase_Small}"/>
-                                              <Button Content="&#xec7b;" ToolTip="清空列表" Command="{Binding CleanPlayingCommand}" Style="{StaticResource IconButtonBase_Small}"/>
+                                              <Button Content="&#xec7b;" ToolTip="{Binding KeyGestureDic[清空播放队列].ToolTip}" Command="{Binding CleanPlayingCommand}" Style="{StaticResource IconButtonBase_Small}"/>
                                             </TextBlock>
                                         </DockPanel>
 
@@ -1130,7 +1172,7 @@
 
                     <Viewbox Grid.Column="1" Style="{StaticResource OnlyDownViewbox}">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1">
-                            <Button Command="{Binding DelayCommand}" Content="&#xe68e;" ToolTip="回退0.5s" Click="MusicGoBack" Style="{StaticResource IconButtonBase_Small_Scale}"/>
+                            <Button Command="{Binding DelayCommand}" Content="&#xe68e;" ToolTip="{Binding KeyGestureDic[快退].ToolTip}" Click="MusicGoBack" Style="{StaticResource IconButtonBase_Small_Scale}"/>
 
                             <Button Command="{Binding PrevCommand}" CommandParameter="{Binding CurrentMusic}">
                                 <Button.Style>
@@ -1148,8 +1190,8 @@
                             </Button>
 
                             <ToggleButton Command="{Binding PlayPlayingCommand}" 
-                                      CommandParameter="{Binding CurrentMusic}" 
-                                          IsChecked="{Binding Running,Mode=OneWay}" ToolTip="Alt+F">
+                                          CommandParameter="{Binding CurrentMusic}"
+                                          IsChecked="{Binding Running,Mode=OneWay}">
                                 <ToggleButton.Style>
                                     <Style TargetType="ToggleButton" BasedOn="{StaticResource PlayIconToggleButton}">
                                         <Setter Property="FontSize" Value="28" />
@@ -1179,13 +1221,13 @@
                                 </Button.Style>
                             </Button>
 
-                            <Button Command="{Binding AheadCommand}" Content="&#xe690;" ToolTip="快进0.5s" Click="MusicGoForward" Style="{StaticResource IconButtonBase_Small_Scale}"/>
+                            <Button Command="{Binding AheadCommand}" Content="&#xe690;" ToolTip="{Binding KeyGestureDic[快进].ToolTip}" Click="MusicGoForward" Style="{StaticResource IconButtonBase_Small_Scale}"/>
 
-                            <Button Command="Close" CommandParameter="CloseDesktopLyricPanel">
+                            <Button Command="Close" CommandParameter="CloseDesktopLyricPanel"
+                                    ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
                                 <Button.Style>
                                     <Style TargetType="Button" BasedOn="{StaticResource IconButtonBase_Small_Scale}">
                                         <Setter Property="Content" Value="&#xe624;" />
-                                        <Setter Property="ToolTip" Value="关闭" />
                                         <Setter Property="FontSize" Value="14" />
                                         <Setter Property="Foreground" Value="#EBEBEB" />
                                     </Style>

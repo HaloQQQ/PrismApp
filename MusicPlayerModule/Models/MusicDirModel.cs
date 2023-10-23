@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using IceTea.Atom.Extensions;
+using IceTea.Atom.Utils;
 
 namespace MusicPlayerModule.Models
 {
@@ -6,8 +7,8 @@ namespace MusicPlayerModule.Models
     {
         public MusicDirModel(string dirPath)
         {
-            DirPath = dirPath;
-            DirName = new DirectoryInfo(dirPath).Name;
+            DirPath = dirPath.AssertNotNull(nameof(dirPath));
+            DirName = dirPath.GetCurrentDirName();
         }
 
         public string DirName { get; private set; }

@@ -10,7 +10,6 @@ using MyApp.Prisms.MsgEvents;
 using MyApp.Prisms.ViewModels;
 using IceTea.Wpf.Core.Helper;
 using IceTea.Wpf.Core.Helper.MediaInfo;
-using System.Linq;
 using IceTea.Atom.Extensions;
 
 namespace MyApp.Prisms.Views
@@ -107,7 +106,7 @@ namespace MyApp.Prisms.Views
 
                 var data = this._imagesContext.Data;
 
-                data.AddIfNotContainsOrNotWhile(new MyImage(file), item => data.FirstOrDefault(i => file.EqualsIgnoreCase(i.URI)) != null);
+                data.AddIfNotWhile(item => file.EqualsIgnoreCase(item.URI), () => new MyImage(file));
 
                 SetBackgroundImage(file);
 

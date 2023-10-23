@@ -111,7 +111,7 @@ internal class MusicModel : BindableBase, IDisposable
     {
         if (Directory.Exists(targetDir))
         {
-            var file = Path.GetFileName(FilePath);
+            var file = FilePath.GetFileName();
 
             var targetPath = Path.Combine(targetDir, file);
 

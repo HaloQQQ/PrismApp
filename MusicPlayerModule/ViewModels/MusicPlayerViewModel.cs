@@ -14,6 +14,9 @@ using IceTea.Wpf.Core.Helper.MediaInfo;
 using Microsoft.Win32;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
+using IceTea.NetCore.Utils.AppHotKey;
+using IceTea.Atom.Interfaces;
+using IceTea.NetCore.Utils;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -787,7 +790,6 @@ namespace MusicPlayerModule.ViewModels
         #endregion
 
         #region Command
-
         public ICommand OpenInExploreCommand { get; private set; }
 
         public ICommand PointACommand { get; private set; }
@@ -884,7 +886,7 @@ namespace MusicPlayerModule.ViewModels
         #endregion
 
         private IConfigManager _config;
-        public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config)
+        public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppHotKeyManager appHotKeyManager)
         {
             this._config = config;
             this._eventAggregator = eventAggregator;
@@ -892,12 +894,22 @@ namespace MusicPlayerModule.ViewModels
             this.LoadConfig(config);
 
             this.InitCommands();
+            this.InitHotkeys(config, appHotKeyManager);
 
             this.SubscribeEvents(eventAggregator);
 
             this.DistributeMusicViewModel = new DistributeMusicViewModel(this.Favorites, eventAggregator);
             this.DistributeMusicViewModel.ClearFavoriteListFilteKeyWords += TryClearFavoriteListFilteKeyWords;
         }
+
+        #region 应用内快捷键
+        public Dictionary<string, AppHotKeyModel> KeyGestureDic { get; private set; }
+
+        private void InitHotkeys(IConfigManager config, IAppHotKeyManager appHotKeyManager)
+        {
+            this.KeyGestureDic = HotKeyUtils.Provide(config, appHotKeyManager, new AppHotKeyGroupInfo("音乐", AppStatics.AppMusicHotkeys, AppStatics.MusicHotKeys));
+        }
+        #endregion
 
         private void LoadConfig(IConfigManager config)
         {

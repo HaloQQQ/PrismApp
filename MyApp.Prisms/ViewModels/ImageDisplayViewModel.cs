@@ -9,6 +9,7 @@ using MyApp.Prisms.MsgEvents;
 using IceTea.Wpf.Core.Helper;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.BaseModels;
+using IceTea.Atom.Interfaces;
 
 namespace MyApp.Prisms.ViewModels
 {

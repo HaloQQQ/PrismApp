@@ -213,27 +213,6 @@ namespace MusicPlayerModule.Views
             }
         }
 
-        /// <summary>
-        /// 根据屏幕高度设置播放列表弹窗高度
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void playingList_PreviewMouseLeftButtonDown(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-
-            var window = Window.GetWindow(this);
-
-            if (window.WindowState == WindowState.Maximized)
-            {
-                this.PlayingListPopup.Height = 664;
-            }
-            else
-            {
-                this.PlayingListPopup.Height = 522;
-            }
-        }
-
         private void musicSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             e.Handled = true;
@@ -395,6 +374,17 @@ namespace MusicPlayerModule.Views
             {
                 this.SwitchLyric(e);
             }
+            else if(e.Command == ApplicationCommands.Open)
+            {
+                e.Handled = true;
+
+                this.PlayingListButton.IsChecked = !this.PlayingListButton.IsChecked;
+
+                if ((bool)this.PlayingListButton.IsChecked)
+                {
+                    this.AdaptPlayingListPanelSize();
+                }
+            }
             else if (e.Command == ApplicationCommands.Close)
             {
                 e.Handled = true;
@@ -405,7 +395,6 @@ namespace MusicPlayerModule.Views
                     {
                         case "CloseDesktopLyricPanel":
                             this.DesktopLyricToggleButton.IsChecked = !this.DesktopLyricToggleButton.IsChecked;
-
                             break;
                         case "StopPlayingListFilte":
                             // 播放队列筛选输入框消失
@@ -523,6 +512,29 @@ namespace MusicPlayerModule.Views
                 storyboard.Children.Add(visibilityAnimation);
 
                 storyboard.Begin();
+            }
+        }
+
+        private void PlayingListButton_Click(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+
+            this.AdaptPlayingListPanelSize();
+        }
+
+
+        private void AdaptPlayingListPanelSize()
+        {
+            // 根据屏幕高度设置播放列表弹窗高度
+            var window = Window.GetWindow(this);
+
+            if (window.WindowState == WindowState.Maximized)
+            {
+                this.PlayingListPopup.Height = 664;
+            }
+            else
+            {
+                this.PlayingListPopup.Height = 522;
             }
         }
     }

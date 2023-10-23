@@ -35,39 +35,75 @@
     <Grid CommandManager.Executed="UserControl_Executed" MouseWheel="Grid_MouseWheel" 
               FocusVisualStyle="{x:Null}" attachs:MyAttachProperty.IsElementFocused="True" Background="Transparent">
         <Grid.InputBindings>
-            <KeyBinding Key="Space" Command="{Binding PlayPlayingCommand}"  CommandParameter="{Binding CurrentVideo}"/>
+            <KeyBinding Command="{Binding PlayPlayingCommand}"  CommandParameter="{Binding CurrentVideo}" 
+                        Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" 
+                        Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding PointACommand}" Key="D1"  Modifiers="Ctrl"/>
-            <KeyBinding Command="{Binding PointBCommand}" Key="D2" Modifiers="Ctrl"/>
-            <KeyBinding Command="{Binding ResetPointABCommand}" Key="Delete" Modifiers="Ctrl"/>
+            <KeyBinding Command="{Binding PointACommand}"
+                        Modifiers="{Binding KeyGestureDic[设置A点].ModifierKey}" 
+                        Key="{Binding KeyGestureDic[设置A点].SelectedKey}"/>
+            <KeyBinding Command="{Binding PointBCommand}"
+                        Modifiers="{Binding KeyGestureDic[设置B点].ModifierKey}" 
+                        Key="{Binding KeyGestureDic[设置B点].SelectedKey}"/>
+            <KeyBinding Command="{Binding ResetPointABCommand}" 
+                        Modifiers="{Binding KeyGestureDic[重置AB点].ModifierKey}" 
+                        Key="{Binding KeyGestureDic[重置AB点].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding AddFolderCommand}" Key="O" Modifiers="Ctrl"/>
+            <KeyBinding Command="{Binding AddFolderCommand}" 
+                        Modifiers="{Binding KeyGestureDic[打开文件夹].ModifierKey}"
+                        Key="{Binding KeyGestureDic[打开文件夹].SelectedKey}"/>
 
-            <KeyBinding Command="{x:Static ComponentCommands.MoveToHome}" Key="Home" />
+            <KeyBinding Command="{x:Static ComponentCommands.MoveToHome}" 
+                        Modifiers="{Binding KeyGestureDic[返回开头].ModifierKey}"
+                        Key="{Binding KeyGestureDic[返回开头].SelectedKey}"/>
 
-            <KeyBinding Command="{x:Static MediaCommands.Rewind}" Key="Left" />
+            <KeyBinding Command="{x:Static MediaCommands.Rewind}" 
+                        Modifiers="{Binding KeyGestureDic[快退].ModifierKey}"
+                        Key="{Binding KeyGestureDic[快退].SelectedKey}"/>
 
-            <KeyBinding Command="{x:Static MediaCommands.DecreaseVolume}" Modifiers="Ctrl" Key="Down" />
+            <KeyBinding Command="{x:Static MediaCommands.DecreaseVolume}"
+                        Modifiers="{Binding KeyGestureDic[降低音量].ModifierKey}" 
+                        Key="{Binding KeyGestureDic[降低音量].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding PrevCommand}" 
-                    CommandParameter="{Binding CurrentVideo}" Key="PageUp"/>
+            <KeyBinding Command="{Binding PrevCommand}" CommandParameter="{Binding CurrentVideo}" 
+                        Modifiers="{Binding KeyGestureDic[上一个].ModifierKey}"
+                        Key="{Binding KeyGestureDic[上一个].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding PlayPlayingCommand}" CommandParameter="{Binding CurrentVideo}" Key="F" Modifiers="Alt"/>
+            <KeyBinding Command="{Binding PlayPlayingCommand}" CommandParameter="{Binding CurrentVideo}"
+                        Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}"
+                        Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding CleanPlayingCommand}" Key="D" Modifiers="Alt"/>
+            <KeyBinding Command="{Binding CleanPlayingCommand}"
+                        Modifiers="{Binding KeyGestureDic[清空播放队列].ModifierKey}"
+                        Key="{Binding KeyGestureDic[清空播放队列].SelectedKey}"/>
             
-            <KeyBinding Command="{Binding NextCommand}" 
-                    CommandParameter="{Binding CurrentVideo}" Key="PageDown"/>
+            <KeyBinding Command="{Binding NextCommand}" CommandParameter="{Binding CurrentVideo}" 
+                        Modifiers="{Binding KeyGestureDic[下一个].ModifierKey}"
+                        Key="{Binding KeyGestureDic[下一个].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding StopPlayVideoCommand}" CommandParameter="{Binding CurrentVideo}" Key="W" Modifiers="Alt"/>
+            <KeyBinding Command="{Binding StopPlayVideoCommand}" CommandParameter="{Binding CurrentVideo}"
+                        Modifiers="{Binding KeyGestureDic[停止].ModifierKey}"
+                        Key="{Binding KeyGestureDic[停止].SelectedKey}"/>
 
-            <KeyBinding Command="{Binding CleanPlayingCommand}" Key="A" Modifiers="Alt"/>
+            <KeyBinding Command="{Binding CleanPlayingCommand}"
+                        Modifiers="{Binding KeyGestureDic[清空播放队列].ModifierKey}"
+                        Key="{Binding KeyGestureDic[清空播放队列].SelectedKey}"/>
 
-            <KeyBinding Command="{x:Static MediaCommands.IncreaseVolume}" Modifiers="Ctrl" Key="Up" />
+            <KeyBinding Command="Open" 
+                        Modifiers="{Binding KeyGestureDic[播放列表].ModifierKey}" 
+                        Key="{Binding KeyGestureDic[播放列表].SelectedKey}"/>
 
-            <KeyBinding Command="{x:Static MediaCommands.FastForward}" Key="Right" />
+            <KeyBinding Command="{x:Static MediaCommands.IncreaseVolume}"
+                        Modifiers="{Binding KeyGestureDic[提高音量].ModifierKey}" 
+                        Key="{Binding KeyGestureDic[提高音量].SelectedKey}"/>
 
-            <KeyBinding Command="{x:Static ComponentCommands.MoveToEnd}" Key="End" />
+            <KeyBinding Command="{x:Static MediaCommands.FastForward}" 
+                        Modifiers="{Binding KeyGestureDic[快进].ModifierKey}"
+                        Key="{Binding KeyGestureDic[快进].SelectedKey}"/>
+
+            <KeyBinding Command="{x:Static ComponentCommands.MoveToEnd}" 
+                        Modifiers="{Binding KeyGestureDic[跳至结尾].ModifierKey}"
+                        Key="{Binding KeyGestureDic[跳至结尾].SelectedKey}"/>
         </Grid.InputBindings>
 
         <MediaElement x:Name="mediaPlayer" Grid.Row="0" MediaOpened="mediaPlayer_MediaOpened"
@@ -183,7 +219,7 @@
 
                 <Viewbox Grid.Column="1" Style="{StaticResource OnlyDownViewbox}">
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button Command="{Binding AddFilesCommand}" ToolTip="打开文件 Ctrl+O" FontSize="20" Content="&#xea79;" Style="{StaticResource IconButtonBase_Big_Scale_SkyBlue}">
+                        <Button Command="{Binding AddFilesCommand}" ToolTip="{Binding KeyGestureDic[打开文件夹].ToolTip}" FontSize="20" Content="&#xea79;" Style="{StaticResource IconButtonBase_Big_Scale_SkyBlue}">
                             <Button.InputBindings>
                                 <MouseBinding MouseAction="RightClick" Command="{Binding AddFolderCommand}"/>
                             </Button.InputBindings>
@@ -208,7 +244,9 @@
 
                 <Viewbox Grid.Column="2" Style="{StaticResource OnlyDownViewbox}" HorizontalAlignment="Right">
                     <DockPanel Grid.Column="2" LastChildFill="False">
-                        <ToggleButton x:Name="PlayingListButton" DockPanel.Dock="Right" Click="playingList_PreviewMouseLeftButtonDown">
+                        <ToggleButton x:Name="PlayingListButton" DockPanel.Dock="Right"
+                                      Click="PlayingListButton_Click"
+                                      ToolTip="{Binding KeyGestureDic[播放列表].ToolTip}">
                             <ToggleButton.Style>
                                 <Style TargetType="ToggleButton" BasedOn="{StaticResource IconButtonBase_Small}">
                                     <Style.Triggers>
@@ -219,16 +257,16 @@
                                 </Style>
                             </ToggleButton.Style>
                             <TextBlock>
-                                <TextBlock Text="&#xea6f;" ToolTip="播放队列"/>
+                                <TextBlock Text="&#xea6f;"/>
                                 <TextBlock Width="30" Text="{Binding DisplayPlaying.Count}"/>
                             </TextBlock>
                         </ToggleButton>
                         <Popup Placement="Top" PopupAnimation="Fade" x:Name="PlayingListPopup"
-                                   HorizontalOffset="-344" VerticalOffset="-56"
-                                   Opened="DataGrid_UpdateScrollBar"
-                                   Height="490" Width="400"
-                                   IsOpen="{Binding IsChecked,ElementName=PlayingListButton}"
-                                   PlacementTarget="{Binding ElementName=PlayingListButton}">
+                               HorizontalOffset="-344" VerticalOffset="-42"
+                               Opened="DataGrid_UpdateScrollBar"
+                               Height="501" Width="400"
+                               IsOpen="{Binding IsChecked,ElementName=PlayingListButton}"
+                               PlacementTarget="{Binding ElementName=PlayingListButton}">
                             <Border Background="{x:Static helper:MyStaticResources.PopupBackground}" CornerRadius="10">
                                 <Grid>
                                     <Grid.RowDefinitions>
@@ -239,12 +277,12 @@
                                     <DockPanel Grid.Row="0" LastChildFill="False" Margin="20,20,20,0">
                                         <DockPanel DockPanel.Dock="Top">
                                             <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Left">
-                                            共<TextBlock Text="{Binding DisplayPlaying.Count}"/>个
-                                        </TextBlock>
+                                                共<TextBlock Text="{Binding DisplayPlaying.Count}"/>个
+                                            </TextBlock>
 
                                             <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right">
-                                          <!--<ToggleButton x:Name="QueryButton" Content="&#xe632;" ToolTip="搜索" Style="{StaticResource IconButtonBase_Small}"/>-->
-                                          <Button Content="&#xec7b;" ToolTip="清空列表" Command="{Binding CleanPlayingCommand}" Style="{StaticResource IconButtonBase_Small}"/>
+                                              <!--<ToggleButton x:Name="QueryButton" Content="&#xe632;" ToolTip="搜索" Style="{StaticResource IconButtonBase_Small}"/>-->
+                                              <Button Content="&#xec7b;" ToolTip="{Binding KeyGestureDic[清空播放队列].ToolTip}" Command="{Binding CleanPlayingCommand}" Style="{StaticResource IconButtonBase_Small}"/>
                                             </TextBlock>
                                         </DockPanel>
                                     </DockPanel>
