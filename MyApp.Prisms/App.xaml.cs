@@ -14,10 +14,12 @@ using MyApp.Prisms.MsgEvents;
 using MyApp.Prisms.ViewModels;
 using MyApp.Prisms.Views;
 using IceTea.Atom.Utils;
-using IceTea.NetCore.Utils;
-using IceTea.NetCore.Utils.AppHotKey;
 using IceTea.Atom.Interfaces;
 using IceTea.Atom.Utils.HotKey.GlobalHotKey;
+using IceTea.General.Utils;
+using IceTea.General.Utils.AppHotKey;
+using MusicPlayerModule.MsgEvents;
+using IceTea.Wpf.Core.Contracts;
 
 namespace MyApp.Prisms
 {
@@ -91,7 +93,7 @@ namespace MyApp.Prisms
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
-        {                                             
+        {
             App.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
@@ -193,7 +195,7 @@ namespace MyApp.Prisms
 
             if (str.Length > 0)
             {
-                this.Container.Resolve<IEventAggregator>().GetEvent<DialogMessageEvent>().Publish(new Models.DialogMessage(str, 2));
+                this.Container.Resolve<IEventAggregator>().GetEvent<DialogMessageEvent>().Publish(new DialogMessage(str, 2));
             }
         }
     }

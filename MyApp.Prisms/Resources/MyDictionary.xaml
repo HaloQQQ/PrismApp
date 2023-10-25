@@ -42,6 +42,7 @@
 
         <MenuItem Command="{x:Static helper:CustomCommands.OpenSettingCommand}"
                   CommandTarget="{Binding PlacementTarget,RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                  InputGestureText="{Binding WindowKeyBindingMap[设置弹窗].CombineKeys}"
                   Header="设置" />
     </ContextMenu>
 

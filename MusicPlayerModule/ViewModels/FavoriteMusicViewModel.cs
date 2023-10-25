@@ -1,16 +1,14 @@
-﻿using MusicPlayerModule.Models;
+﻿using IceTea.Atom.Utils;
+using MusicPlayerModule.Models;
 using Prism.Mvvm;
 
 namespace MusicPlayerModule.ViewModels
 {
     internal class FavoriteMusicViewModel : BindableBase, IDisposable
     {
-        private static readonly FavoriteMusicViewModel _empty = new FavoriteMusicViewModel(null);
-        public static FavoriteMusicViewModel Empty => _empty;
-
         public FavoriteMusicViewModel(MusicModel music)
         {
-            Music = music;
+            Music = music.AssertNotNull(nameof(music));
         }
 
         private bool _isDeleting;

@@ -3,14 +3,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using Prism.Events;
 using Prism.Ioc;
-using MyApp.Prisms.MsgEvents;
 using IceTea.Atom.Constants;
 using IceTea.Atom.Utils;
 using IceTea.Atom.Extensions;
+using MusicPlayerModule.MsgEvents;
+using IceTea.Wpf.Core.Contracts;
 
 namespace MyApp.Prisms.Helper
 {
@@ -76,7 +76,7 @@ namespace MyApp.Prisms.Helper
             {
                 ContainerLocator.Current.Resolve<IEventAggregator>()
                     ?.GetEvent<DialogMessageEvent>()
-                    ?.Publish(new Models.DialogMessage($"日志文件{filePath}不存在!", 2));
+                    ?.Publish(new DialogMessage($"日志文件{filePath}不存在!", 2));
             }
         }
 
@@ -86,33 +86,6 @@ namespace MyApp.Prisms.Helper
             {
                 Source = new Uri(url, UriKind.RelativeOrAbsolute)
             };
-        }
-
-        /// <summary>
-        /// 给长城贴瓷砖这事，算是完了
-        /// </summary>
-        /// <param name="element"></param>
-        /// <returns></returns>
-        internal static Popup SetPopupIn(UserControl element)
-        {
-            var popup = new Popup();
-            popup.AllowsTransparency = true;
-            popup.PlacementTarget = element;
-            popup.Placement = PlacementMode.Center;
-            popup.StaysOpen = false;
-
-            var child = element.Content as UIElement;
-            element.Content = null;
-
-            popup.Child = child;
-
-            // popup.Height = element.Height;
-            // popup.SetBinding(Popup.HeightProperty, new Binding("Height") {Source = element});
-
-
-            element.Content = popup;
-
-            return popup;
         }
     }
 }

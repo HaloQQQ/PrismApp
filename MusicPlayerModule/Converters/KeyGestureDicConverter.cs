@@ -1,4 +1,4 @@
-﻿using IceTea.NetCore.Utils.AppHotKey;
+﻿using IceTea.General.Utils.AppHotKey;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Input;

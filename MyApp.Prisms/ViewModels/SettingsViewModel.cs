@@ -5,15 +5,15 @@ using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using MyApp.Prisms.Helper;
-using MyApp.Prisms.Models;
-using MyApp.Prisms.MsgEvents;
 using IceTea.Wpf.Core.Helper;
-using IceTea.NetCore.Utils.AppHotKey;
 using IceTea.Atom.Interfaces;
 using IceTea.Atom.Utils;
-using System.Linq;
 using IceTea.Atom.Utils.HotKey.GlobalHotKey;
-using IceTea.NetCore.Utils;
+using IceTea.Atom.Extensions;
+using IceTea.General.Utils.AppHotKey;
+using IceTea.General.Utils;
+using MusicPlayerModule.MsgEvents;
+using IceTea.Wpf.Core.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -94,7 +94,7 @@ namespace MyApp.Prisms.ViewModels
             {
                 var resultStr = containerProvider.Resolve<GlobalHotKeyManager>().RegisterHotKeys(this.GlobalHotKeys);
 
-                resultStr = string.IsNullOrEmpty(resultStr) ? "注册快捷键无错误" : resultStr;
+                resultStr = resultStr.IsNullOrEmpty() ? "注册快捷键无错误" : resultStr;
 
                 this.IsEditingSetting = false;
 
@@ -103,15 +103,17 @@ namespace MyApp.Prisms.ViewModels
 
             this.ResetGlobalHotKeysCommand = new DelegateCommand(() =>
             {
-                this.GlobalHotKeys.Clear();
-                this.GlobalHotKeys.AddRange(CustomConstants.GlobalHotKeys);
+                foreach (var item in this.GlobalHotKeys)
+                {
+                    item.Reset();
+                }
 
                 this.SubmitCommand.Execute(null);
             });
 
             this.ResetGroupHotKeysCommand = new DelegateCommand<HotKeyGroup>(groupHotKey =>
             {
-                if (groupHotKey != null&& groupHotKey.KeyBindings.Any())
+                if (!groupHotKey.KeyBindings.IsNullOrEmpty())
                 {
                     foreach (var keyBinding in groupHotKey.KeyBindings)
                     {

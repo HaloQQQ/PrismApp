@@ -16,9 +16,9 @@ using IceTea.Wpf.Core.Helper.MediaInfo;
 using Microsoft.Win32;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
-using IceTea.NetCore.Utils.AppHotKey;
 using IceTea.Atom.Interfaces;
-using IceTea.NetCore.Utils;
+using IceTea.General.Utils.AppHotKey;
+using IceTea.General.Utils;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -399,8 +399,8 @@ namespace MusicPlayerModule.ViewModels
 
         public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppHotKeyManager appHotKeyManager)
         {
-            this._eventAggregator = eventAggregator;
-            this._config = config;
+            this._eventAggregator = eventAggregator.AssertNotNull(nameof(IEventAggregator));
+            this._config = config.AssertNotNull(nameof(IConfigManager));
 
             this._dto = new VideoModelAndGuid(this.Identity);
 

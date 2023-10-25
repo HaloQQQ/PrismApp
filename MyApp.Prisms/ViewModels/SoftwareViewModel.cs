@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using MyApp.Prisms.Helper;
-using MyApp.Prisms.Models;
 using MyApp.Prisms.MsgEvents;
 using IceTea.Wpf.Core.Helper.MyEvents;
 using System.Reflection;
@@ -17,11 +16,13 @@ using IceTea.Atom.Utils;
 using IceTea.Atom.Extensions;
 using IceTea.Core.Utils.OS;
 using IceTea.Core.Utils.QRCodes;
-using IceTea.NetCore.Utils;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using IceTea.NetCore.Utils.AppHotKey;
 using IceTea.Atom.Interfaces;
+using IceTea.General.Utils.AppHotKey;
+using IceTea.General.Utils;
+using MusicPlayerModule.MsgEvents;
+using IceTea.Wpf.Core.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -40,8 +41,7 @@ namespace MyApp.Prisms.ViewModels
             this.Settings = settings;
             this._imageDisplayViewModel = imageDisplayViewModel;
 
-            var bitmap = new QRCoderCreator().GenerateQRCodeImage(new QRModel("Hello3Q",
-                                        Color.GreenYellow, Color.White, 20, null));
+            var bitmap = new QRCoderCreator().GenerateQRCodeImage(new QRModel("Hello3Q", Color.GreenYellow, Color.White, 20));
 
             this.BitmapImage = bitmap;
 

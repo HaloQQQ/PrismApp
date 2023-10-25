@@ -1,4 +1,4 @@
-﻿using IceTea.NetCore.Utils.AppHotKey;
+﻿using IceTea.General.Utils.AppHotKey;
 using MusicPlayerModule.Models.Common;
 using System.Windows.Input;
 
@@ -66,7 +66,7 @@ namespace MusicPlayerModule.Common
             new AppHotKeyModel(AppMediaHotKeys.Rewind, ModifierKeys.None, Key.Left),
             new AppHotKeyModel(AppMediaHotKeys.FastForward, ModifierKeys.None, Key.Right),
             new AppHotKeyModel(AppMediaHotKeys.Prev, ModifierKeys.None, Key.PageUp),
-            new AppHotKeyModel(AppMediaHotKeys.Next, ModifierKeys.None, Key.PageUp),
+            new AppHotKeyModel(AppMediaHotKeys.Next, ModifierKeys.None, Key.PageDown),
 
             new AppHotKeyModel(AppMusicHotKeys.DesktopLyric, ModifierKeys.Alt, Key.C),
             new AppHotKeyModel(AppMediaHotKeys.PlayingListPanel, ModifierKeys.Alt, Key.X),
@@ -93,14 +93,14 @@ namespace MusicPlayerModule.Common
             new AppHotKeyModel(AppMediaHotKeys.Rewind, ModifierKeys.None, Key.Left),
             new AppHotKeyModel(AppMediaHotKeys.FastForward, ModifierKeys.None, Key.Right),
             new AppHotKeyModel(AppMediaHotKeys.Prev, ModifierKeys.None, Key.PageUp),
-            new AppHotKeyModel(AppMediaHotKeys.Next, ModifierKeys.None, Key.PageUp),
+            new AppHotKeyModel(AppMediaHotKeys.Next, ModifierKeys.None, Key.PageDown),
 
             new AppHotKeyModel(AppMediaHotKeys.DecreaseVolume, ModifierKeys.Control, Key.Down),
             new AppHotKeyModel(AppMediaHotKeys.IncreaseVolume, ModifierKeys.Control, Key.Up),
 
             new AppHotKeyModel(AppMediaHotKeys.OpenFolder, ModifierKeys.Control, Key.O),
 
-            new AppHotKeyModel(AppMediaHotKeys.CleanPlaying, ModifierKeys.Alt, Key.Q),
+            new AppHotKeyModel(AppMediaHotKeys.CleanPlaying, ModifierKeys.Alt, Key.D),
             new AppHotKeyModel(AppMediaHotKeys.StopPlayMusic, ModifierKeys.Alt, Key.W),
 
             new AppHotKeyModel(AppMediaHotKeys.PlayPlaying, ModifierKeys.None, Key.Space),

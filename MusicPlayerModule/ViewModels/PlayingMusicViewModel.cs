@@ -1,4 +1,5 @@
-﻿using MusicPlayerModule.Models;
+﻿using IceTea.Atom.Utils;
+using MusicPlayerModule.Models;
 using MusicPlayerModule.Utils;
 using MusicPlayerModule.ViewModels.Base;
 
@@ -8,7 +9,7 @@ namespace MusicPlayerModule.ViewModels
     {
         public PlayingMusicViewModel(MusicModel music)
         {
-            Music = music;
+            Music = music.AssertNotNull(nameof(MusicModel));
 
             base.IsLongTimeMedia = music.TotalMills > 1000 * 60 * 60;
         }

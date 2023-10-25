@@ -21,7 +21,7 @@
     <Grid Background="Transparent" MouseMove="Move_OnMouseMove">
 
         <DockPanel HorizontalAlignment="Left">
-            <Image Source="../../Resources/网络.png"
+            <Image Source="../../Resources/雪山祥云.png"
                    Style="{StaticResource ImgTitle}"
                    ToolTip="{Binding Version,Mode=OneTime}" />
 

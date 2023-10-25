@@ -21,10 +21,10 @@ internal class MusicModel : BindableBase, IDisposable
             this.Singer = arr[0];
             this.Name = arr[1];
         }
-        
+
         var size = new FileInfo(filePath).Length / 1024.0 / 1024;
         this.Size = size.ToString("0.00");
-        
+
         var file = TagLib.File.Create(filePath);   // 打开音频文件
 
         if (this.Name == null || this.Singer == null)
@@ -105,11 +105,11 @@ internal class MusicModel : BindableBase, IDisposable
         get => this._filePath;
         private set => SetProperty<string>(ref _filePath, value);
     }
-    public string FileDir => Directory.GetParent(this.FilePath).FullName;
+    public string FileDir => this.FilePath.GetParentPath();
 
     public bool MoveTo(string targetDir)
     {
-        if (Directory.Exists(targetDir))
+        if (Directory.Exists(targetDir) && System.IO.File.Exists(this.FilePath))
         {
             var file = FilePath.GetFileName();
 

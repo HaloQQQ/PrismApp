@@ -1,6 +1,6 @@
 ﻿using IceTea.Atom.Utils.HotKey;
 using IceTea.Atom.Utils.HotKey.GlobalHotKey;
-using IceTea.NetCore.Utils;
+using IceTea.General.Utils;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;

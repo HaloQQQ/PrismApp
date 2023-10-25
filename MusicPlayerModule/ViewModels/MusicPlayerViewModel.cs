@@ -14,9 +14,10 @@ using IceTea.Wpf.Core.Helper.MediaInfo;
 using Microsoft.Win32;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
-using IceTea.NetCore.Utils.AppHotKey;
 using IceTea.Atom.Interfaces;
-using IceTea.NetCore.Utils;
+using IceTea.General.Utils.AppHotKey;
+using IceTea.General.Utils;
+using IceTea.Wpf.Core.Contracts;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -147,8 +148,9 @@ namespace MusicPlayerModule.ViewModels
         {
             this.OpenInExploreCommand = new DelegateCommand<string>(musicDir =>
             {
-                if (musicDir == null)
+                if (musicDir.IsNullOrEmpty())
                 {
+                    PublishMessage($"未传入目录");
                     return;
                 }
 
@@ -201,20 +203,25 @@ namespace MusicPlayerModule.ViewModels
 
             this.PlayCurrentCategoryCommand = new DelegateCommand<MusicWithClassifyModel>(category =>
                 {
-                    if (category != null && category.DisplayByClassifyKeyFavorites.Count > 0)
+                    if (category == null || category.DisplayByClassifyKeyFavorites.IsNullOrEmpty())
                     {
-                        this.BatchAddToPlay(new BatchAddAndPlayModel(category.DisplayByClassifyKeyFavorites.First(),
-                            category.DisplayByClassifyKeyFavorites));
+                        PublishMessage($"传入的分类{category?.ClassifyKey}为空");
+                        return;
                     }
+
+                    this.BatchAddToPlay(new BatchAddAndPlayModel(category.DisplayByClassifyKeyFavorites.First(),
+                        category.DisplayByClassifyKeyFavorites));
                 }
                 , category => this.DisplayFavorites.Count > 0).ObservesProperty<int>(() => this.DisplayFavorites.Count);
 
             this.PlayAndAddCurrentFavoritesCommand = new DelegateCommand<BatchAddAndPlayModel>(model =>
             {
-                if (model != null)
+                if (model == null || model.Collection.IsNullOrEmpty())
                 {
-                    this.BatchAddToPlay(model);
+                    PublishMessage($"传入的音乐集合为空");
+                    return;
                 }
+                this.BatchAddToPlay(model);
             }, _ => this.DisplayFavorites.Count > 0).ObservesProperty<int>(() => this.DisplayFavorites.Count);
 
             this.PlayAllCommand =
@@ -225,6 +232,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (music == null)
                 {
+                    PublishMessage("传入的音乐为空");
                     return;
                 }
 
@@ -241,6 +249,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (music == null)
                 {
+                    PublishMessage("传入的当前音乐为空");
                     return;
                 }
 
@@ -265,6 +274,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (music == null)
                 {
+                    PublishMessage("传入的下一首待播放音乐为空");
                     return;
                 }
 
@@ -301,14 +311,8 @@ namespace MusicPlayerModule.ViewModels
 
             this.BatchDeleteCommand = new DelegateCommand(() =>
             {
-                for (int i = this.DisplayFavorites.Count - 1; i >= 0; i--)
-                {
-                    if (this.DisplayFavorites[i].IsDeleting)
-                    {
-                        this.DisplayFavorites.RemoveAt(i);
-                        this.Favorites.RemoveAt(i);
-                    }
-                }
+                this.DisplayFavorites.RemoveAll(items => items.IsDeleting);
+                this.Favorites.RemoveAll(items => items.IsDeleting);
 
                 this.DistributeMusicViewModel.DeleteAllMarkedMusic();
 
@@ -322,6 +326,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (music == null)
                 {
+                    PublishMessage("传入的列表中待删除音乐为空");
                     return;
                 }
 
@@ -344,6 +349,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (music == null)
                 {
+                    PublishMessage("传入的播放队列中待删除音乐为空");
                     return;
                 }
 
@@ -368,14 +374,22 @@ namespace MusicPlayerModule.ViewModels
 
             this.SelectAllCommand = new DelegateCommand<bool?>(isChecked =>
             {
-                if (isChecked != null)
+                if (isChecked == null)
                 {
-                    foreach (var item in this.DisplayFavorites)
-                    {
-                        item.IsDeleting = (bool)isChecked;
-                    }
+                    PublishMessage("传入的全选状态为空");
+                    return;
+                }
+
+                foreach (var item in this.DisplayFavorites)
+                {
+                    item.IsDeleting = (bool)isChecked;
                 }
             }, isChecked => this.DisplayFavorites.Count > 0).ObservesProperty<int>(() => this.DisplayFavorites.Count);
+        }
+
+        private void PublishMessage(string msg, int seconds = 3)
+        {
+            _eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(msg, seconds));
         }
 
         private void SubscribeEvents(IEventAggregator eventAggregator)
@@ -498,7 +512,7 @@ namespace MusicPlayerModule.ViewModels
 
         private void TryClearFavoriteListFilteKeyWords()
         {
-            if (!string.IsNullOrEmpty(this.FavoriteListFilteKeyWords))
+            if (!this.FavoriteListFilteKeyWords.IsNullOrEmpty())
             {
                 this.FavoriteListFilteKeyWords = null;
             }
@@ -532,7 +546,7 @@ namespace MusicPlayerModule.ViewModels
 
             if (openFileDialog != null)
             {
-                await this.LoadMusicAsync(openFileDialog.FileNames, openFileDialog.InitialDirectory);
+                await this.LoadMusicAsync(openFileDialog.FileNames);
 
                 this.TryRefreshLastMusicDir(openFileDialog.FileName.GetParentPath());
             }
@@ -545,9 +559,9 @@ namespace MusicPlayerModule.ViewModels
             {
                 this.TryRefreshLastMusicDir(selectedPath);
 
-                var list = selectedPath.GetFiles(str => str.EndsWith(".mp3"));
+                var list = selectedPath.GetFiles(str => str.EndsWith(".mp3", StringComparison.CurrentCultureIgnoreCase));
 
-                await this.LoadMusicAsync(list, selectedPath);
+                await this.LoadMusicAsync(list);
             }
         }
 
@@ -574,9 +588,9 @@ namespace MusicPlayerModule.ViewModels
             }
         }
 
-        private async Task LoadMusicAsync(IEnumerable<string> filePaths, string directory)
+        private async Task LoadMusicAsync(IEnumerable<string> filePaths)
         {
-            if (filePaths == null || !filePaths.Any())
+            if (filePaths.IsNullOrEmpty())
             {
                 return;
             }
@@ -623,8 +637,9 @@ namespace MusicPlayerModule.ViewModels
                     Task.Run(() =>
                         {
                             foreach (var item in filePathList
-                                         .Skip(index * step)
-                                         .Take(step))
+                                                     .Skip(index * step)
+                                                     .Take(step)
+                                         )
                             {
                                 CommonUtils.Invoke(() =>
                                 {
@@ -888,8 +903,8 @@ namespace MusicPlayerModule.ViewModels
         private IConfigManager _config;
         public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppHotKeyManager appHotKeyManager)
         {
-            this._config = config;
-            this._eventAggregator = eventAggregator;
+            this._config = config.AssertNotNull(nameof(IConfigManager));
+            this._eventAggregator = eventAggregator.AssertNotNull(nameof(IEventAggregator));
 
             this.LoadConfig(config);
 

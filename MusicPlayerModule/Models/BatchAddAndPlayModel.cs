@@ -1,13 +1,14 @@
-﻿using MusicPlayerModule.ViewModels;
+﻿using IceTea.Atom.Utils;
+using MusicPlayerModule.ViewModels;
 
 namespace MusicPlayerModule.Models
 {
     internal class BatchAddAndPlayModel
     {
-        public BatchAddAndPlayModel(FavoriteMusicViewModel targetToPlay, IEnumerable<FavoriteMusicViewModel> collection)
+        public BatchAddAndPlayModel(FavoriteMusicViewModel? targetToPlay, IEnumerable<FavoriteMusicViewModel> collection)
         {
             TargetToPlay = targetToPlay;
-            Collection = collection;
+            Collection = collection.AssertNotEmpty(nameof(Collection));
         }
 
         public FavoriteMusicViewModel TargetToPlay { get; set; }

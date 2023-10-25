@@ -1,4 +1,5 @@
-﻿using MusicPlayerModule.Models;
+﻿using IceTea.Atom.Utils;
+using MusicPlayerModule.Models;
 using MusicPlayerModule.MsgEvents.Video.Dtos;
 using MusicPlayerModule.ViewModels.Base;
 
@@ -9,8 +10,8 @@ namespace MusicPlayerModule.ViewModels
         private VideoModelAndGuid _dto;
         public PlayingVideoViewModel(VideoModelAndGuid dto, VideoModel video)
         {
-            Video = video;
-            _dto = dto;
+            Video = video.AssertNotNull(nameof(VideoModelAndGuid));
+            _dto = dto.AssertNotNull(nameof(VideoModel));
         }
 
         public VideoModel Video { get; private set; }
