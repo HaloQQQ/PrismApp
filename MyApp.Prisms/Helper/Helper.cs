@@ -6,11 +6,11 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using Prism.Events;
 using Prism.Ioc;
-using IceTea.Atom.Constants;
 using IceTea.Atom.Utils;
 using IceTea.Atom.Extensions;
 using MusicPlayerModule.MsgEvents;
 using IceTea.Wpf.Core.Contracts;
+using IceTea.Atom.Contracts;
 
 namespace MyApp.Prisms.Helper
 {

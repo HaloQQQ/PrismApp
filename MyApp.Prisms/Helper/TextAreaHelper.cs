@@ -4,8 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using MyApp.Prisms.ViewModels.BaseViewModels;
-using IceTea.Wpf.Core.Helper;
 using IceTea.Atom.Utils;
+using IceTea.Wpf.Core.Utils;
 
 namespace MyApp.Prisms.Helper
 {

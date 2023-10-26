@@ -1,5 +1,5 @@
-﻿using Prism.Mvvm;
-using IceTea.Wpf.Core.Helper;
+﻿using IceTea.Atom.Utils;
+using Prism.Mvvm;
 
 namespace MusicPlayerModule.ViewModels.Base
 {

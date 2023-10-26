@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:myConverter="clr-namespace:MusicPlayerModule.Converters"
                     xmlns:converters="clr-namespace:IceTea.Wpf.Core.Converters;assembly=IceTea.Wpf.Core"
-                    xmlns:helper="clr-namespace:IceTea.Wpf.Core.Helper;assembly=IceTea.Wpf.Core"
                     xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core">
 
     <myConverter:MusicDistributeMultiConverter x:Key="MusicDistributeMultiConverter"/>
@@ -550,8 +549,11 @@
             </StackPanel>
 
             <TextBlock DockPanel.Dock="Right" Visibility="{Binding IsMouseOver,RelativeSource={RelativeSource AncestorType=DataGridRow},Converter={StaticResource BoolToCollapsedVisibleConverter}}" 
-                       Foreground="{x:Static helper:MyStaticResources.WhiteLight}" TextAlignment="Right" Text="{Binding Music.Duration}"/>
-
+                        Foreground="{StaticResource LightWhite}" TextAlignment="Right">
+                <TextBlock Text="{Binding Music.Duration}"/>
+                <TextBlock Text="{Binding Music.Size}" Width="40"/>MB
+            </TextBlock>
+            
             <TextBlock Text="{Binding Music.Name}" ToolTip="{Binding Music.Name}"/>
             <TextBlock Margin="5,0" Text="{Binding Music.Singer}" ToolTip="{Binding Music.Singer}"/>
         </DockPanel>

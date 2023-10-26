@@ -6,11 +6,11 @@ using Prism.Events;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using IceTea.Wpf.Core.Helper;
 using IceTea.Atom.Extensions;
 using IceTea.Wpf.Core.Contracts;
 using System.IO;
 using IceTea.Atom.Utils;
+using IceTea.Wpf.Core.Utils;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -196,7 +196,7 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
-                var selectedPath = CommonUtils.OpenFolderDialog(AppStatics.LastMusicDir);
+                var selectedPath = CommonUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
 
                 if (!selectedPath.IsNullOrEmpty())
                 {
@@ -214,7 +214,7 @@ namespace MusicPlayerModule.ViewModels
 
             this.AddMusicDirCommand = new DelegateCommand(() =>
             {
-                var selectedPath = CommonUtils.OpenFolderDialog(AppStatics.LastMusicDir);
+                var selectedPath = CommonUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
 
                 if (!selectedPath.IsNullOrEmpty())
                 {
@@ -235,7 +235,7 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
-                var selectedPath = CommonUtils.OpenFolderDialog(AppStatics.LastMusicDir);
+                var selectedPath = CommonUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
 
                 if (!selectedPath.IsNullOrEmpty())
                 {
@@ -503,7 +503,7 @@ namespace MusicPlayerModule.ViewModels
 
         internal void AddNewMusic(FavoriteMusicViewModel musicModel)
         {
-            this.MusicDirs.AddIfNotWhile(
+            this.MusicDirs.AddIfNotAnyWhile(
                 model => musicModel.Music.FileDir == model.DirPath,
                 () => new MusicDirModel(musicModel.Music.FileDir)
             );

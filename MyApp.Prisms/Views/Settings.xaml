@@ -114,20 +114,24 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="图片默认目录：" Style="{StaticResource ThemeBlk}"/>
-                        <TextBox IsReadOnly="True" Text="{Binding DataContext.ImageDir}" attachs:MyAttachProperty.PlaceHolder="空目录"/>
+                        <TextBox IsReadOnly="True" Text="{Binding DataContext.ImageDir,RelativeSource={RelativeSource AncestorType=TabControl}}" 
+                                 attachs:MyAttachProperty.PlaceHolder="空目录"/>
                         <Button Style="{StaticResource TransparentButtonBase}" Content="浏览" 
                                     Command="{Binding DataContext.FindImageDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
                     </StackPanel>
+                    
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="音乐默认目录：" Style="{StaticResource ThemeBlk}"/>
-                        <TextBox IsReadOnly="True" Text="{Binding DataContext.LastMusicDir}" attachs:MyAttachProperty.PlaceHolder="空目录"/>
+                        <TextBox IsReadOnly="True" Text="{Binding DataContext.LastMusicDir,RelativeSource={RelativeSource AncestorType=TabControl}}" 
+                                 attachs:MyAttachProperty.PlaceHolder="空目录"/>
                         <Button Style="{StaticResource TransparentButtonBase}" Content="浏览" 
                                     Command="{Binding DataContext.FindMusicDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="视频默认目录：" Style="{StaticResource ThemeBlk}"/>
-                        <TextBox IsReadOnly="True" Text="{Binding DataContext.LastVideoDir}" attachs:MyAttachProperty.PlaceHolder="空目录"/>
+                        <TextBox IsReadOnly="True" Text="{Binding DataContext.LastVideoDir,RelativeSource={RelativeSource AncestorType=TabControl}}" 
+                                 attachs:MyAttachProperty.PlaceHolder="空目录"/>
                         <Button Style="{StaticResource TransparentButtonBase}" 
                                     Content="浏览" Command="{Binding DataContext.FindVideoDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
                     </StackPanel>
@@ -136,24 +140,26 @@
             <TabItem Header="全局快捷键">
                 <GroupBox Header="全局" Foreground="{DynamicResource TextBlock.Foreground}">
                     <StackPanel>
-                        <Button Command="{Binding DataContext.ResetGlobalHotKeysCommand}" HorizontalAlignment="Right" 
+                        <Button Command="{Binding DataContext.ResetGlobalHotKeysCommand,RelativeSource={RelativeSource AncestorType=TabControl}}" 
+                                HorizontalAlignment="Right" 
                                 Style="{StaticResource IconButtonBase_Expand}" Margin="0,10,20,0" Content="&#xe614;" ToolTip="重置快捷键"/>
-                        
-                        <ListBox ItemsSource="{Binding DataContext.GlobalHotKeys}" HorizontalAlignment="Stretch"
+
+                        <ListBox ItemsSource="{Binding DataContext.GlobalHotKeys,RelativeSource={RelativeSource AncestorType=TabControl}}" 
+                                 HorizontalAlignment="Stretch"
                                  ItemContainerStyle="{StaticResource ListBoxItem_General}" />
 
                         <DockPanel LastChildFill="False">
                             <Button Margin="20,10" DockPanel.Dock="Right" Style="{StaticResource TransparentButtonBase}"
-                                    Content="取消" Command="{Binding DataContext.CancelCommand}" />
+                                    Content="取消" Command="{Binding DataContext.CancelCommand,RelativeSource={RelativeSource AncestorType=TabControl}}" />
                             <Button Margin="20,10" DockPanel.Dock="Right" Style="{StaticResource TransparentButtonBase}"
-                                    Content="确认" Command="{Binding DataContext.SubmitCommand}" />
+                                    Content="确认" Command="{Binding DataContext.SubmitCommand,RelativeSource={RelativeSource AncestorType=TabControl}}" />
                         </DockPanel>
                     </StackPanel>
                 </GroupBox>
             </TabItem>
             <TabItem Header="应用快捷键">
-                <ListBox ItemsSource="{Binding DataContext.AppHotKeyManager}" HorizontalAlignment="Stretch"
-                             ItemContainerStyle="{StaticResource ListBoxItem_General}" />
+                <ListBox ItemsSource="{Binding DataContext.AppHotKeyManager,RelativeSource={RelativeSource AncestorType=TabControl}}" 
+                         HorizontalAlignment="Stretch" ItemContainerStyle="{StaticResource ListBoxItem_General}" />
             </TabItem>
         </TabControl>
     </Border>

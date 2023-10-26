@@ -5,7 +5,6 @@
              xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core"
              xmlns:waitLoads="clr-namespace:IceTea.Wpf.Core.WaitLoads;assembly=IceTea.Wpf.Core"
              Panel.ZIndex="100" Cursor="SizeAll" Background="Transparent"
-             xmlns:helper="clr-namespace:IceTea.Wpf.Core.Helper;assembly=IceTea.Wpf.Core"
              xmlns:regions="http://prismlibrary.com/"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True">
@@ -128,7 +127,7 @@
                 <!--亮度调节模态框-->
                 <Border x:Name="brightControl" Visibility="{Binding IsOpen,ElementName=brightPopup,Converter={StaticResource BoolToVisibleCollapsedConverter},Mode=TwoWay}"
                         Clip="{StaticResource PopupGeometryGroup_Bright}"
-                        Background="{x:Static helper:MyStaticResources.PopupBackground}" Width="250" Height="80">
+                        Background="{StaticResource PopupBackground}" Width="250" Height="80">
                     <StackPanel Orientation="Horizontal" MouseLeave="Popup_MouseLeave" Background="Transparent">
                         <Slider Margin="15,0,12,0" MinHeight="4" TickFrequency="5"
                                 Style="{StaticResource Slider_ObviousThumb}"
@@ -156,7 +155,7 @@
 
             <Popup Placement="Center"
                    PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                   IsOpen="{Binding DialogMessage.IsDisplayingDialogMessage}">
+                   IsOpen="{Binding DialogMessage.IsDisplayingDialogMessage,Mode=OneWay}">
                 <Border Background="Blue" CornerRadius="20"
                         MouseLeave="Border_MouseLeave"
                         MouseEnter="Border_MouseEnter"

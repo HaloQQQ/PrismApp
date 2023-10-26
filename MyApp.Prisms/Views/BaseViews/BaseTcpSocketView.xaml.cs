@@ -7,11 +7,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.ViewModels.BaseViewModels;
-using IceTea.Wpf.Core.Helper;
 using IceTea.SocketStandard.Base;
 using IceTea.SocketStandard.Tcp;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
+using IceTea.Wpf.Core.Contracts;
 
 namespace MyApp.Prisms.Views.BaseViews
 {

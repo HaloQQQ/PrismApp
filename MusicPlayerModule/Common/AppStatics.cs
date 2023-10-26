@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace MusicPlayerModule.Common
 {
-    internal static class AppStatics
+    internal static class CustomStatics
     {
         internal static string LastMusicDir;
 

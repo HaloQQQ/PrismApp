@@ -14,12 +14,12 @@ using MyApp.Prisms.MsgEvents;
 using MyApp.Prisms.ViewModels;
 using MyApp.Prisms.Views;
 using IceTea.Atom.Utils;
-using IceTea.Atom.Interfaces;
 using IceTea.Atom.Utils.HotKey.GlobalHotKey;
 using IceTea.General.Utils;
 using IceTea.General.Utils.AppHotKey;
 using MusicPlayerModule.MsgEvents;
 using IceTea.Wpf.Core.Contracts;
+using IceTea.Atom.Contracts;
 
 namespace MyApp.Prisms
 {

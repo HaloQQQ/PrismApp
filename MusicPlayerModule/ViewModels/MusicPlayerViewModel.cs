@@ -9,15 +9,15 @@ using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
-using IceTea.Wpf.Core.Helper;
-using IceTea.Wpf.Core.Helper.MediaInfo;
 using Microsoft.Win32;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
-using IceTea.Atom.Interfaces;
 using IceTea.General.Utils.AppHotKey;
 using IceTea.General.Utils;
 using IceTea.Wpf.Core.Contracts;
+using IceTea.Wpf.Core.Utils;
+using IceTea.Wpf.Core.Contracts.MediaInfo;
+using IceTea.Atom.Contracts;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -52,7 +52,7 @@ namespace MusicPlayerModule.ViewModels
                 {
                     if (this._currentMusic != null && !this._currentMusic.LoadedLyric)
                     {
-                        LoadLyricToMusicModel.LoadAsync(AppStatics.LastMusicDir, this._currentMusic?.Music);
+                        LoadLyricToMusicModel.LoadAsync(CustomStatics.LastMusicDir, this._currentMusic?.Music);
                     }
 
                     foreach (var item in this.Playing)
@@ -497,7 +497,7 @@ namespace MusicPlayerModule.ViewModels
             }
         }
 
-        private void SetAndPlay(PlayingMusicViewModel item)
+        private void SetAndPlay(PlayingMusicViewModel? item)
         {
             this.CurrentMusic = item;
 
@@ -542,7 +542,7 @@ namespace MusicPlayerModule.ViewModels
         private async void AddMusicFromFileDialog()
         {
             OpenFileDialog openFileDialog =
-                CommonUtils.OpenFileDialog(AppStatics.LastMusicDir, new MusicMedia());
+                CommonUtils.OpenFileDialog(CustomStatics.LastMusicDir, new MusicMedia());
 
             if (openFileDialog != null)
             {
@@ -554,7 +554,7 @@ namespace MusicPlayerModule.ViewModels
 
         private async void AddMusicFromFolderDialog()
         {
-            var selectedPath = CommonUtils.OpenFolderDialog(AppStatics.LastMusicDir);
+            var selectedPath = CommonUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
             if (!selectedPath.IsNullOrEmpty())
             {
                 this.TryRefreshLastMusicDir(selectedPath);
@@ -569,11 +569,11 @@ namespace MusicPlayerModule.ViewModels
         {
             AppUtils.AssertDataValidation(dir.IsDirectoryPath(), $"{dir}必须为存在的目录");
 
-            if (!dir.EqualsIgnoreCase(AppStatics.LastMusicDir))
+            if (!dir.EqualsIgnoreCase(CustomStatics.LastMusicDir))
             {
-                _config.WriteConfigNode(dir, new[] { "Music", nameof(AppStatics.LastMusicDir) });
+                _config.WriteConfigNode(dir, new[] { "Music", nameof(CustomStatics.LastMusicDir) });
 
-                AppStatics.LastMusicDir = dir;
+                CustomStatics.LastMusicDir = dir;
             }
         }
 
@@ -609,7 +609,7 @@ namespace MusicPlayerModule.ViewModels
             this.IsLoading = false;
         }
 
-        private async Task SingleThreadLoadMusic(List<string> filePathList)
+        private void SingleThreadLoadMusic(List<string> filePathList)
         {
             AppUtils.AssertNotEmpty(filePathList, nameof(filePathList));
 
@@ -922,7 +922,7 @@ namespace MusicPlayerModule.ViewModels
 
         private void InitHotkeys(IConfigManager config, IAppHotKeyManager appHotKeyManager)
         {
-            this.KeyGestureDic = HotKeyUtils.Provide(config, appHotKeyManager, new AppHotKeyGroupInfo("音乐", AppStatics.AppMusicHotkeys, AppStatics.MusicHotKeys));
+            this.KeyGestureDic = HotKeyUtils.Provide(config, appHotKeyManager, new AppHotKeyGroupInfo("音乐", CustomStatics.AppMusicHotkeys, CustomStatics.MusicHotKeys));
         }
         #endregion
 
@@ -936,11 +936,11 @@ namespace MusicPlayerModule.ViewModels
             if (!string.IsNullOrEmpty(musicPlayOrder))
             {
                 this.CurrentPlayOrder =
-                    AppStatics.MediaPlayOrderList.FirstOrDefault(item => item.Description == musicPlayOrder) ??
-                    AppStatics.MediaPlayOrderList.First();
+                    CustomStatics.MediaPlayOrderList.FirstOrDefault(item => item.Description == musicPlayOrder) ??
+                    CustomStatics.MediaPlayOrderList.First();
             }
 
-            AppStatics.LastMusicDir = config.ReadConfigNode(new[] { baseNode, nameof(AppStatics.LastMusicDir) });
+            CustomStatics.LastMusicDir = config.ReadConfigNode(new[] { baseNode, nameof(CustomStatics.LastMusicDir) });
 
             config.SetConfig += config =>
             {

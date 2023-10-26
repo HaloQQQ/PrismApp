@@ -7,20 +7,22 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         WindowStartupLocation="CenterScreen"
         Title="MusicWindow" MinHeight="640" MinWidth="1200">
-    <Grid VerticalAlignment="Stretch" Margin="7" ClipToBounds="True">
+    <Grid>
         <Grid.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="{Binding CurrentBkGrd}"/>
         </Grid.Background>
-        <DockPanel Background="#33000000">
-            <views:WindowTitleBarView
+        <Grid Background="#33000000">
+            <DockPanel Margin="7">
+                <views:WindowTitleBarView
                 x:Name="TitleBarSlider"
                 DockPanel.Dock="Top"
                 VerticalAlignment="Top"/>
 
-            <ContentControl prism:RegionManager.RegionName="MusicPlayerRegion"/>
-        </DockPanel>
+                <ContentControl prism:RegionManager.RegionName="MusicPlayerRegion"/>
+            </DockPanel>
+        </Grid>
 
-        <views:SwitchBackgroundView Width="300" HorizontalAlignment="Right" Background="#FFCCCCCC">
+        <views:SwitchBackgroundView Width="300" HorizontalAlignment="Right">
             <views:SwitchBackgroundView.RenderTransform>
                 <TranslateTransform X="300" />
             </views:SwitchBackgroundView.RenderTransform>

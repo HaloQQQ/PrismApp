@@ -1,18 +1,14 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using MyApp.Prisms.Helper;
 using MyApp.Prisms.ViewModels;
 using IceTea.Wpf.Core.Extensions;
+using IceTea.Wpf.Core.CustomControls;
 
 namespace MyApp.Prisms.Views
 {
     public partial class MainWindow : Window
     {
-        private void Initialize()
-        {
-        }
-
         private readonly SoftwareViewModel _softwareContext;
 
         public MainWindow()
@@ -20,11 +16,9 @@ namespace MyApp.Prisms.Views
             InitializeComponent();
 
             this._softwareContext = this.DataContext as SoftwareViewModel;
-
-            this.Initialize();
         }
 
-        private void UpdateScroll(System.Windows.Controls.TabControl tabControl, int index)
+        private void UpdateScroll(TabControl tabControl, int index)
         {
             var child = tabControl.GetVisualChildObject<ScrollViewer>();
 
@@ -42,7 +36,7 @@ namespace MyApp.Prisms.Views
         {
             e.Handled = true;
 
-            if (e.Source is System.Windows.Controls.TabControl tabControl)
+            if (e.Source is TabControl tabControl)
             {
                 var item = tabControl.SelectedItem as TabItem;
 

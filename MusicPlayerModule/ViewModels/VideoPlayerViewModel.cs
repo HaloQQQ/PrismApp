@@ -11,14 +11,14 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
 using System.Windows.Media;
-using IceTea.Wpf.Core.Helper;
-using IceTea.Wpf.Core.Helper.MediaInfo;
 using Microsoft.Win32;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
-using IceTea.Atom.Interfaces;
 using IceTea.General.Utils.AppHotKey;
 using IceTea.General.Utils;
+using IceTea.Wpf.Core.Contracts.MediaInfo;
+using IceTea.Wpf.Core.Utils;
+using IceTea.Atom.Contracts;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -320,7 +320,7 @@ namespace MusicPlayerModule.ViewModels
         private void AddVideoFromFileDialog()
         {
             OpenFileDialog openFileDialog =
-                CommonUtils.OpenFileDialog(AppStatics.LastVideoDir, new VideoMedia());
+                CommonUtils.OpenFileDialog(CustomStatics.LastVideoDir, new VideoMedia());
 
             if (openFileDialog != null)
             {
@@ -332,7 +332,7 @@ namespace MusicPlayerModule.ViewModels
 
         private void AddVideoFromFolderDialog()
         {
-            var selectedPath = CommonUtils.OpenFolderDialog(AppStatics.LastVideoDir);
+            var selectedPath = CommonUtils.OpenFolderDialog(CustomStatics.LastVideoDir);
             if (!selectedPath.IsNullOrEmpty())
             {
                 this.TryRefreshLastVideoDir(selectedPath);
@@ -347,11 +347,11 @@ namespace MusicPlayerModule.ViewModels
         {
             AppUtils.AssertDataValidation(dir.IsDirectoryPath(), $"{dir}必须为存在的目录");
 
-            if (!dir.EqualsIgnoreCase(AppStatics.LastVideoDir))
+            if (!dir.EqualsIgnoreCase(CustomStatics.LastVideoDir))
             {
-                _config.WriteConfigNode(dir, new[] { "Video", nameof(AppStatics.LastVideoDir) });
+                _config.WriteConfigNode(dir, new[] { "Video", nameof(CustomStatics.LastVideoDir) });
 
-                AppStatics.LastVideoDir = dir;
+                CustomStatics.LastVideoDir = dir;
             }
         }
 
@@ -417,7 +417,7 @@ namespace MusicPlayerModule.ViewModels
 
         private void InitHotkeys(IConfigManager config, IAppHotKeyManager appHotKeyManager)
         {
-            this.KeyGestureDic = HotKeyUtils.Provide(config, appHotKeyManager, new AppHotKeyGroupInfo("视频", AppStatics.AppVideoHotkeys, AppStatics.VideoHotKeys));
+            this.KeyGestureDic = HotKeyUtils.Provide(config, appHotKeyManager, new AppHotKeyGroupInfo("视频", CustomStatics.AppVideoHotkeys, CustomStatics.VideoHotKeys));
         }
         #endregion
 
@@ -448,8 +448,8 @@ namespace MusicPlayerModule.ViewModels
             if (!string.IsNullOrEmpty(playOrder))
             {
                 this.CurrentPlayOrder =
-                    AppStatics.MediaPlayOrderList.FirstOrDefault(item => item.Description == playOrder) ??
-                    AppStatics.MediaPlayOrderList.First();
+                    CustomStatics.MediaPlayOrderList.FirstOrDefault(item => item.Description == playOrder) ??
+                    CustomStatics.MediaPlayOrderList.First();
             }
 
             var stretch = config.ReadConfigNode(new[] { baseNode, videoStretch });
@@ -458,7 +458,7 @@ namespace MusicPlayerModule.ViewModels
                 this.Stretch = result;
             }
 
-            AppStatics.LastVideoDir = config.ReadConfigNode(new[] { baseNode, nameof(AppStatics.LastVideoDir) });
+            CustomStatics.LastVideoDir = config.ReadConfigNode(new[] { baseNode, nameof(CustomStatics.LastVideoDir) });
 
             config.SetConfig += config =>
             {

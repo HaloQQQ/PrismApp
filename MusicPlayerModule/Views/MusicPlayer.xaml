@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core"
-             xmlns:helper="clr-namespace:IceTea.Wpf.Core.Helper;assembly=IceTea.Wpf.Core"
              xmlns:waitLoads="clr-namespace:IceTea.Wpf.Core.WaitLoads;assembly=IceTea.Wpf.Core"
              xmlns:common="clr-namespace:MusicPlayerModule.Common" FocusVisualStyle="{x:Null}"
              xmlns:commonModel="clr-namespace:MusicPlayerModule.Models.Common"
@@ -56,6 +55,9 @@
             <Style x:Key="CategoryRadioButton" TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding DisplayFavorites.Count}" Value="0">
+                        <Setter Property="IsEnabled" Value="False" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsLoading}" Value="True">
                         <Setter Property="IsEnabled" Value="False" />
                     </DataTrigger>
                 </Style.Triggers>
@@ -179,7 +181,7 @@
                 <DockPanel Grid.Column="2" LastChildFill="False" DockPanel.Dock="Right">
                     <Border DockPanel.Dock="Right" VerticalAlignment="Center"
                         CornerRadius="15" Visibility="{Binding IsBatchSelect,Converter={StaticResource BoolToCollapsedVisibleConverter}}"
-                        BorderThickness="1" BorderBrush="{x:Static helper:MyStaticResources.TransparentButtonBackground}">
+                        BorderThickness="1" BorderBrush="{StaticResource TransparentButtonBackground}">
                         <Border.Clip>
                             <RectangleGeometry Rect="0,0,150,28" RadiusX="15" RadiusY="15"/>
                         </Border.Clip>
@@ -728,7 +730,7 @@
                         </MultiBinding>
                     </DockPanel.Height>
                     <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="21" FontWeight="Bold" 
-                               Text="{Binding CurrentMusic.Music.Name}" Foreground="{x:Static helper:MyStaticResources.SkyBlue}"/>
+                               Text="{Binding CurrentMusic.Music.Name}" Foreground="{StaticResource SkyBlue}"/>
 
                     <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="0,10"
                                Style="{StaticResource NotImportantTxt_White}"
@@ -749,6 +751,7 @@
                              x:Name="LyricList" DockPanel.Dock="Top" HorizontalAlignment="Center"
                              Style="{StaticResource LyricListBox}" Visibility="Visible"
                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                             OpacityMask="{StaticResource GradientOpacityMask}"
                              ItemsSource="{Binding CurrentMusic.Music.Lyric.Lines}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem" BasedOn="{StaticResource LyricListBoxItem}">
@@ -781,23 +784,6 @@
                                 </Style.Triggers>
                             </Style>
                         </ListBox.ItemContainerStyle>
-                        <ListBox.OpacityMask>
-                            <VisualBrush>
-                                <VisualBrush.Visual>
-                                    <Border>
-                                        <Border.Background>
-                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                <GradientStop Offset="0" Color="Transparent"/>
-                                                <GradientStop Offset="0.15" Color="White"/>
-                                                <GradientStop Offset="0.85" Color="White"/>
-                                                <GradientStop Offset="1" Color="Transparent"/>
-                                            </LinearGradientBrush>
-                                        </Border.Background>
-                                        <TextBlock FontSize="24" Text=" " />
-                                    </Border>
-                                </VisualBrush.Visual>
-                            </VisualBrush>
-                        </ListBox.OpacityMask>
                     </ListBox>
                 </DockPanel>
             </DockPanel>
@@ -935,9 +921,9 @@
                                 <Popup Placement="Top" HorizontalOffset="-112" VerticalOffset="-6"
                                    IsOpen="{Binding IsChecked,ElementName=MusicSpeedRatioButton}"
                                    PlacementTarget="{Binding ElementName=MusicSpeedRatioButton}">
-                                    <Border Background="{x:Static helper:MyStaticResources.PopupBackground}" Padding="10,15" Width="280" Height="100" Clip="{StaticResource PopupGeometryGroup_MediaSpeedRatio}">
+                                    <Border Background="{StaticResource PopupBackground}" Padding="10,15" Width="280" Height="100" Clip="{StaticResource PopupGeometryGroup_MediaSpeedRatio}">
                                         <StackPanel>
-                                            <TextBlock VerticalAlignment="Top" FontSize="16" Foreground="{x:Static helper:MyStaticResources.WhiteLight}" TextAlignment="Center">
+                                            <TextBlock VerticalAlignment="Top" FontSize="16" Foreground="{StaticResource LightWhite}" TextAlignment="Center">
                                                 <TextBlock Text="{Binding Value,ElementName=MusicSpeedRatioSlider}"/>
                                                 倍速播放
                                             </TextBlock>
@@ -953,9 +939,9 @@
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
 
-                                                <TextBlock Text="减慢" Grid.Column="0" FontSize="16" Foreground="{x:Static helper:MyStaticResources.WhiteLight}"/>
-                                                <TextBlock Text="正常" Grid.Column="1" TextAlignment="Center" FontSize="16" Foreground="{x:Static helper:MyStaticResources.WhiteLight}"/>
-                                                <TextBlock Text="加快" Grid.Column="2" FontSize="16" Foreground="{x:Static helper:MyStaticResources.WhiteLight}"/>
+                                                <TextBlock Text="减慢" Grid.Column="0" FontSize="16" Foreground="{StaticResource LightWhite}"/>
+                                                <TextBlock Text="正常" Grid.Column="1" TextAlignment="Center" FontSize="16" Foreground="{StaticResource LightWhite}"/>
+                                                <TextBlock Text="加快" Grid.Column="2" FontSize="16" Foreground="{StaticResource LightWhite}"/>
                                             </Grid>
                                         </StackPanel>
                                     </Border>
@@ -976,7 +962,7 @@
                             <!--音量调节模态框-->
                             <Border x:Name="VolumeControl" Visibility="{Binding IsOpen,ElementName=VolumePopup,Converter={StaticResource BoolToVisibleCollapsedConverter},Mode=TwoWay}"
                                     Clip="{StaticResource PopupGeometryGroup_Volume}"
-                                    Background="{x:Static helper:MyStaticResources.PopupBackground}" Width="65" Height="212">
+                                    Background="{StaticResource PopupBackground}" Width="65" Height="212">
                                 <StackPanel MouseLeave="Popup_MouseLeave" Background="Transparent">
                                     <Slider Margin="10,25,10,10" MinWidth="4" Style="{StaticResource Slider_ObviousThumb}"
                                         Minimum="0" Maximum="100" ValueChanged="Slider_ValueChanged"
@@ -1006,8 +992,8 @@
                         <Popup Placement="Top" HorizontalOffset="-65" VerticalOffset="-7"
                            IsOpen="{Binding IsChecked,ElementName=listButton}"
                            PlacementTarget="{Binding ElementName=listButton}">
-                            <Border Background="{x:Static helper:MyStaticResources.PopupBackground}" Height="303" Clip="{StaticResource PopupGeometryGroup_PlayOrder}">
-                                <ListBox SelectedItem="{Binding CurrentPlayOrder}" ItemsSource="{x:Static common:AppStatics.MediaPlayOrderList}" x:Name="PlayOrderList">
+                            <Border Background="{StaticResource PopupBackground}" Height="303" Clip="{StaticResource PopupGeometryGroup_PlayOrder}">
+                                <ListBox SelectedItem="{Binding CurrentPlayOrder}" ItemsSource="{x:Static common:CustomStatics.MediaPlayOrderList}" x:Name="PlayOrderList">
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
 
@@ -1075,7 +1061,7 @@
                                 Height="490" Width="400" Closed="PlayingListPopup_Closed"
                                 IsOpen="{Binding IsChecked,ElementName=PlayingListButton}"
                                 PlacementTarget="{Binding ElementName=PlayingListButton}">
-                            <Border Background="{x:Static helper:MyStaticResources.PopupBackground}" CornerRadius="10">
+                            <Border Background="{StaticResource PopupBackground}" CornerRadius="10">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -1084,7 +1070,7 @@
 
                                     <DockPanel Grid.Row="0" LastChildFill="False" Margin="20,20,20,0">
                                         <DockPanel DockPanel.Dock="Top">
-                                            <TextBlock Foreground="{x:Static helper:MyStaticResources.WhiteLight}" DockPanel.Dock="Left" HorizontalAlignment="Left">
+                                            <TextBlock Foreground="{StaticResource LightWhite}" DockPanel.Dock="Left" HorizontalAlignment="Left">
                                                 共<TextBlock Text="{Binding DisplayPlaying.Count}"/>首
                                             </TextBlock>
 
@@ -1101,7 +1087,7 @@
                                                      attachs:MyAttachProperty.PlaceHolder="请输入关键字" 
                                                      Background="Transparent" BorderThickness="1"
                                                      Padding="10,0,0,0" attachs:MyAttachProperty.CornerRadius="15"
-                                                     BorderBrush="{x:Static helper:MyStaticResources.WhiteLight}" x:Name="PlayingKeyWordsTxt"
+                                                     BorderBrush="{StaticResource LightWhite}" x:Name="PlayingKeyWordsTxt"
                                                      Margin="0,5,5,5" Width="310"/>
                                             <Button Content="消失" Command="Close" CommandParameter="StopPlayingListFilte" 
                                                     Style="{StaticResource ClosePlayingListFilter}"/>
@@ -1118,7 +1104,7 @@
                                             <Style TargetType="DataGridCell" BasedOn="{StaticResource DataGridCell_General}">
                                                 <Style.Triggers>
                                                     <DataTrigger Value="True" Binding="{Binding DataContext.IsPlayingMusic,RelativeSource={RelativeSource AncestorType=DataGridRow}}">
-                                                        <Setter Property="Foreground" Value="{x:Static helper:MyStaticResources.SkyBlue}" />
+                                                        <Setter Property="Foreground" Value="{StaticResource SkyBlue}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>

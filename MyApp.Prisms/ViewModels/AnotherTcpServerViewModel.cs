@@ -1,4 +1,4 @@
-﻿using IceTea.Atom.Interfaces;
+﻿using IceTea.Atom.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {

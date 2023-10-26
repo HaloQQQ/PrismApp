@@ -10,7 +10,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.MsgEvents;
-using IceTea.Wpf.Core.Helper.MyEvents;
 using System.Reflection;
 using IceTea.Atom.Utils;
 using IceTea.Atom.Extensions;
@@ -18,11 +17,12 @@ using IceTea.Core.Utils.OS;
 using IceTea.Core.Utils.QRCodes;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using IceTea.Atom.Interfaces;
 using IceTea.General.Utils.AppHotKey;
 using IceTea.General.Utils;
 using MusicPlayerModule.MsgEvents;
 using IceTea.Wpf.Core.Contracts;
+using IceTea.Wpf.Core.Contracts.MyEvents;
+using IceTea.Atom.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -261,7 +261,7 @@ namespace MyApp.Prisms.ViewModels
 
         private void InitHotkeys(IConfigManager config, IAppHotKeyManager appHotKeyManager)
         {
-            this.WindowKeyBindingMap = HotKeyUtils.Provide(config, appHotKeyManager, new AppHotKeyGroupInfo("窗口", PreDefinedHotKeys.ConfigWindowAppHotkeys, PreDefinedHotKeys.WindowAppHotKeys));
+            this.WindowKeyBindingMap = HotKeyUtils.Provide(config, appHotKeyManager, new AppHotKeyGroupInfo("窗口", PreDefinedHotKeys.ConfigWindowAppHotKeys, PreDefinedHotKeys.WindowAppHotKeys));
         }
         #endregion
 
@@ -365,10 +365,7 @@ namespace MyApp.Prisms.ViewModels
 
                 if (this.DialogMessage != null && !this.DialogMessage.StopHide)
                 {
-                    if (--this.DialogMessage.Seconds <= 0)
-                    {
-                        this.DialogMessage.IsDisplayingDialogMessage = false;
-                    }
+                    this.DialogMessage.Decrease();
                 }
             };
             this._timer.Interval = TimeSpan.FromMilliseconds(1000);

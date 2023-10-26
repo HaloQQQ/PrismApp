@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using IceTea.Atom.Utils;
-using IceTea.Atom.Interfaces;
+using IceTea.Atom.Contracts;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {
@@ -12,9 +12,6 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
     {
         public BaseSocketViewModel(IConfigManager config)
         {
-            //config.SetConfig += (config, jsonObject) => 
-            //    config.SetLogging(jsonObject, this.Name, this.IsLogging);
-
             config.SetConfig += config =>
                 config.WriteConfigNode<bool>(this.IsLogging, new string[] { "IsLogging", this.Name });
         }

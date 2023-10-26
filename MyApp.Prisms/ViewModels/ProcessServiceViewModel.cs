@@ -6,10 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MyApp.Prisms.Models;
-using IceTea.Wpf.Core.Helper;
 using IceTea.Atom.BaseModels;
 using IceTea.Core.Utils.OS;
 using System.ServiceProcess;
+using IceTea.Wpf.Core.Utils;
 
 namespace MyApp.Prisms.ViewModels
 {

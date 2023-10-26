@@ -8,9 +8,9 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using MyApp.Prisms.MsgEvents;
 using MyApp.Prisms.ViewModels;
-using IceTea.Wpf.Core.Helper;
-using IceTea.Wpf.Core.Helper.MediaInfo;
 using IceTea.Atom.Extensions;
+using IceTea.Wpf.Core.Utils;
+using IceTea.Wpf.Core.Contracts.MediaInfo;
 
 namespace MyApp.Prisms.Views
 {
@@ -106,7 +106,7 @@ namespace MyApp.Prisms.Views
 
                 var data = this._imagesContext.Data;
 
-                data.AddIfNotWhile(item => file.EqualsIgnoreCase(item.URI), () => new MyImage(file));
+                data.AddIfNotAnyWhile(item => file.EqualsIgnoreCase(item.URI), () => new MyImage(file));
 
                 SetBackgroundImage(file);
 

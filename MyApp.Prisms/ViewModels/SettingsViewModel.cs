@@ -5,8 +5,6 @@ using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using MyApp.Prisms.Helper;
-using IceTea.Wpf.Core.Helper;
-using IceTea.Atom.Interfaces;
 using IceTea.Atom.Utils;
 using IceTea.Atom.Utils.HotKey.GlobalHotKey;
 using IceTea.Atom.Extensions;
@@ -14,6 +12,8 @@ using IceTea.General.Utils.AppHotKey;
 using IceTea.General.Utils;
 using MusicPlayerModule.MsgEvents;
 using IceTea.Wpf.Core.Contracts;
+using IceTea.Wpf.Core.Utils;
+using IceTea.Atom.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {

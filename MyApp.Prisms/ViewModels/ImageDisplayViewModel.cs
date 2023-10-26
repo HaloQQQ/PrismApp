@@ -6,10 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using MyApp.Prisms.MsgEvents;
-using IceTea.Wpf.Core.Helper;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.BaseModels;
-using IceTea.Atom.Interfaces;
+using IceTea.Wpf.Core.Utils;
+using IceTea.Atom.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {

@@ -1,5 +1,5 @@
 ﻿using System;
-using IceTea.Atom.Interfaces;
+using IceTea.Atom.Contracts;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 
 namespace MyApp.Prisms.ViewModels

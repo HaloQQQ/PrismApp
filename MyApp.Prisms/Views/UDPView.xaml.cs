@@ -7,8 +7,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.ViewModels;
-using IceTea.Wpf.Core.Helper;
 using IceTea.Atom.Extensions;
+using IceTea.Wpf.Core.Contracts;
 
 namespace MyApp.Prisms.Views
 {

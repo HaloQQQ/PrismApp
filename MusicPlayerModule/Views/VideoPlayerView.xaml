@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core"
-             xmlns:helper="clr-namespace:IceTea.Wpf.Core.Helper;assembly=IceTea.Wpf.Core"
              xmlns:core="clr-namespace:System.Windows.Media;assembly=PresentationCore"
              xmlns:common="clr-namespace:MusicPlayerModule.Common"
              xmlns:commonModel="clr-namespace:MusicPlayerModule.Models.Common"
@@ -113,7 +112,7 @@
             </MediaElement.InputBindings>
         </MediaElement>
 
-        <Grid x:Name="BottomBar" VerticalAlignment="Bottom" Background="{x:Static helper:MyStaticResources.LightBlackPanelBackground}">
+        <Grid x:Name="BottomBar" VerticalAlignment="Bottom" Background="{StaticResource LightBlackPanelBackground}">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Style.Triggers>
@@ -267,7 +266,7 @@
                                Height="501" Width="400"
                                IsOpen="{Binding IsChecked,ElementName=PlayingListButton}"
                                PlacementTarget="{Binding ElementName=PlayingListButton}">
-                            <Border Background="{x:Static helper:MyStaticResources.PopupBackground}" CornerRadius="10">
+                            <Border Background="{StaticResource PopupBackground}" CornerRadius="10">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -297,7 +296,7 @@
                                             <Style TargetType="DataGridCell" BasedOn="{StaticResource DataGridCell_General}">
                                                 <Style.Triggers>
                                                     <DataTrigger Value="True" Binding="{Binding DataContext.IsPlayingVideo,RelativeSource={RelativeSource AncestorType=DataGridRow}}">
-                                                        <Setter Property="Foreground" Value="{x:Static helper:MyStaticResources.SkyBlue}" />
+                                                        <Setter Property="Foreground" Value="{StaticResource SkyBlue}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -324,7 +323,7 @@
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>
                                                         <DockPanel Width="290">
-                                                            <TextBlock DockPanel.Dock="Right" Foreground="{x:Static helper:MyStaticResources.WhiteLight}" TextAlignment="Right">
+                                                            <TextBlock DockPanel.Dock="Right" Foreground="{StaticResource LightWhite}" TextAlignment="Right">
                                                                 <TextBlock Text="{Binding Video.Size}"/>MB
                                                             </TextBlock>
                                                             
@@ -390,7 +389,7 @@
                         <Popup Placement="Top" HorizontalOffset="-13" VerticalOffset="-10"
                                IsOpen="{Binding IsChecked,ElementName=VideoStretchButton}"
                                PlacementTarget="{Binding ElementName=VideoStretchButton}">
-                            <Border Background="{x:Static helper:MyStaticResources.PopupBackground}" Height="150" Width="100" Clip="{StaticResource PopupGeometryGroup_VideoStretchMode}">
+                            <Border Background="{StaticResource PopupBackground}" Height="150" Width="100" Clip="{StaticResource PopupGeometryGroup_VideoStretchMode}">
                                 <ListBox SelectedItem="{Binding Stretch}" ItemsSource="{Binding Source={StaticResource StretchsData}}" x:Name="VideoStretchList">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
@@ -412,7 +411,7 @@
                             <!--音量调节模态框-->
                             <Border x:Name="VolumeControl" Visibility="{Binding IsOpen,ElementName=VolumePopup,Converter={StaticResource BoolToVisibleCollapsedConverter},Mode=TwoWay}"
                                     Clip="{StaticResource PopupGeometryGroup_Volume}"
-                                    Background="{x:Static helper:MyStaticResources.PopupBackground}" Width="65" Height="210">
+                                    Background="{StaticResource PopupBackground}" Width="65" Height="210">
                                 <StackPanel MouseLeave="Popup_MouseLeave" Background="Transparent">
                                     <Slider Margin="10,25,10,10" MinWidth="4" Style="{StaticResource Slider_ObviousThumb}"
                                         ValueChanged="Slider_ValueChanged"
@@ -445,8 +444,8 @@
                         <Popup Placement="Top" HorizontalOffset="-64" VerticalOffset="-10"
                                    IsOpen="{Binding IsChecked,ElementName=PlayOrderButton}"
                                    PlacementTarget="{Binding ElementName=PlayOrderButton}">
-                            <Border Background="{x:Static helper:MyStaticResources.PopupBackground}" Height="303" Clip="{StaticResource PopupGeometryGroup_PlayOrder}">
-                                <ListBox SelectedItem="{Binding CurrentPlayOrder}" ItemsSource="{x:Static common:AppStatics.MediaPlayOrderList}" x:Name="PlayOrderList">
+                            <Border Background="{StaticResource PopupBackground}" Height="303" Clip="{StaticResource PopupGeometryGroup_PlayOrder}">
+                                <ListBox SelectedItem="{Binding CurrentPlayOrder}" ItemsSource="{x:Static common:CustomStatics.MediaPlayOrderList}" x:Name="PlayOrderList">
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
 
@@ -483,9 +482,9 @@
                         <Popup Placement="Top" HorizontalOffset="-129" VerticalOffset="-10"
                                    IsOpen="{Binding IsChecked,ElementName=VideoSpeedRatioButton}"
                                    PlacementTarget="{Binding ElementName=VideoSpeedRatioButton}">
-                            <Border Background="{x:Static helper:MyStaticResources.PopupBackground}" Padding="10,15" Width="280" Height="100" Clip="{StaticResource PopupGeometryGroup_MediaSpeedRatio}">
+                            <Border Background="{StaticResource PopupBackground}" Padding="10,15" Width="280" Height="100" Clip="{StaticResource PopupGeometryGroup_MediaSpeedRatio}">
                                 <StackPanel>
-                                    <TextBlock VerticalAlignment="Top" FontSize="16" Foreground="{x:Static helper:MyStaticResources.WhiteLight}" TextAlignment="Center">
+                                    <TextBlock VerticalAlignment="Top" FontSize="16" Foreground="{StaticResource LightWhite}" TextAlignment="Center">
                                             <TextBlock Text="{Binding Value,ElementName=VideoSpeedRatioSlider}"/>
                                             倍速播放
                                         </TextBlock>
@@ -501,13 +500,13 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <TextBlock Text="减慢" Grid.Column="0" FontSize="16" Foreground="{x:Static helper:MyStaticResources.WhiteLight}"/>
-                                        <TextBlock Text="正常" Grid.Column="1" FontSize="16" Foreground="{x:Static helper:MyStaticResources.WhiteLight}">
+                                        <TextBlock Text="减慢" Grid.Column="0" FontSize="16" Foreground="{StaticResource LightWhite}"/>
+                                        <TextBlock Text="正常" Grid.Column="1" FontSize="16" Foreground="{StaticResource LightWhite}">
                                             <TextBlock.RenderTransform>
                                                 <TranslateTransform X="23"/>
                                             </TextBlock.RenderTransform>
                                         </TextBlock>
-                                        <TextBlock Text="加快" Grid.Column="2" FontSize="16" Foreground="{x:Static helper:MyStaticResources.WhiteLight}"/>
+                                        <TextBlock Text="加快" Grid.Column="2" FontSize="16" Foreground="{StaticResource LightWhite}"/>
                                     </Grid>
                                 </StackPanel>
                             </Border>

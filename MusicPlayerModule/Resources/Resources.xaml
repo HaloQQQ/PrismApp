@@ -2,8 +2,23 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converter="clr-namespace:IceTea.Wpf.Core.Converters;assembly=IceTea.Wpf.Core"
                     xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core"
-                    xmlns:helper="clr-namespace:IceTea.Wpf.Core.Helper;assembly=IceTea.Wpf.Core"
                     xmlns:utils="clr-namespace:MusicPlayerModule.Utils">
+
+    <VisualBrush x:Key="GradientOpacityMask">
+        <VisualBrush.Visual>
+            <Border>
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="Transparent"/>
+                        <GradientStop Offset="0.15" Color="White"/>
+                        <GradientStop Offset="0.85" Color="White"/>
+                        <GradientStop Offset="1" Color="Transparent"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <TextBlock FontSize="24" Text=" " />
+            </Border>
+        </VisualBrush.Visual>
+    </VisualBrush>
 
     <GeometryGroup x:Key="PopupGeometryGroup_PlayOrder">
         <RectangleGeometry RadiusX="16" RadiusY="16">
@@ -215,10 +230,10 @@
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Text" Value="&#xe65e;" />
-        <Setter Property="Foreground" Value="{x:Static helper:MyStaticResources.WhiteLight}" />
+        <Setter Property="Foreground" Value="{StaticResource LightWhite}" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{x:Static helper:MyStaticResources.HoveredTransparentButtonBackground}" />
+                <Setter Property="Foreground" Value="{StaticResource HoveredTransparentButtonBackground}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -307,7 +322,7 @@
     </Style>
 
     <Style TargetType="Button" x:Key="ClosePlayingListFilter" BasedOn="{StaticResource IconButtonBase_Small}">
-        <Setter Property="Foreground" Value="{x:Static helper:MyStaticResources.WhiteLight}" />
+        <Setter Property="Foreground" Value="{StaticResource LightWhite}" />
     </Style>
 
     <Style TargetType="Image" x:Key="MyImage">
@@ -325,7 +340,7 @@
 
     <Style TargetType="TextBlock" BasedOn="{StaticResource IconText}" x:Key="DefaultSingerBack">
         <Setter Property="Background" Value="White" />
-        <Setter Property="Foreground" Value="{x:Static helper:MyStaticResources.DeepGray}" />
+        <Setter Property="Foreground" Value="{StaticResource DeepGray}" />
 
         <Setter Property="Width" Value="60" />
         <Setter Property="Height" Value="60" />

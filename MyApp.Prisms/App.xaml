@@ -7,10 +7,9 @@
             <FontFamily x:Key="Iconfont">/Resources/#iconfont</FontFamily>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/IceTea.Wpf.Core;component/Resources/GenericDictionary.xaml" />
-                
+
                 <ResourceDictionary Source="Resources/MyDataTemplate.xaml" />
                 <ResourceDictionary Source="Resources/MyDictionary.xaml" />
-                <ResourceDictionary Source="Resources/DenpendencyTaskbarIcon.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

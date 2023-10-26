@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:panelCtrls="clr-namespace:MyApp.Prisms.UsefulControl"
-                    xmlns:helper="clr-namespace:IceTea.Wpf.Core.Helper;assembly=IceTea.Wpf.Core">
+                    xmlns:panelCtrls="clr-namespace:IceTea.Wpf.Core.CustomControls;assembly=IceTea.Wpf.Core"
+                    xmlns:contracts="clr-namespace:IceTea.Wpf.Core.Contracts;assembly=IceTea.Wpf.Core">
 
     <!-- VirtualizingStackPanel -->
     <Style TargetType="VirtualizingStackPanel" x:Key="VirtualStackPanelImageSelector">
@@ -40,7 +40,7 @@
         <MenuItem IsCheckable="True" IsChecked="{Binding IsVideoPlayer}"
                   Header="视频播放器" />
 
-        <MenuItem Command="{x:Static helper:CustomCommands.OpenSettingCommand}"
+        <MenuItem Command="{x:Static contracts:CustomCommands.OpenSettingCommand}"
                   CommandTarget="{Binding PlacementTarget,RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                   InputGestureText="{Binding WindowKeyBindingMap[设置弹窗].CombineKeys}"
                   Header="设置" />
