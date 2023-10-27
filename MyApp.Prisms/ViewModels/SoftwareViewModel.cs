@@ -214,9 +214,14 @@ namespace MyApp.Prisms.ViewModels
         {
             this._brightManager = new ScreenBrightManager();
 
-            this.CurrentBright = this._brightManager.GetBrightness();
+            this.RefreshBrightness();
 
             eventAggregator.GetEvent<UpdateScreenBrightEvent>().Subscribe(step => this.CurrentBright += step);
+        }
+
+        internal void RefreshBrightness()
+        {
+            this.CurrentBright = this._brightManager.GetBrightness();
         }
 
         private ScreenBrightManager _brightManager;

@@ -166,6 +166,8 @@ namespace MyApp.Prisms.Views
             e.Handled = true;
 
             this.brightControl.Visibility = Visibility.Visible;
+
+            this._softwareViewModel.RefreshBrightness();
         }
 
         private void ToggleButton_MouseLeave(object sender, MouseEventArgs e)
