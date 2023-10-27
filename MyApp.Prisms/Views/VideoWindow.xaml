@@ -38,7 +38,17 @@
             <ImageBrush Stretch="UniformToFill" ImageSource="{Binding CurrentBkGrd}"/>
         </Grid.Background>
         <Grid Background="#33000000">
-            <DockPanel Margin="7">
+            <DockPanel>
+                <DockPanel.Style>
+                    <Style TargetType="DockPanel">
+                        <Style.Triggers>
+                            <DataTrigger Value="Maximized" Binding="{Binding WindowState,RelativeSource={RelativeSource AncestorType=Window}}">
+                                <Setter Property="Margin" Value="7" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DockPanel.Style>
+                
                 <views:WindowTitleBarView
                 x:Name="TitleBarSlider"
                 DockPanel.Dock="Top"

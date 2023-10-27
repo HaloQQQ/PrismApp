@@ -160,14 +160,14 @@
 
             <Viewbox Grid.Column="0" HorizontalAlignment="Left" Style="{StaticResource OnlyDownViewbox}">
                 <StackPanel Orientation="Horizontal">
-                    <Button Command="{Binding PlayAllCommand}" ToolTip="{Binding KeyGestureDic[播放所有音乐].ToolTip}" Style="{StaticResource PlayAllButton}"/>
+                    <Button Command="{Binding PlayAllCommand}" IsEnabled="{Binding IsLoading,Converter={StaticResource OppositeBoolConverter}}" ToolTip="{Binding KeyGestureDic[播放所有音乐].ToolTip}" Style="{StaticResource PlayAllButton}"/>
 
-                    <ToggleButton x:Name="ToggleBatch" Style="{StaticResource BatchOperateToggleButton}"
+                    <ToggleButton x:Name="ToggleBatch" IsEnabled="{Binding IsLoading,Converter={StaticResource OppositeBoolConverter}}" Style="{StaticResource BatchOperateToggleButton}"
                                   IsChecked="{Binding IsBatchSelect,Mode=TwoWay}"/>
 
-                    <Button Command="{Binding DownLoadCommand}" Style="{StaticResource DownloadButton}"/>
+                    <Button Command="{Binding DownLoadCommand}" IsEnabled="{Binding IsLoading,Converter={StaticResource OppositeBoolConverter}}" Style="{StaticResource DownloadButton}"/>
 
-                    <Button Command="{Binding AddFilesCommand}" ToolTip="{Binding KeyGestureDic[打开文件夹].ToolTip}" Style="{StaticResource AddMusicButton}">
+                    <Button Command="{Binding AddFilesCommand}" IsEnabled="{Binding IsLoading,Converter={StaticResource OppositeBoolConverter}}" ToolTip="{Binding KeyGestureDic[打开文件夹].ToolTip}" Style="{StaticResource AddMusicButton}">
                         <Button.InputBindings>
                             <MouseBinding MouseAction="RightClick" Command="{Binding AddFolderCommand}"/>
                         </Button.InputBindings>
