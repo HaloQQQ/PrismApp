@@ -7,7 +7,6 @@ using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
 using System.Windows;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.MsgEvents;
@@ -28,8 +27,6 @@ namespace MyApp.Prisms
     /// </summary>
     public partial class App : PrismApplication
     {
-        private Mutex? mutex;
-
         protected override void OnExit(ExitEventArgs e)
         {
             base.OnExit(e);
@@ -39,8 +36,10 @@ namespace MyApp.Prisms
 
         private IEnumerable<string> GetMessageList(Exception exception)
         {
-            var list = new List<string>();
-            list.Add(exception.Message);
+            var list = new List<string>
+            {
+                exception.Message
+            };
 
             while ((exception = exception.InnerException) != null)
             {
@@ -105,22 +104,16 @@ namespace MyApp.Prisms
 
             if (config.IsTrue(CustomConstants.ONLY_ONE_PROCESS))
             {
-                mutex = new Mutex(true, processName, out bool isNew);
-                if (!isNew)
+                foreach (var process in Process.GetProcessesByName(processName))
                 {
-                    Helper.Helper.Log(CustomConstants.Software_Log_Dir, "当前已有软件运行，启动失败!");
-
-                    foreach (var process in Process.GetProcessesByName(processName))
+                    if (process.Id != Process.GetCurrentProcess().Id)
                     {
-                        if (process.Id != Process.GetCurrentProcess().Id)
-                        {
-                            AppUtils.ShowWindowAsync(process.MainWindowHandle, 1);
-                        }
+                        AppUtils.ShowWindowAsync(process.MainWindowHandle, 1);
+
+                        Helper.Helper.Log(CustomConstants.Software_Log_Dir, "当前已有软件运行，启动失败!");
+
+                        Environment.Exit(1);
                     }
-
-                    MessageBox.Show("当前已有软件运行，启动失败!");
-
-                    Environment.Exit(1);
                 }
             }
 

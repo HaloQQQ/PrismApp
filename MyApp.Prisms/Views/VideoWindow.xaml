@@ -33,7 +33,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid>
+    <Grid ClipToBounds="True">
         <Grid.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="{Binding CurrentBkGrd}"/>
         </Grid.Background>

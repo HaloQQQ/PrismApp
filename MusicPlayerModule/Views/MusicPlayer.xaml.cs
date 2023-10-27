@@ -158,7 +158,7 @@ namespace MusicPlayerModule.Views
 
             var y = (this.LyricPage.RenderTransform as TranslateTransform).Y;
 
-            var to = y == 0 ? System.Windows.SystemParameters.PrimaryScreenHeight : 0;
+            var to = y == 0 ? SystemParameters.PrimaryScreenHeight : 0;
 
             var translateAnimation = new DoubleAnimation(y, to, new Duration(TimeSpan.FromMilliseconds(500)));
 

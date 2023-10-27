@@ -7,7 +7,7 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         WindowStartupLocation="CenterScreen"
         Title="MusicWindow" MinHeight="640" MinWidth="1200">
-    <Grid>
+    <Grid ClipToBounds="True">
         <Grid.Background>
             <ImageBrush Stretch="UniformToFill" ImageSource="{Binding CurrentBkGrd}"/>
         </Grid.Background>
