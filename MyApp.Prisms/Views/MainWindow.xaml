@@ -43,10 +43,10 @@
                     <TabItem Header="图片列表" />
                     <TabItem Header="进程服务" />
                     <TabItem Header="音乐播放器">
-                        <ContentControl regions:RegionManager.RegionName="MusicPlayerRegion"/>
+                        <ContentControl Focusable="False" regions:RegionManager.RegionName="MusicPlayerRegion"/>
                     </TabItem>
                     <TabItem Header="视频播放器">
-                        <ContentControl regions:RegionManager.RegionName="VideoPlayerRegion"/>
+                        <ContentControl Focusable="False" regions:RegionManager.RegionName="VideoPlayerRegion"/>
                     </TabItem>
                 </TabControl>
             </DockPanel>
