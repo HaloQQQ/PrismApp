@@ -8,7 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using IceTea.Wpf.Core.Extensions;
 
 namespace MusicPlayerModule.Views
 {
@@ -236,32 +235,6 @@ namespace MusicPlayerModule.Views
             }
         }
 
-        #region  音量调节弹窗显示和隐藏
-        private void ToggleButton_MouseLeave(object sender, MouseEventArgs e)
-        {
-            e.Handled = true;
-
-            if (!this.VolumeControl.IsMouseIn())
-            {
-                this.VolumeControl.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void ToggleButton_MouseEnter(object sender, MouseEventArgs e)
-        {
-            e.Handled = true;
-
-            this.VolumeControl.Visibility = Visibility.Visible;
-        }
-
-        private void Popup_MouseLeave(object sender, MouseEventArgs e)
-        {
-            e.Handled = true;
-
-            this.VolumeControl.Visibility = Visibility.Collapsed;
-        }
-        #endregion
-
         /// <summary>
         /// 播放列表弹窗出现时更新列表滚动条位置
         /// </summary>
@@ -397,7 +370,7 @@ namespace MusicPlayerModule.Views
 
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (this.VolumeControl.IsVisible)
+            if (this.VolumePopup.IsOpen)
             {
                 int baseValue = e.Delta < 0 ? -1 : 1;
 

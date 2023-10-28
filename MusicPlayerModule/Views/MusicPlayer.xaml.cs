@@ -114,32 +114,6 @@ namespace MusicPlayerModule.Views
             }
         }
 
-        #region  音量调节弹窗显示和隐藏
-        private void ToggleButton_MouseLeave(object sender, MouseEventArgs e)
-        {
-            e.Handled = true;
-
-            if (!this.VolumeControl.IsMouseIn())
-            {
-                this.VolumeControl.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void ToggleButton_MouseEnter(object sender, MouseEventArgs e)
-        {
-            e.Handled = true;
-
-            this.VolumeControl.Visibility = Visibility.Visible;
-        }
-
-        private void Popup_MouseLeave(object sender, MouseEventArgs e)
-        {
-            e.Handled = true;
-
-            this.VolumeControl.Visibility = Visibility.Collapsed;
-        }
-        #endregion
-
         /// <summary>
         /// 歌词封面显示和隐藏
         /// </summary>
@@ -224,7 +198,7 @@ namespace MusicPlayerModule.Views
         }
 
         private double _lastVolume;
-        private void volumeToggleButton_Click(object sender, RoutedEventArgs e)
+        private void VolumeToggleButton_Click(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
 
@@ -427,7 +401,7 @@ namespace MusicPlayerModule.Views
         //音量调节
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (this.VolumeControl.IsVisible)
+            if (this.VolumePopup.IsOpen)
             {
                 int baseValue = e.Delta < 0 ? -1 : 1;
 

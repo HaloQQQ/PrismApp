@@ -118,16 +118,15 @@
             </Popup>
 
             <ToggleButton x:Name="brightToggleButton" IsChecked="{Binding IsLeastBright}" 
-                                  MouseEnter="ToggleButton_MouseEnter" MouseLeave="ToggleButton_MouseLeave"
                                   Click="BrightToggleButton_Click" MouseWheel="Button_MouseWheel"
                                   Style="{StaticResource BrightIconToggleButton}"/>
-            <Popup Placement="Bottom" HorizontalOffset="-117" VerticalOffset="-10"
-                    StaysOpen="True" x:Name="brightPopup" 
-                    PlacementTarget="{Binding ElementName=brightToggleButton}">
-                <!--亮度调节模态框-->
-                    <StackPanel x:Name="brightControl" Orientation="Horizontal" MouseLeave="Popup_MouseLeave" Visibility="{Binding IsOpen,ElementName=brightPopup,Converter={StaticResource BoolToVisibleCollapsedConverter},Mode=TwoWay}"
+            <Popup Placement="Bottom" HorizontalOffset="-117" VerticalOffset="-10" Width="250" Height="80"
+                   x:Name="brightPopup" attachs:MyAttachProperty.IsAppearOnHovered="True" 
+                   PlacementTarget="{Binding ElementName=brightToggleButton}">
+                    <!--亮度调节模态框-->
+                    <StackPanel Orientation="Horizontal" 
                                 Clip="{StaticResource PopupGeometryGroup_Bright}"
-                                Background="{StaticResource PopupBackground}" Width="250" Height="80">
+                                Background="{StaticResource PopupBackground}">
                         <Slider Margin="15,0,12,0" MinHeight="4" TickFrequency="5"
                                 Style="{StaticResource Slider_ObviousThumb}"
                                 Width="180" x:Name="brightSlider" Value="{Binding CurrentBright}"

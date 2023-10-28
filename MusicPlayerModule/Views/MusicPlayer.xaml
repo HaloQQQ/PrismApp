@@ -43,7 +43,7 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-            
+
             <Style TargetType="TextBlock" x:Key="Music_PointABTextBlock" BasedOn="{StaticResource PointABTextBlock}">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding CurrentMusic}" Value="{x:Null}">
@@ -84,7 +84,7 @@
                         Modifiers="{Binding KeyGestureDic[播放所有音乐].ModifierKey}"
                         Key="{Binding KeyGestureDic[播放所有音乐].SelectedKey}"/>
 
-                           
+
             <KeyBinding Command="{Binding PointACommand}"
                         Modifiers="{Binding KeyGestureDic[设置A点].ModifierKey}" 
                         Key="{Binding KeyGestureDic[设置A点].SelectedKey}"/>
@@ -258,8 +258,7 @@
                 <Viewbox Grid.Row="0" Style="{StaticResource OnlyDownViewbox}" VerticalAlignment="Top">
                     <DataGrid x:Name="DataGrid_ShowBySong" Height="{Binding ActualHeight,RelativeSource={RelativeSource AncestorType=Grid},Mode=OneWay}" 
                               Visibility="{Binding IsChecked,ElementName=RadioBtnShowBySong,Converter={StaticResource BooleanToVisibilityConverter}}" 
-                              HeadersVisibility="All" 
-                              attachs:MyAttachProperty.DisplayRowNumber="True"
+                              HeadersVisibility="All" attachs:MyAttachProperty.DisplayRowNumber="True"
                               ItemsSource="{Binding DisplayFavorites}">
                         <DataGrid.Style>
                             <Style TargetType="DataGrid" BasedOn="{StaticResource DataGrid_Transparent}">
@@ -917,11 +916,14 @@
                             </TextBlock>
 
                             <StackPanel Orientation="Horizontal" Visibility="{Binding IsMouseOver,RelativeSource={RelativeSource AncestorType=Grid},Converter={StaticResource BoolToVisibleHiddenConverter}}">
-                                <ToggleButton Content="倍速" x:Name="MusicSpeedRatioButton" Style="{StaticResource MusicEffectToggleButton}"/>
-                                <Popup Placement="Top" HorizontalOffset="-112" VerticalOffset="-6"
-                                   IsOpen="{Binding IsChecked,ElementName=MusicSpeedRatioButton}"
-                                   PlacementTarget="{Binding ElementName=MusicSpeedRatioButton}">
-                                    <Border Background="{StaticResource PopupBackground}" Padding="10,15" Width="280" Height="100" Clip="{StaticResource PopupGeometryGroup_MediaSpeedRatio}">
+                                <ToggleButton Content="倍速" x:Name="MusicSpeedToggleButton"
+                                              Style="{StaticResource MusicEffectToggleButton}"/>
+                                <Popup Placement="Top" HorizontalOffset="-115" VerticalOffset="7" 
+                                       attachs:MyAttachProperty.IsAppearOnHovered="True"
+                                       PlacementTarget="{Binding ElementName=MusicSpeedToggleButton}"
+                                       Width="280" Height="110">
+                                    <Border Clip="{StaticResource PopupGeometryGroup_MediaSpeedRatio}"
+                                            Background="{StaticResource PopupBackground}" Padding="10,15">
                                         <StackPanel>
                                             <TextBlock VerticalAlignment="Top" FontSize="16" Foreground="{StaticResource LightWhite}" TextAlignment="Center">
                                                 <TextBlock Text="{Binding Value,ElementName=MusicSpeedRatioSlider}"/>
@@ -951,20 +953,16 @@
                             </StackPanel>
                         </Grid>
 
-                        <ToggleButton x:Name="volumeToggleButton" IsChecked="{Binding IsMuted,ElementName=mediaPlayer,Mode=TwoWay}" 
-                                      MouseEnter="ToggleButton_MouseEnter" MouseLeave="ToggleButton_MouseLeave"
-                                      Click="volumeToggleButton_Click"
+                        <ToggleButton x:Name="VolumeToggleButton" IsChecked="{Binding IsMuted,ElementName=mediaPlayer,Mode=TwoWay}" 
+                                      Click="VolumeToggleButton_Click"
                                       Style="{StaticResource VolumeIconToggleButton}"/>
-
-                        <Popup Placement="Top" HorizontalOffset="-23" VerticalOffset="6"
-                               StaysOpen="True" x:Name="VolumePopup"
-                               PlacementTarget="{Binding ElementName=volumeToggleButton}">
+                        <Popup Placement="Top" HorizontalOffset="-23" VerticalOffset="5" Width="65" Height="202"
+                               x:Name="VolumePopup" attachs:MyAttachProperty.IsAppearOnHovered="True"
+                               PlacementTarget="{Binding ElementName=VolumeToggleButton}">
                             <!--音量调节模态框-->
-                            <Border x:Name="VolumeControl" Visibility="{Binding IsOpen,ElementName=VolumePopup,Converter={StaticResource BoolToVisibleCollapsedConverter},Mode=TwoWay}"
-                                    Clip="{StaticResource PopupGeometryGroup_Volume}"
-                                    Background="{StaticResource PopupBackground}" Width="65" Height="212">
-                                <StackPanel MouseLeave="Popup_MouseLeave" Background="Transparent">
-                                    <Slider Margin="10,25,10,10" MinWidth="4" Style="{StaticResource Slider_ObviousThumb}"
+                            <StackPanel Clip="{StaticResource PopupGeometryGroup_Volume}" 
+                                        Background="{StaticResource PopupBackground}">
+                                <Slider Margin="10,25,10,10" MinWidth="4" Style="{StaticResource Slider_ObviousThumb}"
                                         Minimum="0" Maximum="100" ValueChanged="Slider_ValueChanged"
                                         Orientation="Vertical" Height="130" x:Name="VolumeSlider" 
                                         attachs:MyAttachProperty.IsSliderThumbObvious="True"
@@ -972,11 +970,10 @@
                                                     Converter={StaticResource DigitDoubleConverter},
                                                     ConverterParameter=100}"/>
 
-                                    <TextBlock x:Name="volumeStr" HorizontalAlignment="Center" Style="{StaticResource NotImportantTxt_White}">
+                                <TextBlock x:Name="volumeStr" HorizontalAlignment="Center" Style="{StaticResource NotImportantTxt_White}">
                                         <TextBlock Text="{Binding Path=Value,ElementName=VolumeSlider,Mode=OneWay}" />%
                                     </TextBlock>
-                                </StackPanel>
-                            </Border>
+                            </StackPanel>
                         </Popup>
 
                         <ToggleButton x:Name="listButton" IsChecked="{Binding IsEditingPlayOrder}">
@@ -989,10 +986,11 @@
                                 </Style>
                             </ToggleButton.Style>
                         </ToggleButton>
-                        <Popup Placement="Top" HorizontalOffset="-65" VerticalOffset="-7"
-                           IsOpen="{Binding IsChecked,ElementName=listButton}"
-                           PlacementTarget="{Binding ElementName=listButton}">
-                            <Border Background="{StaticResource PopupBackground}" Height="303" Clip="{StaticResource PopupGeometryGroup_PlayOrder}">
+                        <Popup Placement="Top" HorizontalOffset="-67" VerticalOffset="10"
+                               attachs:MyAttachProperty.IsAppearOnHovered="True"
+                               PlacementTarget="{Binding ElementName=listButton}">
+                            <Border Background="{StaticResource PopupBackground}" Height="310" 
+                                    Clip="{StaticResource PopupGeometryGroup_PlayOrder}">
                                 <ListBox SelectedItem="{Binding CurrentPlayOrder}" ItemsSource="{x:Static common:CustomStatics.MediaPlayOrderList}" x:Name="PlayOrderList">
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">

@@ -75,7 +75,7 @@
             <KeyBinding Command="{Binding CleanPlayingCommand}"
                         Modifiers="{Binding KeyGestureDic[清空播放队列].ModifierKey}"
                         Key="{Binding KeyGestureDic[清空播放队列].SelectedKey}"/>
-            
+
             <KeyBinding Command="{Binding NextCommand}" CommandParameter="{Binding CurrentVideo}" 
                         Modifiers="{Binding KeyGestureDic[下一个].ModifierKey}"
                         Key="{Binding KeyGestureDic[下一个].SelectedKey}"/>
@@ -326,7 +326,7 @@
                                                             <TextBlock DockPanel.Dock="Right" Foreground="{StaticResource LightWhite}" TextAlignment="Right">
                                                                 <TextBlock Text="{Binding Video.Size}"/>MB
                                                             </TextBlock>
-                                                            
+
                                                             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                                                                 <Button Command="{Binding DataContext.PlayPlayingCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}">
                                                                     <Button.Style>
@@ -386,10 +386,11 @@
                                 </Style>
                             </ToggleButton.Style>
                         </ToggleButton>
-                        <Popup Placement="Top" HorizontalOffset="-13" VerticalOffset="-10"
-                               IsOpen="{Binding IsChecked,ElementName=VideoStretchButton}"
+                        <Popup Placement="Top" HorizontalOffset="-15" VerticalOffset="5"
+                               attachs:MyAttachProperty.IsAppearOnHovered="True"
                                PlacementTarget="{Binding ElementName=VideoStretchButton}">
-                            <Border Background="{StaticResource PopupBackground}" Height="150" Width="100" Clip="{StaticResource PopupGeometryGroup_VideoStretchMode}">
+                            <Border Background="{StaticResource PopupBackground}" 
+                                    Height="155" Width="100" Clip="{StaticResource PopupGeometryGroup_VideoStretchMode}">
                                 <ListBox SelectedItem="{Binding Stretch}" ItemsSource="{Binding Source={StaticResource StretchsData}}" x:Name="VideoStretchList">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
@@ -402,33 +403,28 @@
 
                         <ToggleButton x:Name="volumeToggleButton" DockPanel.Dock="Right"
                                 IsChecked="{Binding IsMuted,ElementName=mediaPlayer,Mode=TwoWay}" 
-                                MouseEnter="ToggleButton_MouseEnter" MouseLeave="ToggleButton_MouseLeave"
                                 Click="volumeToggleButton_Click"
                                 Style="{StaticResource VolumeIconToggleButton}"/>
-                        <Popup Placement="Top" HorizontalOffset="-23"
-                               StaysOpen="True" x:Name="VolumePopup"
+                        <Popup Placement="Top" HorizontalOffset="-23" VerticalOffset="5" Width="65" Height="202"
+                               x:Name="VolumePopup" attachs:MyAttachProperty.IsAppearOnHovered="True"
                                PlacementTarget="{Binding ElementName=volumeToggleButton}">
                             <!--音量调节模态框-->
-                            <Border x:Name="VolumeControl" Visibility="{Binding IsOpen,ElementName=VolumePopup,Converter={StaticResource BoolToVisibleCollapsedConverter},Mode=TwoWay}"
-                                    Clip="{StaticResource PopupGeometryGroup_Volume}"
-                                    Background="{StaticResource PopupBackground}" Width="65" Height="210">
-                                <StackPanel MouseLeave="Popup_MouseLeave" Background="Transparent">
-                                    <Slider Margin="10,25,10,10" MinWidth="4" Style="{StaticResource Slider_ObviousThumb}"
+                            <StackPanel Clip="{StaticResource PopupGeometryGroup_Volume}" Background="{StaticResource PopupBackground}">
+                                <Slider Margin="10,25,10,10" MinWidth="4" Style="{StaticResource Slider_ObviousThumb}"
                                         ValueChanged="Slider_ValueChanged"
                                         Orientation="Vertical" Height="130" 
                                         Value="{Binding Volume,ElementName=mediaPlayer,
                                                     Converter={StaticResource DigitDoubleConverter},
                                                     ConverterParameter=100}"/>
 
-                                    <TextBlock HorizontalAlignment="Center" Style="{StaticResource NotImportantTxt_White}">
+                                <TextBlock HorizontalAlignment="Center" Style="{StaticResource NotImportantTxt_White}">
                                         <TextBlock Text="{Binding ElementName=mediaPlayer, 
                                                                     Path=Volume,
                                                                     Converter={StaticResource DigitDoubleConverter},
                                                                     ConverterParameter=100,
                                                                     Mode=OneWay}" />%
                                     </TextBlock>
-                                </StackPanel>
-                            </Border>
+                            </StackPanel>
                         </Popup>
 
                         <ToggleButton x:Name="PlayOrderButton" DockPanel.Dock="Right" IsChecked="{Binding IsEditingPlayOrder}">
@@ -441,10 +437,11 @@
                                 </Style>
                             </ToggleButton.Style>
                         </ToggleButton>
-                        <Popup Placement="Top" HorizontalOffset="-64" VerticalOffset="-10"
-                                   IsOpen="{Binding IsChecked,ElementName=PlayOrderButton}"
-                                   PlacementTarget="{Binding ElementName=PlayOrderButton}">
-                            <Border Background="{StaticResource PopupBackground}" Height="303" Clip="{StaticResource PopupGeometryGroup_PlayOrder}">
+                        <Popup Placement="Top" HorizontalOffset="-67" VerticalOffset="10"
+                               attachs:MyAttachProperty.IsAppearOnHovered="True"
+                               PlacementTarget="{Binding ElementName=PlayOrderButton}">
+                            <Border Background="{StaticResource PopupBackground}" Height="313" 
+                                    Clip="{StaticResource PopupGeometryGroup_PlayOrder}">
                                 <ListBox SelectedItem="{Binding CurrentPlayOrder}" ItemsSource="{x:Static common:CustomStatics.MediaPlayOrderList}" x:Name="PlayOrderList">
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
@@ -479,15 +476,17 @@
                         </Popup>
 
                         <ToggleButton x:Name="VideoSpeedRatioButton" DockPanel.Dock="Right" Content="&#xe60c;" ToolTip="倍速播放" Style="{StaticResource IconButtonBase_Small}" />
-                        <Popup Placement="Top" HorizontalOffset="-129" VerticalOffset="-10"
-                                   IsOpen="{Binding IsChecked,ElementName=VideoSpeedRatioButton}"
-                                   PlacementTarget="{Binding ElementName=VideoSpeedRatioButton}">
-                            <Border Background="{StaticResource PopupBackground}" Padding="10,15" Width="280" Height="100" Clip="{StaticResource PopupGeometryGroup_MediaSpeedRatio}">
+                        <Popup Placement="Top" HorizontalOffset="-132" VerticalOffset="2"
+                               attachs:MyAttachProperty.IsAppearOnHovered="True"
+                               PlacementTarget="{Binding ElementName=VideoSpeedRatioButton}">
+                            <Border Background="{StaticResource PopupBackground}" Padding="10,15" 
+                                    Width="280" Height="105" Clip="{StaticResource PopupGeometryGroup_MediaSpeedRatio}">
                                 <StackPanel>
-                                    <TextBlock VerticalAlignment="Top" FontSize="16" Foreground="{StaticResource LightWhite}" TextAlignment="Center">
-                                            <TextBlock Text="{Binding Value,ElementName=VideoSpeedRatioSlider}"/>
-                                            倍速播放
-                                        </TextBlock>
+                                    <TextBlock VerticalAlignment="Top" FontSize="16" Foreground="{StaticResource LightWhite}" 
+                                               TextAlignment="Center">
+                                        <TextBlock Text="{Binding Value,ElementName=VideoSpeedRatioSlider}"/>
+                                        倍速播放
+                                    </TextBlock>
 
                                     <Slider Margin="0,10" VerticalAlignment="Center" x:Name="VideoSpeedRatioSlider"
                                                 ValueChanged="VideoSpeedRatioSlider_ValueChanged"

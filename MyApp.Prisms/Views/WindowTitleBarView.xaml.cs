@@ -161,33 +161,9 @@ namespace MyApp.Prisms.Views
             }
         }
 
-        private void ToggleButton_MouseEnter(object sender, MouseEventArgs e)
-        {
-            e.Handled = true;
-
-            this.brightControl.Visibility = Visibility.Visible;
-
-            this._softwareViewModel.RefreshBrightness();
-        }
-
-        private void ToggleButton_MouseLeave(object sender, MouseEventArgs e)
-        {
-            e.Handled = true;
-
-            if (!this.brightControl.IsMouseIn())
-            {
-                this.brightControl.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void Popup_MouseLeave(object sender, MouseEventArgs e)
-        {
-            this.brightControl.Visibility = Visibility.Collapsed;
-        }
-
         private void Button_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (this.brightControl.IsVisible)
+            if (this.brightPopup.IsOpen)
             {
                 int baseValue = e.Delta < 0 ? -1 : 1;
 
