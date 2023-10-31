@@ -9,7 +9,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using MyApp.Prisms.MsgEvents;
 using MyApp.Prisms.ViewModels;
-using IceTea.Wpf.Core.Extensions;
 using Point = System.Windows.Point;
 
 namespace MyApp.Prisms.Views

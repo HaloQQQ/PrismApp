@@ -33,7 +33,7 @@
                         </Style.Triggers>
                     </Style>
                 </DockPanel.Style>
-                
+
                 <views:WindowTitleBarView x:Name="TitleBarSlider" DockPanel.Dock="Top" VerticalAlignment="Top"/>
 
                 <TabControl ItemContainerStyle="{StaticResource TabItem_Transparent}"
@@ -42,6 +42,9 @@
                     <TabItem Header="通讯工具" />
                     <TabItem Header="图片列表" />
                     <TabItem Header="进程服务" />
+                    <TabItem Header="邮件客户端">
+                        <views:MailManager/>
+                    </TabItem>
                     <TabItem Header="音乐播放器">
                         <ContentControl Focusable="False" regions:RegionManager.RegionName="MusicPlayerRegion"/>
                     </TabItem>

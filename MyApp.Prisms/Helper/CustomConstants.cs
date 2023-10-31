@@ -51,6 +51,8 @@ namespace MyApp.Prisms.Helper
             Source = new Uri("pack://application:,,,/IceTea.Wpf.Core;component/Resources/DarkTheme.xaml", UriKind.RelativeOrAbsolute)
         };
 
+        internal static readonly string[] MailAccounts = new string[] { "MailAccounts" };
+
         internal static readonly string[] ConfigGlobalHotkeys = new string[] { "HotKeys", "Global" };
         internal static class GlobalHotKeysConst
         {

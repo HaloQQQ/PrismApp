@@ -5,7 +5,6 @@ using System.Windows.Media.Imaging;
 using Prism.Mvvm;
 using TagLib;
 using IceTea.Atom.Extensions;
-using IceTea.Atom.Utils;
 
 namespace MusicPlayerModule.Models;
 

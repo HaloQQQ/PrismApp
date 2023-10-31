@@ -36,7 +36,7 @@
 
         <MenuItem IsCheckable="True" IsChecked="{Binding IsMusicPlayer}"
                   Header="音乐播放器" />
-        
+
         <MenuItem IsCheckable="True" IsChecked="{Binding IsVideoPlayer}"
                   Header="视频播放器" />
 
@@ -85,7 +85,7 @@
 
     <!-- 通讯连接按钮 -->
     <Style TargetType="Button" x:Key="ConnButton" BasedOn="{StaticResource {x:Type Button}}">
-        
+
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -117,7 +117,7 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        
+
         <Style.Triggers>
             <DataTrigger Binding="{Binding Connecting}" Value="True">
                 <Setter Property="IsEnabled" Value="False" />
@@ -134,12 +134,14 @@
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="BorderBrush" Value="{x:Null}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Padding" Value="5,3" />
-        <Setter Property="Background" Value="LightCyan" />
-        <Setter Property="Width" Value="103" />
+        <Setter Property="Padding" Value="5,3,0,3" />
+        <Setter Property="Background" Value="{StaticResource TransparentButtonBackground}" />
+        <Setter Property="MaxWidth" Value="130.5" />
         <Setter Property="Height" Value="30" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
+
+        <Setter Property="Foreground" Value="{DynamicResource TextBlock.Foreground}" />
 
         <Setter Property="Template">
             <Setter.Value>
@@ -151,19 +153,25 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Background="{TemplateBinding Background}">
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        <DockPanel>
+                            <Button x:Name="CloseButton" Visibility="Hidden" DockPanel.Dock="Right" Command="{x:Static ApplicationCommands.Close}" Style="{StaticResource IconButtonBase_Small_Expand}" Content="&#xe612;"/>
+
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </DockPanel>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Foreground" Value="Blue" />
-                            <Setter Property="Background" Value="#ddd" />
+                            <Setter Property="Foreground" Value="{StaticResource ShallowBlue}" />
+                            <Setter Property="Background" Value="{StaticResource HoveredTransparentButtonBackground}" />
                             <Setter Property="Cursor" Value="Hand" />
                             <Setter Property="RenderTransform">
                                 <Setter.Value>
                                     <ScaleTransform CenterX="0" ScaleX="1.01" ScaleY="1.01" />
                                 </Setter.Value>
                             </Setter>
+
+                            <Setter TargetName="CloseButton" Property="Visibility" Value="Visible"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

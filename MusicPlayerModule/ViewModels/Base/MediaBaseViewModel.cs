@@ -1,4 +1,4 @@
-﻿using IceTea.Atom.Utils;
+﻿using IceTea.Atom.Extensions;
 using Prism.Mvvm;
 
 namespace MusicPlayerModule.ViewModels.Base

@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="IceTea.General" Version="1.0.6" />
-    <PackageReference Include="IceTea.Wpf.Core" Version="1.0.22" />
+    <PackageReference Include="IceTea.General" Version="1.0.7" />
+    <PackageReference Include="IceTea.Wpf.Core" Version="1.0.23" />
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
     <PackageReference Include="SharpZipLib" Version="1.4.2" />
     <PackageReference Include="TagLibSharp" Version="2.3.0" />

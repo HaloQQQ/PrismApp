@@ -5,6 +5,7 @@
              xmlns:appHotKey="clr-namespace:IceTea.General.Utils.AppHotKey;assembly=IceTea.General"
              xmlns:converters="clr-namespace:IceTea.Wpf.Core.Converters;assembly=IceTea.Wpf.Core"
              MinWidth="800" MaxHeight="500"
+             xmlns:viewModels="clr-namespace:MyApp.Prisms.ViewModels"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core" 
              prism:ViewModelLocator.AutoWireViewModel="True">
@@ -31,7 +32,7 @@
                     <Button Command="{Binding DataContext.ResetGroupHotKeysCommand,RelativeSource={RelativeSource AncestorType=UserControl}}" 
                             CommandParameter="{Binding}" HorizontalAlignment="Right" 
                             Style="{StaticResource IconButtonBase_Expand}" Margin="0,10,20,0" Content="&#xe614;" ToolTip="重置快捷键"/>
-                    
+
                     <ListBox ItemsSource="{Binding KeyBindings}" HorizontalAlignment="Stretch"
                              ItemContainerStyle="{StaticResource ListBoxItem_General}" />
                 </StackPanel>
@@ -105,6 +106,19 @@
                 <CheckBox Style="{StaticResource SlideCheckBox}" IsChecked="{Binding IsUsable}" />
             </StackPanel>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:Pair}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Style="{StaticResource ThemeBlk}" Text="邮箱:" />
+                <TextBox Text="{Binding Key}" IsReadOnly="True" Width="250" />
+                <TextBlock Style="{StaticResource ThemeBlk}" Text="授权码:"/>
+                <TextBox Text="{Binding Value}" IsReadOnly="True" Width="250" />
+                <Button Content="&#xe60a;" 
+                        Command="{Binding DataContext.RemoveMailAccountCommand,RelativeSource={RelativeSource AncestorType=TabControl}}" 
+                        CommandParameter="{Binding}"
+                        Style="{StaticResource IconButtonBase_Small_Scale}" FontSize="30"/>
+            </StackPanel>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Border CornerRadius="20" Padding="0,10" Background="LightBlue">
@@ -119,7 +133,7 @@
                         <Button Style="{StaticResource TransparentButtonBase}" Content="浏览" 
                                     Command="{Binding DataContext.FindImageDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
                     </StackPanel>
-                    
+
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="音乐默认目录：" Style="{StaticResource ThemeBlk}"/>
                         <TextBox IsReadOnly="True" Text="{Binding DataContext.LastMusicDir,RelativeSource={RelativeSource AncestorType=TabControl}}" 
@@ -135,6 +149,23 @@
                         <Button Style="{StaticResource TransparentButtonBase}" 
                                     Content="浏览" Command="{Binding DataContext.FindVideoDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
                     </StackPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="默认邮箱">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource ThemeBlk}" Text="邮箱:" />
+                        <TextBox Text="{Binding DataContext.CurrentMailPair.Key,UpdateSourceTrigger=PropertyChanged}" Width="250" attachs:MyAttachProperty.PlaceHolder="邮箱" />
+                        <TextBlock Style="{StaticResource ThemeBlk}" Text="授权码:"/>
+                        <PasswordBox attachs:MyAttachProperty.Password="{Binding DataContext.CurrentMailPair.Value,Mode=TwoWay}" Width="250" attachs:MyAttachProperty.PlaceHolder="授权码" />
+
+                        <Button Style="{StaticResource IconButtonBase_Small_Scale}"
+                                Command="{Binding DataContext.AddMailAccountCommand}"
+                                FontSize="30" Content="&#xe622;">
+                        </Button>
+                    </StackPanel>
+                    <ListBox ItemContainerStyle="{StaticResource ListBoxItem_General}"
+                             ItemsSource="{Binding DataContext.MailAccounts}"/>
                 </StackPanel>
             </TabItem>
             <TabItem Header="全局快捷键">

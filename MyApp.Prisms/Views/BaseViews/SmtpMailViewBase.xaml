@@ -1,0 +1,111 @@
+﻿<UserControl x:Class="MyApp.Prisms.Views.BaseViews.SmtpMailViewBase"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/" FontSize="20" FocusVisualStyle="{x:Null}"
+             prism:ViewModelLocator.AutoWireViewModel="True" Background="Transparent"
+             xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core"
+             attachs:MyAttachProperty.IsElementFocused="True">
+    <UserControl.Resources>
+        <Style x:Key="Prefix" TargetType="TextBlock">
+            <Setter Property="Width" Value="80" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+
+            <Setter Property="TextAlignment" Value="Right" />
+        </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+            <Setter Property="MinWidth" Value="200" />
+            <Setter Property="MaxWidth" Value="300" />
+        </Style>
+        <Style TargetType="ListBox">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem" BasedOn="{StaticResource HorizontalListBoxItemStyle}">
+                        <Setter Property="MaxWidth" Value="250" />
+                        <Setter Property="Width" Value="250" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="7*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" CommandManager.Executed="StackPanel_Executed">
+            <WrapPanel>
+                <TextBlock Style="{StaticResource Prefix}" Text="发件人:"/>
+                <TextBox attachs:MyAttachProperty.PlaceHolder="发件邮箱" MinWidth="100" Text="{Binding From}"/>
+                <TextBlock Text="{Binding MailSuffix,Mode=OneTime}"/>
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Style="{StaticResource Prefix}" Text="收件人:"/>
+                <ListBox x:Name="lstBxTos" ItemsSource="{Binding Tos}"/>
+                <TextBox x:Name="TosTextBox" attachs:MyAttachProperty.PlaceHolder="收件邮箱" />
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Style="{StaticResource Prefix}" Text="抄送:"/>
+                <ListBox x:Name="lstBxCcs" ItemsSource="{Binding Ccs}"/>
+                <TextBox x:Name="CcsTextBox" attachs:MyAttachProperty.PlaceHolder="抄送邮箱" />
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Style="{StaticResource Prefix}" Text="加密抄送:"/>
+                <ListBox x:Name="lstBxBccs" ItemsSource="{Binding Bccs}"/>
+                <TextBox x:Name="BccsTextBox" attachs:MyAttachProperty.PlaceHolder="加密抄送邮箱" />
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Style="{StaticResource Prefix}" Text="主题:"/>
+                <TextBox Text="{Binding Subject}" attachs:MyAttachProperty.PlaceHolder="主题" />
+            </WrapPanel>
+            <DockPanel>
+                <TextBlock Style="{StaticResource Prefix}" Text="正文:"/>
+                <RichTextBox MinHeight="100" MaxHeight="300" IsReadOnly="False" attachs:MyAttachProperty.PlaceHolder="正文" />
+            </DockPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button HorizontalAlignment="Center" Style="{StaticResource TransparentButtonBase}" 
+                        Command="{Binding SendMailCommand}" Content="发送"/>
+                <Button HorizontalAlignment="Center" Style="{StaticResource TransparentButtonBase}" 
+                        Command="{Binding QueryMailCommand}" Content="查询"/>
+            </StackPanel>
+        </StackPanel>
+
+        <DataGrid Style="{StaticResource DataGrid_Transparent}" Grid.Column="1" ItemsSource="{Binding Mails}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="编号" MaxWidth="60" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="发件人" Width="100" Binding="{Binding From}"/>
+                <DataGridTextColumn Header="收件人" Width="100" Binding="{Binding To}"/>
+                <DataGridTemplateColumn Header="主题" MaxWidth="80">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Subject}" ToolTip="{Binding Subject}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="发出时间" Width="100" Binding="{Binding SendTime,StringFormat=yyyy/MM/dd HH:mm:ss}"/>
+                <DataGridTemplateColumn Header="抄送" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding CCs}" ToolTip="{Binding CCs}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

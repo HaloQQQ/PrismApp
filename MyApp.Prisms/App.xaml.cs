@@ -108,7 +108,7 @@ namespace MyApp.Prisms
                 {
                     if (process.Id != Process.GetCurrentProcess().Id)
                     {
-                        AppUtils.ShowWindowAsync(process.MainWindowHandle, 1);
+                        AppUtils.ShowWindowAsync(process.MainWindowHandle);
 
                         Helper.Helper.Log(CustomConstants.Software_Log_Dir, "当前已有软件运行，启动失败!");
 
@@ -139,7 +139,11 @@ namespace MyApp.Prisms
             ViewModelLocationProvider.Register<SwitchBackgroundView, ImageDisplayViewModel>();
 
             containerRegistry.Register<Settings>();
-            this.Container.Resolve<IRegionManager>().RegisterViewWithRegion("SettingRegion", nameof(Settings));
+            var regionManager = this.Container.Resolve<IRegionManager>();
+            regionManager.RegisterViewWithRegion("SettingRegion", nameof(Settings));
+
+            regionManager.RegisterViewWithRegion("Smtp163MailRegion", () => new Smtp163MailView());
+            regionManager.RegisterViewWithRegion("SmtpQQMailRegion", () => new SmtpQQMailView());
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

@@ -114,11 +114,11 @@ namespace MyApp.Prisms.Views.BaseViews
             {
                 if (e.Command == ApplicationCommands.Close)
                 {
-                    if (e.OriginalSource is ListBoxItem item)
+                    if (e.OriginalSource is Button item)
                     {
                         if (this._tcpSocket is NewTcpServer server)
                         {
-                            server.DestoryClientHandler(item.Content.ToString());
+                            server.DestoryClientHandler(item.DataContext.ToString());
 
                             e.Handled = true;
                         }
@@ -162,7 +162,7 @@ namespace MyApp.Prisms.Views.BaseViews
 
             if (e.Command == ApplicationCommands.Close)
             {
-                e.CanExecute = e.OriginalSource is ListBoxItem;
+                e.CanExecute = e.OriginalSource is Button;
             }
             else if (e.Command == CustomCommands.PostCommand) // 发送消息
             {

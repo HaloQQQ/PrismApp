@@ -97,14 +97,6 @@
                              ItemsSource="{Binding ConnList}" Background="Transparent"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              ScrollViewer.VerticalScrollBarVisibility="Auto">
-                        <!--<ListBox.CommandBindings>
-                            <CommandBinding Command="Close" CanExecute="CommandBinding_OnCanExecute" Executed="CommandBinding_Executed"/>
-                        </ListBox.CommandBindings>-->
-                        <ListBox.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="移除" Command="Close" />
-                            </ContextMenu>
-                        </ListBox.ContextMenu>
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal" />

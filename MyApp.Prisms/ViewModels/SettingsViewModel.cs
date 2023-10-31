@@ -14,6 +14,8 @@ using MusicPlayerModule.MsgEvents;
 using IceTea.Wpf.Core.Contracts;
 using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Contracts;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -33,6 +35,8 @@ namespace MyApp.Prisms.ViewModels
             this.LastMusicDir = config.ReadConfigNode("Music", nameof(this.LastMusicDir));
             this.LastVideoDir = config.ReadConfigNode("Video", nameof(this.LastVideoDir));
 
+            this.LoadMailAccounts(config);
+
             this.InitHotkeys(config);
 
             this.InitCommands(containerProvider, eventAggregator);
@@ -44,6 +48,26 @@ namespace MyApp.Prisms.ViewModels
 
         private void InitCommands(IContainerProvider containerProvider, IEventAggregator eventAggregator)
         {
+            this.AddMailAccountCommand = new DelegateCommand(() =>
+            {
+                if (!Regex.IsMatch(this.CurrentMailPair.Key, "^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"))
+                {
+                    eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage("要添加的邮箱不符合邮箱规则"));
+                    return;
+                }
+
+                this.MailAccounts.Add(new Pair(this.CurrentMailPair.Key, this.CurrentMailPair.Value));
+                this.CurrentMailPair.Clear();
+            }, 
+            () => !this.CurrentMailPair.Key.IsNullOrBlank() && !this.CurrentMailPair.Value.IsNullOrBlank()
+            ).ObservesProperty(() => this.CurrentMailPair.Key)
+             .ObservesProperty(() => this.CurrentMailPair.Value);
+
+            this.RemoveMailAccountCommand = new DelegateCommand<Pair>(pair =>
+            {
+                this.MailAccounts.Remove(pair);
+            });
+
             this.FindImageDirCommand = new DelegateCommand(() =>
             {
                 var str = CommonUtils.OpenFolderDialog(this.ImageDir);
@@ -123,6 +147,29 @@ namespace MyApp.Prisms.ViewModels
             });
         }
 
+        #region Emails
+        public Pair CurrentMailPair { get; } = new();
+
+        public ObservableCollection<Pair> MailAccounts { get; } = new();
+
+        private void LoadMailAccounts(IConfigManager configManager)
+        {
+            var accounts = configManager.ReadConfigNode(CustomConstants.MailAccounts);
+
+            if (!accounts.IsNullOrBlank())
+            {
+                var dictionary = accounts.DeserializeObject<IEnumerable<Pair>>();
+
+                this.MailAccounts.AddRange(dictionary);
+            }
+
+            configManager.SetConfig += config =>
+            {
+                config.WriteConfigNode(MailAccounts.SerializeObject(), CustomConstants.MailAccounts);
+            };
+        }
+        #endregion
+
         #region GlobalHotKeys
         public ObservableCollection<GlobalHotKeyModel> GlobalHotKeys { get; private set; }
 
@@ -133,6 +180,9 @@ namespace MyApp.Prisms.ViewModels
         #endregion
 
         #region Commands
+        public ICommand AddMailAccountCommand { get; private set; }
+        public ICommand RemoveMailAccountCommand { get; private set; }
+
         public ICommand FindImageDirCommand { get; private set; }
         public ICommand FindMusicDirCommand { get; private set; }
         public ICommand FindVideoDirCommand { get; private set; }
@@ -208,5 +258,40 @@ namespace MyApp.Prisms.ViewModels
             }
         }
         #endregion
+    }
+
+    internal class Pair : BindableBase
+    {
+        public Pair()
+        {
+        }
+
+        public Pair(string key, string value)
+        {
+            Key = key;
+            Value = value;
+        }
+
+        private string _key;
+
+        public string Key
+        {
+            get => this._key;
+            set => SetProperty<string>(ref _key, value);
+        }
+
+        private string _value;
+
+        public string Value
+        {
+            get => this._value;
+            set => SetProperty<string>(ref _value, value);
+        }
+
+        public void Clear()
+        {
+            this.Key = string.Empty;
+            this.Value = string.Empty;
+        }
     }
 }
