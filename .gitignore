@@ -246,3 +246,5 @@ paket-files/
 # FAKE - F# Make
 .fake/
 .DS_Store
+/MyApp.Prisms/appsettings.json
+/MyApp.Prisms/appsettings.json
