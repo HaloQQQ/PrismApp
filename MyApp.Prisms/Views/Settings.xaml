@@ -112,7 +112,8 @@
                 <TextBlock Style="{StaticResource ThemeBlk}" Text="邮箱:" />
                 <TextBox Text="{Binding Key}" IsReadOnly="True" Width="250" />
                 <TextBlock Style="{StaticResource ThemeBlk}" Text="授权码:"/>
-                <TextBox Text="{Binding Value}" IsReadOnly="True" Width="250" />
+                <PasswordBox attachs:MyAttachProperty.Password="{Binding Value}" 
+                             attachs:MyAttachProperty.IsReadOnly="True" Width="250" />
                 <Button Content="&#xe60a;" 
                         Command="{Binding DataContext.RemoveMailAccountCommand,RelativeSource={RelativeSource AncestorType=TabControl}}" 
                         CommandParameter="{Binding}"
@@ -153,7 +154,7 @@
             </TabItem>
             <TabItem Header="默认邮箱">
                 <StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Margin="2,0" Orientation="Horizontal">
                         <TextBlock Style="{StaticResource ThemeBlk}" Text="邮箱:" />
                         <TextBox Text="{Binding DataContext.CurrentMailPair.Key,UpdateSourceTrigger=PropertyChanged}" Width="250" attachs:MyAttachProperty.PlaceHolder="邮箱" />
                         <TextBlock Style="{StaticResource ThemeBlk}" Text="授权码:"/>

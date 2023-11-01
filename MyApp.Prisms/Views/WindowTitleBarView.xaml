@@ -118,10 +118,10 @@
             </Popup>
 
             <ToggleButton x:Name="brightToggleButton" IsChecked="{Binding IsLeastBright}" 
-                                  Click="BrightToggleButton_Click" MouseWheel="Button_MouseWheel"
-                                  Style="{StaticResource BrightIconToggleButton}"/>
+                          Click="BrightToggleButton_Click" MouseWheel="Button_MouseWheel"
+                          Style="{StaticResource BrightIconToggleButton}"/>
             <Popup Placement="Bottom" HorizontalOffset="-117" VerticalOffset="-10" Width="250" Height="80"
-                   x:Name="brightPopup" attachs:MyAttachProperty.IsAppearOnHovered="True" 
+                   x:Name="brightPopup" attachs:MyAttachProperty.IsAppearOnHovered="True" Opened="BrightPopup_Opened" 
                    PlacementTarget="{Binding ElementName=brightToggleButton}">
                     <!--亮度调节模态框-->
                     <StackPanel Orientation="Horizontal" 

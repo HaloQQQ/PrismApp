@@ -20,7 +20,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
         protected abstract void InitEmailTransfer();
 
-        protected void Init(IEventAggregator eventAggregator)
+        protected void Init()
         {
             this.InitEmailTransfer();
 
@@ -37,7 +37,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
         public SmtpMailViewModelBase(IEventAggregator eventAggregator, IConfigManager configManager)
         {
-            Init(eventAggregator);
+            this.Init();
             _eventAggregator = eventAggregator;
             _configManager = configManager;
 
@@ -47,7 +47,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
                 {
                     CCList = Ccs,
                     BCCList = Bccs,
-                    AttachmentList = Attachments?.Select(filePath => new System.Net.Mail.Attachment(filePath))
+                    AttachmentList = Attachments.Select(filePath => new System.Net.Mail.Attachment(filePath))
                 });
             }, () => !this.From.IsNullOrBlank()
                     && !this.Tos.IsNullOrEmpty()
@@ -110,7 +110,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
                 if (str.IsNullOrBlank())
                 {
-                    PublishMessage($"未找到任何邮箱相关配置信息，请配置完成并重启程序后重试");
+                    PublishMessage("未找到任何邮箱相关配置信息，请配置完成并重启程序后重试");
                     return string.Empty;
                 }
 
@@ -129,10 +129,10 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
                 }
 
                 PublishMessage($"未找到{fromMail}邮箱相关配置信息，请配置完成并重启程序后重试");
+
                 return string.Empty;
             }
         }
-
 
         private string _from;
 

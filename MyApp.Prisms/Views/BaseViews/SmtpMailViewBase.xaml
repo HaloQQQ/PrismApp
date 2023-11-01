@@ -13,12 +13,11 @@
             <Setter Property="TextAlignment" Value="Right" />
         </Style>
         <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-            <Setter Property="MinWidth" Value="200" />
-            <Setter Property="MaxWidth" Value="300" />
+            <Setter Property="MinWidth" Value="220" />
+            <Setter Property="MaxWidth" Value="220" />
         </Style>
-        <Style TargetType="ListBox">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderThickness" Value="0" />
+        <Style TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
+            <Setter Property="VirtualizingPanel.IsVirtualizing" Value="False" />
 
             <Setter Property="ItemContainerStyle">
                 <Setter.Value>
@@ -48,42 +47,54 @@
             <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="7*" />
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" CommandManager.Executed="StackPanel_Executed">
-            <WrapPanel>
-                <TextBlock Style="{StaticResource Prefix}" Text="发件人:"/>
-                <TextBox attachs:MyAttachProperty.PlaceHolder="发件邮箱" MinWidth="100" Text="{Binding From}"/>
-                <TextBlock Text="{Binding MailSuffix,Mode=OneTime}"/>
-            </WrapPanel>
-            <WrapPanel>
-                <TextBlock Style="{StaticResource Prefix}" Text="收件人:"/>
-                <ListBox x:Name="lstBxTos" ItemsSource="{Binding Tos}"/>
-                <TextBox x:Name="TosTextBox" attachs:MyAttachProperty.PlaceHolder="收件邮箱" />
-            </WrapPanel>
-            <WrapPanel>
-                <TextBlock Style="{StaticResource Prefix}" Text="抄送:"/>
-                <ListBox x:Name="lstBxCcs" ItemsSource="{Binding Ccs}"/>
-                <TextBox x:Name="CcsTextBox" attachs:MyAttachProperty.PlaceHolder="抄送邮箱" />
-            </WrapPanel>
-            <WrapPanel>
-                <TextBlock Style="{StaticResource Prefix}" Text="加密抄送:"/>
-                <ListBox x:Name="lstBxBccs" ItemsSource="{Binding Bccs}"/>
-                <TextBox x:Name="BccsTextBox" attachs:MyAttachProperty.PlaceHolder="加密抄送邮箱" />
-            </WrapPanel>
-            <WrapPanel>
-                <TextBlock Style="{StaticResource Prefix}" Text="主题:"/>
-                <TextBox Text="{Binding Subject}" attachs:MyAttachProperty.PlaceHolder="主题" />
-            </WrapPanel>
-            <DockPanel>
-                <TextBlock Style="{StaticResource Prefix}" Text="正文:"/>
-                <RichTextBox MinHeight="100" MaxHeight="300" IsReadOnly="False" attachs:MyAttachProperty.PlaceHolder="正文" />
-            </DockPanel>
-            <StackPanel Orientation="Horizontal">
-                <Button HorizontalAlignment="Center" Style="{StaticResource TransparentButtonBase}" 
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+            <StackPanel CommandManager.Executed="StackPanel_Executed">
+                <WrapPanel>
+                    <TextBlock Style="{StaticResource Prefix}" Text="发件人:"/>
+                    <TextBox attachs:MyAttachProperty.PlaceHolder="发件邮箱" 
+                             MinWidth="125" MaxWidth="125" Text="{Binding From,UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="{Binding MailSuffix,Mode=OneTime}"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Style="{StaticResource Prefix}" Text="收件人:"/>
+                    <TextBox x:Name="TosTextBox" attachs:MyAttachProperty.PlaceHolder="收件邮箱" />
+                    <ListBox x:Name="lstBxTos" ItemsSource="{Binding Tos}"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Style="{StaticResource Prefix}" Text="抄送:"/>
+                    <TextBox x:Name="CcsTextBox" attachs:MyAttachProperty.PlaceHolder="抄送邮箱" />
+                    <ListBox x:Name="lstBxCcs" ItemsSource="{Binding Ccs}"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Style="{StaticResource Prefix}" Text="加密抄送:"/>
+                    <TextBox x:Name="BccsTextBox" attachs:MyAttachProperty.PlaceHolder="加密抄送邮箱" />
+                    <ListBox x:Name="lstBxBccs" ItemsSource="{Binding Bccs}"/>
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Style="{StaticResource Prefix}" Text="主题:"/>
+                    <TextBox Text="{Binding Subject,UpdateSourceTrigger=PropertyChanged}" attachs:MyAttachProperty.PlaceHolder="主题" />
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Style="{StaticResource Prefix}" Text="正文:"/>
+                    <TextBox VerticalContentAlignment="Top" Text="{Binding Body,UpdateSourceTrigger=PropertyChanged}"
+                             TextWrapping="Wrap" MinHeight="100" MaxHeight="200"
+                             VerticalScrollBarVisibility="Auto"
+                             attachs:MyAttachProperty.PlaceHolder="正文" />
+                </WrapPanel>
+                <WrapPanel>
+                    <TextBlock Style="{StaticResource Prefix}" Text="附件:"/>
+                    <Button Command="{x:Static ApplicationCommands.Open}" Content="&#xe704;" 
+                        Style="{StaticResource IconButtonBase_Small_Scale}" FontSize="20" />
+                    <ListBox x:Name="lstBxAttachments" ItemsSource="{Binding Attachments}" />
+                </WrapPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button HorizontalAlignment="Center" Style="{StaticResource TransparentButtonBase}" 
                         Command="{Binding SendMailCommand}" Content="发送"/>
-                <Button HorizontalAlignment="Center" Style="{StaticResource TransparentButtonBase}" 
+                    <Button HorizontalAlignment="Center" Style="{StaticResource TransparentButtonBase}" 
                         Command="{Binding QueryMailCommand}" Content="查询"/>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </ScrollViewer>
 
         <DataGrid Style="{StaticResource DataGrid_Transparent}" Grid.Column="1" ItemsSource="{Binding Mails}">
             <DataGrid.Columns>

@@ -185,6 +185,11 @@ namespace MyApp.Prisms.Views
                 e.Handled = true;
             }
         }
+
+        private void BrightPopup_Opened(object sender, EventArgs e)
+        {
+            this._softwareViewModel.RefreshBrightness();
+        }
         #endregion
     }
 }

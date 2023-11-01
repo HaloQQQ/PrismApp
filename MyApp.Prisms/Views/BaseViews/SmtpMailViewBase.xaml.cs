@@ -1,5 +1,7 @@
 ﻿using IceTea.Atom.Extensions;
 using IceTea.Wpf.Core.Contracts;
+using IceTea.Wpf.Core.Contracts.MediaInfo;
+using IceTea.Wpf.Core.Utils;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using System;
 using System.Text.RegularExpressions;
@@ -18,10 +20,10 @@ namespace MyApp.Prisms.Views.BaseViews
         {
             InitializeComponent();
 
-            this._viewModel = this.DataContext as SmtpMailViewModelBase;
+            this._viewModel = DataContext as SmtpMailViewModelBase;
         }
 
-        private void StackPanel_Executed(object sender, System.Windows.Input.ExecutedRoutedEventArgs e)
+        private void StackPanel_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Command == CustomCommands.PostCommand)
             {
@@ -30,7 +32,7 @@ namespace MyApp.Prisms.Views.BaseViews
                 {
                     var text = textBox.Text;
 
-                    if(!Regex.IsMatch(text, "^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"))
+                    if (!Regex.IsMatch(text, "^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"))
                     {
                         System.Windows.MessageBox.Show("添加内容必须为邮箱");
                         return;
@@ -73,9 +75,23 @@ namespace MyApp.Prisms.Views.BaseViews
                         case "lstBxBccs":
                             this._viewModel.Bccs.Remove(value);
                             break;
+                        case "lstBxAttachments":
+                            this._viewModel.Attachments.Remove(value);
+                            break;
                         default:
                             throw new NotSupportedException();
                     }
+                }
+            }
+            else if (e.Command == ApplicationCommands.Open)
+            {
+                e.Handled = true;
+
+                var selectFile = CommonUtils.OpenFileDialog(string.Empty, new MusicMedia());
+
+                if (selectFile != null)
+                {
+                    this._viewModel.Attachments.AddRange(selectFile.FileNames);
                 }
             }
         }
