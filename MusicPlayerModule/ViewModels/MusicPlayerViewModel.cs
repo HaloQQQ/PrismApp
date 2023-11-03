@@ -404,9 +404,6 @@ namespace MusicPlayerModule.ViewModels
 
             PlayingMusicViewModel.ToNextMusic += NextMusic;
 
-            PlayingMusicViewModel.ScrollBarMoveToLyric += cureentLineIndex =>
-                eventAggregator.GetEvent<UpdateScrollBarToTargetLyricEvent>().Publish(cureentLineIndex);
-
             MusicWithClassifyModel.SelectStatusChanged +=
                 selected => this.DistributeMusicViewModel.CheckClassifySelectAllStatus();
 
@@ -503,10 +500,9 @@ namespace MusicPlayerModule.ViewModels
 
             if (this.Running = item != null)
             {
-                this.CurrentMusic.ResetABPoint();
+                this.CurrentMusic.Reset();
 
                 this._eventAggregator.GetEvent<ResetPlayerAndPlayMusicEvent>().Publish();
-                this._eventAggregator.GetEvent<UpdateScrollBarToTargetLyricEvent>().Publish(0);
             }
         }
 

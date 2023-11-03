@@ -179,9 +179,6 @@ namespace MusicPlayerModule.ViewModels
                 }
 
                 currentLine.IsPlayingLine = true;
-
-                // 更新显示
-                ScrollBarMoveToLyric?.Invoke(currentIndex);
             }
 
             return true;
@@ -215,8 +212,6 @@ namespace MusicPlayerModule.ViewModels
             get => this._anotherLine;
             set => SetProperty<KRCLyricsLine>(ref this._anotherLine, value);
         }
-
-        internal static event Action<int> ScrollBarMoveToLyric;
 
         internal static event Action<PlayingMusicViewModel> ToNextMusic;
 

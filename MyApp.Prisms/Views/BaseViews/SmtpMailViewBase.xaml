@@ -17,8 +17,6 @@
             <Setter Property="MaxWidth" Value="220" />
         </Style>
         <Style TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
-            <Setter Property="VirtualizingPanel.IsVirtualizing" Value="False" />
-
             <Setter Property="ItemContainerStyle">
                 <Setter.Value>
                     <Style TargetType="ListBoxItem" BasedOn="{StaticResource HorizontalListBoxItemStyle}">

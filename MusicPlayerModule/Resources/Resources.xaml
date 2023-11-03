@@ -8,6 +8,14 @@
         <VisualBrush.Visual>
             <Border>
                 <Border.Background>
+                    <!--<RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5">
+                        <RadialGradientBrush.GradientStops>
+                            <GradientStop Color="White" Offset="0"/>
+                            <GradientStop Color="White" Offset="0.9"/>
+                            <GradientStop Color="Transparent" Offset="1"/>
+                        </RadialGradientBrush.GradientStops>
+                    </RadialGradientBrush>-->
+                    
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Offset="0" Color="Transparent"/>
                         <GradientStop Offset="0.15" Color="White"/>

@@ -87,7 +87,7 @@ namespace MyApp.Prisms.Views.BaseViews
             {
                 e.Handled = true;
 
-                var selectFile = CommonUtils.OpenFileDialog(string.Empty, new MusicMedia());
+                var selectFile = CommonUtils.OpenFileDialog(string.Empty, new AnyMedia());
 
                 if (selectFile != null)
                 {

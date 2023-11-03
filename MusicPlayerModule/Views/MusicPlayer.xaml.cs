@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using IceTea.Wpf.Core.Extensions;
+using System;
 
 namespace MusicPlayerModule.Views
 {
@@ -33,7 +34,6 @@ namespace MusicPlayerModule.Views
             this._lyricTime.Tick += (sender, e) => this.musicSlider.Value = this.mediaPlayer.Position.TotalMilliseconds;
 
             this._eventAggregator.GetEvent<MusicProgreeTimerIsEnableUpdatedEvent>().Subscribe(isTimerEnable => this._lyricTime.IsEnabled = isTimerEnable);
-            this._eventAggregator.GetEvent<UpdateScrollBarToTargetLyricEvent>().Subscribe(cureentLineIndex => this.UpdateLyricPosition(cureentLineIndex));
             this._eventAggregator.GetEvent<ResetPlayerAndPlayMusicEvent>().Subscribe(() =>
             {
                 this.ResetMediaPlayer();
@@ -147,24 +147,26 @@ namespace MusicPlayerModule.Views
         }
 
         #region 歌词刷新
-        private void UpdateLyricPosition(int index)
+        private void LyricList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            e.Handled = true;
+
+            if (LyricList.Items.Count == 0)
+            {
+                return;
+            }
+
+            var index = this.LyricList.SelectedIndex;
+
             // 查找 ListBox 中的 ScrollViewer 元素
             DependencyObject child = this.LyricList.GetVisualChildObject<ScrollViewer>();
 
             // 如果找到了 ScrollViewer，将其滚动到选中项的位置
             if (child is ScrollViewer scrollViewer)
             {
-                var value = index > 3 ? index - 3 : index;
+                var value = index - 3;
 
-                if (value == 0 || LyricList.Items.Count == 0)
-                {
-                    scrollViewer.ScrollToVerticalOffset(0);
-                }
-                else
-                {
-                    scrollViewer.ScrollToVerticalOffset(value * scrollViewer.ExtentHeight / LyricList.Items.Count);
-                }
+                scrollViewer.ScrollToVerticalOffset(value * scrollViewer.ExtentHeight / LyricList.Items.Count);
             }
         }
         #endregion
@@ -348,7 +350,7 @@ namespace MusicPlayerModule.Views
             {
                 this.SwitchLyric(e);
             }
-            else if(e.Command == ApplicationCommands.Open)
+            else if (e.Command == ApplicationCommands.Open)
             {
                 e.Handled = true;
 

@@ -99,5 +99,10 @@ namespace MusicPlayerModule.ViewModels.Base
         }
 
         public abstract void Dispose();
+
+        public virtual void Reset()
+        {
+            this.ResetABPoint();
+        }
     }
 }

@@ -162,8 +162,21 @@
                 <StackPanel Orientation="Horizontal">
                     <Button Command="{Binding PlayAllCommand}" IsEnabled="{Binding IsLoading,Converter={StaticResource OppositeBoolConverter}}" ToolTip="{Binding KeyGestureDic[播放所有音乐].ToolTip}" Style="{StaticResource PlayAllButton}"/>
 
-                    <ToggleButton x:Name="ToggleBatch" IsEnabled="{Binding IsLoading,Converter={StaticResource OppositeBoolConverter}}" Style="{StaticResource BatchOperateToggleButton}"
-                                  IsChecked="{Binding IsBatchSelect,Mode=TwoWay}"/>
+                    <ToggleButton x:Name="ToggleBatch" IsChecked="{Binding IsBatchSelect,Mode=TwoWay}">
+                        <ToggleButton.Style>
+                            <Style TargetType="ToggleButton" BasedOn="{StaticResource BatchOperateToggleButton}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DisplayFavorites.Count}" Value="0">
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToggleButton.Style>
+                        
+                    </ToggleButton>
 
                     <Button Command="{Binding DownLoadCommand}" IsEnabled="{Binding IsLoading,Converter={StaticResource OppositeBoolConverter}}" Style="{StaticResource DownloadButton}"/>
 
@@ -267,6 +280,10 @@
                                 <Style.Triggers>
                                     <DataTrigger Value="0" Binding="{Binding DisplayFavorites.Count}">
                                         <Setter Property="ContextMenu" Value="{x:Null}" />
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                        <Setter Property="IsEnabled" Value="False" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -719,7 +736,6 @@
 
                 <DockPanel Width="{Binding ActualWidth,RelativeSource={RelativeSource AncestorType=Border},Converter={StaticResource DigitDoubleConverter},ConverterParameter=0.6}" 
                            VerticalAlignment="Top">
-                    <!--Height="{Binding ActualHeight,RelativeSource={RelativeSource AncestorType=Border},Converter={StaticResource DigitSubConverter},ConverterParameter=0.65}"-->
                     <DockPanel.Height>
                         <MultiBinding Converter="{StaticResource LyricHeightMultiConverter}">
                             <MultiBinding.Bindings>
@@ -749,13 +765,16 @@
                     <ListBox Width="{Binding ActualWidth,RelativeSource={RelativeSource AncestorType=DockPanel}}"
                              x:Name="LyricList" DockPanel.Dock="Top" HorizontalAlignment="Center"
                              Style="{StaticResource LyricListBox}" Visibility="Visible"
-                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                             SelectionChanged="LyricList_SelectionChanged"
+                             ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                              OpacityMask="{StaticResource GradientOpacityMask}"
                              ItemsSource="{Binding CurrentMusic.Music.Lyric.Lines}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem" BasedOn="{StaticResource LyricListBoxItem}">
                                 <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick"/>
-                                <EventSetter Event="PreviewMouseDown" Handler="SwitchLyricMode"/>
+                                <EventSetter Event="PreviewMouseRightButtonDown" Handler="SwitchLyricMode"/>
+                                
+                                <Setter Property="IsSelected" Value="{Binding IsPlayingLine,Mode=OneWay}" />
 
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsPlayingLine}" Value="True">
