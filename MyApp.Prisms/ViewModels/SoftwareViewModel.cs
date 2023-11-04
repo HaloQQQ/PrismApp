@@ -378,21 +378,28 @@ namespace MyApp.Prisms.ViewModels
 
             Task.Run(async () =>
             {
-                while (this._timer != null && this._timer.IsEnabled)
+                while (this._timer.IsNotNullAnd(timer => timer.IsEnabled))
                 {
-                    this.CpuRate = ComputerInfo.GetCpuUsedRate();
-                    this.RamRate = ComputerInfo.GetMemoryUsedRate();
+                    try
+                    {
+                        this.CpuRate = ComputerInfo.GetCpuUsedRate();
+                        this.RamRate = ComputerInfo.GetMemoryUsedRate();
 
-                    await Task.Delay(2000);
+                        await Task.Delay(2000);
+                    }
+                    catch (Exception ex)
+                    {
+                        Helper.Helper.Log("App异常日志", ex.Message);
+                    }
                 }
             });
         }
 
         private void SubscribeCustomCommandEvent()
         {
-            MyEventManager.Default.GetEvent<OpenSettingEvent>().Execute += () => this.Settings.IsEditingSetting = true;
-            MyEventManager.Default.GetEvent<HideTitleBarEvent>().Execute += () => this.IsTitleBarHidden = !this.IsTitleBarHidden;
-            MyEventManager.Default.GetEvent<LoginEvent>().Execute += () => this.IsLogin = !this.IsLogin;
+            MyEventManager.Current.GetEvent<OpenSettingEvent>().Execute += () => this.Settings.IsEditingSetting = true;
+            MyEventManager.Current.GetEvent<HideTitleBarEvent>().Execute += () => this.IsTitleBarHidden = !this.IsTitleBarHidden;
+            MyEventManager.Current.GetEvent<LoginEvent>().Execute += () => this.IsLogin = !this.IsLogin;
         }
 
         public void Dispose()
