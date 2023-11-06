@@ -7,7 +7,7 @@
         Style="{StaticResource WithoutTitleBar}"
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
-        xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core"
+        xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
         MinHeight="640" MinWidth="1200">
 
     <Window.Resources>
@@ -37,7 +37,7 @@
                 <views:WindowTitleBarView x:Name="TitleBarSlider" DockPanel.Dock="Top" VerticalAlignment="Top"/>
 
                 <TabControl ItemContainerStyle="{StaticResource TabItem_Transparent}"
-                        attachs:MyAttachProperty.IsCollapsed="{Binding IsTitleBarHidden}"
+                        attaches:MyAttachProperty.IsCollapsed="{Binding IsTitleBarHidden}"
                         DockPanel.Dock="Bottom" SelectionChanged="Selector_OnSelectionChanged">
                     <TabItem Header="通讯工具" />
                     <TabItem Header="图片列表" />

@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:globalhotkey="clr-namespace:IceTea.Atom.Utils.HotKey.GlobalHotKey;assembly=IceTea.Atom"
              xmlns:appHotKey="clr-namespace:IceTea.General.Utils.AppHotKey;assembly=IceTea.General"
-             xmlns:converters="clr-namespace:IceTea.Wpf.Core.Converters;assembly=IceTea.Wpf.Core"
+             xmlns:converters="http://IceTea.Wpf.Core.com/"
              MinWidth="800" MaxHeight="500"
              xmlns:viewModels="clr-namespace:MyApp.Prisms.ViewModels"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core" 
+             xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/" 
              prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
         <converters:Key2StringConverter x:Key="Key2StringConverter"/>
@@ -58,7 +58,7 @@
                       KeyUp="AppHotKeyTextBox_OnKeyUp">
                     <TextBox.Style>
                         <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-                            <Setter Property="attachs:MyAttachProperty.PlaceHolder" Value="组合键"/>
+                            <Setter Property="attaches:MyAttachProperty.PlaceHolder" Value="组合键"/>
 
                             <Style.Triggers>
                                 <DataTrigger Value="False" Binding="{Binding IsUsable}">
@@ -92,7 +92,7 @@
                          KeyUp="GlobalHotKeyTextBox_OnKeyUp">
                     <TextBox.Style>
                         <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-                            <Setter Property="attachs:MyAttachProperty.PlaceHolder" Value="组合键"/>
+                            <Setter Property="attaches:MyAttachProperty.PlaceHolder" Value="组合键"/>
 
                             <Style.Triggers>
                                 <DataTrigger Value="False" Binding="{Binding IsUsable}">
@@ -112,8 +112,8 @@
                 <TextBlock Style="{StaticResource ThemeBlk}" Text="邮箱:" />
                 <TextBox Text="{Binding Key}" IsReadOnly="True" Width="250" />
                 <TextBlock Style="{StaticResource ThemeBlk}" Text="授权码:"/>
-                <PasswordBox attachs:MyAttachProperty.Password="{Binding Value}" 
-                             attachs:MyAttachProperty.IsReadOnly="True" Width="250" />
+                <PasswordBox attaches:MyAttachProperty.Password="{Binding Value}" 
+                             attaches:MyAttachProperty.IsReadOnly="True" Width="250" />
                 <Button Content="&#xe60a;" 
                         Command="{Binding DataContext.RemoveMailAccountCommand,RelativeSource={RelativeSource AncestorType=TabControl}}" 
                         CommandParameter="{Binding}"
@@ -130,7 +130,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="图片默认目录：" Style="{StaticResource ThemeBlk}"/>
                         <TextBox IsReadOnly="True" Text="{Binding DataContext.ImageDir,RelativeSource={RelativeSource AncestorType=TabControl}}" 
-                                 attachs:MyAttachProperty.PlaceHolder="空目录"/>
+                                 attaches:MyAttachProperty.PlaceHolder="空目录"/>
                         <Button Style="{StaticResource TransparentButtonBase}" Content="浏览" 
                                     Command="{Binding DataContext.FindImageDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
                     </StackPanel>
@@ -138,7 +138,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="音乐默认目录：" Style="{StaticResource ThemeBlk}"/>
                         <TextBox IsReadOnly="True" Text="{Binding DataContext.LastMusicDir,RelativeSource={RelativeSource AncestorType=TabControl}}" 
-                                 attachs:MyAttachProperty.PlaceHolder="空目录"/>
+                                 attaches:MyAttachProperty.PlaceHolder="空目录"/>
                         <Button Style="{StaticResource TransparentButtonBase}" Content="浏览" 
                                     Command="{Binding DataContext.FindMusicDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
                     </StackPanel>
@@ -146,7 +146,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="视频默认目录：" Style="{StaticResource ThemeBlk}"/>
                         <TextBox IsReadOnly="True" Text="{Binding DataContext.LastVideoDir,RelativeSource={RelativeSource AncestorType=TabControl}}" 
-                                 attachs:MyAttachProperty.PlaceHolder="空目录"/>
+                                 attaches:MyAttachProperty.PlaceHolder="空目录"/>
                         <Button Style="{StaticResource TransparentButtonBase}" 
                                     Content="浏览" Command="{Binding DataContext.FindVideoDirCommand,RelativeSource={RelativeSource AncestorType=TabControl}}"/>
                     </StackPanel>
@@ -156,9 +156,9 @@
                 <StackPanel>
                     <StackPanel Margin="2,0" Orientation="Horizontal">
                         <TextBlock Style="{StaticResource ThemeBlk}" Text="邮箱:" />
-                        <TextBox Text="{Binding DataContext.CurrentMailPair.Key,UpdateSourceTrigger=PropertyChanged}" Width="250" attachs:MyAttachProperty.PlaceHolder="邮箱" />
+                        <TextBox Text="{Binding DataContext.CurrentMailPair.Key,UpdateSourceTrigger=PropertyChanged}" Width="250" attaches:MyAttachProperty.PlaceHolder="邮箱" />
                         <TextBlock Style="{StaticResource ThemeBlk}" Text="授权码:"/>
-                        <PasswordBox attachs:MyAttachProperty.Password="{Binding DataContext.CurrentMailPair.Value,Mode=TwoWay}" Width="250" attachs:MyAttachProperty.PlaceHolder="授权码" />
+                        <PasswordBox attaches:MyAttachProperty.Password="{Binding DataContext.CurrentMailPair.Value,Mode=TwoWay}" Width="250" attaches:MyAttachProperty.PlaceHolder="授权码" />
 
                         <Button Style="{StaticResource IconButtonBase_Small_Scale}"
                                 Command="{Binding DataContext.AddMailAccountCommand}"

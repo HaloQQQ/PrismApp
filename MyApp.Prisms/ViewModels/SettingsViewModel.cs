@@ -16,6 +16,7 @@ using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Contracts;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -23,6 +24,7 @@ namespace MyApp.Prisms.ViewModels
     {
         public SettingsViewModel(
                 IConfigManager config,
+                ISettingManager settingManager,
                 IAppHotKeyManager appHotKeyManager,
                 IContainerProvider containerProvider,
                 IEventAggregator eventAggregator
@@ -35,18 +37,18 @@ namespace MyApp.Prisms.ViewModels
             this.LastMusicDir = config.ReadConfigNode("Music", nameof(this.LastMusicDir));
             this.LastVideoDir = config.ReadConfigNode("Video", nameof(this.LastVideoDir));
 
-            this.LoadMailAccounts(config);
+            this.LoadMailAccounts(config, settingManager);
 
             this.InitHotkeys(config);
 
-            this.InitCommands(containerProvider, eventAggregator);
+            this.InitCommands(containerProvider, eventAggregator, settingManager);
         }
 
         public IAppHotKeyManager AppHotKeyManager { get; private set; }
 
         private IConfigManager _config;
 
-        private void InitCommands(IContainerProvider containerProvider, IEventAggregator eventAggregator)
+        private void InitCommands(IContainerProvider containerProvider, IEventAggregator eventAggregator, ISettingManager settingManager)
         {
             this.AddMailAccountCommand = new DelegateCommand(() =>
             {
@@ -57,8 +59,9 @@ namespace MyApp.Prisms.ViewModels
                 }
 
                 this.MailAccounts.Add(new Pair(this.CurrentMailPair.Key, this.CurrentMailPair.Value));
+                settingManager.AddOrUpdate(this.CurrentMailPair.Key, this.CurrentMailPair.Value);
                 this.CurrentMailPair.Clear();
-            }, 
+            },
             () => !this.CurrentMailPair.Key.IsNullOrBlank() && !this.CurrentMailPair.Value.IsNullOrBlank()
             ).ObservesProperty(() => this.CurrentMailPair.Key)
              .ObservesProperty(() => this.CurrentMailPair.Value);
@@ -66,6 +69,7 @@ namespace MyApp.Prisms.ViewModels
             this.RemoveMailAccountCommand = new DelegateCommand<Pair>(pair =>
             {
                 this.MailAccounts.Remove(pair);
+                settingManager.Remove(pair.Key);
             });
 
             this.FindImageDirCommand = new DelegateCommand(() =>
@@ -152,7 +156,7 @@ namespace MyApp.Prisms.ViewModels
 
         public ObservableCollection<Pair> MailAccounts { get; } = new();
 
-        private void LoadMailAccounts(IConfigManager configManager)
+        private void LoadMailAccounts(IConfigManager configManager, ISettingManager settingManager)
         {
             var accounts = configManager.ReadConfigNode(CustomConstants.MailAccounts);
 
@@ -161,6 +165,8 @@ namespace MyApp.Prisms.ViewModels
                 var dictionary = accounts.DeserializeObject<IEnumerable<Pair>>();
 
                 this.MailAccounts.AddRange(dictionary);
+
+                settingManager.AddRange(dictionary.Select<Pair, KeyValuePair<string, string>>(pair => new KeyValuePair<string, string>(pair.Key, pair.Value)));
             }
 
             configManager.SetConfig += config =>

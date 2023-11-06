@@ -9,7 +9,6 @@ using System.Linq;
 using System.Windows.Input;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Contracts;
-using MyApp.Prisms.Helper;
 using System.Collections.Generic;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
@@ -28,22 +27,25 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
             _emailTransfer.SendCompletedEventHandler += (sender, e) => { PublishMessage("发送完成"); this.Reset(); };
         }
 
-        protected virtual string AppendSuffix(string number)
-        {
-            return number + MailSuffix;
-        }
-
         public abstract string MailSuffix { get; }
 
-        public SmtpMailViewModelBase(IEventAggregator eventAggregator, IConfigManager configManager)
+        protected string FromMail => this.From + this.MailSuffix;
+
+        public SmtpMailViewModelBase(IEventAggregator eventAggregator, IConfigManager configManager, ISettingManager settingManager)
         {
             this.Init();
             _eventAggregator = eventAggregator;
             _configManager = configManager;
-
+            _settingManager = settingManager;
             SendMailCommand = new DelegateCommand(() =>
             {
-                _emailTransfer.SendInMailAsync(new Mail(AppendSuffix(From), Tos, Subject, Password, Body, false)
+                var password = Password;
+                if (password.IsNullOrBlank())
+                {
+                    return;
+                }
+
+                _emailTransfer.SendInMailAsync(new Mail(this.FromMail, Tos, Subject, password, Body, false)
                 {
                     CCList = Ccs,
                     BCCList = Bccs,
@@ -61,7 +63,13 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
             QueryMailCommand = new DelegateCommand(() =>
             {
-                var result = _emailTransfer.GetMailMessage(this.AppendSuffix(this.From), this.Password);
+                var password = Password;
+                if (password.IsNullOrBlank())
+                {
+                    return;
+                }
+
+                var result = _emailTransfer.GetMailMessage(this.FromMail, password);
 
                 if (!result.IsSucceed)
                 {
@@ -106,31 +114,14 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
         {
             get
             {
-                var str = this._configManager.ReadConfigNode(CustomConstants.MailAccounts);
-
-                if (str.IsNullOrBlank())
+                var fromMail = this.FromMail;
+                if (!this._settingManager.TryGetValue(fromMail, out var password))
                 {
-                    PublishMessage("未找到任何邮箱相关配置信息，请配置完成并重启程序后重试");
+                    PublishMessage($"未找到{fromMail}邮箱相关配置信息，请在配置页面配置完成后重试");
                     return string.Empty;
                 }
 
-                var pairs = str.DeserializeObject<IEnumerable<KeyValuePair<string, string>>>();
-
-                var fromMail = this.AppendSuffix(From);
-                if (pairs != null)
-                {
-                    foreach (var item in pairs)
-                    {
-                        if (fromMail.EqualsIgnoreCase(item.Key))
-                        {
-                            return item.Value;
-                        }
-                    }
-                }
-
-                PublishMessage($"未找到{fromMail}邮箱相关配置信息，请配置完成并重启程序后重试");
-
-                return string.Empty;
+                return password;
             }
         }
 
@@ -185,7 +176,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
         private readonly IEventAggregator _eventAggregator;
         private readonly IConfigManager _configManager;
-
+        private readonly ISettingManager _settingManager;
         private ObservableCollection<string> _attachments = new();
         public ObservableCollection<string> Attachments
         {

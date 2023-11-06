@@ -17,8 +17,9 @@ using IceTea.Atom.Utils.HotKey.GlobalHotKey;
 using IceTea.General.Utils;
 using IceTea.General.Utils.AppHotKey;
 using MusicPlayerModule.MsgEvents;
-using IceTea.Wpf.Core.Contracts;
 using IceTea.Atom.Contracts;
+using IceTea.Atom.Utils.Setting;
+using IceTea.Wpf.Core.Contracts;
 
 namespace MyApp.Prisms
 {
@@ -120,6 +121,7 @@ namespace MyApp.Prisms
             Helper.Helper.Log(CustomConstants.Software_Log_Dir, $"进程{processName}启动成功!");
 
             containerRegistry.RegisterSingleton<IAppHotKeyManager, AppHotKeyManager>();
+            containerRegistry.RegisterSingleton<ISettingManager, SettingManager>();
 
             containerRegistry.RegisterSingleton<SettingsViewModel>();
 

@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/" FontSize="20" FocusVisualStyle="{x:Null}"
              prism:ViewModelLocator.AutoWireViewModel="True" Background="Transparent"
-             xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core"
-             attachs:MyAttachProperty.IsElementFocused="True">
+             xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
+             attaches:MyAttachProperty.IsElementFocused="True">
     <UserControl.Resources>
         <Style x:Key="Prefix" TargetType="TextBlock">
             <Setter Property="Width" Value="80" />
@@ -49,35 +49,35 @@
             <StackPanel CommandManager.Executed="StackPanel_Executed">
                 <WrapPanel>
                     <TextBlock Style="{StaticResource Prefix}" Text="发件人:"/>
-                    <TextBox attachs:MyAttachProperty.PlaceHolder="发件邮箱" 
+                    <TextBox attaches:MyAttachProperty.PlaceHolder="发件邮箱" 
                              MinWidth="125" MaxWidth="125" Text="{Binding From,UpdateSourceTrigger=PropertyChanged}"/>
                     <TextBlock Text="{Binding MailSuffix,Mode=OneTime}"/>
                 </WrapPanel>
                 <WrapPanel>
                     <TextBlock Style="{StaticResource Prefix}" Text="收件人:"/>
-                    <TextBox x:Name="TosTextBox" attachs:MyAttachProperty.PlaceHolder="收件邮箱" />
+                    <TextBox x:Name="TosTextBox" attaches:MyAttachProperty.PlaceHolder="收件邮箱" />
                     <ListBox x:Name="lstBxTos" ItemsSource="{Binding Tos}"/>
                 </WrapPanel>
                 <WrapPanel>
                     <TextBlock Style="{StaticResource Prefix}" Text="抄送:"/>
-                    <TextBox x:Name="CcsTextBox" attachs:MyAttachProperty.PlaceHolder="抄送邮箱" />
+                    <TextBox x:Name="CcsTextBox" attaches:MyAttachProperty.PlaceHolder="抄送邮箱" />
                     <ListBox x:Name="lstBxCcs" ItemsSource="{Binding Ccs}"/>
                 </WrapPanel>
                 <WrapPanel>
                     <TextBlock Style="{StaticResource Prefix}" Text="加密抄送:"/>
-                    <TextBox x:Name="BccsTextBox" attachs:MyAttachProperty.PlaceHolder="加密抄送邮箱" />
+                    <TextBox x:Name="BccsTextBox" attaches:MyAttachProperty.PlaceHolder="加密抄送邮箱" />
                     <ListBox x:Name="lstBxBccs" ItemsSource="{Binding Bccs}"/>
                 </WrapPanel>
                 <WrapPanel>
                     <TextBlock Style="{StaticResource Prefix}" Text="主题:"/>
-                    <TextBox Text="{Binding Subject,UpdateSourceTrigger=PropertyChanged}" attachs:MyAttachProperty.PlaceHolder="主题" />
+                    <TextBox Text="{Binding Subject,UpdateSourceTrigger=PropertyChanged}" attaches:MyAttachProperty.PlaceHolder="主题" />
                 </WrapPanel>
                 <WrapPanel>
                     <TextBlock Style="{StaticResource Prefix}" Text="正文:"/>
                     <TextBox VerticalContentAlignment="Top" Text="{Binding Body,UpdateSourceTrigger=PropertyChanged}"
                              TextWrapping="Wrap" MinHeight="100" MaxHeight="200"
                              VerticalScrollBarVisibility="Auto"
-                             attachs:MyAttachProperty.PlaceHolder="正文" />
+                             attaches:MyAttachProperty.PlaceHolder="正文" />
                 </WrapPanel>
                 <WrapPanel>
                     <TextBlock Style="{StaticResource Prefix}" Text="附件:"/>

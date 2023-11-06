@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="MyApp.Prisms.Views.SwitchBackgroundView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:panelCtrls="clr-namespace:IceTea.Wpf.Core.CustomControls;assembly=IceTea.Wpf.Core"
+             xmlns:panelCtrls="http://IceTea.Wpf.Core.com/"
              xmlns:selector="clr-namespace:MyApp.Prisms.DataTemplateSelector"
              xmlns:prism="http://prismlibrary.com/" Background="#FFCCCCCC"
              prism:ViewModelLocator.AutoWireViewModel="True">

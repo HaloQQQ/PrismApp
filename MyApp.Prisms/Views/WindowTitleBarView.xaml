@@ -2,8 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:convert="clr-namespace:MyApp.Prisms.Converters"
-             xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core"
-             xmlns:waitLoads="clr-namespace:IceTea.Wpf.Core.WaitLoads;assembly=IceTea.Wpf.Core"
+             xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
+             xmlns:waitLoads="http://IceTea.Wpf.Core.com/"
              Panel.ZIndex="100" Cursor="SizeAll" Background="Transparent"
              xmlns:regions="http://prismlibrary.com/"
              xmlns:prism="http://prismlibrary.com/"
@@ -56,7 +56,7 @@
 
             <Button Style="{StaticResource MainMenuIconButton}"
                     DockPanel.Dock="Right" ContextMenu="{StaticResource MainMenu}"
-                    attachs:MyAttachProperty.HasContextMenu="True" />
+                    attaches:MyAttachProperty.HasContextMenu="True" />
 
 
             <Button Style="{StaticResource SwitchThemeIconButton}"
@@ -105,12 +105,12 @@
                         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBlock Text="用户名：" />
                             <TextBox Width="250" Text="{Binding UserContext.Account}" TabIndex="1" 
-                                     MaxLength="12" attachs:MyAttachProperty.PlaceHolder="请输入用户名" />
+                                     MaxLength="12" attaches:MyAttachProperty.PlaceHolder="请输入用户名" />
                         </StackPanel>
                         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBlock Text="密   码：" />
-                            <PasswordBox x:Name="Pwd" attachs:MyAttachProperty.Password="{Binding UserContext.Password}" 
-                                         Width="250" TabIndex="2" attachs:MyAttachProperty.PlaceHolder="请输入密码" />
+                            <PasswordBox x:Name="Pwd" attaches:MyAttachProperty.Password="{Binding UserContext.Password}" 
+                                         Width="250" TabIndex="2" attaches:MyAttachProperty.PlaceHolder="请输入密码" />
                         </StackPanel>
                         <Button Grid.Row="4" Content="登录" HorizontalAlignment="Center" />
                     </Grid>
@@ -121,7 +121,7 @@
                           Click="BrightToggleButton_Click" MouseWheel="Button_MouseWheel"
                           Style="{StaticResource BrightIconToggleButton}"/>
             <Popup Placement="Bottom" HorizontalOffset="-117" VerticalOffset="-10" Width="250" Height="80"
-                   x:Name="brightPopup" attachs:MyAttachProperty.IsAppearOnHovered="True" Opened="BrightPopup_Opened" 
+                   x:Name="brightPopup" attaches:MyAttachProperty.IsAppearOnHovered="True" Opened="BrightPopup_Opened" 
                    PlacementTarget="{Binding ElementName=brightToggleButton}">
                     <!--亮度调节模态框-->
                     <StackPanel Orientation="Horizontal" 
@@ -130,7 +130,7 @@
                         <Slider Margin="15,0,12,0" MinHeight="4" TickFrequency="5"
                                 Style="{StaticResource Slider_ObviousThumb}"
                                 Width="180" x:Name="brightSlider" Value="{Binding CurrentBright}"
-                                attachs:MyAttachProperty.IsSliderThumbObvious="True" />
+                                attaches:MyAttachProperty.IsSliderThumbObvious="True" />
 
                         <TextBlock x:Name="brightStr" HorizontalAlignment="Center" Style="{StaticResource NotImportantTxt_White}">
                             <TextBlock Text="{Binding Path=Value,ElementName=brightSlider,Mode=OneWay}" />%

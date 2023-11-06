@@ -7,7 +7,7 @@ namespace MyApp.Prisms.ViewModels
 {
     internal class Smtp163MailViewModel : SmtpMailViewModelBase
     {
-        public Smtp163MailViewModel(IEventAggregator eventAggregator, IConfigManager configManager) : base(eventAggregator, configManager)
+        public Smtp163MailViewModel(IEventAggregator eventAggregator, IConfigManager configManager, ISettingManager settingManager) : base(eventAggregator, configManager, settingManager)
         {
         }
 

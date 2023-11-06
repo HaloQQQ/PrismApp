@@ -1,8 +1,8 @@
 ﻿<UserControl x:Class="MyApp.Prisms.Views.BaseViews.BaseTcpSocketView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core"
-             xmlns:contracts="clr-namespace:IceTea.Wpf.Core.Contracts;assembly=IceTea.Wpf.Core"
+             xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
+             xmlns:contracts="http://IceTea.Wpf.Core.com/"
              xmlns:viewModels="clr-namespace:MyApp.Prisms.ViewModels.BaseViewModels"
              SnapsToDevicePixels="True">
 
@@ -121,7 +121,7 @@
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
                     <TextBlock Text="发送：" Style="{StaticResource ThemeBlk}" />
                     <TextBox Text="{Binding SendMsg, UpdateSourceTrigger=PropertyChanged}"
-                             attachs:MyAttachProperty.PlaceHolder="待发送消息"
+                             attaches:MyAttachProperty.PlaceHolder="待发送消息"
                              MinWidth="200">
                         <TextBox.Style>
                             <Style TargetType="TextBox" BasedOn="{StaticResource WidthAnimationWithoutPrefixTextBox}">

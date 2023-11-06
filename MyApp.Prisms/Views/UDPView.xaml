@@ -1,8 +1,8 @@
 ﻿<UserControl x:Class="MyApp.Prisms.Views.UDPView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:attachs="clr-namespace:IceTea.Wpf.Core.Attachs;assembly=IceTea.Wpf.Core"
-             xmlns:contracts="clr-namespace:IceTea.Wpf.Core.Contracts;assembly=IceTea.Wpf.Core"
+             xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
+             xmlns:contracts="http://IceTea.Wpf.Core.com/"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:viewModels="clr-namespace:MyApp.Prisms.ViewModels.BaseViewModels"
              prism:ViewModelLocator.AutoWireViewModel="True">
@@ -86,7 +86,7 @@
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
                     <TextBlock Text="发送：" Style="{StaticResource ThemeBlk}" />
                     <TextBox Style="{StaticResource WidthAnimationWithoutPrefixTextBox}"
-                             attachs:MyAttachProperty.PlaceHolder="待发送消息"
+                             attaches:MyAttachProperty.PlaceHolder="待发送消息"
                              Text="{Binding SendMsg, UpdateSourceTrigger=PropertyChanged}"
                              IsEnabled="{Binding IsConnected}" MinWidth="200" />
 
