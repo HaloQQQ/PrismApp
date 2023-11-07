@@ -4,6 +4,7 @@
              xmlns:prism="http://prismlibrary.com/" FontSize="20" FocusVisualStyle="{x:Null}"
              prism:ViewModelLocator.AutoWireViewModel="True" Background="Transparent"
              xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
+             xmlns:waitLoads="http://IceTea.Wpf.Core.com/"
              attaches:MyAttachProperty.IsElementFocused="True">
     <UserControl.Resources>
         <Style x:Key="Prefix" TargetType="TextBlock">
@@ -94,27 +95,31 @@
             </StackPanel>
         </ScrollViewer>
 
-        <DataGrid Style="{StaticResource DataGrid_Transparent}" Grid.Column="1" ItemsSource="{Binding Mails}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="编号" MaxWidth="60" Binding="{Binding Id}"/>
-                <DataGridTextColumn Header="发件人" Width="100" Binding="{Binding From}"/>
-                <DataGridTextColumn Header="收件人" Width="100" Binding="{Binding To}"/>
-                <DataGridTemplateColumn Header="主题" MaxWidth="80">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Subject}" ToolTip="{Binding Subject}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Header="发出时间" Width="100" Binding="{Binding SendTime,StringFormat=yyyy/MM/dd HH:mm:ss}"/>
-                <DataGridTemplateColumn Header="抄送" Width="100">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding CCs}" ToolTip="{Binding CCs}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid Grid.Column="1">
+            <waitLoads:NeedleWaitLoad Foreground="DodgerBlue" Width="80" Height="80"
+                                      Visibility="{Binding IsLoading,Converter={StaticResource BoolToVisibleCollapsedConverter}}"/>
+            <DataGrid Style="{StaticResource DataGrid_Transparent}" ItemsSource="{Binding Mails}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="编号" MaxWidth="60" Binding="{Binding Id}"/>
+                    <DataGridTextColumn Header="发件人" Width="100" Binding="{Binding From}"/>
+                    <DataGridTextColumn Header="收件人" Width="100" Binding="{Binding To}"/>
+                    <DataGridTemplateColumn Header="主题" MaxWidth="80">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Subject}" ToolTip="{Binding Subject}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="发出时间" Width="100" Binding="{Binding SendTime,StringFormat=yyyy/MM/dd HH:mm:ss}"/>
+                    <DataGridTemplateColumn Header="抄送" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding CCs}" ToolTip="{Binding CCs}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </Grid>
 </UserControl>

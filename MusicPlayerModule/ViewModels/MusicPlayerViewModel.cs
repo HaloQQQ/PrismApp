@@ -600,7 +600,7 @@ namespace MusicPlayerModule.ViewModels
 
             this.IsLoading = true;
 
-            await this.MultiThreadBatchLoadMusic(list);
+            await this.MultiThreadBatchLoadMusic(list).ConfigureAwait(false);
 
             this.IsLoading = false;
         }

@@ -55,13 +55,15 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
                     && !this.Tos.IsNullOrEmpty()
                     && !this.Subject.IsNullOrBlank()
                     && !this.Body.IsNullOrBlank()
+                    && !this.IsLoading
                     )
                     .ObservesProperty(() => this.From)
                     .ObservesProperty(() => this.Tos)
                     .ObservesProperty(() => this.Subject)
-                    .ObservesProperty(() => this.Body);
+                    .ObservesProperty(() => this.Body)
+                    .ObservesProperty(() => this.IsLoading);
 
-            QueryMailCommand = new DelegateCommand(() =>
+            QueryMailCommand = new DelegateCommand(async () =>
             {
                 var password = Password;
                 if (password.IsNullOrBlank())
@@ -69,7 +71,11 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
                     return;
                 }
 
-                var result = _emailTransfer.GetMailMessage(this.FromMail, password);
+                this.Mails = null;
+
+                this.IsLoading = true;
+
+                var result = await _emailTransfer.GetMailMessageAsync(this.FromMail, password).ConfigureAwait(false);
 
                 if (!result.IsSucceed)
                 {
@@ -77,8 +83,11 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
                 }
 
                 this.Mails = result.PopMails;
-            }, () => !this.From.IsNullOrBlank())
-                .ObservesProperty(() => this.From);
+
+                this.IsLoading = false;
+            }, () => !this.From.IsNullOrBlank() && !this.IsLoading)
+                .ObservesProperty(() => this.From)
+                .ObservesProperty(() => this.IsLoading);
         }
 
         private void PublishMessage(string message)
@@ -103,6 +112,15 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
         #endregion
 
         #region Props
+        private bool _isLoading;
+
+        public bool IsLoading
+        {
+            get => this._isLoading;
+            set => SetProperty<bool>(ref _isLoading, value);
+        }
+
+
         public IEnumerable<PopMail> _mails;
         public IEnumerable<PopMail> Mails
         {

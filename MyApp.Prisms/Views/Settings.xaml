@@ -193,6 +193,16 @@
                 <ListBox ItemsSource="{Binding DataContext.AppHotKeyManager,RelativeSource={RelativeSource AncestorType=TabControl}}" 
                          HorizontalAlignment="Stretch" ItemContainerStyle="{StaticResource ListBoxItem_General}" />
             </TabItem>
+            <TabItem Header="常用">
+                <Button Style="{StaticResource TransparentButtonBase}" Command="{Binding DataContext.CleanConfigWhenExitAppCommand}" ToolTip="关闭程序时清空所有配置">
+                    <Button.Content>
+                        <TextBlock>
+                            <TextBlock Text="&#xec7b;" />
+                            <TextBlock Text="清空配置" />
+                        </TextBlock>
+                    </Button.Content>
+                </Button>
+            </TabItem>
         </TabControl>
     </Border>
 </UserControl>

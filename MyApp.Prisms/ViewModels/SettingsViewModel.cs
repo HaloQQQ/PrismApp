@@ -48,8 +48,19 @@ namespace MyApp.Prisms.ViewModels
 
         private IConfigManager _config;
 
+        private void CleanAll(IConfigManager configManager)
+        {
+            configManager.CleanAll();
+        }
+
         private void InitCommands(IContainerProvider containerProvider, IEventAggregator eventAggregator, ISettingManager settingManager)
         {
+            this.CleanConfigWhenExitAppCommand = new DelegateCommand(() =>
+            {
+                _config.PostSetConfig -= CleanAll;
+                _config.PostSetConfig += CleanAll;
+            });
+
             this.AddMailAccountCommand = new DelegateCommand(() =>
             {
                 if (!Regex.IsMatch(this.CurrentMailPair.Key, "^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"))
@@ -186,6 +197,9 @@ namespace MyApp.Prisms.ViewModels
         #endregion
 
         #region Commands
+
+        public ICommand CleanConfigWhenExitAppCommand { get; private set; }
+
         public ICommand AddMailAccountCommand { get; private set; }
         public ICommand RemoveMailAccountCommand { get; private set; }
 
