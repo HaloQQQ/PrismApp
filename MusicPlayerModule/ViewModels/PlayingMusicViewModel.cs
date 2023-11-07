@@ -16,13 +16,6 @@ namespace MusicPlayerModule.ViewModels
 
         public MusicModel Music { get; private set; }
 
-        private bool _loadedLyric;
-
-        /// <summary>
-        /// 是否已尝试过加载歌词
-        /// </summary>
-        public bool LoadedLyric => _loadedLyric ? _loadedLyric : !(_loadedLyric = true);
-
         private bool _isPlayingMusic;
 
         /// <summary>

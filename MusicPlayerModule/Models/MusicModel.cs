@@ -5,6 +5,7 @@ using System.Windows.Media.Imaging;
 using Prism.Mvvm;
 using TagLib;
 using IceTea.Atom.Extensions;
+using IceTea.Atom.Utils;
 
 namespace MusicPlayerModule.Models;
 
@@ -90,12 +91,35 @@ internal class MusicModel : BindableBase, IDisposable
 
     public int TotalMills { get; }
 
-    private KRCLyrics _krcLyrics;
+    public bool IsPureMusic { get; set; }
+    private WeakReference<KRCLyrics> _krcLyrics;
 
-    public KRCLyrics Lyric
+    public KRCLyrics? Lyric
     {
-        get => this._krcLyrics;
-        set => SetProperty<KRCLyrics>(ref _krcLyrics, value);
+        get
+        {
+            if (this._krcLyrics != null && this._krcLyrics.TryGetTarget(out KRCLyrics kRCLyrics))
+            {
+                return kRCLyrics;
+            }
+
+            return null;
+        }
+        set
+        {
+            value.AssertNotNull(nameof(Lyric));
+
+            if (_krcLyrics == null)
+            {
+                _krcLyrics = new WeakReference<KRCLyrics>(value);
+            }
+            else
+            {
+                _krcLyrics.SetTarget(value);
+            }
+
+            RaisePropertyChanged();
+        }
     }
 
     private string _filePath;

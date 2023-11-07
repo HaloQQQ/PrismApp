@@ -48,22 +48,16 @@ namespace MusicPlayerModule.ViewModels
             get { return _currentMusic; }
             set
             {
-                if (SetProperty<PlayingMusicViewModel>(ref _currentMusic, value))
+                if (SetProperty<PlayingMusicViewModel>(ref _currentMusic, value) && value != null)
                 {
-                    if (this._currentMusic != null && !this._currentMusic.LoadedLyric)
-                    {
-                        LoadLyricToMusicModel.LoadAsync(CustomStatics.LastMusicDir, this._currentMusic?.Music);
-                    }
+                    LoadLyricToMusicModel.LoadAsync(CustomStatics.LastMusicDir, this._currentMusic.Music);
 
-                    foreach (var item in this.Playing)
+                    foreach (var item in this.Playing.Where(m => m.IsPlayingMusic))
                     {
                         item.IsPlayingMusic = false;
                     }
 
-                    if (this._currentMusic != null)
-                    {
-                        _currentMusic.IsPlayingMusic = true;
-                    }
+                    this._currentMusic.IsPlayingMusic = true;
                 }
             }
         }

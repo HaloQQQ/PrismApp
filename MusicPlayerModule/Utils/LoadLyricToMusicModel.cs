@@ -14,7 +14,7 @@ namespace MusicPlayerModule.Utils
             await Task.Run(() =>
             {
                 IEnumerable<string> paths = GetLyricPaths(dir,
-                    str => str.EndsWith(".krc", StringComparison.CurrentCultureIgnoreCase));
+                    str => str.EndsWithIgnoreCase(".krc"));
 
                 string? filePath;
 
@@ -40,7 +40,7 @@ namespace MusicPlayerModule.Utils
         {
             Debug.Assert(music != null, "音乐实体不存在");
 
-            if (music.Lyric != null)
+            if (music.Lyric != null || music.IsPureMusic)
             {
                 return;
             }
@@ -48,9 +48,9 @@ namespace MusicPlayerModule.Utils
             await Task.Run(() =>
             {
                 IEnumerable<string> paths = GetLyricPaths(dir,
-                    str => str.EndsWith(".krc", StringComparison.CurrentCultureIgnoreCase));
+                    str => str.EndsWithIgnoreCase(".krc"));
 
-                string? filePath = paths.FirstOrDefault(path => path.Contains(music.Name) &&
+                string? lyricFilePath = paths.FirstOrDefault(path => path.Contains(music.Name) &&
                                                                 (
                                                                     path.Contains(music.Singer)
                                                                     || path.Contains(
@@ -58,9 +58,9 @@ namespace MusicPlayerModule.Utils
                                                                 )
                 );
 
-                if (filePath != null)
+                if (!(music.IsPureMusic = lyricFilePath == null))
                 {
-                    KRCLyrics krc = KRCLyrics.LoadFromFile(filePath);
+                    KRCLyrics krc = KRCLyrics.LoadFromFile(lyricFilePath);
                     music.Lyric = krc;
                 }
             }).ConfigureAwait(false);
@@ -77,7 +77,7 @@ namespace MusicPlayerModule.Utils
 
             List<string> paths = directoryPath.GetFiles(predicate);
 
-            if (paths != null && paths.Count > 0)
+            if (!paths.IsNullOrEmpty())
             {
                 _paths = paths;
             }

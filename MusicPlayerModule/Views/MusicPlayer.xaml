@@ -651,8 +651,8 @@
                     <Viewbox Grid.Column="1" Style="{StaticResource OnlyDownViewbox}"
                              VerticalAlignment="Top">
                         <DataGrid x:Name="DataGrid_ShowByDir" Grid.Column="1"
-                              HeadersVisibility="All" Height="{Binding ActualHeight,RelativeSource={RelativeSource AncestorType=Grid},Mode=OneWay}"
-                              attaches:MyAttachProperty.DisplayRowNumber="True"
+                              HeadersVisibility="All" attaches:MyAttachProperty.DisplayRowNumber="True" 
+                              Height="{Binding ActualHeight,RelativeSource={RelativeSource AncestorType=Grid},Mode=OneWay}"
                               ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites,ElementName=MusicByDirListBox}">
                             <DataGrid.Style>
                                 <Style TargetType="DataGrid" BasedOn="{StaticResource DataGrid_Transparent}">
