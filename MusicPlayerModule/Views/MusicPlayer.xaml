@@ -734,8 +734,7 @@
                     </TextBlock.InputBindings>
                 </TextBlock>
 
-                <DockPanel Width="{Binding ActualWidth,RelativeSource={RelativeSource AncestorType=Border},Converter={StaticResource DigitDoubleConverter},ConverterParameter=0.6}" 
-                           VerticalAlignment="Top">
+                <DockPanel VerticalAlignment="Top">
                     <DockPanel.Height>
                         <MultiBinding Converter="{StaticResource LyricHeightMultiConverter}">
                             <MultiBinding.Bindings>
@@ -747,8 +746,7 @@
                     <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="21" FontWeight="Bold" 
                                Text="{Binding CurrentMusic.Music.Name}" Foreground="{StaticResource SkyBlue}"/>
 
-                    <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="0,10"
-                               Style="{StaticResource NotImportantTxt_White}"
+                    <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Margin="0,10" Foreground="{StaticResource SkyBlue}"
                                Text="{Binding CurrentMusic.Music.Singer}"/>
 
                     <StackPanel Visibility="Collapsed" Width="{Binding ActualWidth,RelativeSource={RelativeSource AncestorType=DockPanel}}" 
@@ -762,8 +760,7 @@
                                      ContentTemplate="{StaticResource PanelSimpleLyric}" />
                     </StackPanel>
 
-                    <ListBox Width="{Binding ActualWidth,RelativeSource={RelativeSource AncestorType=DockPanel}}"
-                             x:Name="LyricList" DockPanel.Dock="Top" HorizontalAlignment="Center"
+                    <ListBox x:Name="LyricList" DockPanel.Dock="Top" HorizontalAlignment="Center"
                              Style="{StaticResource LyricListBox}" Visibility="Visible"
                              SelectionChanged="LyricList_SelectionChanged"
                              ScrollViewer.VerticalScrollBarVisibility="Disabled" 
@@ -773,7 +770,9 @@
                             <Style TargetType="ListBoxItem" BasedOn="{StaticResource LyricListBoxItem}">
                                 <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick"/>
                                 <EventSetter Event="PreviewMouseRightButtonDown" Handler="SwitchLyricMode"/>
-                                
+
+                                <Setter Property="Height" Value="50" />
+
                                 <Setter Property="IsSelected" Value="{Binding IsPlayingLine,Mode=OneWay}" />
 
                                 <Style.Triggers>
@@ -781,20 +780,22 @@
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="(ListBoxItem.RenderTransform).(ScaleTransform.ScaleX)" 
+                                                    <!--<DoubleAnimation Storyboard.TargetProperty="(ListBoxItem.RenderTransform).(ScaleTransform.ScaleX)" 
                                                         To="1.5" Duration="0:0:0.5" />
                                                     <DoubleAnimation Storyboard.TargetProperty="(ListBoxItem.RenderTransform).(ScaleTransform.ScaleY)"
-                                                        To="1.5" Duration="0:0:0.5" />
+                                                        To="1.5" Duration="0:0:0.5" />-->
+                                                    <DoubleAnimation Storyboard.TargetProperty="FontSize" To="30" DecelerationRatio="0.5" Duration="0:0:0.5"/>
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </DataTrigger.EnterActions>
                                         <DataTrigger.ExitActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="(ListBoxItem.RenderTransform).(ScaleTransform.ScaleX)" 
+                                                    <!--<DoubleAnimation Storyboard.TargetProperty="(ListBoxItem.RenderTransform).(ScaleTransform.ScaleX)" 
                                                         To="1.0" Duration="0:0:0.5" />
                                                     <DoubleAnimation Storyboard.TargetProperty="(ListBoxItem.RenderTransform).(ScaleTransform.ScaleY)" 
-                                                        To="1.0" Duration="0:0:0.5" />
+                                                        To="1.0" Duration="0:0:0.5" />-->
+                                                    <DoubleAnimation Storyboard.TargetProperty="FontSize" To="20" DecelerationRatio="0.5" Duration="0:0:0.5"/>
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </DataTrigger.ExitActions>
