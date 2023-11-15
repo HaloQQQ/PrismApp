@@ -1,21 +1,23 @@
-﻿<UserControl x:Class="MyApp.Prisms.Views.ImageDisplayView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:selector="clr-namespace:MyApp.Prisms.DataTemplateSelector"
-             xmlns:prism="http://prismlibrary.com/"  FocusVisualStyle="{x:Null}"
-             prism:ViewModelLocator.AutoWireViewModel="True">
+﻿<UserControl
+    x:Class="MyApp.Prisms.Views.ImageDisplayView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:selector="clr-namespace:MyApp.Prisms.DataTemplateSelector"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    FocusVisualStyle="{x:Null}">
 
     <UserControl.Resources>
         <ResourceDictionary>
             <selector:ListImageDataTemplateSelector x:Key="ListImageDataTemplateSelector">
                 <selector:ListImageDataTemplateSelector.List>
                     <DataTemplate>
-                        <ContentPresenter ContentTemplate="{StaticResource ImageList}"/>
+                        <ContentPresenter ContentTemplate="{StaticResource ImageList}" />
                     </DataTemplate>
                 </selector:ListImageDataTemplateSelector.List>
                 <selector:ListImageDataTemplateSelector.Block>
                     <DataTemplate>
-                        <ContentPresenter ContentTemplate="{StaticResource ImageBlock}"/>
+                        <ContentPresenter ContentTemplate="{StaticResource ImageBlock}" />
                     </DataTemplate>
                 </selector:ListImageDataTemplateSelector.Block>
             </selector:ListImageDataTemplateSelector>
@@ -23,17 +25,17 @@
             <selector:BlockImageDataTemplateSelector x:Key="BlockImageDataTemplateSelector">
                 <selector:BlockImageDataTemplateSelector.List>
                     <DataTemplate>
-                        <ContentPresenter ContentTemplate="{StaticResource ImageList}"/>
+                        <ContentPresenter ContentTemplate="{StaticResource ImageList}" />
                     </DataTemplate>
                 </selector:BlockImageDataTemplateSelector.List>
                 <selector:BlockImageDataTemplateSelector.Block>
                     <DataTemplate>
-                        <ContentPresenter ContentTemplate="{StaticResource ImageBlock}"/>
+                        <ContentPresenter ContentTemplate="{StaticResource ImageBlock}" />
                     </DataTemplate>
                 </selector:BlockImageDataTemplateSelector.Block>
             </selector:BlockImageDataTemplateSelector>
 
-            <Style TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItem_Split}"/>
+            <Style BasedOn="{StaticResource ListBoxItem_Split}" TargetType="ListBoxItem" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -43,14 +45,20 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <ListBox Style="{StaticResource VerticalScrollVirtualItemsControl}"
-                 HorizontalContentAlignment="Left" x:Name="list1" 
-                 Grid.Column="0" ItemsSource="{Binding ActualData}"
-                 ItemTemplateSelector="{StaticResource ListImageDataTemplateSelector}" />
+        <ListBox
+            x:Name="list1"
+            Grid.Column="0"
+            HorizontalContentAlignment="Left"
+            ItemTemplateSelector="{StaticResource ListImageDataTemplateSelector}"
+            ItemsSource="{Binding ActualData}"
+            Style="{StaticResource VerticalScrollVirtualItemsControl}" />
 
-        <ListBox Style="{StaticResource VerticalScrollVirtualItemsControl}"
-                 x:Name="list2" Grid.Column="1" ItemsSource="{Binding ActualData}"
-                 ItemTemplateSelector="{StaticResource BlockImageDataTemplateSelector}" />
+        <ListBox
+            x:Name="list2"
+            Grid.Column="1"
+            ItemTemplateSelector="{StaticResource BlockImageDataTemplateSelector}"
+            ItemsSource="{Binding ActualData}"
+            Style="{StaticResource VerticalScrollVirtualItemsControl}" />
 
     </Grid>
 </UserControl>

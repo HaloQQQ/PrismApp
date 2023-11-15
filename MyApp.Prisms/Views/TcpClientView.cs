@@ -38,7 +38,7 @@ namespace MyApp.Prisms.Views
                 base._tcpSocketContext.Name, base._tcpSocketContext.MaxMessageLength);
 
             var tcpClientViewModel = base._tcpSocketContext as TcpClientViewModel;
-            (base._tcpSocket as NewTcpClient).TryConnecting = tcpClientViewModel.CanReConnect;
+            (base._tcpSocket as NewTcpClient).TryReConnect = tcpClientViewModel.CanReConnect;
             (base._tcpSocket as NewTcpClient).ReConnectPeriodMilliseconds = 2000;
 
             // 防止重复订阅
@@ -90,7 +90,7 @@ namespace MyApp.Prisms.Views
 
         private void ReConnectChanged_Handler(bool currentStatus)
         {
-            (base._tcpSocket as NewTcpClient).TryConnecting = currentStatus;
+            (base._tcpSocket as NewTcpClient).TryReConnect = currentStatus;
 
             if (!currentStatus)
             {

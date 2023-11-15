@@ -1,30 +1,32 @@
-﻿<Window x:Class="MyApp.Prisms.Views.VideoWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="VideoWindow"
-        WindowStartupLocation="CenterScreen"
-        Style="{StaticResource WithoutTitleBar}"
-        xmlns:views="clr-namespace:MyApp.Prisms.Views"
-        xmlns:prism="http://prismlibrary.com/"
-        prism:ViewModelLocator.AutoWireViewModel="True"
-        MinHeight="640" MinWidth="1200">
+﻿<Window
+    x:Class="MyApp.Prisms.Views.VideoWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:views="clr-namespace:MyApp.Prisms.Views"
+    Title="VideoWindow"
+    MinWidth="1200"
+    MinHeight="640"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    Style="{StaticResource WithoutTitleBar}"
+    WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <Style TargetType="ContentControl">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ContentControl">
-                        <Border x:Name="PART_Border"
+                        <Border
+                            x:Name="PART_Border"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
-                            <ContentPresenter Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsFocused" Value="True">
-                                <Setter TargetName="PART_Border" Property="BorderBrush" Value="Red"/>
-                                <Setter TargetName="PART_Border" Property="BorderThickness" Value="1"/>
+                                <Setter TargetName="PART_Border" Property="BorderBrush" Value="Red" />
+                                <Setter TargetName="PART_Border" Property="BorderThickness" Value="1" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -35,32 +37,32 @@
 
     <Grid ClipToBounds="True">
         <Grid.Background>
-            <ImageBrush Stretch="UniformToFill" ImageSource="{Binding CurrentBkGrd}"/>
+            <ImageBrush ImageSource="{Binding CurrentBkGrd}" Stretch="UniformToFill" />
         </Grid.Background>
         <Grid Background="#33000000">
             <DockPanel>
                 <DockPanel.Style>
                     <Style TargetType="DockPanel">
                         <Style.Triggers>
-                            <DataTrigger Value="Maximized" Binding="{Binding WindowState,RelativeSource={RelativeSource AncestorType=Window}}">
+                            <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" Value="Maximized">
                                 <Setter Property="Margin" Value="7" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </DockPanel.Style>
-                
+
                 <views:WindowTitleBarView
-                x:Name="TitleBarSlider"
-                DockPanel.Dock="Top"
-                VerticalAlignment="Top"/>
+                    x:Name="TitleBarSlider"
+                    VerticalAlignment="Top"
+                    DockPanel.Dock="Top" />
 
                 <UniformGrid Rows="2">
-                    <ContentControl TabIndex="1" prism:RegionManager.RegionName="Video1PlayerRegion"/>
-                    <ContentControl TabIndex="2" prism:RegionManager.RegionName="Video2PlayerRegion"/>
-                    <ContentControl TabIndex="3" prism:RegionManager.RegionName="Video3PlayerRegion"/>
-                    <ContentControl TabIndex="4" prism:RegionManager.RegionName="Video4PlayerRegion"/>
-                    <ContentControl TabIndex="5" prism:RegionManager.RegionName="Video5PlayerRegion"/>
-                    <ContentControl TabIndex="6" prism:RegionManager.RegionName="Video6PlayerRegion"/>
+                    <ContentControl prism:RegionManager.RegionName="Video1PlayerRegion" TabIndex="1" />
+                    <ContentControl prism:RegionManager.RegionName="Video2PlayerRegion" TabIndex="2" />
+                    <ContentControl prism:RegionManager.RegionName="Video3PlayerRegion" TabIndex="3" />
+                    <ContentControl prism:RegionManager.RegionName="Video4PlayerRegion" TabIndex="4" />
+                    <ContentControl prism:RegionManager.RegionName="Video5PlayerRegion" TabIndex="5" />
+                    <ContentControl prism:RegionManager.RegionName="Video6PlayerRegion" TabIndex="6" />
                 </UniformGrid>
             </DockPanel>
         </Grid>

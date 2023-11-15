@@ -512,5 +512,13 @@ namespace MusicPlayerModule.Views
                 this.PlayingListPopup.Height = 522;
             }
         }
+
+        private void PlayingListFilterPanel_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue is bool b && b)
+            {
+                this.PlayingKeyWordsTxt.Focus();
+            }
+        }
     }
 }

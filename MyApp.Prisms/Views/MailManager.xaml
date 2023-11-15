@@ -1,13 +1,14 @@
-﻿<UserControl x:Class="MyApp.Prisms.Views.MailManager"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:regions="http://prismlibrary.com/">
-    <TabControl TabStripPlacement="Top" ItemContainerStyle="{StaticResource TabItem_Transparent}">
+﻿<UserControl
+    x:Class="MyApp.Prisms.Views.MailManager"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:regions="http://prismlibrary.com/">
+    <TabControl ItemContainerStyle="{StaticResource TabItem_Transparent}" TabStripPlacement="Top">
         <TabItem Header="163邮箱">
-            <ContentControl FocusVisualStyle="{x:Null}" regions:RegionManager.RegionName="Smtp163MailRegion"/>
+            <ContentControl regions:RegionManager.RegionName="Smtp163MailRegion" FocusVisualStyle="{x:Null}" />
         </TabItem>
         <TabItem Header="QQ邮箱">
-            <ContentControl FocusVisualStyle="{x:Null}" regions:RegionManager.RegionName="SmtpQQMailRegion"/>
+            <ContentControl regions:RegionManager.RegionName="SmtpQQMailRegion" FocusVisualStyle="{x:Null}" />
         </TabItem>
     </TabControl>
 </UserControl>
