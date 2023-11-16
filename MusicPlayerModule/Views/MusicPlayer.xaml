@@ -302,6 +302,8 @@
                         <TextBox.Style>
                             <Style BasedOn="{StaticResource TextBox_FilteList}" TargetType="TextBox">
 
+                                <Setter Property="IsEnabled" Value="{Binding IsLoading, Converter={StaticResource OppositeBoolConverter}}" />
+
                                 <EventSetter Event="LostFocus" Handler="FavoritesKeyWordsTxtBox_LostFocus" />
 
                                 <Setter Property="Text" Value="{Binding FavoriteListFilteKeyWords, UpdateSourceTrigger=PropertyChanged}" />
@@ -1460,10 +1462,7 @@
                                                     Content="&#xe632;"
                                                     Style="{StaticResource IconButtonBase_Small}"
                                                     ToolTip="搜索" />
-                                                <Button
-                                                    Content="&#xe622;"
-                                                    Style="{StaticResource IconButtonBase_Small}"
-                                                    ToolTip="添加到" />
+
                                                 <Button
                                                     Command="{Binding CleanPlayingCommand}"
                                                     Content="&#xec7b;"

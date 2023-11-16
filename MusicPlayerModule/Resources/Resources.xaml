@@ -1,8 +1,9 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:converter="http://IceTea.Wpf.Core.com/"
-                    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
-                    xmlns:utils="clr-namespace:MusicPlayerModule.Utils">
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
+    xmlns:converter="http://IceTea.Wpf.Core.com/"
+    xmlns:utils="clr-namespace:MusicPlayerModule.Utils">
 
     <VisualBrush x:Key="GradientOpacityMask">
         <VisualBrush.Visual>
@@ -15,12 +16,12 @@
                             <GradientStop Color="Transparent" Offset="1"/>
                         </RadialGradientBrush.GradientStops>
                     </RadialGradientBrush>-->
-                    
+
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0" Color="Transparent"/>
-                        <GradientStop Offset="0.15" Color="White"/>
-                        <GradientStop Offset="0.85" Color="White"/>
-                        <GradientStop Offset="1" Color="Transparent"/>
+                        <GradientStop Offset="0" Color="Transparent" />
+                        <GradientStop Offset="0.15" Color="White" />
+                        <GradientStop Offset="0.85" Color="White" />
+                        <GradientStop Offset="1" Color="Transparent" />
                     </LinearGradientBrush>
                 </Border.Background>
                 <TextBlock FontSize="24" Text=" " />
@@ -31,7 +32,7 @@
     <GeometryGroup x:Key="PopupGeometryGroup_PlayOrder">
         <RectangleGeometry RadiusX="16" RadiusY="16">
             <RectangleGeometry.Rect>
-                <Rect Width="150" Height="293"/>
+                <Rect Width="150" Height="293" />
             </RectangleGeometry.Rect>
         </RectangleGeometry>
         <PathGeometry Figures="M65,293 L75,303 L85,293 Z" />
@@ -40,7 +41,7 @@
     <GeometryGroup x:Key="PopupGeometryGroup_VideoStretchMode">
         <RectangleGeometry RadiusX="16" RadiusY="16">
             <RectangleGeometry.Rect>
-                <Rect Width="100" Height="140"/>
+                <Rect Width="100" Height="140" />
             </RectangleGeometry.Rect>
         </RectangleGeometry>
         <PathGeometry Figures="M40,140 L50,150 L60,140 Z" />
@@ -49,7 +50,7 @@
     <GeometryGroup x:Key="PopupGeometryGroup_Volume">
         <RectangleGeometry RadiusX="6" RadiusY="6">
             <RectangleGeometry.Rect>
-                <Rect Width="65" Height="190"/>
+                <Rect Width="65" Height="190" />
             </RectangleGeometry.Rect>
         </RectangleGeometry>
         <PathGeometry Figures="M25,190 L32.5,196 L40,190 Z" />
@@ -58,49 +59,57 @@
     <GeometryGroup x:Key="PopupGeometryGroup_MediaSpeedRatio">
         <RectangleGeometry RadiusX="16" RadiusY="16">
             <RectangleGeometry.Rect>
-                <Rect Width="280" Height="90"/>
+                <Rect Width="280" Height="90" />
             </RectangleGeometry.Rect>
         </RectangleGeometry>
         <PathGeometry Figures="M130,90 L140,100 L150,90 Z" />
     </GeometryGroup>
 
-    <converter:MultiConverter_Multiplication x:Key="MultiConverter_Multiplication"/>
-    <converter:MultiConverter_MultiplicationDivision x:Key="MultiConverter_MultiplicationDivision"/>
+    <converter:MultiConverter_Multiplication x:Key="MultiConverter_Multiplication" />
+    <converter:MultiConverter_MultiplicationDivision x:Key="MultiConverter_MultiplicationDivision" />
 
-    <converter:WindowMinToBoolConverter x:Key="WindowMinToBoolConverter"/>
+    <converter:WindowMinToBoolConverter x:Key="WindowMinToBoolConverter" />
 
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
     <DataTemplate x:Key="DesktopLyric">
         <Grid Margin="20,10" HorizontalAlignment="Center">
-            <TextBlock Text="{Binding Words,FallbackValue=狗空音乐，就是歌多}">
+            <TextBlock Text="{Binding Words, FallbackValue=狗空音乐，就是歌多}">
                 <TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="#005DA6" Offset="0"/>
-                        <GradientStop Color="#03C7FA" Offset="1"/>
+                        <GradientStop Offset="0" Color="#005DA6" />
+                        <GradientStop Offset="1" Color="#03C7FA" />
                     </LinearGradientBrush>
                 </TextBlock.Foreground>
             </TextBlock>
             <TextBlock>
-                <TextBlock Text="{Binding Words}" ClipToBounds="True" TextTrimming="None">
+                <TextBlock
+                    ClipToBounds="True"
+                    Text="{Binding Words}"
+                    TextTrimming="None">
                     <TextBlock.Foreground>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                            <GradientStop Color="#BEFAFD" Offset="0.5"/>
-                            <GradientStop Color="#03C7FA" Offset="1"/>
+                            <GradientStop Offset="0.5" Color="#BEFAFD" />
+                            <GradientStop Offset="1" Color="#03C7FA" />
                         </LinearGradientBrush>
                     </TextBlock.Foreground>
                     <TextBlock.Width>
                         <MultiBinding Converter="{StaticResource MultiConverter_Multiplication}">
-                            <Binding Path="DataContext.CurrentMusic.WordProgress" 
-                                                Mode="OneWay" RelativeSource="{RelativeSource AncestorType=Border}" />
-                            <Binding Path="FontSize" RelativeSource="{RelativeSource Self}" Mode="OneWay" />
-                            <Binding Path="IsPlayingLine" Mode="OneWay" />
+                            <Binding
+                                Mode="OneWay"
+                                Path="DataContext.CurrentMusic.WordProgress"
+                                RelativeSource="{RelativeSource AncestorType=Border}" />
+                            <Binding
+                                Mode="OneWay"
+                                Path="FontSize"
+                                RelativeSource="{RelativeSource Self}" />
+                            <Binding Mode="OneWay" Path="IsPlayingLine" />
                         </MultiBinding>
                     </TextBlock.Width>
                     <TextBlock.ToolTip>
                         <TextBlock>
-                            <TextBlock Text="{Binding LineStart.TotalSeconds}"/>
-                            <TextBlock Text="{Binding LineDuring.TotalSeconds}"/>
+                            <TextBlock Text="{Binding LineStart.TotalSeconds}" />
+                            <TextBlock Text="{Binding LineDuring.TotalSeconds}" />
                         </TextBlock>
                     </TextBlock.ToolTip>
                 </TextBlock>
@@ -110,22 +119,31 @@
 
     <DataTemplate x:Key="PanelSimpleLyric">
         <Grid Margin="20,10" HorizontalAlignment="Center">
-            <TextBlock Text="{Binding Words}" Foreground="{DynamicResource TextBlock.Foreground}"/>
+            <TextBlock Foreground="{DynamicResource TextBlock.Foreground}" Text="{Binding Words}" />
 
             <TextBlock>
-                <TextBlock Text="{Binding Words}" Foreground="#F9D881" ClipToBounds="True" TextTrimming="None">
+                <TextBlock
+                    ClipToBounds="True"
+                    Foreground="#F9D881"
+                    Text="{Binding Words}"
+                    TextTrimming="None">
                     <TextBlock.Width>
                         <MultiBinding Converter="{StaticResource MultiConverter_Multiplication}">
-                            <Binding Path="DataContext.CurrentMusic.WordProgress" 
-                                                Mode="OneWay" RelativeSource="{RelativeSource AncestorType=Border}" />
-                            <Binding Path="FontSize" RelativeSource="{RelativeSource Self}" Mode="OneWay" />
-                            <Binding Path="IsPlayingLine" Mode="OneWay" />
+                            <Binding
+                                Mode="OneWay"
+                                Path="DataContext.CurrentMusic.WordProgress"
+                                RelativeSource="{RelativeSource AncestorType=Border}" />
+                            <Binding
+                                Mode="OneWay"
+                                Path="FontSize"
+                                RelativeSource="{RelativeSource Self}" />
+                            <Binding Mode="OneWay" Path="IsPlayingLine" />
                         </MultiBinding>
                     </TextBlock.Width>
                     <TextBlock.ToolTip>
                         <TextBlock>
-                            <TextBlock Text="{Binding LineStart.TotalSeconds}"/>
-                            <TextBlock Text="{Binding LineDuring.TotalSeconds}"/>
+                            <TextBlock Text="{Binding LineStart.TotalSeconds}" />
+                            <TextBlock Text="{Binding LineDuring.TotalSeconds}" />
                         </TextBlock>
                     </TextBlock.ToolTip>
                 </TextBlock>
@@ -133,7 +151,10 @@
         </Grid>
     </DataTemplate>
 
-    <Style x:Key="MusicEffectToggleButton" TargetType="ToggleButton" BasedOn="{StaticResource TransparentButtonBase}">
+    <Style
+        x:Key="MusicEffectToggleButton"
+        BasedOn="{StaticResource TransparentButtonBase}"
+        TargetType="ToggleButton">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="12,2" />
         <Setter Property="MinWidth" Value="0" />
@@ -162,7 +183,10 @@
         <Setter Property="Visibility" Value="Visible" />
     </Style>
 
-    <Style x:Key="BatchOperateToggleButton" TargetType="ToggleButton" BasedOn="{StaticResource TransparentButtonBase}">
+    <Style
+        x:Key="BatchOperateToggleButton"
+        BasedOn="{StaticResource TransparentButtonBase}"
+        TargetType="ToggleButton">
         <Setter Property="Content">
             <Setter.Value>
                 <TextBlock>
@@ -181,7 +205,10 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="DeleteButton" TargetType="Button" BasedOn="{StaticResource TransparentButtonBase}">
+    <Style
+        x:Key="DeleteButton"
+        BasedOn="{StaticResource TransparentButtonBase}"
+        TargetType="Button">
         <Setter Property="Content">
             <Setter.Value>
                 <TextBlock>
@@ -193,13 +220,16 @@
 
         <Setter Property="Visibility" Value="Collapsed" />
         <Style.Triggers>
-            <DataTrigger Value="True" Binding="{Binding IsChecked,ElementName=ToggleBatch,Mode=OneWay}">
+            <DataTrigger Binding="{Binding IsChecked, ElementName=ToggleBatch, Mode=OneWay}" Value="True">
                 <Setter Property="Visibility" Value="Visible" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="PlayAllButton" TargetType="Button" BasedOn="{StaticResource TransparentButtonBase}">
+    <Style
+        x:Key="PlayAllButton"
+        BasedOn="{StaticResource TransparentButtonBase}"
+        TargetType="Button">
         <Setter Property="Content">
             <Setter.Value>
                 <TextBlock>
@@ -210,7 +240,10 @@
         </Setter>
     </Style>
 
-    <Style x:Key="DownloadButton" TargetType="Button" BasedOn="{StaticResource TransparentButtonBase}">
+    <Style
+        x:Key="DownloadButton"
+        BasedOn="{StaticResource TransparentButtonBase}"
+        TargetType="Button">
         <Setter Property="Content">
             <Setter.Value>
                 <TextBlock>
@@ -221,7 +254,10 @@
         </Setter>
     </Style>
 
-    <Style x:Key="AddMusicButton" TargetType="Button" BasedOn="{StaticResource TransparentButtonBase}">
+    <Style
+        x:Key="AddMusicButton"
+        BasedOn="{StaticResource TransparentButtonBase}"
+        TargetType="Button">
         <Setter Property="Content">
             <Setter.Value>
                 <TextBlock>
@@ -232,7 +268,10 @@
         </Setter>
     </Style>
 
-    <Style x:Key="LyricSlideTxt" TargetType="TextBlock" BasedOn="{StaticResource IconText}">
+    <Style
+        x:Key="LyricSlideTxt"
+        BasedOn="{StaticResource IconText}"
+        TargetType="TextBlock">
         <Setter Property="FontSize" Value="16" />
         <Setter Property="Margin" Value="40,20,0,0" />
         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -246,7 +285,10 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="LyricListBox" TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
+    <Style
+        x:Key="LyricListBox"
+        BasedOn="{StaticResource {x:Type ListBox}}"
+        TargetType="ListBox">
         <!--<Setter Property="Height" Value="370" />-->
 
         <Setter Property="Focusable" Value="False" />
@@ -258,7 +300,10 @@
         </Style.Triggers>-->
     </Style>
 
-    <Style x:Key="LyricListBoxItem" TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItem_General}">
+    <Style
+        x:Key="LyricListBoxItem"
+        BasedOn="{StaticResource ListBoxItem_General}"
+        TargetType="ListBoxItem">
         <Setter Property="FontSize" Value="20" />
 
         <Setter Property="Focusable" Value="False" />
@@ -266,7 +311,7 @@
         <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
         <Setter Property="RenderTransform">
             <Setter.Value>
-                <ScaleTransform ScaleX="1.0" ScaleY="1.0"/>
+                <ScaleTransform ScaleX="1.0" ScaleY="1.0" />
             </Setter.Value>
         </Setter>
 
@@ -274,23 +319,31 @@
             <Setter.Value>
                 <DataTemplate DataType="{x:Type utils:KRCLyricsLine}">
                     <Grid HorizontalAlignment="Center">
-                        <TextBlock Text="{Binding Words}"/>
+                        <TextBlock Text="{Binding Words}" />
 
                         <TextBlock>
-                            <TextBlock Text="{Binding Words}" Foreground="#F9D881" 
-                                    ClipToBounds="True" TextTrimming="None">
+                            <TextBlock
+                                ClipToBounds="True"
+                                Foreground="#F9D881"
+                                Text="{Binding Words}"
+                                TextTrimming="None">
                                 <TextBlock.Width>
                                     <MultiBinding Converter="{StaticResource MultiConverter_Multiplication}">
-                                        <Binding Path="DataContext.CurrentMusic.WordProgress" Mode="OneWay"
-                                                 RelativeSource="{RelativeSource AncestorType=ListBox}" />
-                                        <Binding Path="FontSize" RelativeSource="{RelativeSource Self}" Mode="OneWay" />
-                                        <Binding Path="IsPlayingLine" Mode="OneWay" />
+                                        <Binding
+                                            Mode="OneWay"
+                                            Path="DataContext.CurrentMusic.WordProgress"
+                                            RelativeSource="{RelativeSource AncestorType=ListBox}" />
+                                        <Binding
+                                            Mode="OneWay"
+                                            Path="FontSize"
+                                            RelativeSource="{RelativeSource Self}" />
+                                        <Binding Mode="OneWay" Path="IsPlayingLine" />
                                     </MultiBinding>
                                 </TextBlock.Width>
                                 <TextBlock.ToolTip>
                                     <TextBlock>
-                                        <TextBlock Text="{Binding LineStart.TotalSeconds}"/>
-                                        <TextBlock Text="{Binding LineDuring.TotalSeconds}"/>
+                                        <TextBlock Text="{Binding LineStart.TotalSeconds}" />
+                                        <TextBlock Text="{Binding LineDuring.TotalSeconds}" />
                                     </TextBlock>
                                 </TextBlock.ToolTip>
                             </TextBlock>
@@ -301,7 +354,10 @@
         </Setter>
     </Style>
 
-    <Style TargetType="TextBlock" x:Key="PointABTextBlock" BasedOn="{StaticResource ThemeBlk}">
+    <Style
+        x:Key="PointABTextBlock"
+        BasedOn="{StaticResource ThemeBlk}"
+        TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="FontWeight" Value="Normal" />
@@ -309,44 +365,59 @@
         <Setter Property="FontSize" Value="8" />
     </Style>
 
-    <Style x:Key="MusicProgressSlider" TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
+    <Style
+        x:Key="MusicProgressSlider"
+        BasedOn="{StaticResource {x:Type Slider}}"
+        TargetType="Slider">
         <Setter Property="Margin" Value="2,0" />
 
         <Style.Triggers>
             <DataTrigger Binding="{Binding CurrentMusic}" Value="{x:Null}">
-                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="IsEnabled" Value="False" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="VideoProgressSlider" TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
+    <Style
+        x:Key="VideoProgressSlider"
+        BasedOn="{StaticResource {x:Type Slider}}"
+        TargetType="Slider">
         <Setter Property="Margin" Value="2,0" />
 
         <Style.Triggers>
             <DataTrigger Binding="{Binding CurrentVideo}" Value="{x:Null}">
-                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="IsEnabled" Value="False" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="Button" x:Key="ClosePlayingListFilter" BasedOn="{StaticResource IconButtonBase_Small}">
+    <Style
+        x:Key="ClosePlayingListFilter"
+        BasedOn="{StaticResource IconButtonBase_Small}"
+        TargetType="Button">
         <Setter Property="Foreground" Value="{StaticResource LightWhite}" />
     </Style>
 
-    <Style TargetType="Image" x:Key="MyImage">
+    <Style x:Key="MyImage" TargetType="Image">
         <Setter Property="Width" Value="60" />
         <Setter Property="Height" Value="60" />
 
         <Setter Property="Source" Value="/MusicPlayerModule;component/Resources/网络.png" />
-        
+
         <Setter Property="Clip">
             <Setter.Value>
-                <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
+                <EllipseGeometry
+                    Center="30,30"
+                    RadiusX="30"
+                    RadiusY="30" />
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style TargetType="TextBlock" BasedOn="{StaticResource IconText}" x:Key="DefaultSingerBack">
+    <Style
+        x:Key="DefaultSingerBack"
+        BasedOn="{StaticResource IconText}"
+        TargetType="TextBlock">
         <Setter Property="Background" Value="White" />
         <Setter Property="Foreground" Value="{StaticResource DeepGray}" />
 
@@ -363,7 +434,10 @@
 
         <Setter Property="Clip">
             <Setter.Value>
-                <EllipseGeometry Center="30,30" RadiusX="30" RadiusY="30"/>
+                <EllipseGeometry
+                    Center="30,30"
+                    RadiusX="30"
+                    RadiusY="30" />
             </Setter.Value>
         </Setter>
     </Style>

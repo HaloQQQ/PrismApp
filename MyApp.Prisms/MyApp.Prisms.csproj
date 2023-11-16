@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="IceTea.Atom" Version="1.0.15" />
     <PackageReference Include="IceTea.SocketStandard" Version="1.0.1" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
   </ItemGroup>

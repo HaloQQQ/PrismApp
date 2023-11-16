@@ -378,7 +378,7 @@ namespace MusicPlayerModule.ViewModels
 
             this.DistributeToCommand = new DelegateCommand<MusicMoveModel>(moveModel =>
             {
-                if (moveModel == null)
+                if (moveModel.IsNullOr(m => m.Music == null))
                 {
                     return;
                 }

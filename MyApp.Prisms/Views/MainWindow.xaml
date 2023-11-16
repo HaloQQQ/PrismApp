@@ -6,6 +6,7 @@
     xmlns:prism="http://prismlibrary.com/"
     xmlns:regions="http://prismlibrary.com/"
     xmlns:views="clr-namespace:MyApp.Prisms.Views"
+    Title="{Binding Title, Mode=TwoWay}"
     MinWidth="1200"
     MinHeight="640"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -47,7 +48,6 @@
                     ItemContainerStyle="{StaticResource TabItem_Transparent}"
                     SelectionChanged="Selector_OnSelectionChanged">
                     <TabItem Header="通讯工具" />
-                    <TabItem Header="图片列表" />
                     <TabItem Header="进程服务" />
                     <TabItem Header="邮件客户端">
                         <views:MailManager />
