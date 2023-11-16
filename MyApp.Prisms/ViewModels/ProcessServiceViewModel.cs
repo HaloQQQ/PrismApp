@@ -27,7 +27,7 @@ namespace MyApp.Prisms.ViewModels
                     ProcessContext processContext;
                     if (ProcessList.Count > 0)
                     {
-                        CommonUtils.Invoke(() => ProcessList.Clear());
+                        CommonUtils.BeginInvokeAtOnce(() => ProcessList.Clear());
                     }
 
                     foreach (var process in ProcessUtil.GetAllProcessList().OrderBy(p => p.Key))
@@ -38,7 +38,7 @@ namespace MyApp.Prisms.ViewModels
                         }
 
                         processContext = new ProcessContext(process.Value);
-                        CommonUtils.Invoke(() => ProcessList.Add(processContext));
+                        CommonUtils.BeginInvoke(() => ProcessList.Add(processContext));
 
                         await Task.Delay(50);
                     }
@@ -60,7 +60,7 @@ namespace MyApp.Prisms.ViewModels
                     ServiceContext serviceContext;
                     if (ServiceList.Count > 0)
                     {
-                        CommonUtils.Invoke(() => ServiceList.Clear());
+                        CommonUtils.BeginInvokeAtOnce(() => ServiceList.Clear());
                     }
 
                     foreach (var service in ServiceUtil.GetAllNormalServiceList().OrderBy(s => s.Key))
@@ -71,7 +71,7 @@ namespace MyApp.Prisms.ViewModels
                         }
 
                         serviceContext = new ServiceContext(service.Value);
-                        CommonUtils.Invoke(() => { ServiceList.Add(serviceContext); });
+                        CommonUtils.BeginInvoke(() => { ServiceList.Add(serviceContext); });
 
                         await Task.Delay(50);
                     }

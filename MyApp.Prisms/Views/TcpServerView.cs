@@ -64,7 +64,7 @@ namespace MyApp.Prisms.Views
 
                 if (socket.RemoteEndPoint != null)
                 {
-                    CommonUtils.Invoke(() =>
+                    CommonUtils.BeginInvokeAtOnce(() =>
                         tcpServerViewModel.ConnList.Add(socket.RemoteEndPoint.ToString()!)
                     );
                 }
@@ -80,7 +80,7 @@ namespace MyApp.Prisms.Views
 
             this._tcpSocket.ExceptionOccurred += (socketName, exception) =>
             {
-                CommonUtils.Invoke(() =>
+                CommonUtils.BeginInvokeAtOnce(() =>
                 {
                     if (tcpServerViewModel.ConnList.Contains(socketName))
                     {

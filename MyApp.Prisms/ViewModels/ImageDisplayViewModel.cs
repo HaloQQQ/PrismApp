@@ -88,7 +88,7 @@ namespace MyApp.Prisms.ViewModels
 
                     var image = new MyImage(item);
 
-                    CommonUtils.Invoke(() =>
+                    CommonUtils.BeginInvoke(() =>
                     {
                         Data.Add(image);
                     });

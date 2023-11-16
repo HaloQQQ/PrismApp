@@ -50,7 +50,7 @@ namespace MyApp.Prisms.Views
             {
                 this.rhTxt.Info(this._tcpSocketContext, $"{socket}连接成功");
 
-                CommonUtils.Invoke(() =>
+                CommonUtils.BeginInvoke(() =>
                 {
                     base._tcpSocketContext.ConnList.Add($"{base._tcpSocketContext.IP}:{port}");
                 });
@@ -65,7 +65,7 @@ namespace MyApp.Prisms.Views
 
             base._tcpSocket.ExceptionOccurred += (socketName, exception) =>
             {
-                CommonUtils.Invoke(() =>
+                CommonUtils.BeginInvoke(() =>
                 {
                     if (base._tcpSocketContext.ConnList.Contains(socketName))
                     {

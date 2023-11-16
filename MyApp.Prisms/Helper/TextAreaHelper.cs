@@ -23,7 +23,7 @@ namespace MyApp.Prisms.Helper
                 Helper.Log(context.Name, message);
             }
 
-            CommonUtils.Invoke(() =>
+            CommonUtils.BeginInvoke(() =>
             {
                 Paragraph paragraph = new Paragraph();
                 paragraph.Inlines.Add(
@@ -57,7 +57,7 @@ namespace MyApp.Prisms.Helper
         internal static void Send(this RichTextBox txt, EndPoint from, EndPoint to, BaseSocketViewModel context,
             string message)
         {
-            CommonUtils.Invoke(() =>
+            CommonUtils.BeginInvoke(() =>
             {
                 var paragraph = GetParagraph("Send", from, to, context, message);
                 paragraph.Inlines.LastInline.Foreground = CustomConstants.SendBrush;
@@ -69,7 +69,7 @@ namespace MyApp.Prisms.Helper
         internal static void Recv(this RichTextBox txt, EndPoint from, EndPoint to, BaseSocketViewModel context,
             string message)
         {
-            CommonUtils.Invoke(() =>
+            CommonUtils.BeginInvoke(() =>
             {
                 var paragraph = GetParagraph("Recv", from, to, context, message);
                 paragraph.Inlines.LastInline.Foreground = CustomConstants.RecvBrush;
