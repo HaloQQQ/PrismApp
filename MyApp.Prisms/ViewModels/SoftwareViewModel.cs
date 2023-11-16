@@ -23,6 +23,7 @@ using MusicPlayerModule.MsgEvents;
 using IceTea.Wpf.Core.Contracts;
 using IceTea.Wpf.Core.Contracts.MyEvents;
 using IceTea.Atom.Contracts;
+using IceTea.Atom.Utils.Events;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -397,9 +398,9 @@ namespace MyApp.Prisms.ViewModels
 
         private void SubscribeCustomCommandEvent()
         {
-            MyEventManager.Current.GetEvent<OpenSettingEvent>().Execute += () => this.Settings.IsEditingSetting = true;
-            MyEventManager.Current.GetEvent<HideTitleBarEvent>().Execute += () => this.IsTitleBarHidden = !this.IsTitleBarHidden;
-            MyEventManager.Current.GetEvent<LoginEvent>().Execute += () => this.IsLogin = !this.IsLogin;
+            CustomEventManager.Current.GetEvent<OpenSettingEvent>().Execute += () => this.Settings.IsEditingSetting = true;
+            CustomEventManager.Current.GetEvent<HideTitleBarEvent>().Execute += () => this.IsTitleBarHidden = !this.IsTitleBarHidden;
+            CustomEventManager.Current.GetEvent<LoginEvent>().Execute += () => this.IsLogin = !this.IsLogin;
         }
 
         public void Dispose()

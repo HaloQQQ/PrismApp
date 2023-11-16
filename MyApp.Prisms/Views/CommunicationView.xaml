@@ -52,7 +52,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <DockPanel>
+    <DockPanel Background="Transparent">
         <Viewbox
             MinHeight="35"
             HorizontalAlignment="Left"
