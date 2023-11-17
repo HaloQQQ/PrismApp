@@ -5,11 +5,12 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using MyApp.Prisms.MsgEvents;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.BaseModels;
 using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Contracts;
+using System.Windows.Input;
+using Prism.Commands;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -71,10 +72,19 @@ namespace MyApp.Prisms.ViewModels
 
         public ImageDisplayViewModel(IConfigManager config, IEventAggregator eventAggregator)
         {
-            this.Data.Add(new MyImage());
-
             this.Data.CollectionChanged += (sender, e) => CallModel(nameof(this.ActualData));
 
+            this.RefreshData(config, eventAggregator);
+
+            this.RefreshCommand = new DelegateCommand(() => this.RefreshData(config, eventAggregator));
+        }
+
+        private void RefreshData(IConfigManager config, IEventAggregator eventAggregator)
+        {
+            this.IsLoading = true;
+
+            this.Data.Clear();
+            this.Data.Add(new MyImage());
             Task.Run(async () =>
             {
                 var dir = config.ReadConfigNode(nameof(SettingsViewModel.ImageDir));
@@ -95,7 +105,17 @@ namespace MyApp.Prisms.ViewModels
 
                     await Task.Delay(20);
                 }
-            }).ContinueWith(task => eventAggregator.GetEvent<BackgroundImageUpdateEvent>().Publish(null));
+            }).ContinueWith(task => this.IsLoading = false);//.ContinueWith(task => eventAggregator.GetEvent<BackgroundImageUpdateEvent>().Publish(null));
+        }
+
+        public ICommand RefreshCommand { get; private set; }
+
+        private bool _isLoading;
+
+        public bool IsLoading
+        {
+            get => this._isLoading;
+            set => SetProperty<bool>(ref _isLoading, value);
         }
 
         private bool _disposed;
