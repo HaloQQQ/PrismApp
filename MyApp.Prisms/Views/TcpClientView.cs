@@ -4,6 +4,7 @@ using MyApp.Prisms.ViewModels;
 using MyApp.Prisms.Views.BaseViews;
 using IceTea.Atom.Extensions;
 using IceTea.Wpf.Core.Utils;
+using IceTea.SocketStandard.Base;
 
 namespace MyApp.Prisms.Views
 {
@@ -27,6 +28,8 @@ namespace MyApp.Prisms.Views
             };
         }
 
+        private ITcpClient _tcpClient;
+
         protected override void InitTcpSocket(ushort port)
         {
             if (string.IsNullOrEmpty(base._tcpSocketContext.Name))
@@ -34,12 +37,14 @@ namespace MyApp.Prisms.Views
                 base._tcpSocketContext.Name = "客户端";
             }
 
-            base._tcpSocket = new NewTcpClient(base._tcpSocketContext.Encoding, base._tcpSocketContext.IP, port,
+            this._tcpClient = new NewTcpClient(base._tcpSocketContext.Encoding, base._tcpSocketContext.IP, port,
                 base._tcpSocketContext.Name, base._tcpSocketContext.MaxMessageLength);
 
+            base._tcpSocket = this._tcpClient;
+
             var tcpClientViewModel = base._tcpSocketContext as TcpClientViewModel;
-            (base._tcpSocket as NewTcpClient).TryReConnect = tcpClientViewModel.CanReConnect;
-            (base._tcpSocket as NewTcpClient).ReConnectPeriodMilliseconds = 2000;
+            this._tcpClient.TryReConnect = tcpClientViewModel.CanReConnect;
+            this._tcpClient.ReConnectPeriodMilliseconds = 2000;
 
             // 防止重复订阅
             tcpClientViewModel.CanReConnectChanged -= this.ReConnectChanged_Handler;
@@ -90,7 +95,7 @@ namespace MyApp.Prisms.Views
 
         private void ReConnectChanged_Handler(bool currentStatus)
         {
-            (base._tcpSocket as NewTcpClient).TryReConnect = currentStatus;
+            this._tcpClient.TryReConnect = currentStatus;
 
             if (!currentStatus)
             {

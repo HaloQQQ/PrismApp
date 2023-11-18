@@ -53,7 +53,7 @@ namespace MyApp.Prisms.Views
         {
             e.Handled = true;
 
-            if (this._udpSocket != null && this._udpSocket.IsConnected)
+            if (this._udpSocket.IsNotNullAnd(udp => udp.IsConnected))
             {
                 this._udpSocket.Close();
                 return;
@@ -61,7 +61,7 @@ namespace MyApp.Prisms.Views
 
             try
             {
-                this._udpSocket = new NewUdpClient(this._socketContext.Encoding, false,
+                this._udpSocket = new NewUdpSocket(this._socketContext.Encoding, false,
                     this._socketContext.IP, ushort.Parse(this._socketContext.Port),
                     this._socketContext.TargetIP, ushort.Parse(this._socketContext.TargetPort));
 
@@ -110,7 +110,7 @@ namespace MyApp.Prisms.Views
 
         private void Handler(bool value)
         {
-            if (this._udpSocket is NewUdpClient udp)
+            if (this._udpSocket is IUdpSocket udp)
             {
                 udp.UnreachableDisconnect = value;
             }

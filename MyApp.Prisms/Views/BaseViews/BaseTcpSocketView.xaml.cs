@@ -66,7 +66,7 @@ namespace MyApp.Prisms.Views.BaseViews
                     return;
                 }
 
-                this.CloseSocket();
+                //this.CloseSocket();
 
                 this._tcpSocketContext.Connecting = true;
 

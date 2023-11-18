@@ -6,6 +6,7 @@ using MyApp.Prisms.Views.BaseViews;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
 using IceTea.Wpf.Core.Utils;
+using IceTea.SocketStandard.Base;
 
 namespace MyApp.Prisms.Views
 {
@@ -36,6 +37,8 @@ namespace MyApp.Prisms.Views
             };
         }
 
+        private ITcpServer _tcpServer;
+
         protected override void CloseSocket()
         {
             base.CloseSocket();
@@ -52,13 +55,13 @@ namespace MyApp.Prisms.Views
 
             var tcpServerViewModel = base._tcpSocketContext as TcpServerViewModel;
 
-            _tcpSocket = new NewTcpServer(_tcpSocketContext.Encoding, _tcpSocketContext.IP, port,
+            _tcpServer = new NewTcpServer(_tcpSocketContext.Encoding, _tcpSocketContext.IP, port,
                 _tcpSocketContext.Name, _tcpSocketContext.MaxMessageLength,
                 tcpServerViewModel.MaxClientCount);
 
-            var server = (NewTcpServer)_tcpSocket;
+            this._tcpSocket = _tcpServer;
 
-            server.SocketCommunicateWithClientCreated += socket =>
+            _tcpServer.SocketCommunicateWithClientCreated += socket =>
             {
                 rhTxt.Info(_tcpSocketContext, $"连接{socket.LocalEndPoint}=>{socket.RemoteEndPoint}建立!");
 
@@ -70,13 +73,13 @@ namespace MyApp.Prisms.Views
                 }
             };
 
-            server.Started += socket =>
+            _tcpServer.Started += socket =>
             {
                 rhTxt.Info(_tcpSocketContext,
                     $"开始监听{socket}..");
             };
 
-            server.ReceivedMessage += (from, to, data) => _mediatorContext.TransmitFrom(this, data);
+            _tcpServer.ReceivedMessage += (from, to, data) => _mediatorContext.TransmitFrom(this, data);
 
             this._tcpSocket.ExceptionOccurred += (socketName, exception) =>
             {
@@ -105,16 +108,14 @@ namespace MyApp.Prisms.Views
         {
             try
             {
-                AppUtils.Assert(_tcpSocket != null, "Socket未初始化!");
+                AppUtils.Assert(_tcpServer != null, "Socket未初始化!");
 
-                var server = _tcpSocket as NewTcpServer;
-
-                if (!server!.IsConnected)
+                if (!_tcpServer.IsConnected)
                 {
                     return;
                 }
 
-                AppUtils.Assert(server.Clients.Count > 0,
+                AppUtils.Assert(_tcpServer.CurrentCount > 0,
                     $"【{_tcpSocketContext.Name}】不存在客户端连接!请连接后重试!");
 
                 var msg = ResolveMsg(_tcpSocket!.GetString(data).Trim('\0').Trim());
