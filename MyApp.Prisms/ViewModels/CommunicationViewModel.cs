@@ -7,10 +7,12 @@ namespace MyApp.Prisms.ViewModels
 {
     internal class CommunicationViewModel : BindableBase
     {
-        public CommunicationViewModel(UDPViewModel udpContext,
-            TcpClientViewModel applicationClientContext,
-            TcpServerViewModel machineServerContext,
-            AnotherTcpServerViewModel applicationServerContext)
+        public CommunicationViewModel(
+                UdpSocketViewModel udpContext,
+                TcpClientViewModel applicationClientContext,
+                TcpServerViewModel machineServerContext,
+                AnotherTcpServerViewModel applicationServerContext
+            )
         {
             IsTcp = true;
             IsTcpServer = true;
@@ -22,7 +24,7 @@ namespace MyApp.Prisms.ViewModels
             this.ApplicationClientContext = applicationClientContext;
         }
 
-        public UDPViewModel UdpContext { get; private set; }
+        public UdpSocketViewModel UdpContext { get; private set; }
 
         #region TCP
         public TcpServerViewModel MachineServerContext { get; private set; }
@@ -90,8 +92,8 @@ namespace MyApp.Prisms.ViewModels
         {
             set
             {
-                this.ApplicationServerContext.MaxClientCount = value;
-                this.MachineServerContext.MaxClientCount = value;
+                this.ApplicationServerContext.MaxClientsCount = value;
+                this.MachineServerContext.MaxClientsCount = value;
             }
         }
     }

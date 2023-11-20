@@ -1,6 +1,9 @@
-﻿using System;
-using IceTea.Atom.Contracts;
+﻿using IceTea.Atom.Contracts;
+using IceTea.Atom.Extensions;
+using IceTea.SocketStandard.Base;
+using IceTea.SocketStandard.Tcp;
 using MyApp.Prisms.ViewModels.BaseViewModels;
+using System.Text;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -8,28 +11,42 @@ namespace MyApp.Prisms.ViewModels
     {
         public TcpClientViewModel(IConfigManager config) : base(config)
         {
-            IP = "127.0.0.1";
-            Port = "50000";
-            MaxMessageLength = 256;
             Name = "Tcp客户端";
 
             this.IsLogging = config.IsTrue("IsLogging:" + this.Name);
         }
 
-        private bool _canReConnect;
+        private ITcpClient _tcpClient;
 
-        public bool CanReConnect
+        protected override bool InitSocket()
         {
-            get => this._canReConnect;
-
-            set
+            if (this._tcpClient.IsNotNullAnd(client => client.IsTryConnecting))
             {
-                SetProperty<bool>(ref _canReConnect, value);
-
-                this.CanReConnectChanged?.Invoke(this._canReConnect);
+                return false;
             }
+
+            this.Socket = this._tcpClient = new NewTcpClient(Encoding.UTF8, this.Ip ?? this.DefaultIp, this._port, this.Name);
+            this._tcpClient.TryReConnect = TryReConnect;
+            this._tcpClient.ReConnectPeriodMilliseconds = 3000;
+
+            return true;
         }
 
-        public event Action<bool> CanReConnectChanged;
+        private bool _tryReConnect;
+
+        public bool TryReConnect
+        {
+            get => this._tryReConnect;
+            set
+            {
+                if (SetProperty<bool>(ref _tryReConnect, value))
+                {
+                    if (this.Socket.IsNotNullAnd())
+                    {
+                        this._tcpClient.TryReConnect = value;
+                    }
+                }
+            }
+        }
     }
 }

@@ -15,17 +15,16 @@
                 x:Key="TcpServerComboBoxEnableStyle"
                 BasedOn="{StaticResource {x:Type ComboBox}}"
                 TargetType="ComboBox">
-                <Setter Property="IsEnabled" Value="False" />
+                <Setter Property="IsEnabled" Value="True" />
 
                 <Style.Triggers>
-                    <MultiDataTrigger>
-                        <MultiDataTrigger.Conditions>
-                            <Condition Binding="{Binding MachineServerContext.IsConnected}" Value="False" />
-                            <Condition Binding="{Binding ApplicationServerContext.IsConnected}" Value="False" />
-                        </MultiDataTrigger.Conditions>
+                    <DataTrigger Binding="{Binding MachineServerContext.Socket.IsConnected}" Value="True">
+                        <Setter Property="IsEnabled" Value="False" />
+                    </DataTrigger>
 
-                        <Setter Property="ComboBox.IsEnabled" Value="True" />
-                    </MultiDataTrigger>
+                    <DataTrigger Binding="{Binding ApplicationServerContext.Socket.IsConnected}" Value="True">
+                        <Setter Property="IsEnabled" Value="False" />
+                    </DataTrigger>
                 </Style.Triggers>
             </Style>
 
@@ -33,20 +32,28 @@
                 x:Key="CheckBoxEnableStyle"
                 BasedOn="{StaticResource {x:Type CheckBox}}"
                 TargetType="CheckBox">
-                <Setter Property="IsEnabled" Value="False" />
+                <Setter Property="IsEnabled" Value="True" />
 
                 <Style.Triggers>
-                    <MultiDataTrigger>
-                        <MultiDataTrigger.Conditions>
-                            <Condition Binding="{Binding MachineServerContext.IsConnected}" Value="False" />
-                            <Condition Binding="{Binding ApplicationServerContext.IsConnected}" Value="False" />
-                            <Condition Binding="{Binding ApplicationClientContext.IsConnected}" Value="False" />
-                            <Condition Binding="{Binding ApplicationClientContext.Connecting}" Value="False" />
-                            <Condition Binding="{Binding UdpContext.IsConnected}" Value="False" />
-                        </MultiDataTrigger.Conditions>
+                    <DataTrigger Binding="{Binding MachineServerContext.Socket.IsConnected}" Value="True">
+                        <Setter Property="IsEnabled" Value="False" />
+                    </DataTrigger>
 
-                        <Setter Property="CheckBox.IsEnabled" Value="True" />
-                    </MultiDataTrigger>
+                    <DataTrigger Binding="{Binding ApplicationServerContext.Socket.IsConnected}" Value="True">
+                        <Setter Property="IsEnabled" Value="False" />
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding ApplicationClientContext.Socket.IsConnected}" Value="True">
+                        <Setter Property="IsEnabled" Value="False" />
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding ApplicationClientContext.Socket.IsTryConnecting}" Value="True">
+                        <Setter Property="IsEnabled" Value="False" />
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding UdpContext.Socket.IsConnected}" Value="True">
+                        <Setter Property="IsEnabled" Value="False" />
+                    </DataTrigger>
                 </Style.Triggers>
             </Style>
         </ResourceDictionary>
@@ -108,30 +115,6 @@
                     </StackPanel>
                 </StackPanel>
 
-                <CheckBox DockPanel.Dock="Left" IsChecked="{Binding ApplicationClientContext.CanReConnect, Mode=OneWayToSource}">
-                    <CheckBox.Style>
-                        <Style BasedOn="{StaticResource SlideCheckBox}" TargetType="CheckBox">
-                            <Setter Property="Visibility" Value="Collapsed" />
-
-                            <Style.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsTcpServer}" Value="False" />
-                                        <Condition Binding="{Binding IsTcp}" Value="True" />
-                                    </MultiDataTrigger.Conditions>
-
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </CheckBox.Style>
-
-                    <TextBlock>
-                        <TextBlock Style="{StaticResource IconText}" Text="&#xe627;" />
-                        <TextBlock Style="{StaticResource ThemeBlk}" Text="重连服务器：" />
-                    </TextBlock>
-                </CheckBox>
-
                 <CheckBox
                     DockPanel.Dock="Left"
                     IsChecked="{Binding IsHex}"
@@ -164,7 +147,7 @@
                 </Grid>
 
                 <Grid Visibility="{Binding IsTcp, Converter={StaticResource BoolToCollapsedVisibleConverter}}">
-                    <views:UDPView />
+                    <views:UdpSocketView />
                 </Grid>
             </Grid>
         </Grid>

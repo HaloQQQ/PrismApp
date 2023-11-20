@@ -21,6 +21,64 @@
             <Setter Property="MinWidth" Value="220" />
             <Setter Property="MaxWidth" Value="220" />
         </Style>
+        <Style x:Key="HorizontalListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="5,3,0,3" />
+            <Setter Property="Background" Value="{StaticResource TransparentButtonBackground}" />
+            <Setter Property="MaxWidth" Value="130.5" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+
+            <Setter Property="Foreground" Value="{DynamicResource TextBlock.Foreground}" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border
+                            x:Name="border"
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            Margin="{TemplateBinding Margin}"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="8"
+                            ToolTip="{TemplateBinding Content}">
+                            <DockPanel>
+                                <Button
+                                    x:Name="CloseButton"
+                                    Command="Close"
+                                    Content="&#xe612;"
+                                    DockPanel.Dock="Right"
+                                    Style="{StaticResource IconButtonBase_Small_Expand}"
+                                    Visibility="Hidden" />
+
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </DockPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <!--<Setter Property="Foreground" Value="{StaticResource ShallowBlue}" />-->
+                                <Setter Property="Background" Value="{StaticResource HoveredTransparentButtonBackground}" />
+                                <Setter Property="Cursor" Value="Hand" />
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform CenterX="0" ScaleX="1.01" ScaleY="1.01" />
+                                    </Setter.Value>
+                                </Setter>
+
+                                <Setter TargetName="CloseButton" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style BasedOn="{StaticResource {x:Type ListBox}}" TargetType="ListBox">
             <Setter Property="ItemContainerStyle">
                 <Setter.Value>

@@ -3,9 +3,9 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using MyApp.Prisms.ViewModels.BaseViewModels;
 using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Extensions;
+using IceTea.SocketStandard.Base;
 
 namespace MyApp.Prisms.Helper
 {
@@ -16,11 +16,11 @@ namespace MyApp.Prisms.Helper
             txt.Document.Blocks.Clear();
         }
 
-        internal static void Info(this RichTextBox txt, BaseSocketViewModel context, string message)
+        internal static void Info(this RichTextBox txt, bool isLogging, string name, string message)
         {
-            if (context.IsLogging)
+            if (isLogging)
             {
-                Helper.Log(context.Name, message);
+                Helper.Log(name, message);
             }
 
             CommonUtils.BeginInvoke(() =>
@@ -34,17 +34,16 @@ namespace MyApp.Prisms.Helper
             });
         }
 
-        private static Paragraph GetParagraph(string type, EndPoint from, EndPoint to, BaseSocketViewModel context,
+        private static Paragraph GetParagraph(string type, EndPoint from, EndPoint to, bool isLogging, ISocket socket,
             string message)
         {
-            if (context.IsLogging)
+            if (isLogging)
             {
-                Helper.Log(context.Name, message);
+                Helper.Log(socket.Name, message);
             }
 
             Paragraph paragraph = new Paragraph();
-            Run title = new Run($"[{DateTime.Now.FormatTime()}]# {type} {context.Encoding.BodyName} {from}=>{to}>" +
-                                Environment.NewLine);
+            Run title = new Run($"[{DateTime.Now.FormatTime()}]# {type} {socket.Encoding.BodyName} {from}=>{to}>".AppendLineOr());
             paragraph.Inlines.Add(title);
             Run item = new Run(message);
             item.FontWeight = FontWeights.Bold;
@@ -54,24 +53,24 @@ namespace MyApp.Prisms.Helper
             return paragraph;
         }
 
-        internal static void Send(this RichTextBox txt, EndPoint from, EndPoint to, BaseSocketViewModel context,
+        internal static void Send(this RichTextBox txt, EndPoint from, EndPoint to, bool isLogging, ISocket socket,
             string message)
         {
             CommonUtils.BeginInvoke(() =>
             {
-                var paragraph = GetParagraph("Send", from, to, context, message);
+                var paragraph = GetParagraph("Send", from, to, isLogging, socket, message);
                 paragraph.Inlines.LastInline.Foreground = CustomConstants.SendBrush;
 
                 PrintMsg(txt, paragraph);
             });
         }
 
-        internal static void Recv(this RichTextBox txt, EndPoint from, EndPoint to, BaseSocketViewModel context,
+        internal static void Recv(this RichTextBox txt, EndPoint from, EndPoint to, bool isLogging, ISocket socket,
             string message)
         {
             CommonUtils.BeginInvoke(() =>
             {
-                var paragraph = GetParagraph("Recv", from, to, context, message);
+                var paragraph = GetParagraph("Recv", from, to, isLogging, socket, message);
                 paragraph.Inlines.LastInline.Foreground = CustomConstants.RecvBrush;
                 paragraph.TextAlignment = TextAlignment.Right;
 

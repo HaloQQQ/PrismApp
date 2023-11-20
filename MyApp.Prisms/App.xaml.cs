@@ -125,7 +125,7 @@ namespace MyApp.Prisms
 
             containerRegistry.RegisterSingleton<SettingsViewModel>();
 
-            containerRegistry.RegisterScoped<UDPViewModel>();
+            containerRegistry.RegisterScoped<UdpSocketViewModel>();
             containerRegistry.RegisterScoped<TcpClientViewModel>();
             containerRegistry.RegisterScoped<TcpServerViewModel>();
             containerRegistry.RegisterScoped<AnotherTcpServerViewModel>();

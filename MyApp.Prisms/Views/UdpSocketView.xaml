@@ -1,0 +1,141 @@
+﻿<UserControl
+    x:Class="MyApp.Prisms.Views.UdpSocketView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:viewModels="clr-namespace:MyApp.Prisms.ViewModels.BaseViewModels"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.Resources>
+        <Style
+            x:Key="cmbIP"
+            BasedOn="{StaticResource {x:Type ComboBox}}"
+            TargetType="ComboBox">
+            <Setter Property="ItemsSource" Value="{x:Static viewModels:BaseSocketViewModel.Ips}" />
+            <Setter Property="IsEnabled" Value="{Binding Socket.IsConnected, Converter={StaticResource OppositeBoolConverter}}" />
+        </Style>
+
+        <Style
+            x:Key="Lable"
+            BasedOn="{StaticResource ThemeBlk}"
+            TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Margin" Value="0" />
+        </Style>
+    </UserControl.Resources>
+
+    <GroupBox>
+        <GroupBox.Header>
+            <TextBlock
+                FontSize="20"
+                FontWeight="Bold"
+                Foreground="Blue"
+                Text="{Binding Name}" />
+        </GroupBox.Header>
+        <Grid CommandManager.CanExecute="CommandBinding_OnCanExecute" CommandManager.Executed="CommandBinding_Executed">
+            <Grid.RowDefinitions>
+                <RowDefinition MaxHeight="50" />
+                <RowDefinition Height="*" />
+                <RowDefinition MaxHeight="50" />
+            </Grid.RowDefinitions>
+
+            <Viewbox
+                Grid.Row="0"
+                HorizontalAlignment="Left"
+                Style="{StaticResource OnlyDownViewbox}">
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource Lable}" Text="本机IP：" />
+                    <ComboBox Style="{StaticResource cmbIP}" Text="{Binding Ip, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Style="{StaticResource Lable}" Text="本机本机端口：" />
+                    <TextBox
+                        IsEnabled="{Binding Socket.IsConnected, Converter={StaticResource OppositeBoolConverter}}"
+                        Style="{StaticResource TextBox_DisplayInfo}"
+                        Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Style="{StaticResource Lable}" Text="目标IP：" />
+
+                    <ComboBox Style="{StaticResource cmbIP}" Text="{Binding RemoteIp, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <TextBlock Style="{StaticResource Lable}" Text="目标端口：" />
+                    <TextBox
+                        IsEnabled="{Binding Socket.IsConnected, Converter={StaticResource OppositeBoolConverter}}"
+                        Style="{StaticResource TextBox_DisplayInfo}"
+                        Text="{Binding RemotePort, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <CheckBox IsChecked="{Binding UnreachableDisConnect}">
+                        <TextBlock FontSize="14">
+                            <TextBlock Style="{StaticResource IconText}" Text="&#xec6f;" />
+                            <TextBlock Text="失败断开：" />
+                        </TextBlock>
+                    </CheckBox>
+
+                    <Button Command="{Binding ConnectCommand}">
+                        <Button.Style>
+                            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <TextBlock>
+                                            <TextBlock Text="&#xe650;" />
+                                            <TextBlock>
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Text" Value="打开连接" />
+
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Socket.IsConnected}" Value="True">
+                                                                <Setter Property="Text" Value="关闭连接" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </TextBlock>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </Viewbox>
+
+            <Grid Grid.Row="1">
+                <RichTextBox
+                    x:Name="rhTxt"
+                    Background="Transparent"
+                    ContextMenu="{StaticResource ForMessageBoard}"
+                    DockPanel.Dock="Bottom">
+                    <RichTextBox.CommandBindings>
+                        <CommandBinding Command="Open" />
+                    </RichTextBox.CommandBindings>
+                </RichTextBox>
+            </Grid>
+
+            <Viewbox
+                Grid.Row="2"
+                HorizontalAlignment="Left"
+                Style="{StaticResource OnlyDownViewbox}">
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource ThemeBlk}" Text="发送：" />
+                    <TextBox
+                        MinWidth="200"
+                        attaches:MyAttachProperty.PlaceHolder="待发送消息"
+                        Text="{Binding SendMessage, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.Style>
+                            <Style BasedOn="{StaticResource WidthAnimationWithoutPrefixTextBox}" TargetType="TextBox">
+                                <Setter Property="IsEnabled" Value="False" />
+
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Socket.IsConnected}" Value="True">
+                                        <Setter Property="IsEnabled" Value="True" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+
+                    <Button Command="{Binding SendCommand}" Content="发送" />
+                </StackPanel>
+            </Viewbox>
+        </Grid>
+    </GroupBox>
+</UserControl>
