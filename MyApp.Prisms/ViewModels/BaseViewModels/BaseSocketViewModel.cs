@@ -8,6 +8,11 @@ using System.Text;
 using IceTea.Atom.Utils;
 using System.Collections.Generic;
 using System.Linq;
+using DryIoc;
+using Prism.Ioc;
+using Prism.Events;
+using MusicPlayerModule.MsgEvents;
+using IceTea.Wpf.Core.Contracts;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {
@@ -34,18 +39,17 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
                 )
                 .ObservesProperty(() => this.SendMessage);
 
-            this.Ip = this.DefaultIp;
+            this.Ip = AppStatics.Ip;
         }
 
-        public string DefaultIp { get; } = AppStatics.Ip;
-        public ushort DefaultPort { get; } = 50000;
-
         #region Fields
-        private string _ip;
-        protected ushort _port = 50000;
         private string _sendMessage;
 
-        public string Name { get; set; } = "Socket";
+        public string Name { get; protected set; } = "Socket";
+
+        private bool _isLogging;
+
+        protected ushort _port;
 
         /// <summary>
         /// 可接受的最长数据长度
@@ -54,28 +58,19 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
         public Encoding Encoding { get; set; } = Encoding.UTF8;
         public bool IsHex { get; set; }
-
-        private bool _isLogging;
         #endregion
 
         #region Props
+
         public bool IsLogging
         {
-            get => _isLogging;
+            get => this._isLogging;
             set => SetProperty<bool>(ref _isLogging, value);
         }
 
-        public string Ip
-        {
-            get => _ip;
-            set => SetProperty(ref _ip, value);
-        }
+        public string Ip { get; set; }
 
-        public string Port
-        {
-            get => _port.ToString();
-            set => SetProperty(ref _port, ushort.Parse(value));
-        }
+        public string Port { get; set; } = "50000";
 
         public string SendMessage
         {
@@ -93,15 +88,22 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
         protected void Connect()
         {
+            if (this.Ip.IsNullOrBlank())
+            {
+                ContainerLocator.Current.Resolve<IEventAggregator>().GetEvent<DialogMessageEvent>().Publish(new DialogMessage("Ip无效"));
+                return;
+            }
+
+            if (!ushort.TryParse(this.Port, out this._port))
+            {
+                ContainerLocator.Current.Resolve<IEventAggregator>().GetEvent<DialogMessageEvent>().Publish(new DialogMessage("端口无效"));
+                return;
+            }
+
             if (this.Socket.IsNotNullAnd(server => server.IsConnected))
             {
                 this.Socket.Close();
                 return;
-            }
-
-            if (this._port == 0)
-            {
-                this._port = this.DefaultPort;
             }
 
             if (this.InitSocket())

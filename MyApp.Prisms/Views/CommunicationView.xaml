@@ -102,7 +102,7 @@
                             FontSize="20"
                             IsReadOnly="True"
                             Style="{StaticResource TcpServerComboBoxEnableStyle}"
-                            Text="{Binding MaxClientCount, Converter={StaticResource DigitToStringConverter}, Mode=OneWayToSource}">
+                            Text="{Binding MaxClientsCount, Converter={StaticResource DigitToStringConverter}, Mode=OneWayToSource}">
                             <ComboBoxItem Content="1" />
                             <ComboBoxItem Content="2" />
                             <ComboBoxItem Content="3" />

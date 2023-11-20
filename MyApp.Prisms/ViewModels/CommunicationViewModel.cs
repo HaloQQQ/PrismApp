@@ -88,7 +88,7 @@ namespace MyApp.Prisms.ViewModels
             }
         }
 
-        public ushort MaxClientCount
+        public ushort MaxClientsCount
         {
             set
             {

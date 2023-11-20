@@ -25,7 +25,7 @@ namespace MyApp.Prisms.ViewModels
                 return false;
             }
 
-            this.Socket = this._tcpClient = new NewTcpClient(Encoding.UTF8, this.Ip ?? this.DefaultIp, this._port, this.Name);
+            this.Socket = this._tcpClient = new NewTcpClient(Encoding.UTF8, this.Ip, this._port, this.Name);
             this._tcpClient.TryReConnect = TryReConnect;
             this._tcpClient.ReConnectPeriodMilliseconds = 3000;
 

@@ -4,6 +4,10 @@ using System.Text;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
 using IceTea.SocketStandard.Base;
+using MusicPlayerModule.MsgEvents;
+using Prism.Events;
+using Prism.Ioc;
+using IceTea.Wpf.Core.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -15,14 +19,26 @@ namespace MyApp.Prisms.ViewModels
 
             this.IsLogging = config.IsTrue("IsLogging:" + this.Name);
 
-            this.RemoteIp = this.DefaultIp;
+            this.RemoteIp = AppStatics.Ip;
         }
 
         private IUdpSocket _udpSocket;
 
         protected override bool InitSocket()
         {
-            this.Socket = this._udpSocket = new NewUdpSocket(Encoding.UTF8, false, this.Ip ?? this.DefaultIp, this._port, this.RemoteIp ?? this.DefaultIp, this._remotePort, this.Name);
+            if (this.RemoteIp.IsNullOrBlank())
+            {
+                ContainerLocator.Current.Resolve<IEventAggregator>().GetEvent<DialogMessageEvent>().Publish(new DialogMessage("远程Ip无效"));
+                return false;
+            }
+
+            if (!ushort.TryParse(this.RemotePort, out ushort remotePort))
+            {
+                ContainerLocator.Current.Resolve<IEventAggregator>().GetEvent<DialogMessageEvent>().Publish(new DialogMessage("远程端口无效"));
+                return false;
+            }
+
+            this.Socket = this._udpSocket = new NewUdpSocket(Encoding.UTF8, false, this.Ip, this._port, this.RemoteIp, remotePort, this.Name);
 
             this._udpSocket.UnreachableDisconnect = this.UnreachableDisConnect;
 
@@ -44,12 +60,12 @@ namespace MyApp.Prisms.ViewModels
             set => SetProperty(ref _remoteIp, value);
         }
 
-        protected ushort _remotePort = 50001;
+        private string _remotePort = "50001";
 
         public string RemotePort
         {
-            get => _remotePort.ToString();
-            set => SetProperty(ref _remotePort, ushort.Parse(value));
+            get => _remotePort;
+            set => SetProperty(ref _remotePort, value);
         }
 
         private bool _unreachableDisConnect;
@@ -59,7 +75,7 @@ namespace MyApp.Prisms.ViewModels
             get => this._unreachableDisConnect;
             set
             {
-                if(SetProperty<bool>(ref _unreachableDisConnect, value))
+                if (SetProperty<bool>(ref _unreachableDisConnect, value))
                 {
                     if (this.Socket.IsNotNullAnd())
                     {
