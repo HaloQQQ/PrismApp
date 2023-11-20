@@ -29,8 +29,7 @@ namespace MusicPlayerModule.Utils
 
                     if (filePath != null)
                     {
-                        KRCLyrics krc = KRCLyrics.LoadFromFile(filePath);
-                        item.Lyric = krc;
+                        item.Lyric = KRCLyrics.LoadFromFile(filePath);
                     }
                 }
             }).ConfigureAwait(false);
@@ -40,10 +39,12 @@ namespace MusicPlayerModule.Utils
         {
             Debug.Assert(music != null, "音乐实体不存在");
 
-            if (music.Lyric != null || music.IsPureMusic)
+            if (music.IsPureMusic || music.IsLoadingLyric || music.Lyric != null)
             {
                 return;
             }
+
+            music.IsLoadingLyric = true;
 
             await Task.Run(() =>
             {
@@ -56,14 +57,15 @@ namespace MusicPlayerModule.Utils
                                                                     || path.Contains(
                                                                         music.Singer.Replace(" ", string.Empty))
                                                                 )
-                );
+                                                            );
 
                 if (!(music.IsPureMusic = lyricFilePath == null))
                 {
-                    KRCLyrics krc = KRCLyrics.LoadFromFile(lyricFilePath);
-                    music.Lyric = krc;
+                    music.Lyric = KRCLyrics.LoadFromFile(lyricFilePath);
                 }
-            }).ConfigureAwait(false);
+            })
+            .ContinueWith(task => music.IsLoadingLyric = false)
+            .ConfigureAwait(false);
         }
 
         public static IEnumerable<string> GetLyricPaths(string directoryPath, Predicate<string> predicate)

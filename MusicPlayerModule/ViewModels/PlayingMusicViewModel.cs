@@ -1,4 +1,5 @@
 ﻿using IceTea.Atom.Utils;
+using MusicPlayerModule.Common;
 using MusicPlayerModule.Models;
 using MusicPlayerModule.Utils;
 using MusicPlayerModule.ViewModels.Base;
@@ -31,20 +32,13 @@ namespace MusicPlayerModule.ViewModels
 
         private int _currentLineIndex = 0;
 
-        private int GetCurrentLineIndex()
+        private int GetCurrentLineIndex(IList<KRCLyricsLine> lines)
         {
-            var currentIndex = -1;
-
-            if (this.Music.Lyric == null)
-            {
-                return currentIndex;
-            }
-
-            var lyrics = this.Music.Lyric.Lines;
+            int currentIndex = -1;
 
             // 注意当前歌词的结束时间要与下一句歌词的开始时间比较
-            while (currentIndex < lyrics.Count - 1 &&
-                   this._currentMills >= lyrics[currentIndex + 1].LineStart.TotalMilliseconds)
+            while (currentIndex < lines.Count - 1 &&
+                   this._currentMills >= lines[currentIndex + 1].LineStart.TotalMilliseconds)
             {
                 // 更新当前歌词的索引
                 currentIndex++;
@@ -60,14 +54,16 @@ namespace MusicPlayerModule.ViewModels
         {
             get
             {
-                if (this.Music.Lyric == null)
+                var lyric = this.Music.Lyric;
+
+                if (lyric == null)
                 {
                     return 0;
                 }
 
-                var line = this.Music.Lyric.Lines[this._currentLineIndex];
+                var line = lyric.Lines[this._currentLineIndex];
 
-                KRCLyricsChar tempChar = null;
+                KRCLyricsChar tempChar;
                 double value = 0;
                 for (int i = 0; i < line.Chars.Count; i++)
                 {
@@ -124,15 +120,24 @@ namespace MusicPlayerModule.ViewModels
                 return false;
             }
 
-            if (this.Music.Lyric == null || this.Music.Lyric.Lines.Count == 0)
+            if (this.Music.IsPureMusic)
             {
                 return false;
             }
 
-            var lines = this.Music.Lyric.Lines;
+            LoadLyricToMusicModel.LoadAsync(CustomStatics.LastMusicDir, this.Music);
+
+            var lyric = this.Music.Lyric;
+
+            if (lyric == null)
+            {
+                return false;
+            }
+
+            var lines = lyric.Lines;
 
             // 注意当前歌词的结束时间要与下一句歌词的开始时间比较
-            var currentIndex = this.GetCurrentLineIndex();
+            var currentIndex = this.GetCurrentLineIndex(lyric.Lines);
 
             if (currentIndex < 0)
             {

@@ -50,7 +50,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (SetProperty<PlayingMusicViewModel>(ref _currentMusic, value) && value != null)
                 {
-                    LoadLyricToMusicModel.LoadAsync(CustomStatics.LastMusicDir, this._currentMusic.Music);
+                    LoadLyricToMusicModel.LoadAsync(CustomStatics.LastMusicDir, _currentMusic.Music);
 
                     foreach (var item in this.Playing.Where(m => m.IsPlayingMusic))
                     {
