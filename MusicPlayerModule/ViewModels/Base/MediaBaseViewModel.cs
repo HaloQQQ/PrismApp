@@ -100,6 +100,9 @@ namespace MusicPlayerModule.ViewModels.Base
 
         public abstract void Dispose();
 
+        /// <summary>
+        /// 加载时重置数据
+        /// </summary>
         public virtual void Reset()
         {
             this.ResetABPoint();

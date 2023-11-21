@@ -6,7 +6,6 @@ using Prism.Mvvm;
 using TagLib;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
-using System.Diagnostics;
 
 namespace MusicPlayerModule.Models;
 
@@ -92,8 +91,8 @@ internal class MusicModel : BindableBase, IDisposable
 
     public int TotalMills { get; }
 
-    public bool IsLoadingLyric { get; set; }
-    public bool IsPureMusic { get; set; }
+    public bool IsLoadingLyric { get; internal set; }
+    public bool IsPureMusic { get; internal set; }
 
     private volatile WeakReference<KRCLyrics> _krcLyrics;
 
@@ -109,7 +108,7 @@ internal class MusicModel : BindableBase, IDisposable
             return null;
         }
 
-        set
+        internal set
         {
             value.AssertNotNull(nameof(Lyric));
 

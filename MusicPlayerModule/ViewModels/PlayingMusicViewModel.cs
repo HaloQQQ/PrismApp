@@ -25,27 +25,12 @@ namespace MusicPlayerModule.ViewModels
         public bool IsPlayingMusic
         {
             get { return _isPlayingMusic; }
-            set { SetProperty<bool>(ref _isPlayingMusic, value); }
+            internal set { SetProperty<bool>(ref _isPlayingMusic, value); }
         }
 
         #region 当前歌曲进度相关
 
         private int _currentLineIndex = 0;
-
-        private int GetCurrentLineIndex(IList<KRCLyricsLine> lines)
-        {
-            int currentIndex = -1;
-
-            // 注意当前歌词的结束时间要与下一句歌词的开始时间比较
-            while (currentIndex < lines.Count - 1 &&
-                   this._currentMills >= lines[currentIndex + 1].LineStart.TotalMilliseconds)
-            {
-                // 更新当前歌词的索引
-                currentIndex++;
-            }
-
-            return currentIndex;
-        }
 
         /// <summary>
         /// 当前歌词的字进度
@@ -62,6 +47,11 @@ namespace MusicPlayerModule.ViewModels
                 }
 
                 var line = lyric.Lines[this._currentLineIndex];
+
+                if (this._currentMills < line.LineStart.TotalMilliseconds)
+                {
+                    return 0;
+                }
 
                 KRCLyricsChar tempChar;
                 double value = 0;
@@ -115,7 +105,6 @@ namespace MusicPlayerModule.ViewModels
         {
             if (this._currentMills + 100 > this.Music.TotalMills)
             {
-                this.OneLine = this.AnotherLine = null;
                 ToNextMusic?.Invoke(this);
                 return false;
             }
@@ -182,6 +171,21 @@ namespace MusicPlayerModule.ViewModels
             return true;
         }
 
+        private int GetCurrentLineIndex(IList<KRCLyricsLine> lines)
+        {
+            int currentIndex = -1;
+
+            // 注意当前歌词的结束时间要与下一句歌词的开始时间比较
+            while (currentIndex < lines.Count - 1 &&
+                   this._currentMills >= lines[currentIndex + 1].LineStart.TotalMilliseconds)
+            {
+                // 更新当前歌词的索引
+                currentIndex++;
+            }
+
+            return currentIndex;
+        }
+
         private void SetLine(KRCLyricsLine line, int index)
         {
             // 索引偶数
@@ -214,6 +218,27 @@ namespace MusicPlayerModule.ViewModels
         internal static event Action<PlayingMusicViewModel> ToNextMusic;
 
         #endregion
+
+        public override void Reset()
+        {
+            base.Reset();
+
+            this._currentLineIndex = 0;
+
+            if (!this.Music.IsPureMusic)
+            {
+                var lyric = this.Music.Lyric;
+                if (lyric != null)
+                {
+                    foreach (var item in lyric.Lines.Where(l => l.IsPlayingLine))
+                    {
+                        item.IsPlayingLine = false;
+                    }
+                }
+            }
+
+            this.OneLine = this.AnotherLine = null;
+        }
 
         protected override void SetPointToTotalMills()
         {

@@ -328,7 +328,7 @@
                                 Text="{Binding Words}"
                                 TextTrimming="None">
                                 <TextBlock.Width>
-                                    <MultiBinding Converter="{StaticResource MultiConverter_Multiplication}">
+                                    <MultiBinding Converter="{StaticResource MultiConverter_Multiplication}" FallbackValue="0">
                                         <Binding
                                             Mode="OneWay"
                                             Path="DataContext.CurrentMusic.WordProgress"

@@ -28,7 +28,7 @@ namespace MusicPlayerModule.ViewModels
         public bool IsPlayingVideo
         {
             get { return _isPlayingVideo; }
-            set { SetProperty<bool>(ref _isPlayingVideo, value); }
+            internal set { SetProperty<bool>(ref _isPlayingVideo, value); }
         }
 
         #region 关键点
