@@ -52,6 +52,9 @@
                     <TabItem Header="邮件客户端">
                         <views:MailManager />
                     </TabItem>
+                    <TabItem Header="颜色转换">
+                        <ContentControl regions:RegionManager.RegionName="ColorRegion" Focusable="False" />
+                    </TabItem>
                     <TabItem Header="音乐播放器">
                         <ContentControl regions:RegionManager.RegionName="MusicPlayerRegion" Focusable="False" />
                     </TabItem>

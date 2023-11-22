@@ -608,48 +608,33 @@ namespace MusicPlayerModule.ViewModels
 
         internal void DeleteSingleMusic(FavoriteMusicViewModel music)
         {
-            for (int i = 0; i < this.MusicAlbumFavorites.Count; i++)
+            var current = this.MusicAlbumFavorites.FirstOrDefault(m => m.ClassifyKey == music.Music.Album);
+            if (current.IsNotNullAnd(albumColl => albumColl.DisplayByClassifyKeyFavorites.Remove(music)))
             {
-                var current = this.MusicAlbumFavorites[i];
-                if (current.DisplayByClassifyKeyFavorites.Remove(music))
+                if (current.DisplayByClassifyKeyFavorites.IsNullOrEmpty())
                 {
-                    if (current.DisplayByClassifyKeyFavorites.IsNullOrEmpty())
-                    {
-                        this.MusicAlbumFavorites.Remove(current);
-                        this.DisplayMusicAlbumFavorites.Remove(current);
-                    }
-
-                    break;
+                    this.MusicAlbumFavorites.Remove(current);
+                    this.DisplayMusicAlbumFavorites.Remove(current);
                 }
             }
 
-            for (int i = 0; i < this.MusicSingerFavorites.Count; i++)
+            current = this.MusicSingerFavorites.FirstOrDefault(m => m.ClassifyKey == music.Music.Singer);
+            if (current.IsNotNullAnd(singerColl => singerColl.DisplayByClassifyKeyFavorites.Remove(music)))
             {
-                var current = this.MusicSingerFavorites[i];
-                if (current.DisplayByClassifyKeyFavorites.Remove(music))
+                if (current.DisplayByClassifyKeyFavorites.IsNullOrEmpty())
                 {
-                    if (current.DisplayByClassifyKeyFavorites.IsNullOrEmpty())
-                    {
-                        this.MusicSingerFavorites.Remove(current);
-                        this.DisplayMusicSingerFavorites.Remove(current);
-                    }
-
-                    break;
+                    this.MusicSingerFavorites.Remove(current);
+                    this.DisplayMusicSingerFavorites.Remove(current);
                 }
             }
 
-            for (int i = 0; i < this.MusicDirFavorites.Count; i++)
+            current = this.MusicDirFavorites.FirstOrDefault(m => m.ClassifyKey == music.Music.FileDir);
+            if (current.IsNotNullAnd(dirColl => dirColl.DisplayByClassifyKeyFavorites.Remove(music)))
             {
-                var current = this.MusicDirFavorites[i];
-                if (current.DisplayByClassifyKeyFavorites.Remove(music))
+                if (current.DisplayByClassifyKeyFavorites.IsNullOrEmpty())
                 {
-                    if (current.DisplayByClassifyKeyFavorites.IsNullOrEmpty())
-                    {
-                        this.MusicDirs.RemoveAll(item => item.DirPath == current.ClassifyKey);
-                        this.MusicDirFavorites.Remove(current);
-                    }
-
-                    break;
+                    this.MusicDirs.RemoveAll(item => item.DirPath == current.ClassifyKey);
+                    this.MusicDirFavorites.Remove(current);
                 }
             }
         }

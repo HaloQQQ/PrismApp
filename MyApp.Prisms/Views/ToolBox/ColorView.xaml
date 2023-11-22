@@ -1,0 +1,153 @@
+﻿<UserControl
+    x:Class="MyApp.Prisms.Views.ToolBox.ColorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:customcontrols="http://IceTea.Wpf.Core.com/"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:toolBox="clr-namespace:MyApp.Prisms.ViewModels.ToolBox"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.Resources>
+        <Style BasedOn="{StaticResource TextBox_DisplayInfo}" TargetType="TextBox">
+            <Setter Property="MinWidth" Value="50" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+        </Style>
+
+        <Style
+            x:Key="CopyAsTextBlock"
+            BasedOn="{StaticResource {x:Type TextBox}}"
+            TargetType="TextBox">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="MinWidth" Value="0" />
+
+            <Style.Triggers>
+                <Trigger Property="IsReadOnly" Value="True">
+                    <Setter Property="Background" Value="Transparent" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <StackPanel HorizontalAlignment="Center">
+        <Grid Height="100" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="350" />
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel
+                Grid.Row="0"
+                Grid.Column="0"
+                Orientation="Horizontal">
+                <TextBlock
+                    Width="120"
+                    Margin="10,0"
+                    VerticalAlignment="Center"
+                    Text="十六进制颜色码:"
+                    TextAlignment="Right" />
+                <TextBox
+                    Width="200"
+                    MaxLength="9"
+                    Text="{Binding ColorCode, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel
+                Grid.Row="1"
+                Grid.Column="0"
+                Orientation="Horizontal">
+                <TextBlock
+                    Width="120"
+                    Margin="10,0"
+                    VerticalAlignment="Center"
+                    Text="ARGB数值:"
+                    TextAlignment="Right" />
+                <TextBox
+                    Width="50"
+                    InputScope="Digits"
+                    MaxLength="3"
+                    Text="{Binding AInt, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox
+                    Width="50"
+                    InputScope="Digits"
+                    MaxLength="3"
+                    Text="{Binding RInt, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox
+                    Width="50"
+                    InputScope="Digits"
+                    MaxLength="3"
+                    Text="{Binding GInt, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox
+                    Width="50"
+                    InputScope="Digits"
+                    MaxLength="3"
+                    Text="{Binding BInt, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <Border
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                Width="100"
+                Height="100"
+                Background="{Binding Background}"
+                CornerRadius="3">
+                <TextBox
+                    Foreground="{Binding ContrastColor}"
+                    Style="{StaticResource CopyAsTextBlock}"
+                    Text="{Binding ContrastColorCode, Mode=OneWay}" />
+            </Border>
+
+        </Grid>
+
+        <ScrollViewer>
+            <ListBox
+                MaxHeight="400"
+                ItemContainerStyle="{StaticResource ListBoxItem_General}"
+                ItemsSource="{Binding Colors}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <customcontrols:VirtualizingWrapPanel
+                            ChildHeight="40"
+                            ChildWidth="80"
+                            ScrollOffset="40" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type toolBox:ColorModel}">
+                        <Border
+                            Width="80"
+                            Height="40"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="{Binding Background}">
+                            <Border.ToolTip>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Foreground="{Binding Foreground}"
+                                    Text="{Binding ColorCode}" />
+                            </Border.ToolTip>
+                            <TextBox
+                                Foreground="{Binding Foreground}"
+                                Style="{StaticResource CopyAsTextBlock}"
+                                Text="{Binding ColorCode, Mode=OneTime}" />
+                            <!--<TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Foreground="{Binding Foreground}"
+                                Text="{Binding ColorCode}" />-->
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </ScrollViewer>
+    </StackPanel>
+</UserControl>

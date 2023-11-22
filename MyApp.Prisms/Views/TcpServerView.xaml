@@ -120,7 +120,9 @@
 
                     <TextBlock Style="{StaticResource Lable}" Text="服务器监听端口：" />
                     <TextBox
+                        InputScope="Digits"
                         IsEnabled="{Binding Socket.IsConnected, Converter={StaticResource OppositeBoolConverter}}"
+                        MaxLength="5"
                         Style="{StaticResource TextBox_DisplayInfo}"
                         Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" />
 

@@ -20,6 +20,7 @@ using MusicPlayerModule.MsgEvents;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.Setting;
 using IceTea.Wpf.Core.Contracts;
+using MyApp.Prisms.Views.ToolBox;
 
 namespace MyApp.Prisms
 {
@@ -132,20 +133,28 @@ namespace MyApp.Prisms
 
             //containerRegistry.RegisterScoped<CommunicationViewModel>();
 
-            containerRegistry.RegisterSingleton<ImageDisplayViewModel>();
-            //containerRegistry.RegisterSingleton<UserViewModel>();
-            containerRegistry.RegisterSingleton<SoftwareViewModel>();
+            //containerRegistry.RegisterSingleton<ImageDisplayViewModel>();
+            //containerRegistry.RegisterSingleton<SoftwareViewModel>();
 
             ViewModelLocationProvider.Register<WindowTitleBarView, SoftwareViewModel>();
-            ViewModelLocationProvider.Register<ImageDisplayView, ImageDisplayViewModel>();
+            //ViewModelLocationProvider.Register<ImageDisplayView, ImageDisplayViewModel>();
             ViewModelLocationProvider.Register<SwitchBackgroundView, ImageDisplayViewModel>();
 
             containerRegistry.Register<Settings>();
+
+            this.RegisterRegion();
+        }
+
+        private void RegisterRegion()
+        {
             var regionManager = this.Container.Resolve<IRegionManager>();
             regionManager.RegisterViewWithRegion("SettingRegion", nameof(Settings));
 
             regionManager.RegisterViewWithRegion("Smtp163MailRegion", () => new Smtp163MailView());
             regionManager.RegisterViewWithRegion("SmtpQQMailRegion", () => new SmtpQQMailView());
+
+            regionManager.RegisterViewWithRegion("ColorRegion", () => new ColorView());
+
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
