@@ -119,12 +119,16 @@
 
     <DataTemplate x:Key="PanelSimpleLyric">
         <Grid Margin="20,10" HorizontalAlignment="Center">
-            <TextBlock Foreground="{DynamicResource TextBlock.Foreground}" Text="{Binding Words}" />
+            <TextBlock
+                FontSize="{Binding DataContext.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                Foreground="{DynamicResource TextBlock.Foreground}"
+                Text="{Binding Words}" />
 
             <TextBlock>
                 <TextBlock
                     ClipToBounds="True"
-                    Foreground="#F9D881"
+                    FontSize="{Binding DataContext.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=20}"
+                    Foreground="{Binding DataContext.CurrentLyricForeground, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=SkyBlue}"
                     Text="{Binding Words}"
                     TextTrimming="None">
                     <TextBlock.Width>
@@ -319,14 +323,19 @@
             <Setter.Value>
                 <DataTemplate DataType="{x:Type utils:KRCLyricsLine}">
                     <Grid HorizontalAlignment="Center">
-                        <TextBlock Text="{Binding Words}" />
+                        <TextBlock
+                            FontSize="{Binding DataContext.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                            Text="{Binding Words}"
+                            TextWrapping="NoWrap" />
 
                         <TextBlock>
                             <TextBlock
                                 ClipToBounds="True"
-                                Foreground="#F9D881"
+                                FontSize="{Binding DataContext.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                Foreground="{Binding DataContext.CurrentLyricForeground, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                 Text="{Binding Words}"
-                                TextTrimming="None">
+                                TextTrimming="None"
+                                TextWrapping="NoWrap">
                                 <TextBlock.Width>
                                     <MultiBinding Converter="{StaticResource MultiConverter_Multiplication}" FallbackValue="0">
                                         <Binding

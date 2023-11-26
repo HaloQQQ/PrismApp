@@ -120,13 +120,6 @@ namespace MusicPlayerModule.Views
         /// <param name="e"></param>
         private void LyricPageSlide(object sender, RoutedEventArgs e)
         {
-            var allow = e.Source is Grid || (e.Source is TextBlock txt && "SliderTxt".Equals(txt.Name));
-
-            if (!allow)
-            {
-                return;
-            }
-
             var storyBoard = new Storyboard();
 
             var y = (this.LyricPage.RenderTransform as TranslateTransform).Y;
@@ -518,6 +511,28 @@ namespace MusicPlayerModule.Views
             if (e.NewValue is bool b && b)
             {
                 this.PlayingKeyWordsTxt.Focus();
+            }
+        }
+
+        private void LyricSettings_Opened(object sender, EventArgs e)
+        {
+            if (this.LyricForegroundListBox.SelectedIndex >= 0)
+            {
+                return;
+            }
+
+            if (this.DataContext is MusicPlayerViewModel viewModel)
+            {
+                int selectedIndex = -1;                                    
+                foreach (var item in this.LyricForegroundListBox.Items)
+                {
+                    selectedIndex++;
+                    if (item.ToString() == viewModel.CurrentLyricForeground.ToString())
+                    {
+                        LyricForegroundListBox.SelectedIndex = selectedIndex;
+                        return;
+                    }
+            }
             }
         }
     }

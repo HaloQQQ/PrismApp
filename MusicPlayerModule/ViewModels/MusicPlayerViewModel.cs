@@ -18,11 +18,44 @@ using IceTea.Wpf.Core.Contracts;
 using IceTea.Wpf.Core.Utils;
 using IceTea.Wpf.Core.Contracts.MediaInfo;
 using IceTea.Atom.Contracts;
+using IceTea.General.Extensions;
+using System.Windows.Media;
 
 namespace MusicPlayerModule.ViewModels
 {
     internal class MusicPlayerViewModel : BindableBase, IDisposable
     {
+        public IEnumerable<SolidColorBrush> DefaultLyricForegrounds => new List<SolidColorBrush>()
+        {
+            "#FD6C6C".GetBrushFromString(),
+            "#F2910D".GetBrushFromString(),
+            "#FFAF00".GetBrushFromString(),
+            "#C0DF4E".GetBrushFromString(),
+            "#51DAC9".GetBrushFromString(),
+            "#4DB0FF".GetBrushFromString(),
+            "#A587F3".GetBrushFromString(),
+            "#FF8DBB".GetBrushFromString(),
+            "#8C8796".GetBrushFromString(),
+            "#00FF7F".GetBrushFromString()
+        };
+
+        private SolidColorBrush _currentLyricForeground;
+
+        public SolidColorBrush CurrentLyricForeground
+        {
+            get => this._currentLyricForeground;
+            set => SetProperty<SolidColorBrush>(ref _currentLyricForeground, value);
+        }
+
+        private double _currentLyricFontSize;
+
+        public double CurrentLyricFontSize
+        {
+            get => this._currentLyricFontSize;
+            set => SetProperty<double>(ref _currentLyricFontSize, value);
+        }
+
+
         public bool Running
         {
             get { return _running; }
@@ -921,20 +954,39 @@ namespace MusicPlayerModule.ViewModels
             var baseNode = "Music";
             var musicKey = "MusicPlayOrder";
 
+            var currentLyricForegroundKey = "CurrentLyricForeground";
+            var currentLyricFontSizeKey = "CurrentLyricFontSize";
+
             var musicPlayOrder = config.ReadConfigNode(new[] { baseNode, musicKey });
 
-            if (!string.IsNullOrEmpty(musicPlayOrder))
+            if (!musicPlayOrder.IsNullOrBlank())
             {
                 this.CurrentPlayOrder =
                     CustomStatics.MediaPlayOrderList.FirstOrDefault(item => item.Description == musicPlayOrder) ??
                     CustomStatics.MediaPlayOrderList.First();
             }
 
+            var currentLyricForeground = config.ReadConfigNode(new[] { baseNode, currentLyricForegroundKey });
+            this.CurrentLyricForeground = this.DefaultLyricForegrounds.FirstOrDefault(f => f.Color.ToString() == currentLyricForeground) ??
+                this.DefaultLyricForegrounds.First();
+
+            var currentLyricFontSize = config.ReadConfigNode(new[] { baseNode, currentLyricFontSizeKey });
+            double fontSize = 20;
+            if (!currentLyricFontSize.IsNullOrBlank())
+            {
+                double.TryParse(currentLyricFontSize, out fontSize);
+            }
+            this.CurrentLyricFontSize = fontSize;
+
             CustomStatics.LastMusicDir = config.ReadConfigNode(new[] { baseNode, nameof(CustomStatics.LastMusicDir) });
 
             config.SetConfig += config =>
             {
                 config.WriteConfigNode(this.CurrentPlayOrder.Description, new[] { baseNode, musicKey });
+
+                config.WriteConfigNode(this.CurrentLyricForeground.ToString(), new[] { baseNode, currentLyricForegroundKey });
+
+                config.WriteConfigNode(this.CurrentLyricFontSize, new[] { baseNode, currentLyricFontSizeKey });
             };
         }
 
