@@ -16,21 +16,21 @@ namespace MusicPlayerModule
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterForNavigation<MusicPlayer>();
-            containerRegistry.RegisterForNavigation<VideoPlayerView>();
+            //containerRegistry.RegisterForNavigation<MusicPlayer>();
+            //containerRegistry.RegisterForNavigation<VideoPlayerView>();
         }
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            _regionManager.RegisterViewWithRegion("MusicPlayerRegion", nameof(MusicPlayer));
-            _regionManager.RegisterViewWithRegion("VideoPlayerRegion", nameof(VideoPlayerView));
+            _regionManager.RegisterViewWithRegion<MusicPlayer>("MusicPlayerRegion");
+            _regionManager.RegisterViewWithRegion<VideoPlayerView>("VideoPlayerRegion");
 
-            _regionManager.RegisterViewWithRegion("Video1PlayerRegion", nameof(VideoPlayerView));
-            _regionManager.RegisterViewWithRegion("Video2PlayerRegion", nameof(VideoPlayerView));
-            _regionManager.RegisterViewWithRegion("Video3PlayerRegion", nameof(VideoPlayerView));
-            _regionManager.RegisterViewWithRegion("Video4PlayerRegion", nameof(VideoPlayerView));
-            _regionManager.RegisterViewWithRegion("Video5PlayerRegion", nameof(VideoPlayerView));
-            _regionManager.RegisterViewWithRegion("Video6PlayerRegion", nameof(VideoPlayerView));
+            _regionManager.RegisterViewWithRegion<VideoPlayerView>("Video1PlayerRegion");
+            _regionManager.RegisterViewWithRegion<VideoPlayerView>("Video2PlayerRegion");
+            _regionManager.RegisterViewWithRegion<VideoPlayerView>("Video3PlayerRegion");
+            _regionManager.RegisterViewWithRegion<VideoPlayerView>("Video4PlayerRegion");
+            _regionManager.RegisterViewWithRegion<VideoPlayerView>("Video5PlayerRegion");
+            _regionManager.RegisterViewWithRegion<VideoPlayerView>("Video6PlayerRegion");
         }
     }
 }

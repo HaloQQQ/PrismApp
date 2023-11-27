@@ -942,38 +942,39 @@
                             Background="{StaticResource PopupBackground}"
                             CornerRadius="10">
                             <StackPanel>
-                                <StackPanel Height="50" Orientation="Horizontal">
+                                <StackPanel Orientation="Horizontal">
                                     <TextBlock
                                         FontSize="20"
                                         Style="{StaticResource ThemeBlk}"
                                         Text="大小:" />
-                                    <StackPanel Margin="5,0" VerticalAlignment="Center">
+                                    <StackPanel VerticalAlignment="Center">
                                         <Slider
                                             x:Name="LyricFontSizeSlider"
-                                            Width="210"
+                                            Width="200"
                                             MinHeight="3"
-                                            Margin="10,0,0,0"
+                                            Margin="5"
+                                            HorizontalAlignment="Left"
                                             Maximum="30"
                                             Minimum="15"
                                             Style="{StaticResource Slider_ObviousThumb}"
                                             TickFrequency="5"
                                             Value="{Binding CurrentLyricFontSize}" />
 
-                                        <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal">
                                             <TextBlock
-                                                Margin="5,0,0,0"
+                                                Margin="-2,0,0,0"
                                                 Style="{StaticResource ThemeBlk}"
                                                 Text="15" />
                                             <TextBlock
-                                                Margin="60,0,0,0"
+                                                Margin="46,0,0,0"
                                                 Style="{StaticResource ThemeBlk}"
                                                 Text="20" />
                                             <TextBlock
-                                                Margin="60,0,0,0"
+                                                Margin="48,0,0,0"
                                                 Style="{StaticResource ThemeBlk}"
                                                 Text="25" />
                                             <TextBlock
-                                                Margin="50,0,0,0"
+                                                Margin="46,0,0,0"
                                                 Style="{StaticResource ThemeBlk}"
                                                 Text="30" />
                                         </StackPanel>
@@ -986,7 +987,7 @@
                                         Text="颜色:" />
                                     <ListBox
                                         x:Name="LyricForegroundListBox"
-                                        Margin="15,0"
+                                        Margin="5,0"
                                         ItemsSource="{Binding DefaultLyricForegrounds}"
                                         SelectedItem="{Binding CurrentLyricForeground}">
                                         <ListBox.ItemsPanel>
@@ -1470,6 +1471,7 @@
                                     SelectedItem="{Binding CurrentPlayOrder}">
                                     <ListBox.ItemContainerStyle>
                                         <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
+                                            <Setter Property="Padding" Value="0,10" />
 
                                             <Setter Property="ContentTemplate">
                                                 <Setter.Value>

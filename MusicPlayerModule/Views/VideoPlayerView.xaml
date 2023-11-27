@@ -528,7 +528,10 @@
                                     SelectedItem="{Binding Stretch}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding}" TextAlignment="Center" />
+                                            <TextBlock
+                                                Padding="0,10"
+                                                Text="{Binding}"
+                                                TextAlignment="Center" />
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
@@ -597,6 +600,7 @@
                                     SelectedItem="{Binding CurrentPlayOrder}">
                                     <ListBox.ItemContainerStyle>
                                         <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
+                                            <Setter Property="Padding" Value="0,10" />
 
                                             <Setter Property="ContentTemplate">
                                                 <Setter.Value>

@@ -20,6 +20,8 @@ using IceTea.Wpf.Core.Contracts.MediaInfo;
 using IceTea.Atom.Contracts;
 using IceTea.General.Extensions;
 using System.Windows.Media;
+using PrismAppBasicLib.MsgEvents;
+using IceTea.Atom.GeneralModels;
 
 namespace MusicPlayerModule.ViewModels
 {
