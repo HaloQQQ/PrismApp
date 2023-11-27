@@ -1,0 +1,179 @@
+﻿<UserControl
+    x:Class="SqlCreatorModule.Views.CreateModelView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
+    xmlns:data="clr-namespace:System.Data;assembly=netstandard"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <UserControl.Resources>
+        <Style BasedOn="{StaticResource ThemeBlk}" TargetType="TextBlock" />
+
+        <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="ComboBox">
+            <Setter Property="IsReadOnly" Value="True" />
+        </Style>
+
+        <Style BasedOn="{StaticResource TransparentButtonBase}" TargetType="Button" />
+
+        <ObjectDataProvider
+            x:Key="EnumDataSetDateTime"
+            MethodName="GetValues"
+            ObjectType="{x:Type data:DataSetDateTime}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="data:DataSetDateTime" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <TextBlock Text="数据库类型:" />
+            <ComboBox SelectedIndex="0" Text="{Binding CurrentDbType}">
+                <ComboBoxItem Content="Mysql" />
+                <ComboBoxItem Content="SqlServer" />
+                <ComboBoxItem Content="Sqlite" />
+                <ComboBoxItem Content="PostgreSql" />
+            </ComboBox>
+        </StackPanel>
+
+        <WrapPanel Grid.Row="1" Orientation="Horizontal">
+            <!--<TextBlock Text="服务器地址*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
+            <TextBox
+                attaches:MyAttachProperty.PlaceHolder="服务器地址*"
+                Text="{Binding Host, UpdateSourceTrigger=PropertyChanged}"
+                Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
+
+            <!--<TextBlock Text="数据库名*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
+            <TextBox
+                attaches:MyAttachProperty.PlaceHolder="数据库名*"
+                Text="{Binding CurrentDbName, UpdateSourceTrigger=PropertyChanged}"
+                Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
+
+            <!--<TextBlock Text="用户名*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
+            <TextBox
+                attaches:MyAttachProperty.PlaceHolder="用户名*"
+                Text="{Binding Uid, UpdateSourceTrigger=PropertyChanged}"
+                Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
+
+            <!--<TextBlock Text="密码*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
+            <PasswordBox
+                attaches:MyAttachProperty.Password="{Binding Pwd, Mode=TwoWay}"
+                attaches:MyAttachProperty.PlaceHolder="密码*"
+                Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
+
+            <!--<TextBlock Text="服务器端口:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
+            <TextBox
+                attaches:MyAttachProperty.PlaceHolder="服务器端口"
+                Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}"
+                Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
+
+            <TextBlock Text="数据库文件*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
+            <TextBox
+                Width="175"
+                attaches:MyAttachProperty.PlaceHolder="数据库文件"
+                IsReadOnly="True"
+                Text="{Binding DbFilePath}"
+                Visibility="{Binding IsSqlite, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
+
+            <Button Command="{Binding ConnectCommand}" Content="连接获取数据库" />
+
+            <TextBlock Text="数据库列表:" />
+            <ComboBox
+                ItemsSource="{Binding DbNames}"
+                SelectedValue="{Binding CurrentDbName}"
+                Text="{Binding CurrentDbName}" />
+
+            <Button Command="{Binding GetTablesCommand}" Content="获取表名集合" />
+            <TextBlock Text="数据表列表:" />
+            <ComboBox
+                ItemsSource="{Binding TableNames}"
+                SelectedValue="{Binding CurrentTableName}"
+                Text="{Binding CurrentTableName}" />
+
+            <Button Command="{Binding ShowTableStructureCommand}" Content="获取表结构" />
+
+            <TextBox
+                Width="300"
+                attaches:MyAttachProperty.PlaceHolder="导出模型目录"
+                IsReadOnly="True"
+                Text="{Binding ModelExportDir}" />
+            <Button Command="{Binding OpenExportDirCommand}" Content="选择导出目录" />
+            <Button Command="{Binding ExportTableStructureToFileCommand}" Content="表结构导出" />
+        </WrapPanel>
+
+        <DataGrid
+            Grid.Row="2"
+            attaches:MyAttachProperty.DataGridCellHorizontalAlignment="Center"
+            ItemsSource="{Binding TableColumnsStructure}"
+            MinColumnWidth="0"
+            Style="{StaticResource DataGrid_Transparent}">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    MinWidth="0"
+                    Binding="{Binding ColumnName}"
+                    Header="列名" />
+                <DataGridTemplateColumn Header="唯一约束">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox
+                                attaches:MyAttachProperty.IsReadOnly="True"
+                                IsChecked="{Binding Unique, Mode=OneTime}"
+                                IsEnabled="False"
+                                Style="{StaticResource CheckMarkCheckBox}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="允许为空">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox
+                                attaches:MyAttachProperty.IsReadOnly="True"
+                                IsChecked="{Binding AllowDBNull, Mode=OneTime}"
+                                IsEnabled="False"
+                                Style="{StaticResource CheckMarkCheckBox}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding DefaultValue}" Header="默认值" />
+                <DataGridTextColumn Binding="{Binding MaxLength}" Header="最大长度" />
+                <DataGridTemplateColumn Header="允许自增">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox
+                                attaches:MyAttachProperty.IsReadOnly="True"
+                                IsChecked="{Binding AutoIncrement, Mode=OneTime}"
+                                IsEnabled="False"
+                                Style="{StaticResource CheckMarkCheckBox}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding AutoIncrementSeed}" Header="自增起点" />
+                <DataGridTextColumn Binding="{Binding AutoIncrementStep}" Header="自增步长" />
+                <DataGridTemplateColumn Header="只读">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox
+                                attaches:MyAttachProperty.IsReadOnly="True"
+                                IsChecked="{Binding ReadOnly, Mode=OneTime}"
+                                IsEnabled="False"
+                                Style="{StaticResource CheckMarkCheckBox}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding DataType}" Header="数据类型" />
+                <DataGridComboBoxColumn
+                    Header="数据类型"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding Source={StaticResource EnumDataSetDateTime}}"
+                    SelectedValueBinding="{Binding DateTimeMode, Mode=OneTime}" />
+                <DataGridTextColumn Binding="{Binding Namespace}" Header="命名空间" />
+                <DataGridTextColumn Binding="{Binding Expression}" Header="值筛选表达式" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

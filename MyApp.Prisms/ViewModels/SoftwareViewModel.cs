@@ -19,11 +19,11 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using IceTea.General.Utils.AppHotKey;
 using IceTea.General.Utils;
-using MusicPlayerModule.MsgEvents;
-using IceTea.Wpf.Core.Contracts;
 using IceTea.Wpf.Core.Contracts.MyEvents;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.Events;
+using IceTea.Atom.GeneralModels;
+using PrismAppBasicLib.MsgEvents;
 
 namespace MyApp.Prisms.ViewModels
 {

@@ -16,11 +16,11 @@ using IceTea.Atom.Utils;
 using IceTea.Atom.Utils.HotKey.GlobalHotKey;
 using IceTea.General.Utils;
 using IceTea.General.Utils.AppHotKey;
-using MusicPlayerModule.MsgEvents;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.Setting;
-using IceTea.Wpf.Core.Contracts;
 using MyApp.Prisms.Views.ToolBox;
+using PrismAppBasicLib.MsgEvents;
+using IceTea.Atom.GeneralModels;
 
 namespace MyApp.Prisms
 {
@@ -160,6 +160,8 @@ namespace MyApp.Prisms
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
             moduleCatalog.AddModule<MusicPlayerModule.MusicPlayerModule>();
+
+            moduleCatalog.AddModule<SqlCreatorModule.SqlCreatorModule>();
         }
 
         protected override void OnInitialized()

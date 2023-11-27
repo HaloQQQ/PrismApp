@@ -49,6 +49,9 @@
                     SelectionChanged="Selector_OnSelectionChanged">
                     <TabItem Header="通讯工具" />
                     <TabItem Header="进程服务" />
+                    <TabItem Header="Sql创建器">
+                        <ContentControl regions:RegionManager.RegionName="CreateModelView" Focusable="False" />
+                    </TabItem>
                     <TabItem Header="邮件客户端">
                         <views:MailManager />
                     </TabItem>

@@ -127,17 +127,16 @@
                 </StackPanel>
             </Viewbox>
 
-            <Grid Grid.Row="1">
-                <RichTextBox
-                    x:Name="rhTxt"
-                    Background="Transparent"
-                    ContextMenu="{StaticResource ForMessageBoard}"
-                    DockPanel.Dock="Bottom">
-                    <RichTextBox.CommandBindings>
-                        <CommandBinding Command="Open" />
-                    </RichTextBox.CommandBindings>
-                </RichTextBox>
-            </Grid>
+            <RichTextBox
+                x:Name="rhTxt"
+                Grid.Row="1"
+                Background="Transparent"
+                ContextMenu="{StaticResource ForMessageBoard}"
+                DockPanel.Dock="Bottom">
+                <RichTextBox.CommandBindings>
+                    <CommandBinding Command="Open" />
+                </RichTextBox.CommandBindings>
+            </RichTextBox>
 
             <Viewbox
                 Grid.Row="2"

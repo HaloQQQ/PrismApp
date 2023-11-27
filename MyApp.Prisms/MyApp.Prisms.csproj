@@ -39,6 +39,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <ProjectReference Include="..\MusicPlayerModule\MusicPlayerModule.csproj" />
+    <ProjectReference Include="..\SqlCreatorModule\SqlCreatorModule.csproj" />
     <Resource Include="Resources\apple.ico" />
     <Resource Include="Resources\iconfont.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

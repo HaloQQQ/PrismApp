@@ -10,13 +10,13 @@ using IceTea.Atom.Utils.HotKey.GlobalHotKey;
 using IceTea.Atom.Extensions;
 using IceTea.General.Utils.AppHotKey;
 using IceTea.General.Utils;
-using MusicPlayerModule.MsgEvents;
-using IceTea.Wpf.Core.Contracts;
 using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Contracts;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
+using PrismAppBasicLib.MsgEvents;
+using IceTea.Atom.GeneralModels;
 
 namespace MyApp.Prisms.ViewModels
 {

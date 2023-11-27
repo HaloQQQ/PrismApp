@@ -8,9 +8,9 @@ using Prism.Events;
 using Prism.Ioc;
 using IceTea.Atom.Utils;
 using IceTea.Atom.Extensions;
-using MusicPlayerModule.MsgEvents;
-using IceTea.Wpf.Core.Contracts;
 using IceTea.Atom.Contracts;
+using PrismAppBasicLib.MsgEvents;
+using IceTea.Atom.GeneralModels;
 
 namespace MyApp.Prisms.Helper
 {

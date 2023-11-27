@@ -11,8 +11,8 @@ using System.Linq;
 using DryIoc;
 using Prism.Ioc;
 using Prism.Events;
-using MusicPlayerModule.MsgEvents;
-using IceTea.Wpf.Core.Contracts;
+using PrismAppBasicLib.MsgEvents;
+using IceTea.Atom.GeneralModels;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {

@@ -4,10 +4,10 @@ using System.Text;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
 using IceTea.SocketStandard.Base;
-using MusicPlayerModule.MsgEvents;
 using Prism.Events;
 using Prism.Ioc;
-using IceTea.Wpf.Core.Contracts;
+using PrismAppBasicLib.MsgEvents;
+using IceTea.Atom.GeneralModels;
 
 namespace MyApp.Prisms.ViewModels
 {

@@ -1,6 +1,5 @@
 ﻿using IceTea.Atom.Mails.Contracts;
 using IceTea.Atom.Mails.Dtos;
-using MusicPlayerModule.MsgEvents;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -10,6 +9,8 @@ using System.Windows.Input;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Contracts;
 using System.Collections.Generic;
+using PrismAppBasicLib.MsgEvents;
+using IceTea.Atom.GeneralModels;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {
@@ -92,7 +93,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
         private void PublishMessage(string message)
         {
-            _eventAggregator.GetEvent<DialogMessageEvent>().Publish(new IceTea.Wpf.Core.Contracts.DialogMessage(message));
+            _eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(message));
         }
 
         private void Reset()
