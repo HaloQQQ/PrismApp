@@ -417,7 +417,7 @@ namespace MusicPlayerModule.ViewModels
 
         private void InitHotkeys(IConfigManager config, IAppHotKeyManager appHotKeyManager)
         {
-            this.KeyGestureDic = HotKeyUtils.Provide(config, appHotKeyManager, new AppHotKeyGroupInfo("视频", CustomStatics.AppVideoHotkeys, CustomStatics.VideoHotKeys));
+            this.KeyGestureDic = HotKeyUtils.Provide(config, appHotKeyManager, new AppHotKeyGroup("视频", CustomStatics.AppVideoHotkeys, CustomStatics.VideoHotKeys));
         }
         #endregion
 

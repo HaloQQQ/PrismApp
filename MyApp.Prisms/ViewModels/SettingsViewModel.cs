@@ -150,7 +150,7 @@ namespace MyApp.Prisms.ViewModels
                 this.SubmitCommand.Execute(null);
             });
 
-            this.ResetGroupHotKeysCommand = new DelegateCommand<HotKeyGroup>(groupHotKey =>
+            this.ResetGroupHotKeysCommand = new DelegateCommand<AppHotKeyGroup>(groupHotKey =>
             {
                 if (!groupHotKey.KeyBindings.IsNullOrEmpty())
                 {

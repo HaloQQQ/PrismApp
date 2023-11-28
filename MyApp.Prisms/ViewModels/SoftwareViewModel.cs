@@ -267,7 +267,7 @@ namespace MyApp.Prisms.ViewModels
 
         private void InitHotkeys(IConfigManager config, IAppHotKeyManager appHotKeyManager)
         {
-            this.WindowKeyBindingMap = HotKeyUtils.Provide(config, appHotKeyManager, new AppHotKeyGroupInfo("窗口", PreDefinedHotKeys.ConfigWindowAppHotKeys, PreDefinedHotKeys.WindowAppHotKeys));
+            this.WindowKeyBindingMap = HotKeyUtils.Provide(config, appHotKeyManager, new AppHotKeyGroup("窗口", PreDefinedHotKeys.ConfigWindowAppHotKeys, PreDefinedHotKeys.WindowAppHotKeys));
         }
         #endregion
 

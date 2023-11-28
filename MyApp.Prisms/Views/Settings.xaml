@@ -32,7 +32,7 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
-        <DataTemplate DataType="{x:Type appHotKey:HotKeyGroup}">
+        <DataTemplate DataType="{x:Type appHotKey:AppHotKeyGroup}">
             <GroupBox Header="{Binding GroupName}">
                 <StackPanel>
                     <TextBlock Text="{Binding Description}" />

@@ -169,7 +169,7 @@ namespace MyApp.Prisms
             base.OnInitialized();
 
             GlobalHotKeyManager hotKeyManager = null;
-            hotKeyManager = new GlobalHotKeyManager(App.Current.MainWindow.RegistHotKeyManager(mid =>
+            hotKeyManager = new GlobalHotKeyManager(App.Current.MainWindow.RegisterHotKeyManager(mid =>
             {
                 foreach (var item in hotKeyManager)
                 {
