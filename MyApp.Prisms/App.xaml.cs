@@ -124,6 +124,7 @@ namespace MyApp.Prisms
             containerRegistry.RegisterSingleton<IAppHotKeyManager, AppHotKeyManager>();
             containerRegistry.RegisterSingleton<ISettingManager, SettingManager>();
 
+            containerRegistry.RegisterSingleton<SoftwareViewModel>();
             containerRegistry.RegisterSingleton<SettingsViewModel>();
 
             containerRegistry.RegisterScoped<UdpSocketViewModel>();
@@ -134,7 +135,6 @@ namespace MyApp.Prisms
             //containerRegistry.RegisterScoped<CommunicationViewModel>();
 
             //containerRegistry.RegisterSingleton<ImageDisplayViewModel>();
-            //containerRegistry.RegisterSingleton<SoftwareViewModel>();
 
             ViewModelLocationProvider.Register<WindowTitleBarView, SoftwareViewModel>();
             //ViewModelLocationProvider.Register<ImageDisplayView, ImageDisplayViewModel>();

@@ -70,16 +70,16 @@ namespace MyApp.Prisms.ViewModels
             return list;
         }
 
-        public ImageDisplayViewModel(IConfigManager config, IEventAggregator eventAggregator)
+        public ImageDisplayViewModel(IConfigManager config)
         {
             this.Data.CollectionChanged += (sender, e) => CallModel(nameof(this.ActualData));
 
-            this.RefreshData(config, eventAggregator);
+            this.RefreshData(config);
 
-            this.RefreshCommand = new DelegateCommand(() => this.RefreshData(config, eventAggregator));
+            this.RefreshCommand = new DelegateCommand(() => this.RefreshData(config));
         }
 
-        private void RefreshData(IConfigManager config, IEventAggregator eventAggregator)
+        private void RefreshData(IConfigManager config)
         {
             this.IsLoading = true;
 
@@ -105,7 +105,7 @@ namespace MyApp.Prisms.ViewModels
 
                     await Task.Delay(20);
                 }
-            }).ContinueWith(task => this.IsLoading = false);//.ContinueWith(task => eventAggregator.GetEvent<BackgroundImageUpdateEvent>().Publish(null));
+            }).ContinueWith(task => this.IsLoading = false);
         }
 
         public ICommand RefreshCommand { get; private set; }
