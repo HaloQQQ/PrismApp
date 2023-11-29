@@ -38,7 +38,7 @@ namespace MusicPlayerModule.ViewModels
                     if (!string.IsNullOrEmpty(_albumMusicFilteKeyWords))
                     {
                         this.DisplayMusicAlbumFavorites.AddRange(this.MusicAlbumFavorites.Where(item =>
-                            item.ClassifyKey.Contains(this._albumMusicFilteKeyWords)));
+                            item.ClassifyKey.ContainsIgnoreCase(this._albumMusicFilteKeyWords)));
                     }
                     else
                     {
@@ -68,7 +68,7 @@ namespace MusicPlayerModule.ViewModels
                     if (!string.IsNullOrEmpty(_singerMusicFilteKeyWords))
                     {
                         this.DisplayMusicSingerFavorites.AddRange(this.MusicSingerFavorites.Where(item =>
-                            item.ClassifyKey.Contains(this._singerMusicFilteKeyWords)));
+                            item.ClassifyKey.ContainsIgnoreCase(this._singerMusicFilteKeyWords)));
                     }
                     else
                     {

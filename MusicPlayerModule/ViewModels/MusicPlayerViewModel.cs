@@ -118,11 +118,11 @@ namespace MusicPlayerModule.ViewModels
                     {
                         this.DisplayFavorites.AddRange(
                             this.Favorites.Where(item =>
-                                    item.Music.Name.Contains(_favoriteListFilteKeyWords)
+                                    item.Music.Name.ContainsIgnoreCase(_favoriteListFilteKeyWords)
                                 )
                                 .Union(
                                     this.Favorites.Where(item =>
-                                        item.Music.Singer.Contains(_favoriteListFilteKeyWords)
+                                        item.Music.Singer.ContainsIgnoreCase(_favoriteListFilteKeyWords)
                                     )
                                 )
                         );
@@ -156,11 +156,11 @@ namespace MusicPlayerModule.ViewModels
                     {
                         this.DisplayPlaying.AddRange(
                             this.Playing.Where(item =>
-                                    item.Music.Name.Contains(_playingListFilteKeyWords)
+                                    item.Music.Name.ContainsIgnoreCase(_playingListFilteKeyWords)
                                 )
                                 .Union(
                                     this.Playing.Where(item =>
-                                        item.Music.Singer.Contains(_playingListFilteKeyWords)
+                                        item.Music.Singer.ContainsIgnoreCase(_playingListFilteKeyWords)
                                     )
                                 )
                         );

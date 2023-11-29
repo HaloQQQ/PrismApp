@@ -25,7 +25,10 @@
     </Style>
 
     <!--  菜单  -->
-    <ContextMenu x:Key="MainMenu">
+    <ContextMenu
+        x:Key="MainMenu"
+        HorizontalOffset="-100"
+        VerticalOffset="20">
         <MenuItem
             Header="只允许一个程序"
             IsCheckable="True"
