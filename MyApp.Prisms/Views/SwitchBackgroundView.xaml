@@ -98,18 +98,16 @@
             </ListBox.ItemContainerStyle>
             <ListBox.Style>
                 <Style BasedOn="{StaticResource VerticalScrollVirtualItemsControl}" TargetType="ListBox">
+                    <Setter Property="ItemsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                                <panelCtrls:VirtualizingWrapPanel Style="{StaticResource VirtualWrapPanelImageSelector}" />
+                            </ItemsPanelTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="ItemTemplateSelector" Value="{StaticResource ImageBlockDataTemplateSelector}" />
+
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ShowInList}" Value="False">
-                            <Setter Property="ItemsPanel">
-                                <Setter.Value>
-                                    <ItemsPanelTemplate>
-                                        <panelCtrls:VirtualizingWrapPanel Style="{StaticResource VirtualWrapPanelImageSelector}" />
-                                        <!--<WrapPanel Width="300" />-->
-                                    </ItemsPanelTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Setter Property="ItemTemplateSelector" Value="{StaticResource ImageBlockDataTemplateSelector}" />
-                        </DataTrigger>
                         <DataTrigger Binding="{Binding ShowInList}" Value="True">
                             <Setter Property="ItemsPanel">
                                 <Setter.Value>

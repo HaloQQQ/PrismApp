@@ -40,13 +40,19 @@
 
                 <TextBlock Style="{StaticResource ThemeBlk}">
                     <TextBlock Text="Cpu:" />
-                    <TextBlock Text="{Binding CpuRate}" />
+                    <TextBlock
+                        MinWidth="25"
+                        Text="{Binding CpuRate}"
+                        TextAlignment="Right" />
                     <TextBlock Text="%" />
                 </TextBlock>
 
                 <TextBlock Style="{StaticResource ThemeBlk}">
                     <TextBlock Text="Ram:" />
-                    <TextBlock Text="{Binding RamRate}" />
+                    <TextBlock
+                        MinWidth="25"
+                        Text="{Binding RamRate}"
+                        TextAlignment="Right" />
                     <TextBlock Text="%" />
                 </TextBlock>
             </TextBlock>

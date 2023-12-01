@@ -1,5 +1,4 @@
-﻿using Prism.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -11,10 +10,11 @@ using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Contracts;
 using System.Windows.Input;
 using Prism.Commands;
+using System.Threading;
 
 namespace MyApp.Prisms.ViewModels
 {
-    public class MyImage : BaseNotifyModel
+    internal class MyImage : BaseNotifyModel
     {
         public bool InList { get; set; }
 
@@ -23,7 +23,7 @@ namespace MyApp.Prisms.ViewModels
         public bool Selected
         {
             get => this._selected;
-            set => SetProperty<bool>(ref _selected, value);
+            internal set => SetProperty<bool>(ref _selected, value);
         }
 
 
@@ -32,7 +32,7 @@ namespace MyApp.Prisms.ViewModels
         public string Name { get; set; } = null!;
         public string Size { get; set; }
 
-        public MyImage()
+        internal MyImage()
         {
         }
 
@@ -98,6 +98,10 @@ namespace MyApp.Prisms.ViewModels
 
                     var image = new MyImage(item);
 
+                    // A.跨线程同步
+                    //_synchronizationContext.Post(_ => Data.Add(image), null);
+
+                    // B.跨线程同步
                     CommonUtils.BeginInvoke(() =>
                     {
                         Data.Add(image);
