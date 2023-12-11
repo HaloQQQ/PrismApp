@@ -1345,6 +1345,7 @@
                                     Height="110"
                                     attaches:MyAttachProperty.IsAppearOnHovered="True"
                                     HorizontalOffset="-115"
+                                    MouseLeftButtonDown="EmptyHandler"
                                     Placement="Top"
                                     PlacementTarget="{Binding ElementName=MusicSpeedToggleButton}"
                                     VerticalOffset="7">
@@ -1417,6 +1418,7 @@
                             Height="202"
                             attaches:MyAttachProperty.IsAppearOnHovered="True"
                             HorizontalOffset="-23"
+                            MouseLeftButtonDown="EmptyHandler"
                             Placement="Top"
                             PlacementTarget="{Binding ElementName=VolumeToggleButton}"
                             VerticalOffset="5">
@@ -1544,6 +1546,7 @@
                             Closed="PlayingListPopup_Closed"
                             HorizontalOffset="-334"
                             IsOpen="{Binding IsChecked, ElementName=PlayingListButton}"
+                            MouseLeftButtonDown="EmptyHandler"
                             Opened="DataGrid_UpdateScrollBar"
                             Placement="Top"
                             PlacementTarget="{Binding ElementName=PlayingListButton}"

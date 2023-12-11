@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using IceTea.Wpf.Core.Extensions;
+using IceTea.Atom.Extensions;
 
 namespace MusicPlayerModule.Views
 {
@@ -523,7 +524,7 @@ namespace MusicPlayerModule.Views
 
             if (this.DataContext is MusicPlayerViewModel viewModel)
             {
-                int selectedIndex = -1;                                    
+                int selectedIndex = -1;
                 foreach (var item in this.LyricForegroundListBox.Items)
                 {
                     selectedIndex++;
@@ -532,8 +533,18 @@ namespace MusicPlayerModule.Views
                         LyricForegroundListBox.SelectedIndex = selectedIndex;
                         return;
                     }
+                }
             }
-            }
+        }
+
+        /// <summary>
+        /// 拦截Popup的点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EmptyHandler(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
         }
     }
 }
