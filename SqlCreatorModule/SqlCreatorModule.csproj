@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <PackageReference Include="IceTea.SqlStandard" Version="1.0.13" />
-    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
   </ItemGroup>
 
   <ItemGroup>

@@ -13,6 +13,7 @@
     prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
         <converters:Key2StringConverter x:Key="Key2StringConverter" />
+        <converters:CornerRadiusToDigitConverter x:Key="CornerRadiusToDigitConverter" />
 
         <ObjectDataProvider
             x:Key="CustomKeys"
@@ -297,17 +298,31 @@
                     ItemsSource="{Binding DataContext.AppHotKeyManager, RelativeSource={RelativeSource AncestorType=TabControl}}" />
             </TabItem>
             <TabItem Header="常用">
-                <Button
-                    Command="{Binding DataContext.CleanConfigWhenExitAppCommand}"
-                    Style="{StaticResource TransparentButtonBase}"
-                    ToolTip="关闭程序时清空所有配置">
-                    <Button.Content>
-                        <TextBlock>
-                            <TextBlock Text="&#xec7b;" />
-                            <TextBlock Text="清空配置" />
-                        </TextBlock>
-                    </Button.Content>
-                </Button>
+                <StackPanel>
+                    <WrapPanel>
+                        <TextBlock Style="{StaticResource ThemeBlk}" Text="窗口圆角:" />
+                        <Slider
+                            MinWidth="570"
+                            MinHeight="4"
+                            Maximum="20"
+                            Minimum="0"
+                            Style="{StaticResource Slider_ObviousThumb}"
+                            TickFrequency="5"
+                            Value="{Binding DataContext.CornerRadius, Converter={StaticResource CornerRadiusToDigitConverter}}" />
+                    </WrapPanel>
+
+                    <Button
+                        Command="{Binding DataContext.CleanConfigWhenExitAppCommand}"
+                        Style="{StaticResource TransparentButtonBase}"
+                        ToolTip="关闭程序时清空所有配置">
+                        <Button.Content>
+                            <TextBlock>
+                                <TextBlock Text="&#xec7b;" />
+                                <TextBlock Text="清空配置" />
+                            </TextBlock>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
             </TabItem>
         </TabControl>
     </Border>

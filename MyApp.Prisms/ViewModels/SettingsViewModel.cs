@@ -17,6 +17,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using PrismAppBasicLib.MsgEvents;
 using IceTea.Atom.GeneralModels;
+using System.Windows;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -38,6 +39,7 @@ namespace MyApp.Prisms.ViewModels
             this.LastVideoDir = config.ReadConfigNode("Video", nameof(this.LastVideoDir));
 
             this.LoadMailAccounts(config, settingManager);
+            this.LoadWindowCornerRadius(config);
 
             this.InitHotkeys(config);
 
@@ -222,6 +224,32 @@ namespace MyApp.Prisms.ViewModels
         #endregion
 
         #region Props
+        /// <summary>
+        /// 窗口圆角
+        /// </summary>
+        private CornerRadius _cornerRadius;
+
+        public CornerRadius CornerRadius
+        {
+            get => this._cornerRadius;
+            set => SetProperty<CornerRadius>(ref _cornerRadius, value);
+        }
+
+        private void LoadWindowCornerRadius(IConfigManager configManager)
+        {
+            var windowCornerRadius = configManager.ReadConfigNode(CustomConstants.WindowCornerRadius);
+
+            if (!windowCornerRadius.IsNullOrBlank())
+            {
+                this.CornerRadius = new CornerRadius(double.Parse(windowCornerRadius));
+            }
+
+            configManager.SetConfig += config =>
+            {
+                config.WriteConfigNode(this.CornerRadius.TopLeft, CustomConstants.WindowCornerRadius);
+            };
+        }
+
         private bool _isEditingSetting;
 
         public bool IsEditingSetting

@@ -3,7 +3,6 @@ using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
-using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,6 +20,7 @@ using IceTea.Atom.Utils.Setting;
 using MyApp.Prisms.Views.ToolBox;
 using PrismAppBasicLib.MsgEvents;
 using IceTea.Atom.GeneralModels;
+using Prism.Regions;
 
 namespace MyApp.Prisms
 {
@@ -72,7 +72,7 @@ namespace MyApp.Prisms
 
         protected override Window CreateShell()
         {
-            var config = this.Container.Resolve<IConfigManager>();
+            var config = Container.Resolve<IConfigManager>();
 
             if (config.IsTrue(CustomConstants.IsMusicPlayer))
             {

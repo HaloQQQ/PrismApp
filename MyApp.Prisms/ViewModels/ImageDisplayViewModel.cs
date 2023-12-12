@@ -10,7 +10,6 @@ using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Contracts;
 using System.Windows.Input;
 using Prism.Commands;
-using System.Threading;
 
 namespace MyApp.Prisms.ViewModels
 {

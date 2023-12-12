@@ -9,10 +9,11 @@
     Title="{Binding Title, Mode=TwoWay}"
     MinWidth="1200"
     MinHeight="640"
+    attaches:MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius, Mode=OneWay}"
     prism:ViewModelLocator.AutoWireViewModel="True"
+    Background="Transparent"
     Style="{StaticResource WithoutTitleBar}"
     WindowStartupLocation="CenterScreen">
-
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

@@ -2,11 +2,13 @@
     x:Class="MyApp.Prisms.Views.MusicWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:views="clr-namespace:MyApp.Prisms.Views"
     Title="MusicWindow"
     MinWidth="1200"
     MinHeight="640"
+    attaches:MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius}"
     prism:ViewModelLocator.AutoWireViewModel="True"
     Style="{StaticResource WithoutTitleBar}"
     WindowStartupLocation="CenterScreen">
