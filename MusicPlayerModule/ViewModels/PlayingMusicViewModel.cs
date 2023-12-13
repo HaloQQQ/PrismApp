@@ -54,12 +54,11 @@ namespace MusicPlayerModule.ViewModels
                 }
 
                 KRCLyricsChar tempChar;
-                double value = 0;
                 for (int i = 0; i < line.Chars.Count; i++)
                 {
                     tempChar = line.Chars[i];
-                    value = this._currentMills - tempChar.CharStart.Add(line.LineStart).Add(tempChar.CharDuring)
-                        .TotalMilliseconds;
+                    double value = this._currentMills - tempChar.CharStart.Add(line.LineStart).Add(tempChar.CharDuring)
+        .TotalMilliseconds;
                     if (value <= 0)
                     {
                         return i + (tempChar.CharDuring.TotalMilliseconds + value) /
@@ -223,7 +222,9 @@ namespace MusicPlayerModule.ViewModels
         {
             base.Reset();
 
+            this._currentMills = 0;
             this._currentLineIndex = 0;
+            this.OneLine = this.AnotherLine = null;
 
             if (!this.Music.IsPureMusic)
             {
@@ -236,8 +237,6 @@ namespace MusicPlayerModule.ViewModels
                     }
                 }
             }
-
-            this.OneLine = this.AnotherLine = null;
         }
 
         protected override void SetPointToTotalMills()
