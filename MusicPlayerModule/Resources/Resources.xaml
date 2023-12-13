@@ -339,6 +339,7 @@
                                 <TextBlock.Width>
                                     <MultiBinding Converter="{StaticResource MultiConverter_Multiplication}" FallbackValue="0">
                                         <Binding
+                                            FallbackValue="0"
                                             Mode="OneWay"
                                             Path="DataContext.CurrentMusic.WordProgress"
                                             RelativeSource="{RelativeSource AncestorType=ListBox}" />
