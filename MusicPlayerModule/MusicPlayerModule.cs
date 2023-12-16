@@ -16,8 +16,6 @@ namespace MusicPlayerModule
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            //containerRegistry.RegisterForNavigation<MusicPlayer>();
-            //containerRegistry.RegisterForNavigation<VideoPlayerView>();
         }
 
         public void OnInitialized(IContainerProvider containerProvider)

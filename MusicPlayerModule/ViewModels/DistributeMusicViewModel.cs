@@ -7,7 +7,6 @@ using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using IceTea.Atom.Extensions;
-using IceTea.Wpf.Core.Contracts;
 using System.IO;
 using IceTea.Atom.Utils;
 using IceTea.Wpf.Core.Utils;

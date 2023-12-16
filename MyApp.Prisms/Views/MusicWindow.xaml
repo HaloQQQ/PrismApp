@@ -10,7 +10,7 @@
     MinHeight="640"
     attaches:MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius}"
     prism:ViewModelLocator.AutoWireViewModel="True"
-    Style="{StaticResource WithoutTitleBar}"
+    Style="{StaticResource NoTitleWithAnimation}"
     WindowStartupLocation="CenterScreen">
     <Grid ClipToBounds="True">
         <Grid.Background>

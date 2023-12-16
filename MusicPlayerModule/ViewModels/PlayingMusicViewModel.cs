@@ -77,7 +77,8 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (_currentMills != value)
                 {
-                    _currentMills = value;
+                    _currentMills = Math.Max(value, 0);
+                    _currentMills = Math.Min(value, Music.TotalMills);
 
                     // 从B点返回A点
                     if (this.PointBMills != 0 && Math.Abs(this._currentMills - this.PointBMills) < 500)

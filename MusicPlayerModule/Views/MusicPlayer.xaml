@@ -89,8 +89,7 @@
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[桌面歌词].SelectedKey}"
-                Command="Close"
-                CommandParameter="CloseDesktopLyricPanel"
+                Command="{Binding DesktopLyricPanelCommand}"
                 Modifiers="{Binding KeyGestureDic[桌面歌词].ModifierKey}" />
 
             <KeyBinding
@@ -130,7 +129,7 @@
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[快退].SelectedKey}"
-                Command="{x:Static MediaCommands.Rewind}"
+                Command="{Binding DelayCommand}"
                 Modifiers="{Binding KeyGestureDic[快退].ModifierKey}" />
 
             <KeyBinding
@@ -174,7 +173,7 @@
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[快进].SelectedKey}"
-                Command="{x:Static MediaCommands.FastForward}"
+                Command="{Binding AheadCommand}"
                 Modifiers="{Binding KeyGestureDic[快进].ModifierKey}" />
 
             <KeyBinding
@@ -1283,10 +1282,7 @@
                         Grid.Column="1"
                         HorizontalAlignment="Center"
                         Orientation="Horizontal">
-                        <Button
-                            Click="MusicGoBack"
-                            Command="{Binding DelayCommand}"
-                            Style="{StaticResource Rewind1sIconButton}" />
+                        <Button Command="{Binding DelayCommand}" Style="{StaticResource Rewind1sIconButton}" />
 
                         <Button
                             Command="{Binding PrevCommand}"
@@ -1304,10 +1300,7 @@
                             CommandParameter="{Binding CurrentMusic}"
                             Style="{StaticResource NextOneIconButton}" />
 
-                        <Button
-                            Click="MusicGoForward"
-                            Command="{Binding AheadCommand}"
-                            Style="{StaticResource FastForward1sIconButton}" />
+                        <Button Command="{Binding AheadCommand}" Style="{StaticResource FastForward1sIconButton}" />
 
                         <Button Command="{Binding StopPlayMusicCommand}" Style="{StaticResource StopMediaIconButton}" />
                     </StackPanel>
@@ -1506,9 +1499,10 @@
                             Content="&#xe607;"
                             Style="{StaticResource IconButtonBase_Small}"
                             ToolTip="一起听" />
+
                         <ToggleButton
-                            x:Name="DesktopLyricToggleButton"
                             Content="&#xe671;"
+                            IsChecked="{Binding IsDesktopLyricShow}"
                             ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
                             <ToggleButton.Style>
                                 <Style BasedOn="{StaticResource ExpandIconToggleButton}" TargetType="ToggleButton">
@@ -1668,7 +1662,7 @@
             Panel.ZIndex="100"
             attaches:MyAttachProperty.IsDraggable="True"
             MouseLeave="DesktopLyricPanel_Hidden"
-            Visibility="{Binding IsChecked, ElementName=DesktopLyricToggleButton, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+            Visibility="{Binding IsDesktopLyricShow, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel
                 x:Name="DesktopLyricPanel"
                 Background="#66000000"
@@ -1701,7 +1695,6 @@
                             HorizontalAlignment="Center"
                             Orientation="Horizontal">
                             <Button
-                                Click="MusicGoBack"
                                 Command="{Binding DelayCommand}"
                                 Content="&#xe68e;"
                                 Style="{StaticResource IconButtonBase_Small_Scale}"
@@ -1756,24 +1749,20 @@
                             </Button>
 
                             <Button
-                                Click="MusicGoForward"
                                 Command="{Binding AheadCommand}"
                                 Content="&#xe690;"
                                 Style="{StaticResource IconButtonBase_Small_Scale}"
                                 ToolTip="{Binding KeyGestureDic[快进].ToolTip}" />
 
-                            <Button
-                                Command="Close"
-                                CommandParameter="CloseDesktopLyricPanel"
-                                ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
-                                <Button.Style>
-                                    <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="Button">
+                            <ToggleButton IsChecked="{Binding IsDesktopLyricShow}" ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
+                                <ToggleButton.Style>
+                                    <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="ToggleButton">
                                         <Setter Property="Content" Value="&#xe624;" />
                                         <Setter Property="FontSize" Value="14" />
                                         <Setter Property="Foreground" Value="#EBEBEB" />
                                     </Style>
-                                </Button.Style>
-                            </Button>
+                                </ToggleButton.Style>
+                            </ToggleButton>
                         </StackPanel>
                     </Viewbox>
 

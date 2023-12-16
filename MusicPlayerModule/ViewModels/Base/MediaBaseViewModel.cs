@@ -17,6 +17,11 @@ namespace MusicPlayerModule.ViewModels.Base
 
         public bool IsLongTimeMedia { get; protected set; }
 
+        public virtual int MillsStep => 1000;
+
+        public void Rewind() => this.CurrentMills = Math.Max(this.CurrentMills - this.MillsStep, 0);
+        public void FastForward() => this.CurrentMills += this.MillsStep;
+
         #region 当前时间更新
         public virtual double ProgressPercent { get; }
 
@@ -29,7 +34,7 @@ namespace MusicPlayerModule.ViewModels.Base
 
         #region 媒体AB点
         public bool LoadedABPoint { get; set; }
-        
+
         private int _pointAMills;
 
         public int PointAMills

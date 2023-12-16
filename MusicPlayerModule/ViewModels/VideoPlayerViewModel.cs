@@ -175,7 +175,7 @@ namespace MusicPlayerModule.ViewModels
             this.AddFolderCommand = new DelegateCommand(AddVideoFromFolderDialog);
 
             this.DelayCommand =
-                new DelegateCommand(() => { this.RefreshMediaOperation(OperationType.Rewind); },
+                new DelegateCommand(() => { this.CurrentVideo.Rewind(); this.RefreshMediaOperation(OperationType.Rewind); },
                     () => this.CurrentVideo != null).ObservesProperty<PlayingVideoViewModel>(() => this.CurrentVideo);
 
             this.PrevCommand = new DelegateCommand<PlayingVideoViewModel>(
@@ -204,7 +204,7 @@ namespace MusicPlayerModule.ViewModels
                 .ObservesProperty<int>(() => this.DisplayPlaying.Count);
 
             this.AheadCommand =
-                new DelegateCommand(() => { this.RefreshMediaOperation(OperationType.FastForward); },
+                new DelegateCommand(() => { this.CurrentVideo.FastForward(); this.RefreshMediaOperation(OperationType.FastForward); },
                     () => this.CurrentVideo != null).ObservesProperty<PlayingVideoViewModel>(() => this.CurrentVideo);
 
             this.PlayPlayingCommand = new DelegateCommand<PlayingVideoViewModel>(video =>

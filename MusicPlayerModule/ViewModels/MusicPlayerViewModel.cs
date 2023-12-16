@@ -14,7 +14,6 @@ using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
 using IceTea.General.Utils.AppHotKey;
 using IceTea.General.Utils;
-using IceTea.Wpf.Core.Contracts;
 using IceTea.Wpf.Core.Utils;
 using IceTea.Wpf.Core.Contracts.MediaInfo;
 using IceTea.Atom.Contracts;
@@ -77,6 +76,15 @@ namespace MusicPlayerModule.ViewModels
         }
 
         public int SelectedCount => this.DisplayFavorites.Count(item => item.IsDeleting);
+
+        private bool _isDesktopLyricShow;
+
+        public bool IsDesktopLyricShow
+        {
+            get => this._isDesktopLyricShow;
+            set => SetProperty<bool>(ref _isDesktopLyricShow, value);
+        }
+
 
         public PlayingMusicViewModel CurrentMusic
         {
@@ -175,6 +183,8 @@ namespace MusicPlayerModule.ViewModels
 
         private void InitCommands()
         {
+            this.DesktopLyricPanelCommand = new DelegateCommand(() => this.IsDesktopLyricShow = !this.IsDesktopLyricShow);
+
             this.OpenInExploreCommand = new DelegateCommand<string>(musicDir =>
             {
                 if (musicDir.IsNullOrEmpty())
@@ -210,7 +220,7 @@ namespace MusicPlayerModule.ViewModels
             this.AddFolderCommand = new DelegateCommand(AddMusicFromFolderDialog);
 
             this.DelayCommand =
-                new DelegateCommand(() => { }, () => this.CurrentMusic != null).ObservesProperty<PlayingMusicViewModel>(
+                new DelegateCommand(() => this.CurrentMusic.Rewind(), () => this.CurrentMusic != null).ObservesProperty<PlayingMusicViewModel>(
                     () => this.CurrentMusic);
 
             this.PrevCommand = new DelegateCommand<PlayingMusicViewModel>(
@@ -227,7 +237,7 @@ namespace MusicPlayerModule.ViewModels
                 .ObservesProperty<int>(() => this.DisplayPlaying.Count);
 
             this.AheadCommand =
-                new DelegateCommand(() => { }, () => this.CurrentMusic != null).ObservesProperty<PlayingMusicViewModel>(
+                new DelegateCommand(() => this.CurrentMusic.FastForward(), () => this.CurrentMusic != null).ObservesProperty<PlayingMusicViewModel>(
                     () => this.CurrentMusic);
 
             this.PlayCurrentCategoryCommand = new DelegateCommand<MusicWithClassifyModel>(category =>
@@ -830,6 +840,8 @@ namespace MusicPlayerModule.ViewModels
         #endregion
 
         #region Command
+        public ICommand DesktopLyricPanelCommand { get; private set; }
+
         public ICommand OpenInExploreCommand { get; private set; }
 
         public ICommand PointACommand { get; private set; }

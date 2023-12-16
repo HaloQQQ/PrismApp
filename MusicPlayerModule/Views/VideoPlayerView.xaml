@@ -77,7 +77,7 @@
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[快退].SelectedKey}"
-                Command="{x:Static MediaCommands.Rewind}"
+                Command="{Binding DelayCommand}"
                 Modifiers="{Binding KeyGestureDic[快退].ModifierKey}" />
 
             <KeyBinding
@@ -131,7 +131,7 @@
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[快进].SelectedKey}"
-                Command="{x:Static MediaCommands.FastForward}"
+                Command="{Binding AheadCommand}"
                 Modifiers="{Binding KeyGestureDic[快进].ModifierKey}" />
 
             <KeyBinding
@@ -154,10 +154,8 @@
             </MediaElement.InputBindings>
         </MediaElement>
 
-        <Grid
-            x:Name="BottomBar"
-            VerticalAlignment="Bottom"
-            Background="{StaticResource LightBlackPanelBackground}">
+        <!--  x:Name="BottomBar"  -->
+        <Grid VerticalAlignment="Bottom" Background="{StaticResource LightBlackPanelBackground}">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Style.Triggers>
@@ -300,10 +298,7 @@
                             </Button.InputBindings>
                         </Button>
 
-                        <Button
-                            Click="VideoGoBack"
-                            Command="{Binding DelayCommand}"
-                            Style="{StaticResource Rewind5sIconButton}" />
+                        <Button Command="{Binding DelayCommand}" Style="{StaticResource Rewind5sIconButton}" />
 
                         <Button
                             Command="{Binding PrevCommand}"
@@ -321,10 +316,7 @@
                             CommandParameter="{Binding CurrentVideo}"
                             Style="{StaticResource NextOneIconButton}" />
 
-                        <Button
-                            Click="VideoGoForward"
-                            Command="{Binding AheadCommand}"
-                            Style="{StaticResource FastForward5sIconButton}" />
+                        <Button Command="{Binding AheadCommand}" Style="{StaticResource FastForward5sIconButton}" />
 
                         <Button Command="{Binding StopPlayVideoCommand}" Style="{StaticResource StopMediaIconButton}" />
                     </StackPanel>

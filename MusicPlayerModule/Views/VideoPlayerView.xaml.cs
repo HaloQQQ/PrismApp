@@ -28,14 +28,14 @@ namespace MusicPlayerModule.Views
             this._eventAggregator = eventAggregator;
             this._videoPlayerViewModel = this.DataContext as VideoPlayerViewModel;
 
-            this._dto = new MsgEvents.Video.Dtos.VideoModelAndGuid(this._videoPlayerViewModel.Identity);
+            this._dto = new VideoModelAndGuid(this._videoPlayerViewModel.Identity);
 
             this._progressTime = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(500) };
             this._progressTime.Tick += (sender, e) =>
             {
                 this.videoSlider.Value = this.mediaPlayer.Position.TotalMilliseconds;
 
-                this.RefresgCursor();
+                this.RefreshCursor();
             };
 
             this._eventAggregator.GetEvent<VideoProgreeTimerIsEnableUpdatedEvent>().Subscribe(isTimerEnable =>
@@ -126,7 +126,7 @@ namespace MusicPlayerModule.Views
         }
 
         private Point lastMousePosition;  // 上次鼠标位置
-        private void RefresgCursor()
+        private void RefreshCursor()
         {
             Point currentMousePosition = Mouse.GetPosition(this);  // 获取当前鼠标位置
 
@@ -173,38 +173,6 @@ namespace MusicPlayerModule.Views
                     this.mediaPlayer.IsMuted = false;
                 }
             }
-        }
-
-        private void VideoGoBack(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-
-            this.Cursor = Cursors.Arrow;
-
-            var value = this.videoSlider.Value - 5000;
-
-            if (value < 0)
-            {
-                value = 0;
-            }
-
-            this.videoSlider.Value = value;
-        }
-
-        private void VideoGoForward(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-
-            this.Cursor = Cursors.Arrow;
-
-            var value = this.videoSlider.Value + 5000;
-
-            if (value > this.videoSlider.Maximum)
-            {
-                value = this.videoSlider.Maximum;
-            }
-
-            this.videoSlider.Value = value;
         }
 
         private VideoModelAndGuid _dto;
@@ -295,17 +263,7 @@ namespace MusicPlayerModule.Views
 
         private void UserControl_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (e.Command == MediaCommands.Rewind)
-            {
-                this.VideoGoBack(null, e);
-                this._videoPlayerViewModel.DelayCommand.Execute(null);
-            }
-            else if (e.Command == MediaCommands.FastForward)
-            {
-                this.VideoGoForward(null, e);
-                this._videoPlayerViewModel.AheadCommand.Execute(null);
-            }
-            else if (e.Command == MediaCommands.IncreaseVolume)
+            if (e.Command == MediaCommands.IncreaseVolume)
             {
                 var value = this.mediaPlayer.Volume + 0.05;
 

@@ -11,7 +11,7 @@
     MinHeight="640"
     attaches:MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius, Mode=OneWay}"
     prism:ViewModelLocator.AutoWireViewModel="True"
-    Style="{StaticResource WithoutTitleBar}"
+    Style="{StaticResource NoTitleWithAnimation}"
     WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary>

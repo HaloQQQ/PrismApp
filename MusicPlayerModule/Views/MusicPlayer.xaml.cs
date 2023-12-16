@@ -11,7 +11,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using IceTea.Wpf.Core.Extensions;
-using IceTea.Atom.Extensions;
 
 namespace MusicPlayerModule.Views
 {
@@ -260,45 +259,9 @@ namespace MusicPlayerModule.Views
             this.DesktopLyricPanel.Visibility = Visibility.Hidden;
         }
 
-        private void MusicGoBack(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-
-            var value = this.musicSlider.Value - 1000;
-
-            if (value < 0)
-            {
-                value = 0;
-            }
-
-            this.musicSlider.Value = value;
-        }
-
-        private void MusicGoForward(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-
-            var value = this.musicSlider.Value + 1000;
-
-            if (value > this.musicSlider.Maximum)
-            {
-                value = this.musicSlider.Maximum;
-            }
-
-            this.musicSlider.Value = value;
-        }
-
         private void UserControl_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (e.Command == MediaCommands.Rewind)
-            {
-                this.MusicGoBack(null, e);
-            }
-            else if (e.Command == MediaCommands.FastForward)
-            {
-                this.MusicGoForward(null, e);
-            }
-            else if (e.Command == MediaCommands.IncreaseVolume)
+            if (e.Command == MediaCommands.IncreaseVolume)
             {
                 var value = this.mediaPlayer.Volume + 0.05;
 
@@ -362,9 +325,6 @@ namespace MusicPlayerModule.Views
                 {
                     switch (e.Parameter.ToString())
                     {
-                        case "CloseDesktopLyricPanel":
-                            this.DesktopLyricToggleButton.IsChecked = !this.DesktopLyricToggleButton.IsChecked;
-                            break;
                         case "StopPlayingListFilte":
                             // 播放队列筛选输入框消失
                             this.PlayingKeyWordsTxt.Text = string.Empty;

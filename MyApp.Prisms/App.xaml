@@ -11,6 +11,7 @@
 
                 <ResourceDictionary Source="Resources/MyDataTemplate.xaml" />
                 <ResourceDictionary Source="Resources/MyDictionary.xaml" />
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

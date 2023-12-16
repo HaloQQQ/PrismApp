@@ -2,6 +2,7 @@
 using MusicPlayerModule.Models;
 using MusicPlayerModule.MsgEvents.Video.Dtos;
 using MusicPlayerModule.ViewModels.Base;
+using static Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties.System;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -31,6 +32,8 @@ namespace MusicPlayerModule.ViewModels
             internal set { SetProperty<bool>(ref _isPlayingVideo, value); }
         }
 
+        public override int MillsStep => 5000;
+
         #region 关键点
         protected override void SetPointToTotalMills()
         {
@@ -52,7 +55,8 @@ namespace MusicPlayerModule.ViewModels
 
                 if (_currentMills != value)
                 {
-                    _currentMills = value;
+                    _currentMills = Math.Max(value, 0);
+                    _currentMills = Math.Min(value, Video.TotalMills);
 
                     // 从B点返回A点
                     if (this.PointBMills != 0 && Math.Abs(this._currentMills - this.PointBMills) < 700)
