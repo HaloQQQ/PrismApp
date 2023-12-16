@@ -63,6 +63,8 @@ namespace MyApp.Prisms.Helper
             internal const string Next = "下一个";
             internal const string UpScreenBright = "提高屏幕亮度";
             internal const string DownScreenBright = "降低屏幕亮度";
+
+            internal const string MusicLyricDesktop = "歌词桌面栏";
         }
 
         internal static GlobalHotKeyModel[] GlobalHotKeys = new GlobalHotKeyModel[] {
@@ -71,6 +73,8 @@ namespace MyApp.Prisms.Helper
             new GlobalHotKeyModel(GlobalHotKeysConst.Next, CustomModifierKeys.Alt, CustomKeys.Right),
             new GlobalHotKeyModel(GlobalHotKeysConst.UpScreenBright, CustomModifierKeys.Alt, CustomKeys.F3),
             new GlobalHotKeyModel(GlobalHotKeysConst.DownScreenBright, CustomModifierKeys.Alt, CustomKeys.F2),
+
+            new GlobalHotKeyModel(GlobalHotKeysConst.MusicLyricDesktop, CustomModifierKeys.Alt, CustomKeys.C)
         };
     }
 }

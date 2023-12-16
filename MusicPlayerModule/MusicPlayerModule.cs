@@ -1,4 +1,5 @@
-﻿using MusicPlayerModule.Views;
+﻿using MusicPlayerModule.ViewModels;
+using MusicPlayerModule.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -16,6 +17,8 @@ namespace MusicPlayerModule
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<MusicPlayerViewModel>();
+            Prism.Mvvm.ViewModelLocationProvider.Register<MusicLyricDesktopWindow, MusicPlayerViewModel>();
         }
 
         public void OnInitialized(IContainerProvider containerProvider)

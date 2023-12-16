@@ -87,10 +87,10 @@
                 Command="GoToPage"
                 Modifiers="{Binding KeyGestureDic[歌词封面].ModifierKey}" />
 
-            <KeyBinding
+            <!--<KeyBinding
                 Key="{Binding KeyGestureDic[桌面歌词].SelectedKey}"
                 Command="{Binding DesktopLyricPanelCommand}"
-                Modifiers="{Binding KeyGestureDic[桌面歌词].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[桌面歌词].ModifierKey}" />-->
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[播放列表].SelectedKey}"
@@ -1501,8 +1501,9 @@
                             ToolTip="一起听" />
 
                         <ToggleButton
+                            Command="{Binding DesktopLyricPanelCommand}"
                             Content="&#xe671;"
-                            IsChecked="{Binding IsDesktopLyricShow}"
+                            IsChecked="{Binding IsDesktopLyricShow, Mode=OneWay}"
                             ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
                             <ToggleButton.Style>
                                 <Style BasedOn="{StaticResource ExpandIconToggleButton}" TargetType="ToggleButton">
@@ -1654,7 +1655,7 @@
             </Grid>
         </Grid>
 
-        <Grid
+        <!--<Grid
             x:Name="DesktopLyricBar"
             Grid.RowSpan="3"
             Height="140"
@@ -1754,15 +1755,15 @@
                                 Style="{StaticResource IconButtonBase_Small_Scale}"
                                 ToolTip="{Binding KeyGestureDic[快进].ToolTip}" />
 
-                            <ToggleButton IsChecked="{Binding IsDesktopLyricShow}" ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
-                                <ToggleButton.Style>
-                                    <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="ToggleButton">
+                            <Button Command="{Binding DesktopLyricPanelCommand}" ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
+                                <Button.Style>
+                                    <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="Button">
                                         <Setter Property="Content" Value="&#xe624;" />
                                         <Setter Property="FontSize" Value="14" />
                                         <Setter Property="Foreground" Value="#EBEBEB" />
                                     </Style>
-                                </ToggleButton.Style>
-                            </ToggleButton>
+                                </Button.Style>
+                            </Button>
                         </StackPanel>
                     </Viewbox>
 
@@ -1799,6 +1800,6 @@
                     FontSize="30"
                     MouseEnter="DesktopLyricPanel_Visible" />
             </StackPanel>
-        </Grid>
+        </Grid>-->
     </Grid>
 </UserControl>

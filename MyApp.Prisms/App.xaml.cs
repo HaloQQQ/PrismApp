@@ -21,6 +21,7 @@ using MyApp.Prisms.Views.ToolBox;
 using PrismAppBasicLib.MsgEvents;
 using IceTea.Atom.GeneralModels;
 using Prism.Regions;
+using MusicPlayerModule.MsgEvents;
 
 namespace MyApp.Prisms
 {
@@ -194,6 +195,10 @@ namespace MyApp.Prisms
                         else if (item.Name == CustomConstants.GlobalHotKeysConst.DownScreenBright)
                         {
                             this.Container.Resolve<IEventAggregator>().GetEvent<UpdateScreenBrightEvent>().Publish(-5);
+                        }
+                        else if (item.Name == CustomConstants.GlobalHotKeysConst.MusicLyricDesktop)
+                        {
+                            this.Container.Resolve<IEventAggregator>().GetEvent<ToggleLyricDesktopEvent>().Publish();
                         }
                     }
                 }

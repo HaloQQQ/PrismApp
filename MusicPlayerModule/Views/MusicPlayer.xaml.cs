@@ -42,7 +42,30 @@ namespace MusicPlayerModule.Views
 
             this._eventAggregator.GetEvent<ContinueCurrentMusicEvent>().Subscribe(() => this.mediaPlayer.Play());
             this._eventAggregator.GetEvent<PauseCurrentMusicEvent>().Subscribe(() => this.mediaPlayer.Pause());
+
+            this._eventAggregator.GetEvent<ToggleLyricDesktopEvent>().Subscribe(() =>
+            {
+                if (_window == null)
+                {
+                    _window = new MusicLyricDesktopWindow();
+                    //_window.Show();
+                    Window.GetWindow(this).Closing += (sender, e) => _window.Close();
+                }
+
+                _musicPlayerViewModel.IsDesktopLyricShow = !_musicPlayerViewModel.IsDesktopLyricShow;
+
+                //if (_window.IsVisible)
+                //{
+                //    _window.Visibility = Visibility.Collapsed;
+                //}
+                //else
+                //{
+                //    _window.Visibility = Visibility.Visible;
+                //}
+            });
         }
+
+        private Window _window;
 
         private void ResetMediaPlayer()
         {
@@ -245,19 +268,19 @@ namespace MusicPlayerModule.Views
             this.QueryButton.IsChecked = false;
         }
 
-        private void DesktopLyricPanel_Visible(object sender, MouseEventArgs e)
-        {
-            e.Handled = true;
+        //private void DesktopLyricPanel_Visible(object sender, MouseEventArgs e)
+        //{
+        //    e.Handled = true;
 
-            this.DesktopLyricPanel.Visibility = Visibility.Visible;
-        }
+        //    this.DesktopLyricPanel.Visibility = Visibility.Visible;
+        //}
 
-        private void DesktopLyricPanel_Hidden(object sender, MouseEventArgs e)
-        {
-            e.Handled = true;
+        //private void DesktopLyricPanel_Hidden(object sender, MouseEventArgs e)
+        //{
+        //    e.Handled = true;
 
-            this.DesktopLyricPanel.Visibility = Visibility.Hidden;
-        }
+        //    this.DesktopLyricPanel.Visibility = Visibility.Hidden;
+        //}
 
         private void UserControl_Executed(object sender, ExecutedRoutedEventArgs e)
         {

@@ -85,7 +85,6 @@ namespace MusicPlayerModule.ViewModels
             set => SetProperty<bool>(ref _isDesktopLyricShow, value);
         }
 
-
         public PlayingMusicViewModel CurrentMusic
         {
             get { return _currentMusic; }
@@ -183,7 +182,9 @@ namespace MusicPlayerModule.ViewModels
 
         private void InitCommands()
         {
-            this.DesktopLyricPanelCommand = new DelegateCommand(() => this.IsDesktopLyricShow = !this.IsDesktopLyricShow);
+            this.DesktopLyricPanelCommand = new DelegateCommand(() => this._eventAggregator.GetEvent<ToggleLyricDesktopEvent>().Publish(), 
+                () => this.CurrentMusic != null)
+                .ObservesProperty(() => this.CurrentMusic);
 
             this.OpenInExploreCommand = new DelegateCommand<string>(musicDir =>
             {
