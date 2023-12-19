@@ -7,8 +7,6 @@ namespace MusicPlayerModule.Utils
 {
     internal class LoadLyricToMusicModel
     {
-        private static IEnumerable<string> _paths;
-
         public static async Task LoadAsync(string dir, IEnumerable<MusicModel> musics)
         {
             await Task.Run(() =>
@@ -70,21 +68,9 @@ namespace MusicPlayerModule.Utils
 
         public static IEnumerable<string> GetLyricPaths(string directoryPath, Predicate<string> predicate)
         {
-            if (_paths != null)
-            {
-                return _paths;
-            }
-
             Debug.Assert(Directory.Exists(directoryPath), "目录不存在");
 
-            List<string> paths = directoryPath.GetFiles(predicate);
-
-            if (!paths.IsNullOrEmpty())
-            {
-                _paths = paths;
-            }
-
-            return paths;
+            return directoryPath.GetFiles(predicate);
         }
     }
 }
