@@ -127,19 +127,6 @@ namespace MyApp.Prisms.Views
 
                     e.Handled = true;
                 }
-                else if (e.Command == ApplicationCommands.Open)
-                {
-                    if (e.Source == this.rhTxt || CustomConstants.LOG.EqualsIgnoreCase(e.Parameter?.ToString()))
-                    {
-                        Helper.Helper.OpenLog(this._tcpSocketViewModel.Name);
-                    }
-
-                    e.Handled = true;
-                }
-            }
-            catch (SocketException ex)
-            {
-                this.rhTxt.Info(this._tcpSocketViewModel.IsLogging, _tcpSocketViewModel.Name, ex.Message);
             }
             catch (Exception ex)
             {

@@ -84,19 +84,6 @@ namespace MyApp.Prisms.Views
 
                     e.Handled = true;
                 }
-                else if (e.Command == ApplicationCommands.Open)      // 打开日志文件
-                {
-                    if (e.Source == this.rhTxt || CustomConstants.LOG.EqualsIgnoreCase(e.Parameter?.ToString()))
-                    {
-                        Helper.Helper.OpenLog(this._udpSocketViewModel.Name);
-
-                        e.Handled = true;
-                    }
-                }
-            }
-            catch (SocketException ex)
-            {
-                this.rhTxt.Info(this._udpSocketViewModel.IsLogging, this._udpSocketViewModel.Socket.Name, ex.Message);
             }
             catch (Exception ex)
             {

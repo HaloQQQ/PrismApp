@@ -236,9 +236,12 @@
 
                         <TextBlock
                             Grid.Row="0"
+                            MaxWidth="500"
+                            Margin="20"
                             FontSize="24"
                             Style="{StaticResource ThemeBlk}"
-                            Text="{Binding DialogMessage.DisplayMessage}" />
+                            Text="{Binding DialogMessage.DisplayMessage}"
+                            TextWrapping="Wrap" />
 
                         <TextBlock
                             Grid.Row="1"

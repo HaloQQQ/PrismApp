@@ -42,6 +42,8 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
                 )
                 .ObservesProperty(() => this.SendMessage);
 
+            this.OpenLogCommand = new DelegateCommand(()=> Helper.Helper.OpenLog(this.Name));
+
             this.Ip = AppStatics.Ip;
         }
 
@@ -85,6 +87,8 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
         #region Commands
         public ICommand ConnectCommand { get; protected set; }
         public ICommand SendCommand { get; protected set; }
+
+        public ICommand OpenLogCommand { get; private set; }
         #endregion
 
         protected abstract bool InitSocket();

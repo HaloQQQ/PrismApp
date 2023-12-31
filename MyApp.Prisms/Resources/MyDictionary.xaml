@@ -72,8 +72,7 @@
             IsCheckable="True"
             IsChecked="{Binding IsLogging}" />
         <MenuItem
-            Command="Open"
-            CommandParameter="Log"
+            Command="{Binding OpenLogCommand}"
             CommandTarget="{Binding PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
             Header="打开日志文件" />
     </ContextMenu>
