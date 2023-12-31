@@ -13,12 +13,8 @@ namespace MyApp.Prisms.ViewModels
 {
     internal class UdpSocketViewModel : BaseSocketViewModel
     {
-        public UdpSocketViewModel(IConfigManager config) : base(config)
+        public UdpSocketViewModel(IConfigManager config) : base(config, "UDP客户端")
         {
-            Name = "UDP客户端";
-
-            this.IsLogging = config.IsTrue("IsLogging:" + this.Name);
-
             this.RemoteIp = AppStatics.Ip;
         }
 

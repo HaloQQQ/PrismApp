@@ -4,12 +4,9 @@ namespace MyApp.Prisms.ViewModels
 {
     internal class AnotherTcpServerViewModel : TcpServerViewModel
     {
-        public AnotherTcpServerViewModel(IConfigManager config) : base(config)
+        public AnotherTcpServerViewModel(IConfigManager config, string name = "程序服务器") : base(config, name)
         {
             this.Port = "50001";
-            this.Name = "程序服务器";
-
-            this.IsLogging = config.IsTrue(new string[] { "IsLogging", this.Name });
         }
     }
 }

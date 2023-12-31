@@ -26,8 +26,11 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
             protected set => SetProperty<ISocket>(ref _socket, value);
         }
 
-        public BaseSocketViewModel(IConfigManager config)
+        public BaseSocketViewModel(IConfigManager config, string name)
         {
+            this.Name = name;
+            this.IsLogging = config.IsTrue(new string[] { "IsLogging", this.Name });
+
             config.SetConfig += config =>
                 config.WriteConfigNode<bool>(this.IsLogging, new string[] { "IsLogging", this.Name });
 

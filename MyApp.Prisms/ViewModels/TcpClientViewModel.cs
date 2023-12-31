@@ -9,11 +9,8 @@ namespace MyApp.Prisms.ViewModels
 {
     internal class TcpClientViewModel : BaseSocketViewModel
     {
-        public TcpClientViewModel(IConfigManager config) : base(config)
+        public TcpClientViewModel(IConfigManager config) : base(config, "Tcp客户端")
         {
-            Name = "Tcp客户端";
-
-            this.IsLogging = config.IsTrue("IsLogging:" + this.Name);
         }
 
         private ITcpClient _tcpClient;

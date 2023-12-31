@@ -14,12 +14,8 @@ namespace MyApp.Prisms.ViewModels
 {
     internal class TcpServerViewModel : BaseSocketViewModel
     {
-        public TcpServerViewModel(IConfigManager config) : base(config)
+        public TcpServerViewModel(IConfigManager config, string name = "设备服务器") : base(config, name)
         {
-            this.Name = "设备服务器";
-
-            this.IsLogging = config.IsTrue(new string[] { "IsLogging", this.Name });
-
             this.SendCommand = new DelegateCommand(
                     () => this.Socket.SendAsync(this.SendMessage),
                     () => this.Socket.IsNotNullAnd(server => server.IsConnected)
