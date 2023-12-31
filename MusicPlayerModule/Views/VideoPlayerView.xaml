@@ -511,7 +511,7 @@
                             VerticalOffset="5">
                             <Border
                                 Width="100"
-                                Height="155"
+                                Height="165"
                                 Background="{StaticResource PopupBackground}"
                                 Clip="{StaticResource PopupGeometryGroup_VideoStretchMode}">
                                 <ListBox
