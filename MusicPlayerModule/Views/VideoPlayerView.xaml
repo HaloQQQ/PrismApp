@@ -707,7 +707,7 @@
             <TextBlock FontSize="20" Foreground="{DynamicResource TextBlock.Foreground}">
                 <TextBlock Width="60" Text="{Binding MediaOperationViewModel.CurrentOperation}" />
                 <TextBlock Text="{Binding CurrentVideo.CurrentTime}" />
-                <TextBlock Width="80">
+                <TextBlock Width="100">
                     (
                     <TextBlock Text="{Binding CurrentVideo.ProgressPercent}" />
                     %)
