@@ -1,0 +1,170 @@
+﻿<Window
+    x:Class="MusicPlayerModule.Views.HorizontalMusicLyricDesktopWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
+    xmlns:prism="http://prismlibrary.com/"
+    Title="MusicLyricDesktopWindow"
+    MinWidth="900"
+    attaches:MyAttachProperty.CornerRadius="10"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    Background="Transparent"
+    Cursor="SizeAll"
+    ShowInTaskbar="False"
+    SizeToContent="WidthAndHeight"
+    Style="{StaticResource WithoutTitleBar}"
+    Topmost="True">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MusicPlayerModule;component/Resources/Resources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid MouseDown="DragWindow_MouseDonw" MouseLeave="DesktopLyricPanel_Hidden">
+        <StackPanel
+            x:Name="DesktopLyricPanel"
+            Background="#66000000"
+            Visibility="Hidden">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel
+                    Grid.Column="0"
+                    HorizontalAlignment="Left"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        MaxWidth="250"
+                        Margin="20,0"
+                        FontSize="18"
+                        Foreground="#EBEBEB"
+                        Text="{Binding CurrentMusic.Music.Name}" />
+                    <TextBlock Foreground="#EBEBEB" Text="{Binding CurrentMusic.Music.Singer}" />
+                </StackPanel>
+
+                <StackPanel
+                    Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <Button
+                        Command="{Binding DelayCommand}"
+                        Content="&#xe68e;"
+                        Style="{StaticResource IconButtonBase_Small_Scale}"
+                        ToolTip="{Binding KeyGestureDic[快退].ToolTip}" />
+
+                    <Button Command="{Binding PrevCommand}" CommandParameter="{Binding CurrentMusic}">
+                        <Button.Style>
+                            <Style BasedOn="{StaticResource PrevOneIconButton}" TargetType="Button">
+                                <Setter Property="FontSize" Value="25" />
+                                <Setter Property="Foreground" Value="#EBEBEB" />
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Foreground" Value="#6AD2FF" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <ToggleButton
+                        Command="{Binding PlayPlayingCommand}"
+                        CommandParameter="{Binding CurrentMusic}"
+                        IsChecked="{Binding Running, Mode=OneWay}">
+                        <ToggleButton.Style>
+                            <Style BasedOn="{StaticResource PlayIconToggleButton}" TargetType="ToggleButton">
+                                <Setter Property="FontSize" Value="28" />
+                                <Setter Property="Foreground" Value="#EBEBEB" />
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Foreground" Value="#6AD2FF" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToggleButton.Style>
+                    </ToggleButton>
+
+                    <Button Command="{Binding NextCommand}" CommandParameter="{Binding CurrentMusic}">
+                        <Button.Style>
+                            <Style BasedOn="{StaticResource NextOneIconButton}" TargetType="Button">
+                                <Setter Property="FontSize" Value="25" />
+                                <Setter Property="Foreground" Value="#EBEBEB" />
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Foreground" Value="#6AD2FF" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <Button
+                        Command="{Binding AheadCommand}"
+                        Content="&#xe690;"
+                        Style="{StaticResource IconButtonBase_Small_Scale}"
+                        ToolTip="{Binding KeyGestureDic[快进].ToolTip}" />
+
+                    <Button Command="{Binding DesktopLyricPanelCommand}" ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
+                        <Button.Style>
+                            <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="Button">
+                                <Setter Property="Content" Value="&#xe624;" />
+                                <Setter Property="FontSize" Value="14" />
+                                <Setter Property="Foreground" Value="#EBEBEB" />
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <ToggleButton IsChecked="{Binding DesktopLyric.IsVertical}">
+                        <ToggleButton.Style>
+                            <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="ToggleButton">
+                                <Setter Property="Content" Value="&#xe65c;" />
+                                <Setter Property="FontSize" Value="14" />
+                                <Setter Property="Foreground" Value="#EBEBEB" />
+                                <Setter Property="ToolTip" Value="竖屏" />
+
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DesktopLyric.IsVertical}" Value="True">
+                                        <Setter Property="Content" Value="&#xe659;" />
+                                        <Setter Property="ToolTip" Value="横屏" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToggleButton.Style>
+                    </ToggleButton>
+                </StackPanel>
+
+                <TextBlock
+                    Grid.Column="2"
+                    Margin="20,0"
+                    HorizontalAlignment="Right"
+                    Foreground="#EBEBEB"
+                    Style="{StaticResource NotImportantTxt_Black}">
+                    <TextBlock Text="{Binding CurrentMusic.CurrentTime, FallbackValue=00:00}" />
+                    /
+                    <TextBlock Text="{Binding CurrentMusic.Music.Duration, FallbackValue=00:00}" />
+                </TextBlock>
+            </Grid>
+        </StackPanel>
+
+        <StackPanel Margin="0,30,0,0">
+            <ContentControl
+                HorizontalAlignment="Left"
+                Content="{Binding CurrentMusic.OneLine}"
+                ContentTemplate="{StaticResource HorizentalDesktopLyric}"
+                MouseEnter="DesktopLyricPanel_Visible" />
+
+            <ContentControl
+                HorizontalAlignment="Right"
+                Content="{Binding CurrentMusic.AnotherLine}"
+                ContentTemplate="{StaticResource HorizentalDesktopLyric}"
+                MouseEnter="DesktopLyricPanel_Visible" />
+        </StackPanel>
+    </Grid>
+</Window>

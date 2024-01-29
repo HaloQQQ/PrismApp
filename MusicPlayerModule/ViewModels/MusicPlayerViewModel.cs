@@ -56,6 +56,7 @@ namespace MusicPlayerModule.ViewModels
             set => SetProperty<double>(ref _currentLyricFontSize, value);
         }
 
+        public DesktopLyricViewModel DesktopLyric { get; }
 
         public bool Running
         {
@@ -76,14 +77,6 @@ namespace MusicPlayerModule.ViewModels
         }
 
         public int SelectedCount => this.DisplayFavorites.Count(item => item.IsDeleting);
-
-        private bool _isDesktopLyricShow;
-
-        public bool IsDesktopLyricShow
-        {
-            get => this._isDesktopLyricShow;
-            set => SetProperty<bool>(ref _isDesktopLyricShow, value);
-        }
 
         public PlayingMusicViewModel CurrentMusic
         {
@@ -182,7 +175,7 @@ namespace MusicPlayerModule.ViewModels
 
         private void InitCommands()
         {
-            this.DesktopLyricPanelCommand = new DelegateCommand(() => this._eventAggregator.GetEvent<ToggleLyricDesktopEvent>().Publish(), 
+            this.DesktopLyricPanelCommand = new DelegateCommand(() => this._eventAggregator.GetEvent<ToggleLyricDesktopEvent>().Publish(),
                 () => this.CurrentMusic != null)
                 .ObservesProperty(() => this.CurrentMusic);
 
@@ -953,6 +946,8 @@ namespace MusicPlayerModule.ViewModels
 
             this.DistributeMusicViewModel = new DistributeMusicViewModel(this.Favorites, eventAggregator);
             this.DistributeMusicViewModel.ClearFavoriteListFilteKeyWords += TryClearFavoriteListFilteKeyWords;
+
+            this.DesktopLyric = new DesktopLyricViewModel(config);
         }
 
         #region 应用内快捷键

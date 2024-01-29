@@ -2,7 +2,6 @@
 using MusicPlayerModule.Models;
 using MusicPlayerModule.MsgEvents.Video.Dtos;
 using MusicPlayerModule.ViewModels.Base;
-using static Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties.System;
 
 namespace MusicPlayerModule.ViewModels
 {

@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using IceTea.Wpf.Core.Extensions;
+using IceTea.Atom.Contracts;
 
 namespace MusicPlayerModule.Views
 {
@@ -21,7 +22,7 @@ namespace MusicPlayerModule.Views
 
         private MusicPlayerViewModel _musicPlayerViewModel;
 
-        public MusicPlayer(IEventAggregator eventAggregator)
+        public MusicPlayer(IEventAggregator eventAggregator,IConfigManager configManager)
         {
             InitializeComponent();
 
@@ -30,7 +31,23 @@ namespace MusicPlayerModule.Views
             this._eventAggregator = eventAggregator;
 
             this._lyricTime = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(100) };
-            this._lyricTime.Tick += (sender, e) => this.musicSlider.Value = this.mediaPlayer.Position.TotalMilliseconds;
+            this._lyricTime.Tick += (sender, e) =>
+            {
+                this.musicSlider.Value = this.mediaPlayer.Position.TotalMilliseconds; 
+
+                var mainWindow = Window.GetWindow(this);
+                if (_horizentalDesktopLyricWindow == null && mainWindow != null)
+                {
+                    _horizentalDesktopLyricWindow = new HorizontalMusicLyricDesktopWindow(configManager);
+                    mainWindow.Closing += (sender, e) => _horizentalDesktopLyricWindow.Close();
+                }
+
+                if (_verticalDesktopLyricWindow == null && mainWindow != null)
+                {
+                    _verticalDesktopLyricWindow = new VerticalMusicLyricDesktopWindow(configManager);
+                    mainWindow.Closing += (sender, e) => _verticalDesktopLyricWindow.Close();
+                }
+            };
 
             this._eventAggregator.GetEvent<MusicProgreeTimerIsEnableUpdatedEvent>().Subscribe(isTimerEnable => this._lyricTime.IsEnabled = isTimerEnable);
             this._eventAggregator.GetEvent<ResetPlayerAndPlayMusicEvent>().Subscribe(() =>
@@ -45,27 +62,12 @@ namespace MusicPlayerModule.Views
 
             this._eventAggregator.GetEvent<ToggleLyricDesktopEvent>().Subscribe(() =>
             {
-                if (_window == null)
-                {
-                    _window = new MusicLyricDesktopWindow();
-                    //_window.Show();
-                    Window.GetWindow(this).Closing += (sender, e) => _window.Close();
-                }
-
-                _musicPlayerViewModel.IsDesktopLyricShow = !_musicPlayerViewModel.IsDesktopLyricShow;
-
-                //if (_window.IsVisible)
-                //{
-                //    _window.Visibility = Visibility.Collapsed;
-                //}
-                //else
-                //{
-                //    _window.Visibility = Visibility.Visible;
-                //}
+                _musicPlayerViewModel.DesktopLyric.IsDesktopLyricShow = !_musicPlayerViewModel.DesktopLyric.IsDesktopLyricShow;
             });
         }
 
-        private Window _window;
+        private Window _horizentalDesktopLyricWindow;
+        private Window _verticalDesktopLyricWindow;
 
         private void ResetMediaPlayer()
         {
@@ -267,20 +269,6 @@ namespace MusicPlayerModule.Views
             this.PlayingKeyWordsTxt.Text = string.Empty;
             this.QueryButton.IsChecked = false;
         }
-
-        //private void DesktopLyricPanel_Visible(object sender, MouseEventArgs e)
-        //{
-        //    e.Handled = true;
-
-        //    this.DesktopLyricPanel.Visibility = Visibility.Visible;
-        //}
-
-        //private void DesktopLyricPanel_Hidden(object sender, MouseEventArgs e)
-        //{
-        //    e.Handled = true;
-
-        //    this.DesktopLyricPanel.Visibility = Visibility.Hidden;
-        //}
 
         private void UserControl_Executed(object sender, ExecutedRoutedEventArgs e)
         {

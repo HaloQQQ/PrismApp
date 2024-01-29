@@ -1081,7 +1081,7 @@
                                 <EventSetter Event="PreviewMouseRightButtonDown" Handler="SwitchLyricMode" />
 
                                 <Setter Property="Height" Value="50" />
-                                <Setter Property="Padding" Value="80,0" />
+                                <Setter Property="Padding" Value="100,0" />
 
                                 <Setter Property="IsSelected" Value="{Binding IsPlayingLine, Mode=OneWay}" />
 
@@ -1503,7 +1503,7 @@
                         <ToggleButton
                             Command="{Binding DesktopLyricPanelCommand}"
                             Content="&#xe671;"
-                            IsChecked="{Binding IsDesktopLyricShow, Mode=OneWay}"
+                            IsChecked="{Binding DesktopLyric.IsDesktopLyricShow, Mode=OneWay}"
                             ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
                             <ToggleButton.Style>
                                 <Style BasedOn="{StaticResource ExpandIconToggleButton}" TargetType="ToggleButton">
@@ -1654,152 +1654,5 @@
                 </Viewbox>
             </Grid>
         </Grid>
-
-        <!--<Grid
-            x:Name="DesktopLyricBar"
-            Grid.RowSpan="3"
-            Height="140"
-            MaxWidth="960"
-            Panel.ZIndex="100"
-            attaches:MyAttachProperty.IsDraggable="True"
-            MouseLeave="DesktopLyricPanel_Hidden"
-            Visibility="{Binding IsDesktopLyricShow, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <StackPanel
-                x:Name="DesktopLyricPanel"
-                Background="#66000000"
-                Visibility="Hidden">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="2*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Viewbox
-                        Grid.Column="0"
-                        HorizontalAlignment="Left"
-                        Style="{StaticResource OnlyDownViewbox}">
-                        <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <TextBlock
-                                MaxWidth="250"
-                                Margin="20,0"
-                                FontSize="18"
-                                Foreground="#EBEBEB"
-                                Text="{Binding CurrentMusic.Music.Name}" />
-                            <TextBlock Foreground="#EBEBEB" Text="{Binding CurrentMusic.Music.Singer}" />
-                        </StackPanel>
-                    </Viewbox>
-
-                    <Viewbox Grid.Column="1" Style="{StaticResource OnlyDownViewbox}">
-                        <StackPanel
-                            Grid.Column="1"
-                            HorizontalAlignment="Center"
-                            Orientation="Horizontal">
-                            <Button
-                                Command="{Binding DelayCommand}"
-                                Content="&#xe68e;"
-                                Style="{StaticResource IconButtonBase_Small_Scale}"
-                                ToolTip="{Binding KeyGestureDic[快退].ToolTip}" />
-
-                            <Button Command="{Binding PrevCommand}" CommandParameter="{Binding CurrentMusic}">
-                                <Button.Style>
-                                    <Style BasedOn="{StaticResource PrevOneIconButton}" TargetType="Button">
-                                        <Setter Property="FontSize" Value="25" />
-                                        <Setter Property="Foreground" Value="#EBEBEB" />
-
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Foreground" Value="#6AD2FF" />
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                            </Button>
-
-                            <ToggleButton
-                                Command="{Binding PlayPlayingCommand}"
-                                CommandParameter="{Binding CurrentMusic}"
-                                IsChecked="{Binding Running, Mode=OneWay}">
-                                <ToggleButton.Style>
-                                    <Style BasedOn="{StaticResource PlayIconToggleButton}" TargetType="ToggleButton">
-                                        <Setter Property="FontSize" Value="28" />
-                                        <Setter Property="Foreground" Value="#EBEBEB" />
-
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Foreground" Value="#6AD2FF" />
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ToggleButton.Style>
-                            </ToggleButton>
-
-                            <Button Command="{Binding NextCommand}" CommandParameter="{Binding CurrentMusic}">
-                                <Button.Style>
-                                    <Style BasedOn="{StaticResource NextOneIconButton}" TargetType="Button">
-                                        <Setter Property="FontSize" Value="25" />
-                                        <Setter Property="Foreground" Value="#EBEBEB" />
-
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Foreground" Value="#6AD2FF" />
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                            </Button>
-
-                            <Button
-                                Command="{Binding AheadCommand}"
-                                Content="&#xe690;"
-                                Style="{StaticResource IconButtonBase_Small_Scale}"
-                                ToolTip="{Binding KeyGestureDic[快进].ToolTip}" />
-
-                            <Button Command="{Binding DesktopLyricPanelCommand}" ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
-                                <Button.Style>
-                                    <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="Button">
-                                        <Setter Property="Content" Value="&#xe624;" />
-                                        <Setter Property="FontSize" Value="14" />
-                                        <Setter Property="Foreground" Value="#EBEBEB" />
-                                    </Style>
-                                </Button.Style>
-                            </Button>
-                        </StackPanel>
-                    </Viewbox>
-
-                    <Viewbox
-                        Grid.Column="2"
-                        HorizontalAlignment="Right"
-                        Style="{StaticResource OnlyDownViewbox}">
-                        <TextBlock
-                            Grid.Column="2"
-                            Margin="20,0"
-                            HorizontalAlignment="Right"
-                            Foreground="#EBEBEB"
-                            Style="{StaticResource NotImportantTxt_Black}">
-                            <TextBlock Text="{Binding CurrentMusic.CurrentTime, FallbackValue=00:00}" />
-                            /
-                            <TextBlock Text="{Binding CurrentMusic.Music.Duration, FallbackValue=00:00}" />
-                        </TextBlock>
-                    </Viewbox>
-                </Grid>
-            </StackPanel>
-
-            <StackPanel Margin="0,30,0,0">
-                <ContentControl
-                    HorizontalAlignment="Left"
-                    Content="{Binding CurrentMusic.OneLine}"
-                    ContentTemplate="{StaticResource DesktopLyric}"
-                    FontSize="30"
-                    MouseEnter="DesktopLyricPanel_Visible" />
-
-                <ContentControl
-                    HorizontalAlignment="Right"
-                    Content="{Binding CurrentMusic.AnotherLine}"
-                    ContentTemplate="{StaticResource DesktopLyric}"
-                    FontSize="30"
-                    MouseEnter="DesktopLyricPanel_Visible" />
-            </StackPanel>
-        </Grid>-->
     </Grid>
 </UserControl>

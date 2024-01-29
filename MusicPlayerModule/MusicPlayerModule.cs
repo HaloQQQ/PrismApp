@@ -18,7 +18,8 @@ namespace MusicPlayerModule
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<MusicPlayerViewModel>();
-            Prism.Mvvm.ViewModelLocationProvider.Register<MusicLyricDesktopWindow, MusicPlayerViewModel>();
+            Prism.Mvvm.ViewModelLocationProvider.Register<HorizontalMusicLyricDesktopWindow, MusicPlayerViewModel>();
+            Prism.Mvvm.ViewModelLocationProvider.Register<VerticalMusicLyricDesktopWindow, MusicPlayerViewModel>();
         }
 
         public void OnInitialized(IContainerProvider containerProvider)

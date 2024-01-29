@@ -1,0 +1,67 @@
+﻿using IceTea.Atom.Contracts;
+using IceTea.Atom.Extensions;
+using MusicPlayerModule.Converters;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Input;
+
+namespace MusicPlayerModule.Views
+{
+    public partial class HorizontalMusicLyricDesktopWindow : Window
+    {
+        public HorizontalMusicLyricDesktopWindow(IConfigManager configManager)
+        {
+            InitializeComponent();
+
+            var bindings = new MultiBinding();
+            bindings.Bindings.Add(new Binding("DesktopLyric.IsDesktopLyricShow"));
+            bindings.Bindings.Add(new Binding("DesktopLyric.IsVertical"));
+            bindings.Converter = new HorizentalDesktopLyricMultiConverter();
+
+            this.SetBinding(Window.VisibilityProperty, bindings);
+
+            this.MaxWidth = SystemParameters.PrimaryScreenWidth;
+
+            this._configManager = configManager;
+            var pointStr = configManager.ReadConfigNode(new string[] { "Music", "Horizontal_DesktopLyric_WindowLeftTop" });
+            if (!pointStr.IsNullOrEmpty())
+            {
+                var arr = pointStr.Split(",");
+                this.Left = double.Parse(arr[0]);
+                this.Top = double.Parse(arr[1]);
+            }
+        }
+
+        private IConfigManager _configManager;
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            _configManager.WriteConfigNode(string.Join(",", new double[] { this.Left, this.Top }), new string[] { "Music", "Horizontal_DesktopLyric_WindowLeftTop" });
+        }
+
+        private void DesktopLyricPanel_Visible(object sender, MouseEventArgs e)
+        {
+            e.Handled = true;
+
+            this.DesktopLyricPanel.Visibility = Visibility.Visible;
+        }
+
+        private void DesktopLyricPanel_Hidden(object sender, MouseEventArgs e)
+        {
+            e.Handled = true;
+
+            this.DesktopLyricPanel.Visibility = Visibility.Hidden;
+        }
+
+        private void DragWindow_MouseDonw(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
+        }
+    }
+}

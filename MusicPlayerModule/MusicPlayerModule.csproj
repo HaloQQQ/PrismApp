@@ -26,4 +26,10 @@
     <Resource Include="Resources\音符SVG-87.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\VerticalMusicLyricDesktopWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>
