@@ -46,7 +46,7 @@
                 HorizontalAlignment="Left"
                 Orientation="Vertical">
                 <TextBlock
-                    Width="20"
+                    Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                     MaxHeight="180"
                     Margin="0,10"
                     FontSize="18"
@@ -54,7 +54,7 @@
                     Text="{Binding CurrentMusic.Music.Name}"
                     TextTrimming="WordEllipsis" />
                 <TextBlock
-                    Width="16"
+                    Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                     Foreground="#EBEBEB"
                     Text="{Binding CurrentMusic.Music.Singer}"
                     TextTrimming="WordEllipsis" />

@@ -34,7 +34,7 @@ namespace MyApp.Prisms.Helper
         internal const string DefaultThemeURI = "DefaultThemeURI";
         internal const string BkgrdUri = "BkgrdUri";
 
-         
+
 
         internal const string Software_Log_Dir = "软件启停记录";
 
@@ -59,8 +59,16 @@ namespace MyApp.Prisms.Helper
         internal static class GlobalHotKeysConst
         {
             internal const string Pause = "暂停";
+
             internal const string Prev = "上一个";
             internal const string Next = "下一个";
+
+            internal const string Ahead = "快进";
+            internal const string Delay = "快退";
+
+            internal const string IncreaseVolume = "增大音量";
+            internal const string DecreaseVolume = "降低音量";
+
             internal const string UpScreenBright = "提高屏幕亮度";
             internal const string DownScreenBright = "降低屏幕亮度";
 
@@ -69,8 +77,16 @@ namespace MyApp.Prisms.Helper
 
         internal static GlobalHotKeyModel[] GlobalHotKeys = new GlobalHotKeyModel[] {
             new GlobalHotKeyModel(GlobalHotKeysConst.Pause, CustomModifierKeys.Alt, CustomKeys.S),
+
             new GlobalHotKeyModel(GlobalHotKeysConst.Prev, CustomModifierKeys.Alt, CustomKeys.Left),
             new GlobalHotKeyModel(GlobalHotKeysConst.Next, CustomModifierKeys.Alt, CustomKeys.Right),
+
+            new GlobalHotKeyModel(GlobalHotKeysConst.Delay, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Left),
+            new GlobalHotKeyModel(GlobalHotKeysConst.Ahead, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Right),
+
+            new GlobalHotKeyModel(GlobalHotKeysConst.IncreaseVolume, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Up),
+            new GlobalHotKeyModel(GlobalHotKeysConst.DecreaseVolume, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Down),
+
             new GlobalHotKeyModel(GlobalHotKeysConst.UpScreenBright, CustomModifierKeys.Alt, CustomKeys.F3),
             new GlobalHotKeyModel(GlobalHotKeysConst.DownScreenBright, CustomModifierKeys.Alt, CustomKeys.F2),
 

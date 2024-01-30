@@ -58,7 +58,7 @@
         <DataTemplate DataType="{x:Type appHotKey:AppHotKeyModel}">
             <StackPanel MinHeight="40" Orientation="Horizontal">
                 <TextBlock
-                    MinWidth="100"
+                    MinWidth="110"
                     FontSize="16"
                     TextAlignment="Right">
                     <TextBlock Text="{Binding Name}" />
@@ -91,6 +91,7 @@
                     Text="{Binding SelectedKey, Converter={StaticResource Key2StringConverter}}" />
 
                 <TextBox
+                    MinWidth="170"
                     IsEnabled="{Binding IsUsable}"
                     IsReadOnly="True"
                     KeyUp="AppHotKeyTextBox_OnKeyUp"
@@ -115,7 +116,7 @@
         <DataTemplate DataType="{x:Type globalhotkey:GlobalHotKeyModel}">
             <StackPanel MinHeight="40" Orientation="Horizontal">
                 <TextBlock
-                    MinWidth="100"
+                    MinWidth="110"
                     FontSize="16"
                     TextAlignment="Right">
                     <TextBlock Text="{Binding Name}" />
@@ -148,6 +149,7 @@
                     Text="{Binding SelectedKey}" />
 
                 <TextBox
+                    MinWidth="170"
                     IsEnabled="{Binding IsUsable}"
                     IsReadOnly="True"
                     KeyUp="GlobalHotKeyTextBox_OnKeyUp"
@@ -197,10 +199,11 @@
         CornerRadius="20">
         <TabControl ItemContainerStyle="{StaticResource TabItem_Transparent}" Style="{StaticResource TabControl_ScrollContent}">
             <TabItem Header="默认目录">
-                <StackPanel>
+                <StackPanel Margin="6,0">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Style="{StaticResource ThemeBlk}" Text="图片默认目录：" />
                         <TextBox
+                            Width="500"
                             attaches:MyAttachProperty.PlaceHolder="空目录"
                             IsReadOnly="True"
                             Text="{Binding DataContext.ImageDir, RelativeSource={RelativeSource AncestorType=TabControl}}" />
@@ -213,6 +216,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Style="{StaticResource ThemeBlk}" Text="音乐默认目录：" />
                         <TextBox
+                            Width="500"
                             attaches:MyAttachProperty.PlaceHolder="空目录"
                             IsReadOnly="True"
                             Text="{Binding DataContext.LastMusicDir, RelativeSource={RelativeSource AncestorType=TabControl}}" />
@@ -225,6 +229,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Style="{StaticResource ThemeBlk}" Text="视频默认目录：" />
                         <TextBox
+                            Width="500"
                             attaches:MyAttachProperty.PlaceHolder="空目录"
                             IsReadOnly="True"
                             Text="{Binding DataContext.LastVideoDir, RelativeSource={RelativeSource AncestorType=TabControl}}" />
@@ -237,7 +242,7 @@
             </TabItem>
             <TabItem Header="默认邮箱">
                 <StackPanel>
-                    <StackPanel Margin="2,0" Orientation="Horizontal">
+                    <StackPanel Margin="6,0" Orientation="Horizontal">
                         <TextBlock Style="{StaticResource ThemeBlk}" Text="邮箱:" />
                         <TextBox
                             Width="250"

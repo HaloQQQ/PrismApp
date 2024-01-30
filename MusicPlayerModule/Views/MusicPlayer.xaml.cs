@@ -22,7 +22,7 @@ namespace MusicPlayerModule.Views
 
         private MusicPlayerViewModel _musicPlayerViewModel;
 
-        public MusicPlayer(IEventAggregator eventAggregator,IConfigManager configManager)
+        public MusicPlayer(IEventAggregator eventAggregator, IConfigManager configManager)
         {
             InitializeComponent();
 
@@ -32,8 +32,13 @@ namespace MusicPlayerModule.Views
 
             this._lyricTime = new DispatcherTimer() { Interval = TimeSpan.FromMilliseconds(100) };
             this._lyricTime.Tick += (sender, e) =>
+                this.musicSlider.Value = this.mediaPlayer.Position.TotalMilliseconds;
+
+            this._eventAggregator.GetEvent<MusicProgressTimerIsEnableUpdatedEvent>().Subscribe(isTimerEnable => this._lyricTime.IsEnabled = isTimerEnable);
+            this._eventAggregator.GetEvent<ResetPlayerAndPlayMusicEvent>().Subscribe(() =>
             {
-                this.musicSlider.Value = this.mediaPlayer.Position.TotalMilliseconds; 
+                this.ResetMediaPlayer();
+                this.mediaPlayer.Play();
 
                 var mainWindow = Window.GetWindow(this);
                 if (_horizentalDesktopLyricWindow == null && mainWindow != null)
@@ -47,13 +52,6 @@ namespace MusicPlayerModule.Views
                     _verticalDesktopLyricWindow = new VerticalMusicLyricDesktopWindow(configManager);
                     mainWindow.Closing += (sender, e) => _verticalDesktopLyricWindow.Close();
                 }
-            };
-
-            this._eventAggregator.GetEvent<MusicProgreeTimerIsEnableUpdatedEvent>().Subscribe(isTimerEnable => this._lyricTime.IsEnabled = isTimerEnable);
-            this._eventAggregator.GetEvent<ResetPlayerAndPlayMusicEvent>().Subscribe(() =>
-            {
-                this.ResetMediaPlayer();
-                this.mediaPlayer.Play();
             });
             this._eventAggregator.GetEvent<ResetPlayerEvent>().Subscribe(() => this.ResetMediaPlayer());
 
@@ -63,6 +61,21 @@ namespace MusicPlayerModule.Views
             this._eventAggregator.GetEvent<ToggleLyricDesktopEvent>().Subscribe(() =>
             {
                 _musicPlayerViewModel.DesktopLyric.IsDesktopLyricShow = !_musicPlayerViewModel.DesktopLyric.IsDesktopLyricShow;
+            });
+
+            this._eventAggregator.GetEvent<IncreaseVolumeEvent>().Subscribe(() =>
+            {
+                if (_musicPlayerViewModel.CurrentMusic != null)
+                {
+                    this.IncreaseVolume();
+                }
+            });
+            this._eventAggregator.GetEvent<DecreaseVolumeEvent>().Subscribe(() =>
+            {
+                if (_musicPlayerViewModel.CurrentMusic != null)
+                {
+                    this.DecreaseVolume();
+                }
             });
         }
 
@@ -270,31 +283,41 @@ namespace MusicPlayerModule.Views
             this.QueryButton.IsChecked = false;
         }
 
+        private void IncreaseVolume()
+        {
+            var value = this.mediaPlayer.Volume + 0.05;
+
+            if (value > 1)
+            {
+                value = 1;
+            }
+
+            this.mediaPlayer.Volume = value;
+        }
+
+        private void DecreaseVolume()
+        {
+            var value = this.mediaPlayer.Volume - 0.05;
+
+            if (value < 0)
+            {
+                value = 0;
+            }
+
+            this.mediaPlayer.Volume = value;
+        }
+
         private void UserControl_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Command == MediaCommands.IncreaseVolume)
             {
-                var value = this.mediaPlayer.Volume + 0.05;
-
-                if (value > 1)
-                {
-                    value = 1;
-                }
-
-                this.mediaPlayer.Volume = value;
+                IncreaseVolume();
 
                 e.Handled = true;
             }
             else if (e.Command == MediaCommands.DecreaseVolume)
             {
-                var value = this.mediaPlayer.Volume - 0.05;
-
-                if (value < 0)
-                {
-                    value = 0;
-                }
-
-                this.mediaPlayer.Volume = value;
+                DecreaseVolume();
 
                 e.Handled = true;
             }

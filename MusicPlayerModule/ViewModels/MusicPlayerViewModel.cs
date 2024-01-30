@@ -65,7 +65,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (SetProperty<bool>(ref _running, value))
                 {
-                    this._eventAggregator.GetEvent<MusicProgreeTimerIsEnableUpdatedEvent>().Publish(value);
+                    this._eventAggregator.GetEvent<MusicProgressTimerIsEnableUpdatedEvent>().Publish(value);
                 }
             }
         }
@@ -457,6 +457,21 @@ namespace MusicPlayerModule.ViewModels
 
             eventAggregator.GetEvent<PrevMusicEvent>().Subscribe(() => this.PrevMusic(this.CurrentMusic));
             eventAggregator.GetEvent<NextMusicEvent>().Subscribe(() => this.NextMusic(this.CurrentMusic));
+
+            eventAggregator.GetEvent<AheadEvent>().Subscribe(() =>
+            {
+                if (this.CurrentMusic != null)
+                {
+                    this.CurrentMusic.FastForward();
+                }
+            });
+            eventAggregator.GetEvent<DelayEvent>().Subscribe(() =>
+            {
+                if (this.CurrentMusic != null)
+                {
+                    this.CurrentMusic.Rewind();
+                }
+            });
 
             eventAggregator.GetEvent<BatchAddToPlayingEvent>().Subscribe(coll => this.AddAllToPlaying(new BatchAddAndPlayModel(null, coll), false));
         }

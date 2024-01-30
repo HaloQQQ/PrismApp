@@ -170,39 +170,54 @@ namespace MyApp.Prisms
             base.OnInitialized();
 
             GlobalHotKeyManager hotKeyManager = null;
-            hotKeyManager = new GlobalHotKeyManager(App.Current.MainWindow.RegisterHotKeyManager(mid =>
-            {
-                foreach (var item in hotKeyManager)
-                {
-                    if (item.Code == mid)
-                    {
-                        if (item.Name == CustomConstants.GlobalHotKeysConst.Pause)
+            hotKeyManager = new GlobalHotKeyManager(
+                    App.Current.MainWindow.RegisterHotKeyManager(mid =>
                         {
-                            this.Container.Resolve<IEventAggregator>().GetEvent<MusicPlayerModule.MsgEvents.ToggeleCurrentMusicEvent>().Publish();
+                            foreach (var item in hotKeyManager)
+                            {
+                                if (item.Code == mid)
+                                {
+                                    switch (item.Name)
+                                    {
+                                        case CustomConstants.GlobalHotKeysConst.Pause:
+                                            this.Container.Resolve<IEventAggregator>().GetEvent<ToggeleCurrentMusicEvent>().Publish();
+                                            break;
+                                        case CustomConstants.GlobalHotKeysConst.Prev:
+                                            this.Container.Resolve<IEventAggregator>().GetEvent<PrevMusicEvent>().Publish();
+                                            break;
+                                        case CustomConstants.GlobalHotKeysConst.Next:
+                                            this.Container.Resolve<IEventAggregator>().GetEvent<NextMusicEvent>().Publish();
+                                            break;
+
+                                        case CustomConstants.GlobalHotKeysConst.Ahead:
+                                            this.Container.Resolve<IEventAggregator>().GetEvent<AheadEvent>().Publish();
+                                            break;
+                                        case CustomConstants.GlobalHotKeysConst.Delay:
+                                            this.Container.Resolve<IEventAggregator>().GetEvent<DelayEvent>().Publish();
+                                            break;
+
+                                        case CustomConstants.GlobalHotKeysConst.IncreaseVolume:
+                                            this.Container.Resolve<IEventAggregator>().GetEvent<IncreaseVolumeEvent>().Publish();
+                                            break;
+                                        case CustomConstants.GlobalHotKeysConst.DecreaseVolume:
+                                            this.Container.Resolve<IEventAggregator>().GetEvent<DecreaseVolumeEvent>().Publish();
+                                            break;
+
+                                        case CustomConstants.GlobalHotKeysConst.UpScreenBright:
+                                            this.Container.Resolve<IEventAggregator>().GetEvent<UpdateScreenBrightEvent>().Publish(5);
+                                            break;
+                                        case CustomConstants.GlobalHotKeysConst.DownScreenBright:
+                                            this.Container.Resolve<IEventAggregator>().GetEvent<UpdateScreenBrightEvent>().Publish(-5);
+                                            break;
+                                        case CustomConstants.GlobalHotKeysConst.MusicLyricDesktop:
+                                            this.Container.Resolve<IEventAggregator>().GetEvent<ToggleLyricDesktopEvent>().Publish();
+                                            break;
+                                    }
+                                }
+                            }
                         }
-                        else if (item.Name == CustomConstants.GlobalHotKeysConst.Prev)
-                        {
-                            this.Container.Resolve<IEventAggregator>().GetEvent<MusicPlayerModule.MsgEvents.PrevMusicEvent>().Publish();
-                        }
-                        else if (item.Name == CustomConstants.GlobalHotKeysConst.Next)
-                        {
-                            this.Container.Resolve<IEventAggregator>().GetEvent<MusicPlayerModule.MsgEvents.NextMusicEvent>().Publish();
-                        }
-                        else if (item.Name == CustomConstants.GlobalHotKeysConst.UpScreenBright)
-                        {
-                            this.Container.Resolve<IEventAggregator>().GetEvent<UpdateScreenBrightEvent>().Publish(5);
-                        }
-                        else if (item.Name == CustomConstants.GlobalHotKeysConst.DownScreenBright)
-                        {
-                            this.Container.Resolve<IEventAggregator>().GetEvent<UpdateScreenBrightEvent>().Publish(-5);
-                        }
-                        else if (item.Name == CustomConstants.GlobalHotKeysConst.MusicLyricDesktop)
-                        {
-                            this.Container.Resolve<IEventAggregator>().GetEvent<ToggleLyricDesktopEvent>().Publish();
-                        }
-                    }
-                }
-            }));
+                    )
+                );
 
             ContainerLocator.Current.RegisterSingleton<GlobalHotKeyManager>(() => hotKeyManager);
 
