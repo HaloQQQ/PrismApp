@@ -7,6 +7,7 @@
     Title="VerticalMusicLyricDesktopWindow"
     MinHeight="650"
     attaches:MyAttachProperty.CornerRadius="10"
+    attaches:MyAttachProperty.UseWindowCommand="False"
     prism:ViewModelLocator.AutoWireViewModel="True"
     Background="Transparent"
     Cursor="SizeAll"
