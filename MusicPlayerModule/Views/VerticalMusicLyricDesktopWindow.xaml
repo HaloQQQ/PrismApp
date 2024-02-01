@@ -66,13 +66,31 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Orientation="Vertical">
+                <ToggleButton IsChecked="{Binding DesktopLyric.IsSingleLine}">
+                    <ToggleButton.Style>
+                        <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="ToggleButton">
+                            <Setter Property="Content" Value="&#xe60b;" />
+                            <Setter Property="Foreground" Value="#EBEBEB" />
+                            <Setter Property="ToolTip" Value="单行" />
+                            <Setter Property="FontWeight" Value="Bold" />
+
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DesktopLyric.IsSingleLine}" Value="True">
+                                    <Setter Property="Content" Value="&#xe64c;" />
+                                    <Setter Property="ToolTip" Value="双行" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+
                 <ToggleButton IsChecked="{Binding DesktopLyric.IsVertical}">
                     <ToggleButton.Style>
                         <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="ToggleButton">
                             <Setter Property="Content" Value="&#xe65c;" />
-                            <Setter Property="FontSize" Value="14" />
                             <Setter Property="Foreground" Value="#EBEBEB" />
                             <Setter Property="ToolTip" Value="竖屏" />
+                            <Setter Property="FontWeight" Value="Bold" />
 
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding DesktopLyric.IsVertical}" Value="True">
@@ -148,8 +166,8 @@
                     <Button.Style>
                         <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="Button">
                             <Setter Property="Content" Value="&#xe624;" />
-                            <Setter Property="FontSize" Value="14" />
                             <Setter Property="Foreground" Value="#EBEBEB" />
+                            <Setter Property="FontWeight" Value="Bold" />
                         </Style>
                     </Button.Style>
                 </Button>
@@ -178,13 +196,22 @@
                 VerticalAlignment="Top"
                 Content="{Binding CurrentMusic.OneLine}"
                 ContentTemplate="{StaticResource VerticalDesktopLyric}"
-                MouseEnter="DesktopLyricPanel_Visible" />
+                MouseEnter="DesktopLyricPanel_Visible"
+                Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
             <ContentControl
                 VerticalAlignment="Bottom"
                 Content="{Binding CurrentMusic.AnotherLine}"
                 ContentTemplate="{StaticResource VerticalDesktopLyric}"
-                MouseEnter="DesktopLyricPanel_Visible" />
+                MouseEnter="DesktopLyricPanel_Visible"
+                Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
+
+            <ContentControl
+                VerticalAlignment="Center"
+                Content="{Binding CurrentMusic.CurrentLine}"
+                ContentTemplate="{StaticResource VerticalDesktopLyric}"
+                MouseEnter="DesktopLyricPanel_Visible"
+                Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
         </StackPanel>
     </Grid>
 </Window>

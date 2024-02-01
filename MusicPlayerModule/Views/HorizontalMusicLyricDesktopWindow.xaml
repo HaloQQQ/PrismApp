@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
     xmlns:prism="http://prismlibrary.com/"
-    Title="MusicLyricDesktopWindow"
+    Title="HorizontalMusicLyricDesktopWindow"
     MinWidth="900"
     attaches:MyAttachProperty.CornerRadius="10"
     attaches:MyAttachProperty.UseWindowCommand="False"
@@ -52,6 +52,23 @@
                     Grid.Column="1"
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
+                    <ToggleButton IsChecked="{Binding DesktopLyric.IsSingleLine}">
+                        <ToggleButton.Style>
+                            <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="ToggleButton">
+                                <Setter Property="Content" Value="&#xe60b;" />
+                                <Setter Property="Foreground" Value="#EBEBEB" />
+                                <Setter Property="ToolTip" Value="单行" />
+
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DesktopLyric.IsSingleLine}" Value="True">
+                                        <Setter Property="Content" Value="&#xe64c;" />
+                                        <Setter Property="ToolTip" Value="双行" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ToggleButton.Style>
+                    </ToggleButton>
+
                     <Button
                         Command="{Binding DelayCommand}"
                         Content="&#xe68e;"
@@ -116,8 +133,8 @@
                         <Button.Style>
                             <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="Button">
                                 <Setter Property="Content" Value="&#xe624;" />
-                                <Setter Property="FontSize" Value="14" />
                                 <Setter Property="Foreground" Value="#EBEBEB" />
+                                <Setter Property="FontWeight" Value="Bold" />
                             </Style>
                         </Button.Style>
                     </Button>
@@ -126,9 +143,10 @@
                         <ToggleButton.Style>
                             <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="ToggleButton">
                                 <Setter Property="Content" Value="&#xe65c;" />
-                                <Setter Property="FontSize" Value="14" />
                                 <Setter Property="Foreground" Value="#EBEBEB" />
                                 <Setter Property="ToolTip" Value="竖屏" />
+                                <Setter Property="FontWeight" Value="Bold" />
+
 
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding DesktopLyric.IsVertical}" Value="True">
@@ -159,13 +177,22 @@
                 HorizontalAlignment="Left"
                 Content="{Binding CurrentMusic.OneLine}"
                 ContentTemplate="{StaticResource HorizentalDesktopLyric}"
-                MouseEnter="DesktopLyricPanel_Visible" />
+                MouseEnter="DesktopLyricPanel_Visible"
+                Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
             <ContentControl
                 HorizontalAlignment="Right"
                 Content="{Binding CurrentMusic.AnotherLine}"
                 ContentTemplate="{StaticResource HorizentalDesktopLyric}"
-                MouseEnter="DesktopLyricPanel_Visible" />
+                MouseEnter="DesktopLyricPanel_Visible"
+                Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
+
+            <ContentControl
+                HorizontalAlignment="Center"
+                Content="{Binding CurrentMusic.CurrentLine}"
+                ContentTemplate="{StaticResource HorizentalDesktopLyric}"
+                MouseEnter="DesktopLyricPanel_Visible"
+                Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
         </StackPanel>
     </Grid>
 </Window>

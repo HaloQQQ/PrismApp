@@ -3,6 +3,7 @@ using MusicPlayerModule.Common;
 using MusicPlayerModule.Models;
 using MusicPlayerModule.Utils;
 using MusicPlayerModule.ViewModels.Base;
+using System.Windows.Shapes;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -151,6 +152,7 @@ namespace MusicPlayerModule.ViewModels
             }
 
             var currentLine = lines[currentIndex];
+            this.CurrentLine = currentLine;
 
             if (currentLine != this.OneLine && currentLine != this.AnotherLine)
             {
@@ -197,6 +199,14 @@ namespace MusicPlayerModule.ViewModels
             {
                 this.AnotherLine = line;
             }
+        }
+
+        private KRCLyricsLine _currentLine;
+
+        public KRCLyricsLine CurrentLine
+        {
+            get => this._currentLine;
+            set => SetProperty<KRCLyricsLine>(ref _currentLine, value);
         }
 
         private KRCLyricsLine _oneLine;

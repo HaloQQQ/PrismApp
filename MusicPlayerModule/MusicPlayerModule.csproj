@@ -10,6 +10,7 @@
   <ItemGroup>
     <None Remove="Resources\网络.png" />
     <None Remove="Resources\音符SVG-87.png" />
+    <None Remove="Views\VerticalMusicLyricDesktopWindow.xaml~RF8e96da7.TMP" />
   </ItemGroup>
 
   <ItemGroup>
