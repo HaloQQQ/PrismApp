@@ -80,7 +80,7 @@
                 FontSize="{Binding DataContext.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 Foreground="{Binding DataContext.CurrentLyricForeground, RelativeSource={RelativeSource AncestorType=Border}}"
                 Text="{Binding Words, FallbackValue=狗空音乐，就是歌多}"
-                TextTrimming="None"
+                TextTrimming="CharacterEllipsis"
                 TextWrapping="NoWrap">
                 <!--<TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -134,7 +134,7 @@
                 LineHeight="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                 LineStackingStrategy="BlockLineHeight"
                 Text="{Binding Words, FallbackValue=狗空音乐，就是歌多}"
-                TextTrimming="None"
+                TextTrimming="CharacterEllipsis"
                 TextWrapping="Wrap">
                 <!--<TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">

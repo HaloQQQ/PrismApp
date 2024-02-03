@@ -63,5 +63,15 @@ namespace MusicPlayerModule.Views
                 this.DragMove();
             }
         }
+
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+
+            if (sizeInfo.WidthChanged)
+            {
+                this.Left = (SystemParameters.WorkArea.Width - sizeInfo.NewSize.Width) / 2;
+            }
+        }
     }
 }

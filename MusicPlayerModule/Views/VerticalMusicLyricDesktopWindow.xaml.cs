@@ -20,8 +20,8 @@ namespace MusicPlayerModule.Views
 
             this.SetBinding(Window.VisibilityProperty, bindings);
 
-            this.MaxHeight = SystemParameters.PrimaryScreenHeight; 
-            
+            this.MaxHeight = SystemParameters.PrimaryScreenHeight;
+
             this._configManager = configManager;
             var pointStr = configManager.ReadConfigNode(new string[] { "Music", "Vertical_DesktopLyric_WindowLeftTop" });
             if (!pointStr.IsNullOrEmpty())
@@ -61,6 +61,16 @@ namespace MusicPlayerModule.Views
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 this.DragMove();
+            }
+        }
+
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            base.OnRenderSizeChanged(sizeInfo);
+
+            if (sizeInfo.HeightChanged)
+            {
+                this.Top = (SystemParameters.WorkArea.Height - sizeInfo.NewSize.Height) / 2;
             }
         }
     }
