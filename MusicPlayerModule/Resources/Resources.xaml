@@ -77,10 +77,11 @@
     <DataTemplate x:Key="HorizentalDesktopLyric">
         <Grid Margin="20,10" HorizontalAlignment="Center">
             <TextBlock
+                HorizontalAlignment="Left"
                 FontSize="{Binding DataContext.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 Foreground="{Binding DataContext.CurrentLyricForeground, RelativeSource={RelativeSource AncestorType=Border}}"
                 Text="{Binding Words, FallbackValue=狗空音乐，就是歌多}"
-                TextTrimming="CharacterEllipsis"
+                TextTrimming="None"
                 TextWrapping="NoWrap">
                 <!--<TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -129,12 +130,13 @@
         <Grid Margin="10,20">
             <TextBlock
                 Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
+                VerticalAlignment="Top"
                 FontSize="{Binding DataContext.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 Foreground="{Binding DataContext.CurrentLyricForeground, RelativeSource={RelativeSource AncestorType=Border}}"
                 LineHeight="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                 LineStackingStrategy="BlockLineHeight"
                 Text="{Binding Words, FallbackValue=狗空音乐，就是歌多}"
-                TextTrimming="CharacterEllipsis"
+                TextTrimming="None"
                 TextWrapping="Wrap">
                 <!--<TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -146,7 +148,6 @@
             <TextBlock
                 Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                 VerticalAlignment="Top"
-                ClipToBounds="True"
                 FontSize="{Binding DataContext.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 LineHeight="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                 LineStackingStrategy="BlockLineHeight"

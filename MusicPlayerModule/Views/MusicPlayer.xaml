@@ -380,7 +380,7 @@
                     <DataGrid
                         x:Name="DataGrid_ShowBySong"
                         Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay}"
-                        attaches:MyAttachProperty.DisplayRowNumber="True"
+                        attaches:MyAttachProperty.DisplayRowNumber="False"
                         HeadersVisibility="All"
                         ItemsSource="{Binding DisplayFavorites}"
                         Visibility="{Binding IsChecked, ElementName=RadioBtnShowBySong, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -402,6 +402,8 @@
                         <DataGrid.RowStyle>
                             <Style BasedOn="{StaticResource {x:Type DataGridRow}}" TargetType="DataGridRow">
                                 <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_Favorites_MouseDoubleClick" />
+
+                                <Setter Property="Header" Value="{Binding IndexString, Mode=OneWay}" />
                             </Style>
                         </DataGrid.RowStyle>
 

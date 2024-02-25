@@ -3,7 +3,6 @@ using MusicPlayerModule.Common;
 using MusicPlayerModule.Models;
 using MusicPlayerModule.Utils;
 using MusicPlayerModule.ViewModels.Base;
-using System.Windows.Shapes;
 
 namespace MusicPlayerModule.ViewModels
 {

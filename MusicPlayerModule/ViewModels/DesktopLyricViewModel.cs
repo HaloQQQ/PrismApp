@@ -1,8 +1,5 @@
 ﻿using IceTea.Atom.Contracts;
-using IceTea.Atom.Extensions;
 using Prism.Mvvm;
-using System.Windows;
-using System.Windows.Threading;
 
 namespace MusicPlayerModule.ViewModels
 {

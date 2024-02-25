@@ -347,6 +347,8 @@ namespace MusicPlayerModule.ViewModels
                 this.DisplayFavorites.RemoveAll(items => items.IsDeleting);
                 this.Favorites.RemoveAll(items => items.IsDeleting);
 
+                this.RefreshFavoriteIndex();
+
                 this.DistributeMusicViewModel.DeleteAllMarkedMusic();
 
                 this.CheckSelectAllStatus();
@@ -365,6 +367,8 @@ namespace MusicPlayerModule.ViewModels
 
                 this.DisplayFavorites.Remove(music);
                 this.Favorites.Remove(music);
+
+                this.RefreshFavoriteIndex();
 
                 this.DistributeMusicViewModel.DeleteSingleMusic(music);
 
@@ -572,6 +576,17 @@ namespace MusicPlayerModule.ViewModels
             this.DistributeMusicViewModel.CheckClassifySelectAllStatus();
         }
 
+        private void RefreshFavoriteIndex()
+        {
+            if (this.Favorites.Count == 0)
+            {
+                return;
+            }
+
+            var t = 1;
+            this.Favorites.ForEach(m => m.Index = t++);
+        }
+
         private void RefreshPlayingIndex()
         {
             var index = 1;
@@ -671,8 +686,6 @@ namespace MusicPlayerModule.ViewModels
 
             var taskList = new List<Task>();
 
-            var newMusicList = new List<FavoriteMusicViewModel>();
-
             var step = 40;
             for (int i = 0; i < filePathList.Count / step + 1; i++)
             {
@@ -700,6 +713,8 @@ namespace MusicPlayerModule.ViewModels
             }
 
             await Task.WhenAll(taskList);
+
+            this.RefreshFavoriteIndex();
         }
 
         #endregion
