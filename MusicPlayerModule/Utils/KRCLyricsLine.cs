@@ -18,6 +18,13 @@ namespace MusicPlayerModule.Utils
             set { SetProperty<bool>(ref _isPlayingLine, value); }
         }
 
+        private bool _isPlayed;
+
+        public bool IsPlayed
+        {
+            get => this._isPlayed;
+            set => SetProperty<bool>(ref _isPlayed, value);
+        }
 
         private List<KRCLyricsChar> _chars = new List<KRCLyricsChar>();
 

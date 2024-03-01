@@ -148,6 +148,8 @@ namespace MusicPlayerModule.ViewModels
                 {
                     lines[i].IsPlayingLine = false;
                 }
+
+                lines[i].IsPlayed = i < currentIndex;
             }
 
             var currentLine = lines[currentIndex];
@@ -241,9 +243,14 @@ namespace MusicPlayerModule.ViewModels
                 var lyric = this.Music.Lyric;
                 if (lyric != null)
                 {
-                    foreach (var item in lyric.Lines.Where(l => l.IsPlayingLine))
+                    foreach (var item in lyric.Lines)
                     {
-                        item.IsPlayingLine = false;
+                        item.IsPlayed = false;
+
+                        if (item.IsPlayingLine)
+                        {
+                            item.IsPlayingLine = false;
+                        }
                     }
                 }
             }

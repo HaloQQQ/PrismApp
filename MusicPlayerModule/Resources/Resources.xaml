@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
     xmlns:converter="http://IceTea.Wpf.Core.com/"
+    xmlns:myconverter="clr-namespace:MusicPlayerModule.Converters"
     xmlns:utils="clr-namespace:MusicPlayerModule.Utils">
 
     <VisualBrush x:Key="GradientOpacityMask">
@@ -68,6 +69,8 @@
     <converter:MultiConverter_Multiplication x:Key="MultiConverter_Multiplication" />
     <converter:MultiConverter_MultiplicationDivision x:Key="MultiConverter_MultiplicationDivision" />
 
+    <myconverter:DesktopLyricColorfulMultiConverter x:Key="DesktopLyricColorfulMultiConverter" />
+
     <converter:WindowMinToBoolConverter x:Key="WindowMinToBoolConverter" />
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -104,16 +107,20 @@
                     </LinearGradientBrush>
                 </TextBlock.Foreground>
                 <TextBlock.Width>
-                    <MultiBinding Converter="{StaticResource MultiConverter_Multiplication}">
+                    <MultiBinding Converter="{StaticResource DesktopLyricColorfulMultiConverter}">
+                        <Binding Mode="OneWay" Path="IsPlayed" />
+                        <Binding Mode="OneWay" Path="Chars.Count" />
+
+                        <Binding Mode="OneWay" Path="IsPlayingLine" />
                         <Binding
                             Mode="OneWay"
                             Path="DataContext.CurrentMusic.WordProgress"
                             RelativeSource="{RelativeSource AncestorType=Border}" />
+
                         <Binding
                             Mode="OneWay"
                             Path="FontSize"
                             RelativeSource="{RelativeSource Self}" />
-                        <Binding Mode="OneWay" Path="IsPlayingLine" />
                     </MultiBinding>
                 </TextBlock.Width>
                 <TextBlock.ToolTip>
@@ -161,16 +168,20 @@
                     </LinearGradientBrush>
                 </TextBlock.Foreground>
                 <TextBlock.Height>
-                    <MultiBinding Converter="{StaticResource MultiConverter_Multiplication}">
+                    <MultiBinding Converter="{StaticResource DesktopLyricColorfulMultiConverter}">
+                        <Binding Mode="OneWay" Path="IsPlayed" />
+                        <Binding Mode="OneWay" Path="Chars.Count" />
+
+                        <Binding Mode="OneWay" Path="IsPlayingLine" />
                         <Binding
                             Mode="OneWay"
                             Path="DataContext.CurrentMusic.WordProgress"
                             RelativeSource="{RelativeSource AncestorType=Border}" />
+
                         <Binding
                             Mode="OneWay"
                             Path="FontSize"
                             RelativeSource="{RelativeSource Self}" />
-                        <Binding Mode="OneWay" Path="IsPlayingLine" />
                     </MultiBinding>
                 </TextBlock.Height>
                 <TextBlock.ToolTip>
@@ -198,16 +209,20 @@
                 Text="{Binding Words}"
                 TextTrimming="None">
                 <TextBlock.Width>
-                    <MultiBinding Converter="{StaticResource MultiConverter_Multiplication}">
+                    <MultiBinding Converter="{StaticResource DesktopLyricColorfulMultiConverter}">
+                        <Binding Mode="OneWay" Path="IsPlayed" />
+                        <Binding Mode="OneWay" Path="Chars.Count" />
+
+                        <Binding Mode="OneWay" Path="IsPlayingLine" />
                         <Binding
                             Mode="OneWay"
                             Path="DataContext.CurrentMusic.WordProgress"
                             RelativeSource="{RelativeSource AncestorType=Border}" />
+
                         <Binding
                             Mode="OneWay"
                             Path="FontSize"
                             RelativeSource="{RelativeSource Self}" />
-                        <Binding Mode="OneWay" Path="IsPlayingLine" />
                     </MultiBinding>
                 </TextBlock.Width>
                 <TextBlock.ToolTip>
@@ -403,16 +418,16 @@
                                 TextWrapping="NoWrap">
                                 <TextBlock.Width>
                                     <MultiBinding Converter="{StaticResource MultiConverter_Multiplication}" FallbackValue="0">
+                                        <Binding Mode="OneWay" Path="IsPlayingLine" />
                                         <Binding
-                                            FallbackValue="0"
                                             Mode="OneWay"
                                             Path="DataContext.CurrentMusic.WordProgress"
                                             RelativeSource="{RelativeSource AncestorType=ListBox}" />
+
                                         <Binding
                                             Mode="OneWay"
                                             Path="FontSize"
                                             RelativeSource="{RelativeSource Self}" />
-                                        <Binding Mode="OneWay" Path="IsPlayingLine" />
                                     </MultiBinding>
                                 </TextBlock.Width>
                                 <TextBlock.ToolTip>
