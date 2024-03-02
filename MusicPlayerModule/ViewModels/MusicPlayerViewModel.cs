@@ -45,8 +45,16 @@ namespace MusicPlayerModule.ViewModels
         public SolidColorBrush CurrentLyricForeground
         {
             get => this._currentLyricForeground;
-            set => SetProperty<SolidColorBrush>(ref _currentLyricForeground, value);
+            set
+            {
+                if (SetProperty<SolidColorBrush>(ref _currentLyricForeground, value))
+                {
+                    RaisePropertyChanged(nameof(CurrentLyricForegroundColor));
+                }
+            }
         }
+
+        public Color CurrentLyricForegroundColor => this.CurrentLyricForeground.Color;
 
         private double _currentLyricFontSize;
 

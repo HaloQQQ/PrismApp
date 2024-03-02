@@ -85,14 +85,7 @@
                 Foreground="{Binding DataContext.CurrentLyricForeground, RelativeSource={RelativeSource AncestorType=Border}}"
                 Text="{Binding Words, FallbackValue=狗空音乐，就是歌多}"
                 TextTrimming="None"
-                TextWrapping="NoWrap">
-                <!--<TextBlock.Foreground>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0" Color="#005DA6" />
-                        <GradientStop Offset="1" Color="#03C7FA" />
-                    </LinearGradientBrush>
-                </TextBlock.Foreground>-->
-            </TextBlock>
+                TextWrapping="NoWrap" />
             <TextBlock
                 HorizontalAlignment="Left"
                 ClipToBounds="True"
@@ -103,7 +96,7 @@
                 <TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                         <GradientStop Offset="0.5" Color="#BEFAFD" />
-                        <GradientStop Offset="1" Color="#03C7FA" />
+                        <GradientStop Offset="1" Color="{Binding DataContext.CurrentLyricForegroundColor, RelativeSource={RelativeSource AncestorType=Border}}" />
                     </LinearGradientBrush>
                 </TextBlock.Foreground>
                 <TextBlock.Width>
@@ -144,14 +137,7 @@
                 LineStackingStrategy="BlockLineHeight"
                 Text="{Binding Words, FallbackValue=狗空音乐，就是歌多}"
                 TextTrimming="None"
-                TextWrapping="Wrap">
-                <!--<TextBlock.Foreground>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0" Color="#005DA6" />
-                        <GradientStop Offset="1" Color="#03C7FA" />
-                    </LinearGradientBrush>
-                </TextBlock.Foreground>-->
-            </TextBlock>
+                TextWrapping="Wrap" />
             <TextBlock
                 Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                 VerticalAlignment="Top"
@@ -163,8 +149,8 @@
                 TextWrapping="Wrap">
                 <TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0.5" Color="#BEFAFD" />
-                        <GradientStop Offset="1" Color="#03C7FA" />
+                        <GradientStop Offset="0.2" Color="#BEFAFD" />
+                        <GradientStop Offset="1" Color="{Binding DataContext.CurrentLyricForegroundColor, RelativeSource={RelativeSource AncestorType=Border}}" />
                     </LinearGradientBrush>
                 </TextBlock.Foreground>
                 <TextBlock.Height>
