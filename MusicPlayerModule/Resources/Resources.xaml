@@ -116,12 +116,6 @@
                             RelativeSource="{RelativeSource Self}" />
                     </MultiBinding>
                 </TextBlock.Width>
-                <TextBlock.ToolTip>
-                    <TextBlock>
-                        <TextBlock Text="{Binding LineStart.TotalSeconds}" />
-                        <TextBlock Text="{Binding LineDuring.TotalSeconds}" />
-                    </TextBlock>
-                </TextBlock.ToolTip>
             </TextBlock>
         </Grid>
     </DataTemplate>
@@ -170,12 +164,6 @@
                             RelativeSource="{RelativeSource Self}" />
                     </MultiBinding>
                 </TextBlock.Height>
-                <TextBlock.ToolTip>
-                    <TextBlock>
-                        <TextBlock Text="{Binding LineStart.TotalSeconds}" />
-                        <TextBlock Text="{Binding LineDuring.TotalSeconds}" />
-                    </TextBlock>
-                </TextBlock.ToolTip>
             </TextBlock>
         </Grid>
     </DataTemplate>
