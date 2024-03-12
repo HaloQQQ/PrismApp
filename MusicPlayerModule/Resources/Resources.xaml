@@ -142,7 +142,7 @@
                 TextTrimming="None"
                 TextWrapping="Wrap">
                 <TextBlock.Foreground>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                         <GradientStop Offset="0.2" Color="#BEFAFD" />
                         <GradientStop Offset="1" Color="{Binding DataContext.CurrentLyricForegroundColor, RelativeSource={RelativeSource AncestorType=Border}}" />
                     </LinearGradientBrush>

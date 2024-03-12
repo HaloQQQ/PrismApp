@@ -19,6 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PrismAppBasicLib\PrismAppBasicLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Resources\网络.png" />
     <Resource Include="Resources\音符SVG-87.png" />
   </ItemGroup>
