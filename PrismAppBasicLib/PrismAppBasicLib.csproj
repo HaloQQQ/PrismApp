@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IceTea.General" Version="1.0.10" />
-    <PackageReference Include="IceTea.Wpf.Core" Version="1.0.50" />
+    <PackageReference Include="IceTea.General" Version="1.0.11" />
+    <PackageReference Include="IceTea.Wpf.Core" Version="1.0.51" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
   </ItemGroup>
 
