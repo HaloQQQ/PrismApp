@@ -3,6 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
+    xmlns:converters="clr-namespace:MusicPlayerModule.Converters"
+    xmlns:customcontrols="http://IceTea.Wpf.Core.com/"
     xmlns:prism="http://prismlibrary.com/"
     Title="VerticalMusicLyricDesktopWindow"
     MinHeight="650"
@@ -11,6 +13,7 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     Background="Transparent"
     Cursor="SizeAll"
+    ResizeMode="NoResize"
     ShowInTaskbar="False"
     SizeToContent="WidthAndHeight"
     Style="{StaticResource WithoutTitleBar}"
@@ -20,6 +23,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/MusicPlayerModule;component/Resources/Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <customcontrols:BoolToHiddenVisibleConverter x:Key="BoolToHiddenVisibleConverter" />
 
             <Style TargetType="TextBlock">
                 <Setter Property="TextWrapping" Value="Wrap" />
@@ -190,27 +195,29 @@
             </StackPanel>
         </Grid>
 
-        <StackPanel Margin="30,0,0,0" Orientation="Horizontal">
-            <ContentControl
-                VerticalAlignment="Top"
-                Content="{Binding CurrentMusic.OneLine}"
-                ContentTemplate="{StaticResource VerticalDesktopLyric}"
-                MouseEnter="DesktopLyricPanel_Visible"
-                Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
+        <Grid Margin="30,0,0,0">
+            <StackPanel Orientation="Horizontal">
+                <ContentControl
+                    VerticalAlignment="Top"
+                    Content="{Binding CurrentMusic.OneLine}"
+                    ContentTemplate="{StaticResource VerticalDesktopLyric}"
+                    MouseEnter="DesktopLyricPanel_Visible"
+                    Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToHiddenVisibleConverter}}" />
 
-            <ContentControl
-                VerticalAlignment="Bottom"
-                Content="{Binding CurrentMusic.AnotherLine}"
-                ContentTemplate="{StaticResource VerticalDesktopLyric}"
-                MouseEnter="DesktopLyricPanel_Visible"
-                Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
+                <ContentControl
+                    VerticalAlignment="Bottom"
+                    Content="{Binding CurrentMusic.AnotherLine}"
+                    ContentTemplate="{StaticResource VerticalDesktopLyric}"
+                    MouseEnter="DesktopLyricPanel_Visible"
+                    Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToHiddenVisibleConverter}}" />
+            </StackPanel>
 
             <ContentControl
                 VerticalAlignment="Center"
                 Content="{Binding CurrentMusic.CurrentLine}"
                 ContentTemplate="{StaticResource VerticalDesktopLyric}"
                 MouseEnter="DesktopLyricPanel_Visible"
-                Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
-        </StackPanel>
+                Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </Grid>
     </Grid>
 </Window>

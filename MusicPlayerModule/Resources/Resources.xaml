@@ -78,7 +78,7 @@
     <converter:DigitDoubleConverter x:Key="DigitDoubleConverter" />
 
     <DataTemplate x:Key="HorizentalDesktopLyric">
-        <Grid Margin="20,10" HorizontalAlignment="Center">
+        <Grid Margin="20,5" HorizontalAlignment="Center">
             <TextBlock
                 HorizontalAlignment="Left"
                 FontSize="{Binding DataContext.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=1.5, FallbackValue=20}"
