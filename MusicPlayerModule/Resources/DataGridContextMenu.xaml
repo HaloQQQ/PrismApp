@@ -538,20 +538,23 @@
                                         <TextBlock Text="添加到" />
                                     </TextBlock>
                                 </MenuItem.Header>
-                                <MenuItem.ItemTemplate>
-                                    <DataTemplate>
-                                        <MenuItem Command="{Binding PlacementTarget.Tag.DistributeMusicViewModel.DistributeToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Header="{Binding DirName}">
-                                            <MenuItem.CommandParameter>
+                                <MenuItem.ItemContainerStyle>
+                                    <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
+                                        <Setter Property="Header" Value="{Binding DirName}" />
+                                        <Setter Property="Command" Value="{Binding PlacementTarget.Tag.DistributeMusicViewModel.DistributeToCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" />
+
+                                        <Setter Property="CommandParameter">
+                                            <Setter.Value>
                                                 <MultiBinding Converter="{StaticResource MusicDistributeMultiConverter}">
                                                     <MultiBinding.Bindings>
                                                         <Binding Path="PlacementTarget.DataContext.Music" RelativeSource="{RelativeSource AncestorType=ContextMenu}" />
                                                         <Binding Path="DirPath" />
                                                     </MultiBinding.Bindings>
                                                 </MultiBinding>
-                                            </MenuItem.CommandParameter>
-                                        </MenuItem>
+                                            </Setter.Value>
+                                        </Setter>
 
-                                        <DataTemplate.Triggers>
+                                        <Style.Triggers>
                                             <DataTrigger Value="True">
                                                 <DataTrigger.Binding>
                                                     <MultiBinding Converter="{StaticResource MultiConverter_IsStringEquals}">
@@ -563,9 +566,9 @@
                                                 </DataTrigger.Binding>
                                                 <Setter Property="IsEnabled" Value="False" />
                                             </DataTrigger>
-                                        </DataTemplate.Triggers>
-                                    </DataTemplate>
-                                </MenuItem.ItemTemplate>
+                                        </Style.Triggers>
+                                    </Style>
+                                </MenuItem.ItemContainerStyle>
                             </MenuItem>
                         </ContextMenu>
                     </Button.ContextMenu>
