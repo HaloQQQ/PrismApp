@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiAppNet8.MainPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:attachs="clr-namespace:MauiAppNet8.Contracts"
+    Title="欢迎页面"
+    attachs:AppAttachProperty.IsAutowire="True">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IconOverride="back.png" TextOverride="返回" />
+    </Shell.BackButtonBehavior>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ImportantInfo" TargetType="Label">
+                <Setter Property="FontSize" Value="30" />
+
+                <Setter Property="HorizontalOptions" Value="Center" />
+
+                <Setter Property="TextColor" Value="LightGreen" />
+            </Style>
+
+            <Style TargetType="Button">
+                <Setter Property="Margin" Value="10,5" />
+                <Setter Property="Padding" Value="30,5" />
+
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="Background" Value="SkyBlue" />
+                <Setter Property="FontSize" Value="30" />
+
+                <Style.Triggers>
+                    <Trigger TargetType="Button" Property="IsEnabled" Value="False">
+                        <Setter Property="Background" Value="Gray" />
+                        <Setter Property="TextColor" Value="Red" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30,0" Spacing="10">
+            <Image
+                HeightRequest="180"
+                HorizontalOptions="Center"
+                SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                Source="dotnet_bot.png" />
+
+            <Label Style="{StaticResource ImportantInfo}" Text="{Binding Ip}" />
+
+            <Label Style="{StaticResource ImportantInfo}" Text="{Binding CurrentTime}" />
+
+            <Label
+                FontSize="40"
+                HorizontalOptions="Center"
+                SemanticProperties.Description="显示点击次数"
+                SemanticProperties.HeadingLevel="Level3"
+                Text="{Binding Count}"
+                TextColor="{StaticResource Blue300Accent}" />
+
+            <HorizontalStackLayout HorizontalOptions="Center">
+                <Button
+                    Command="{Binding IncreaseCommand}"
+                    CommandParameter="{Binding}"
+                    Text="+" />
+
+                <Button
+                    Command="{Binding DecreaseCommand}"
+                    CommandParameter="{Binding}"
+                    Text="-" />
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

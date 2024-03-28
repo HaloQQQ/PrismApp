@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="MauiAppNet8.PhonewordTranslator"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:attachs="clr-namespace:MauiAppNet8.Contracts"
+    Title="电话号码转换器"
+    attachs:AppAttachProperty.IsAutowire="True">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IconOverride="back.png" TextOverride="返回" />
+    </Shell.BackButtonBehavior>
+
+    <ContentPage.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Cyan100Accent}}" />
+            <Setter Property="FontAttributes" Value="{OnPlatform Default={x:Static FontAttributes.None}, Android={x:Static FontAttributes.Bold}}" />
+        </Style>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <Label FontSize="20" Text="Enter a Phoneword" />
+        <Entry Text="{Binding Text}" TextTransform="Uppercase" />
+        <Button Command="{Binding TranslateCommand}" Text="Translate" />
+        <Button
+            Clicked="OnCall"
+            Command="{Binding CallCommand}"
+            Text="{Binding CallMessage}" />
+    </VerticalStackLayout>
+</ContentPage>
