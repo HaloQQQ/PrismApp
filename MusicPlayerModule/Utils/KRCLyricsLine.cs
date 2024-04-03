@@ -87,7 +87,7 @@ namespace MusicPlayerModule.Utils
 
                 var linecontent = m1.Groups[3].Value;
 
-                var chars = Regex.Matches(linecontent, @"<(\d+),(\d+),(\d+)>[\w\d\s]+");
+                var chars = Regex.Matches(linecontent, @"<(\d+),(\d+),(\d+)>[^<\r]+");
 
                 foreach (Match m in chars)
                 {
@@ -108,7 +108,7 @@ namespace MusicPlayerModule.Utils
         public override string ToString()
         {
             var line = string.Join(string.Empty, this.Chars.Select(item => item.Word));
-            this.IsEnglish = Regex.IsMatch(line, "^[a-zA-Z\\s]+$");
+            this.IsEnglish = Regex.IsMatch(line, "^[a-zA-Z]+.*[a-zA-Z]+$");
 
             return line;
         }

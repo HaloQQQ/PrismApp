@@ -44,7 +44,7 @@ namespace MusicPlayerModule.Utils
         public KRCLyricsWord(string krcCharString)
             : this()
         {
-            var chars = Regex.Match(krcCharString, @"<(\d+),(\d+),(\d+)>([^\r\n]+)");
+            var chars = Regex.Match(krcCharString, @"<(\d+),(\d+),(\d+)>(.+)");
 
             if (chars.Success)
             {
