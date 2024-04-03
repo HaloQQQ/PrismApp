@@ -8,6 +8,8 @@ namespace MusicPlayerModule.Common
     {
         internal static string LastMusicDir;
 
+        internal static string LyricDir;
+
         internal static string LastVideoDir;
 
         public static List<MediaPlayOrderModel> MediaPlayOrderList { get; private set; } = new()

@@ -53,7 +53,7 @@ namespace MusicPlayerModule.ViewModels
                     return 0;
                 }
 
-                KRCLyricsChar tempChar;
+                KRCLyricsWord tempChar;
                 for (int i = 0; i < line.Chars.Count; i++)
                 {
                     tempChar = line.Chars[i];
@@ -114,7 +114,7 @@ namespace MusicPlayerModule.ViewModels
                 return false;
             }
 
-            LoadLyricToMusicModel.LoadAsync(CustomStatics.LastMusicDir, this.Music);
+            LoadLyricToMusicModel.LoadLyricAsync(CustomStatics.LyricDir, this.Music);
 
             var lyric = this.Music.Lyric;
 

@@ -93,7 +93,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (SetProperty<PlayingMusicViewModel>(ref _currentMusic, value) && value != null)
                 {
-                    LoadLyricToMusicModel.LoadAsync(CustomStatics.LastMusicDir, _currentMusic.Music);
+                    LoadLyricToMusicModel.LoadLyricAsync(CustomStatics.LyricDir, _currentMusic.Music);
 
                     foreach (var item in this.Playing.Where(m => m.IsPlayingMusic))
                     {
@@ -615,7 +615,12 @@ namespace MusicPlayerModule.ViewModels
             {
                 await this.LoadMusicAsync(openFileDialog.FileNames);
 
-                this.TryRefreshLastMusicDir(openFileDialog.FileName.GetParentPath());
+                var musicDir = openFileDialog.FileName.GetParentPath();
+                this.TryRefreshLastMusicDir(musicDir);
+
+                var lyricDir = LoadLyricToMusicModel.TryGetLyricDir(musicDir);
+
+                _config.WriteConfigNode(lyricDir, new[] { "Music", nameof(CustomStatics.LyricDir) });
             }
         }
 
@@ -1027,6 +1032,8 @@ namespace MusicPlayerModule.ViewModels
             this.CurrentLyricFontSize = fontSize;
 
             CustomStatics.LastMusicDir = config.ReadConfigNode(new[] { baseNode, nameof(CustomStatics.LastMusicDir) });
+
+            CustomStatics.LyricDir = config.ReadConfigNode(new[] { baseNode, nameof(CustomStatics.LyricDir) });
 
             config.SetConfig += config =>
             {

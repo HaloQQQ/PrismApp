@@ -3,8 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
-    xmlns:converters="clr-namespace:MusicPlayerModule.Converters"
     xmlns:customcontrols="http://IceTea.Wpf.Core.com/"
+    xmlns:datatemplateselectors="clr-namespace:MusicPlayerModule.DataTemplateSelectors"
     xmlns:prism="http://prismlibrary.com/"
     Title="VerticalMusicLyricDesktopWindow"
     MinHeight="650"
@@ -29,6 +29,11 @@
             <Style TargetType="TextBlock">
                 <Setter Property="TextWrapping" Value="Wrap" />
             </Style>
+
+            <datatemplateselectors:VerticalLyricDataTemplateSelector
+                x:Key="LyricDataTemlateSelector"
+                VerticalDesktopLyricWithEnglish="{StaticResource VerticalDesktopLyricWithEnglish}"
+                VerticalDesktopLyricWithoutEnglish="{StaticResource VerticalDesktopLyricWithoutEnglish}" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -200,14 +205,14 @@
                 <ContentControl
                     VerticalAlignment="Top"
                     Content="{Binding CurrentMusic.OneLine}"
-                    ContentTemplate="{StaticResource VerticalDesktopLyric}"
+                    ContentTemplateSelector="{StaticResource LyricDataTemlateSelector}"
                     MouseEnter="DesktopLyricPanel_Visible"
                     Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToHiddenVisibleConverter}}" />
 
                 <ContentControl
                     VerticalAlignment="Bottom"
                     Content="{Binding CurrentMusic.AnotherLine}"
-                    ContentTemplate="{StaticResource VerticalDesktopLyric}"
+                    ContentTemplateSelector="{StaticResource LyricDataTemlateSelector}"
                     MouseEnter="DesktopLyricPanel_Visible"
                     Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToHiddenVisibleConverter}}" />
             </StackPanel>
@@ -215,7 +220,7 @@
             <ContentControl
                 VerticalAlignment="Center"
                 Content="{Binding CurrentMusic.CurrentLine}"
-                ContentTemplate="{StaticResource VerticalDesktopLyric}"
+                ContentTemplateSelector="{StaticResource LyricDataTemlateSelector}"
                 MouseEnter="DesktopLyricPanel_Visible"
                 Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BooleanToVisibilityConverter}}" />
         </Grid>

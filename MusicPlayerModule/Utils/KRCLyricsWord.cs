@@ -7,12 +7,12 @@ namespace MusicPlayerModule.Utils
     /// KRC文件行字符
     /// </summary>
     [DebuggerDisplay("{DebuggerDisplay}")]
-    public class KRCLyricsChar
+    public class KRCLyricsWord
     {
         /// <summary>
         /// 字符
         /// </summary>
-        public char Char { get; set; }
+        public string Word { get; private set; }
 
         /// <summary>
         /// 字符KRC字符串
@@ -21,7 +21,7 @@ namespace MusicPlayerModule.Utils
         {
             get
             {
-                return string.Format(@"<{0},{1},{2}>{3}", this.CharStart.TotalMilliseconds, this.CharDuring.TotalMilliseconds, 0, this.Char);
+                return string.Format(@"<{0},{1},{2}>{3}", this.CharStart.TotalMilliseconds, this.CharDuring.TotalMilliseconds, 0, this.Word);
             }
         }
 
@@ -35,16 +35,16 @@ namespace MusicPlayerModule.Utils
         /// </summary>
         public TimeSpan CharDuring { get; set; }
 
-        public KRCLyricsChar()
+        public KRCLyricsWord()
         {
             this.CharStart = TimeSpan.Zero;
             this.CharDuring = TimeSpan.Zero;
         }
 
-        public KRCLyricsChar(string krcCharString)
+        public KRCLyricsWord(string krcCharString)
             : this()
         {
-            var chars = Regex.Match(krcCharString, @"<(\d+),(\d+),(\d+)>(.?)");
+            var chars = Regex.Match(krcCharString, @"<(\d+),(\d+),(\d+)>([^\r\n]+)");
 
             if (chars.Success)
             {
@@ -60,11 +60,11 @@ namespace MusicPlayerModule.Utils
                     if (chars.Groups.Count >= 5)
                     {
                         var charchar = chars.Groups[4].Value;
-                        this.Char = char.Parse(charchar);
+                        this.Word = charchar;
                     }
                     else
                     {
-                        this.Char = char.Parse(" ");
+                        this.Word = string.Empty;
                     }
                 }
             }
@@ -74,7 +74,7 @@ namespace MusicPlayerModule.Utils
         {
             get
             {
-                return string.Format(@"{0:hh\:mm\:ss\.fff} {1:hh\:mm\:ss\.fff} {2}", this.CharStart, this.CharDuring, this.Char);
+                return string.Format(@"{0:hh\:mm\:ss\.fff} {1:hh\:mm\:ss\.fff} {2}", this.CharStart, this.CharDuring, this.Word);
             }
         }
     }

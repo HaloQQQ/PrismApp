@@ -18,6 +18,8 @@ namespace MusicPlayerModule.Utils
             set { SetProperty<bool>(ref _isPlayingLine, value); }
         }
 
+        public bool IsEnglish { get; private set; }
+
         private bool _isPlayed;
 
         public bool IsPlayed
@@ -26,7 +28,7 @@ namespace MusicPlayerModule.Utils
             set => SetProperty<bool>(ref _isPlayed, value);
         }
 
-        private List<KRCLyricsChar> _chars = new List<KRCLyricsChar>();
+        private List<KRCLyricsWord> _chars = new List<KRCLyricsWord>();
 
         /// <summary>
         /// 行字符串
@@ -62,7 +64,7 @@ namespace MusicPlayerModule.Utils
         /// 行内字符
         /// </summary>
 
-        public List<KRCLyricsChar> Chars => _chars;
+        public List<KRCLyricsWord> Chars => _chars;
 
         public KRCLyricsLine()
         {
@@ -85,11 +87,11 @@ namespace MusicPlayerModule.Utils
 
                 var linecontent = m1.Groups[3].Value;
 
-                var chars = Regex.Matches(linecontent, @"<(\d+),(\d+),(\d+)>(.?)");
+                var chars = Regex.Matches(linecontent, @"<(\d+),(\d+),(\d+)>[\w\d\s]+");
 
                 foreach (Match m in chars)
                 {
-                    this.Chars.Add(new KRCLyricsChar(m.Value));
+                    this.Chars.Add(new KRCLyricsWord(m.Value));
                 }
             }
         }
@@ -99,13 +101,16 @@ namespace MusicPlayerModule.Utils
             get
             {
                 return string.Format(@"{0:hh\:mm\:ss\.fff} {1:hh\:mm\:ss\.fff} {2}", this.LineStart, this.LineDuring,
-                    string.Join(",", this.Chars.Select(x => x.Char.ToString())));
+                    string.Join(",", this.Chars.Select(x => x.Word.ToString())));
             }
         }
 
         public override string ToString()
         {
-            return string.Join(string.Empty, this.Chars.Select(item => item.Char));
+            var line = string.Join(string.Empty, this.Chars.Select(item => item.Word));
+            this.IsEnglish = Regex.IsMatch(line, "^[a-zA-Z\\s]+$");
+
+            return line;
         }
 
         public string Words => this.ToString();

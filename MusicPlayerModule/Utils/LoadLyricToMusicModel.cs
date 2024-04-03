@@ -1,4 +1,5 @@
 ﻿using IceTea.Atom.Extensions;
+using MusicPlayerModule.Common;
 using MusicPlayerModule.Models;
 using System.Diagnostics;
 using System.IO;
@@ -7,33 +8,18 @@ namespace MusicPlayerModule.Utils
 {
     internal class LoadLyricToMusicModel
     {
-        public static async Task LoadAsync(string dir, IEnumerable<MusicModel> musics)
+        public static async Task LoadLyricAsync(string lyricDir, IEnumerable<MusicModel> musics)
         {
-            await Task.Run(() =>
+            await Parallel.ForEachAsync(musics, async (music, token) =>
             {
-                IEnumerable<string> paths = GetLyricPaths(dir,
-                    str => str.EndsWithIgnoreCase(".krc"));
-
-                string? filePath;
-
-                foreach (var item in musics.Where(m => m.Lyric == null))
+                if (!token.IsCancellationRequested)
                 {
-                    filePath = paths.FirstOrDefault(path => path.Contains(item.Name) &&
-                                                            (
-                                                                path.Contains(item.Singer)
-                                                                || path.Contains(item.Singer.Replace(" ", string.Empty))
-                                                            )
-                    );
-
-                    if (filePath != null)
-                    {
-                        item.Lyric = KRCLyrics.LoadFromFile(filePath);
-                    }
+                    await LoadLyricAsync(lyricDir, music);
                 }
-            }).ConfigureAwait(false);
+            });
         }
 
-        public static async Task LoadAsync(string dir, MusicModel music)
+        public static async Task LoadLyricAsync(string lyricDir, MusicModel music)
         {
             Debug.Assert(music != null, "音乐实体不存在");
 
@@ -46,8 +32,7 @@ namespace MusicPlayerModule.Utils
 
             await Task.Run(() =>
             {
-                IEnumerable<string> paths = GetLyricPaths(dir,
-                    str => str.EndsWithIgnoreCase(".krc"));
+                IEnumerable<string> paths = GetLyricPaths(lyricDir);
 
                 string? lyricFilePath = paths.FirstOrDefault(path => path.Contains(music.Name) &&
                                                                 (
@@ -65,6 +50,29 @@ namespace MusicPlayerModule.Utils
             .ContinueWith(task => music.IsLoadingLyric = false)
             .ConfigureAwait(false);
         }
+
+        public static string TryGetLyricDir(string originDir)
+        {
+            var lyricFiles = GetLyricPaths(originDir);
+
+            if (!lyricFiles.Any())
+            {
+                var rootPath = Path.GetPathRoot(originDir);
+                var currentPath = Path.GetFullPath(originDir);
+
+                if (rootPath.EqualsIgnoreCase(currentPath))
+                {
+                    return string.Empty;
+                }
+
+                return TryGetLyricDir(originDir.GetParentPath());
+            }
+
+            return CustomStatics.LyricDir = lyricFiles.First().GetParentPath();
+        }
+
+        public static IEnumerable<string> GetLyricPaths(string directoryPath)
+                => GetLyricPaths(directoryPath, str => str.EndsWithIgnoreCase(".krc"));
 
         public static IEnumerable<string> GetLyricPaths(string directoryPath, Predicate<string> predicate)
         {
