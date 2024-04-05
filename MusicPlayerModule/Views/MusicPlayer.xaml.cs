@@ -216,7 +216,7 @@ namespace MusicPlayerModule.Views
                 {
                     this.mediaPlayer.Position = line.LineStart;
                 }
-            }
+            }      
         }
 
         private void musicSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

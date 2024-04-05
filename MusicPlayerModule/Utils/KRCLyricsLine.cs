@@ -36,7 +36,7 @@ namespace MusicPlayerModule.Utils
         public string KRCLineString
         {
             get
-            {
+            {             
                 return string.Format(@"[{0},{1}]{2}", this.LineStart.TotalMilliseconds, this.LineDuring.TotalMilliseconds,
                     string.Join("", this.Chars.Select(x => x.KRCCharString)));
             }

@@ -1,8 +1,14 @@
 ﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Controls;
 
 namespace MusicPlayerModule.Converters
 {
+    /// <summary>
+    /// 桌面歌词
+    /// </summary>
     internal class DesktopLyricColorfulMultiConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
@@ -17,18 +23,33 @@ namespace MusicPlayerModule.Converters
                 return 0d;
             }
 
-            var fontSize = double.Parse(values[4].ToString());
+            var text = values[4] as TextBlock;
+                FormattedText formattedText = new FormattedText(
+                    text.Text,
+                    CultureInfo.InvariantCulture,
+                    FlowDirection.LeftToRight,
+                    new Typeface(text.FontFamily.ToString()),
+                          text.FontSize,
+                          Brushes.Black,
+                          VisualTreeHelper.GetDpi(text).PixelsPerDip
+                        );
+
+            var lineWidth = formattedText.WidthIncludingTrailingWhitespace;
 
             if (values[0] is bool isPlayed && isPlayed)
             {
-                var totalWords = int.Parse(values[1].ToString());
-                return totalWords * fontSize;
+                return lineWidth;
             }
 
             var isPlayingLine = bool.Parse(values[2].ToString());
+            if (!isPlayingLine)
+            {
+                return 0d;
+            }
+
             var wordProgress = double.Parse(values[3].ToString());
 
-            return wordProgress * fontSize * (isPlayingLine ? 1 : 0);
+            return wordProgress * lineWidth;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

@@ -59,8 +59,7 @@ namespace MusicPlayerModule.Utils
 
                     if (chars.Groups.Count >= 5)
                     {
-                        var charchar = chars.Groups[4].Value;
-                        this.Word = charchar;
+                        this.Word = chars.Groups[4].Value;
                     }
                     else
                     {

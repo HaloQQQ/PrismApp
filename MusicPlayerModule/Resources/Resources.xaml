@@ -66,8 +66,9 @@
         <PathGeometry Figures="M130,90 L140,100 L150,90 Z" />
     </GeometryGroup>
 
-    <converter:MultiConverter_Multiplication x:Key="MultiConverter_Multiplication" />
     <converter:MultiConverter_MultiplicationDivision x:Key="MultiConverter_MultiplicationDivision" />
+
+    <myconverter:LyricWidth_MultiConverter x:Key="LyricWidth_MultiConverter" />
 
     <myconverter:DesktopLyricColorfulMultiConverter x:Key="DesktopLyricColorfulMultiConverter" />
 
@@ -110,10 +111,7 @@
                             Path="DataContext.CurrentMusic.WordProgress"
                             RelativeSource="{RelativeSource AncestorType=Border}" />
 
-                        <Binding
-                            Mode="OneWay"
-                            Path="FontSize"
-                            RelativeSource="{RelativeSource Self}" />
+                        <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
                     </MultiBinding>
                 </TextBlock.Width>
             </TextBlock>
@@ -150,7 +148,7 @@
                 <TextBlock.Height>
                     <MultiBinding Converter="{StaticResource DesktopLyricColorfulMultiConverter}">
                         <Binding Mode="OneWay" Path="IsPlayed" />
-                        <Binding Mode="OneWay" Path="Chars.Count" />
+                        <Binding Mode="OneWay" Path="Words.Length" />
 
                         <Binding Mode="OneWay" Path="IsPlayingLine" />
                         <Binding
@@ -158,10 +156,7 @@
                             Path="DataContext.CurrentMusic.WordProgress"
                             RelativeSource="{RelativeSource AncestorType=Border}" />
 
-                        <Binding
-                            Mode="OneWay"
-                            Path="FontSize"
-                            RelativeSource="{RelativeSource Self}" />
+                        <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
                     </MultiBinding>
                 </TextBlock.Height>
             </TextBlock>
@@ -208,7 +203,7 @@
                 <TextBlock.Width>
                     <MultiBinding Converter="{StaticResource DesktopLyricColorfulMultiConverter}">
                         <Binding Mode="OneWay" Path="IsPlayed" />
-                        <Binding Mode="OneWay" Path="Chars.Count" />
+                        <Binding Mode="OneWay" Path="Words.Length" />
 
                         <Binding Mode="OneWay" Path="IsPlayingLine" />
                         <Binding
@@ -216,10 +211,7 @@
                             Path="DataContext.CurrentMusic.WordProgress"
                             RelativeSource="{RelativeSource AncestorType=Border}" />
 
-                        <Binding
-                            Mode="OneWay"
-                            Path="FontSize"
-                            RelativeSource="{RelativeSource Self}" />
+                        <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
                     </MultiBinding>
                 </TextBlock.Width>
             </TextBlock>
@@ -251,10 +243,7 @@
                             Path="DataContext.CurrentMusic.WordProgress"
                             RelativeSource="{RelativeSource AncestorType=Border}" />
 
-                        <Binding
-                            Mode="OneWay"
-                            Path="FontSize"
-                            RelativeSource="{RelativeSource Self}" />
+                        <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
                     </MultiBinding>
                 </TextBlock.Width>
                 <TextBlock.ToolTip>
@@ -402,21 +391,6 @@
     </Style>
 
     <Style
-        x:Key="LyricListBox"
-        BasedOn="{StaticResource {x:Type ListBox}}"
-        TargetType="ListBox">
-        <!--<Setter Property="Height" Value="370" />-->
-
-        <Setter Property="Focusable" Value="False" />
-
-        <!--<Style.Triggers>
-            <DataTrigger Value="Maximized" Binding="{Binding WindowState,RelativeSource={RelativeSource AncestorType=Window}}">
-                <Setter Property="Height" Value="510" />
-            </DataTrigger>
-        </Style.Triggers>-->
-    </Style>
-
-    <Style
         x:Key="LyricListBoxItem"
         BasedOn="{StaticResource ListBoxItem_General}"
         TargetType="ListBoxItem">
@@ -449,20 +423,19 @@
                             Text="{Binding Words}"
                             TextTrimming="None"
                             TextWrapping="NoWrap">
+
                             <TextBlock.Width>
-                                <MultiBinding Converter="{StaticResource MultiConverter_Multiplication}" FallbackValue="0">
+                                <MultiBinding Converter="{StaticResource LyricWidth_MultiConverter}" FallbackValue="0">
                                     <Binding Mode="OneWay" Path="IsPlayingLine" />
                                     <Binding
                                         Mode="OneWay"
                                         Path="DataContext.CurrentMusic.WordProgress"
                                         RelativeSource="{RelativeSource AncestorType=ListBox}" />
 
-                                    <Binding
-                                        Mode="OneWay"
-                                        Path="FontSize"
-                                        RelativeSource="{RelativeSource Self}" />
+                                    <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
                                 </MultiBinding>
                             </TextBlock.Width>
+
                             <TextBlock.ToolTip>
                                 <TextBlock>
                                     <TextBlock Text="{Binding LineStart.TotalSeconds}" />

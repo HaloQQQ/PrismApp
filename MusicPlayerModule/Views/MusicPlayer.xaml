@@ -17,7 +17,7 @@
                 <ResourceDictionary Source="/MusicPlayerModule;component/Resources/DataGridContextMenu.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <personalConverter:LyricHeightMultiConverter x:Key="LyricHeightMultiConverter" />
+            <personalConverter:MultiLyricHeightMultiConverter x:Key="MultiLyricHeightMultiConverter" />
             <personalConverter:KeyGestureDicConverter x:Key="KeyGestureDicConverter" />
             <personalConverter:ModifierKeyGestureDicConverter x:Key="ModifierKeyGestureDicConverter" />
 
@@ -1025,7 +1025,7 @@
 
                 <DockPanel VerticalAlignment="Top">
                     <DockPanel.Height>
-                        <MultiBinding Converter="{StaticResource LyricHeightMultiConverter}">
+                        <MultiBinding Converter="{StaticResource MultiLyricHeightMultiConverter}">
                             <MultiBinding.Bindings>
                                 <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=Border}" />
                                 <Binding ElementName="OperatrionPanel" Path="ActualHeight" />
@@ -1071,11 +1071,11 @@
                         x:Name="LyricList"
                         HorizontalAlignment="Center"
                         DockPanel.Dock="Top"
+                        Focusable="False"
                         ItemsSource="{Binding CurrentMusic.Music.Lyric.Lines}"
                         OpacityMask="{StaticResource GradientOpacityMask}"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         SelectionChanged="LyricList_SelectionChanged"
-                        Style="{StaticResource LyricListBox}"
                         Visibility="Visible">
                         <ListBox.ItemContainerStyle>
                             <Style BasedOn="{StaticResource LyricListBoxItem}" TargetType="ListBoxItem">

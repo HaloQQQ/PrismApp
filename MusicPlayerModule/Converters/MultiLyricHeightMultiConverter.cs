@@ -6,7 +6,7 @@ namespace MusicPlayerModule.Converters
     /// <summary>
     /// 歌词可见部分高度
     /// </summary>
-    internal class LyricHeightMultiConverter : IMultiValueConverter
+    internal class MultiLyricHeightMultiConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

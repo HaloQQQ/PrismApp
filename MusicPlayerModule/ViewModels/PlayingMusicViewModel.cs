@@ -43,30 +43,35 @@ namespace MusicPlayerModule.ViewModels
 
                 if (lyric == null)
                 {
-                    return 0;
+                    return 0d;
                 }
 
                 var line = lyric.Lines[this._currentLineIndex];
 
                 if (this._currentMills < line.LineStart.TotalMilliseconds)
                 {
-                    return 0;
+                    return 0d;
                 }
 
+                int charCount = 0;
                 KRCLyricsWord tempChar;
                 for (int i = 0; i < line.Chars.Count; i++)
                 {
                     tempChar = line.Chars[i];
-                    double value = this._currentMills - tempChar.CharStart.Add(line.LineStart).Add(tempChar.CharDuring)
-        .TotalMilliseconds;
+                    double value = this._currentMills - tempChar.CharStart.Add(line.LineStart).Add(tempChar.CharDuring).TotalMilliseconds;
+
                     if (value <= 0)
                     {
-                        return i + (tempChar.CharDuring.TotalMilliseconds + value) /
-                            tempChar.CharDuring.TotalMilliseconds;
+                        return (
+                                    charCount + (tempChar.CharDuring.TotalMilliseconds + value) /
+                                    tempChar.CharDuring.TotalMilliseconds * tempChar.Word.Length
+                                ) / line.Words.Length;
                     }
+
+                    charCount += tempChar.Word.Length;
                 }
 
-                return line.Chars.Count;
+                return 1d;
             }
         }
 
