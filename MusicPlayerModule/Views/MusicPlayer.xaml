@@ -7,6 +7,7 @@
     xmlns:commonModel="clr-namespace:MusicPlayerModule.Models.Common"
     xmlns:personalConverter="clr-namespace:MusicPlayerModule.Converters"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:viewmodels="clr-namespace:MusicPlayerModule.ViewModels"
     xmlns:waitLoads="http://IceTea.Wpf.Core.com/"
     prism:ViewModelLocator.AutoWireViewModel="True"
     FocusVisualStyle="{x:Null}">
@@ -20,6 +21,19 @@
             <personalConverter:MultiLyricHeightMultiConverter x:Key="MultiLyricHeightMultiConverter" />
             <personalConverter:KeyGestureDicConverter x:Key="KeyGestureDicConverter" />
             <personalConverter:ModifierKeyGestureDicConverter x:Key="ModifierKeyGestureDicConverter" />
+
+            <DataTemplate x:Key="LinearGradientModel" DataType="{x:Type viewmodels:LinearGradientModel}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Name}" />
+                    <Slider
+                        Width="100"
+                        MinHeight="3"
+                        Maximum="255"
+                        Style="{StaticResource Slider_ObviousThumb}"
+                        TickFrequency="1"
+                        Value="{Binding Value}" />
+                </StackPanel>
+            </DataTemplate>
 
             <Style x:Key="MusicImage" TargetType="Image">
                 <Setter Property="Width" Value="60" />
@@ -938,7 +952,7 @@
                         PlacementTarget="{Binding ElementName=LyricSettingButton}">
                         <Border
                             Width="300"
-                            Height="200"
+                            Height="220"
                             Padding="10"
                             Background="{StaticResource PopupBackground}"
                             CornerRadius="10">
@@ -959,7 +973,7 @@
                                             Minimum="15"
                                             Style="{StaticResource Slider_ObviousThumb}"
                                             TickFrequency="5"
-                                            Value="{Binding CurrentLyricFontSize}" />
+                                            Value="{Binding DesktopLyric.CurrentLyricFontSize}" />
 
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock
@@ -989,8 +1003,8 @@
                                     <ListBox
                                         x:Name="LyricForegroundListBox"
                                         Margin="5,0"
-                                        ItemsSource="{Binding DefaultLyricForegrounds}"
-                                        SelectedItem="{Binding CurrentLyricForeground}">
+                                        ItemsSource="{Binding DesktopLyric.DefaultLyricForegrounds}"
+                                        SelectedItem="{Binding DesktopLyric.CurrentLyricForeground}">
                                         <ListBox.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel MaxWidth="220" />
@@ -1018,6 +1032,33 @@
                                         </ListBox.ItemContainerStyle>
                                     </ListBox>
                                 </StackPanel>
+
+                                <StackPanel Margin="0,10" Orientation="Horizontal">
+                                    <TextBlock
+                                        FontSize="20"
+                                        Style="{StaticResource ThemeBlk}"
+                                        Text="渐变:" />
+
+                                    <ListBox
+                                        ItemContainerStyle="{StaticResource ListBoxItem_General}"
+                                        ItemTemplate="{StaticResource LinearGradientModel}"
+                                        ItemsSource="{Binding DesktopLyric.Colors}" />
+
+                                    <Border
+                                        Width="40"
+                                        Height="40"
+                                        Background="{Binding DesktopLyric.LinearGradientLyricColorBrush}"
+                                        CornerRadius="20" />
+
+                                    <Button
+                                        MinWidth="0"
+                                        Padding="7,5"
+                                        attaches:MyAttachProperty.CornerRadius="10"
+                                        Command="{Binding DesktopLyric.ResetColorCommand}"
+                                        Content="重置"
+                                        FontSize="14"
+                                        Style="{StaticResource TransparentButtonBase}" />
+                                </StackPanel>
                             </StackPanel>
                         </Border>
                     </Popup>
@@ -1038,14 +1079,14 @@
                         DockPanel.Dock="Top"
                         FontSize="21"
                         FontWeight="Bold"
-                        Foreground="{Binding CurrentLyricForeground, FallbackValue=SkyBlue}"
+                        Foreground="{Binding DesktopLyric.CurrentLyricForeground, FallbackValue=SkyBlue}"
                         Text="{Binding CurrentMusic.Music.Name}" />
 
                     <TextBlock
                         Margin="0,10"
                         HorizontalAlignment="Center"
                         DockPanel.Dock="Top"
-                        Foreground="{Binding CurrentLyricForeground, FallbackValue=SkyBlue}"
+                        Foreground="{Binding DesktopLyric.CurrentLyricForeground, FallbackValue=SkyBlue}"
                         Text="{Binding CurrentMusic.Music.Singer}" />
 
                     <StackPanel

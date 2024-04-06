@@ -13,6 +13,11 @@ namespace MusicPlayerModule.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
+            if (values[0] is not bool || values[1] is not double || values[2] is not TextBlock)
+            {
+                return 0d;
+            }
+
             bool isPlayingLine = bool.Parse(values[0].ToString());
             if (!isPlayingLine)
             {

@@ -522,7 +522,7 @@ namespace MusicPlayerModule.Views
                 foreach (var item in this.LyricForegroundListBox.Items)
                 {
                     selectedIndex++;
-                    if (item.ToString() == viewModel.CurrentLyricForeground.ToString())
+                    if (item.ToString() == viewModel.DesktopLyric.CurrentLyricForeground.ToString())
                     {
                         LyricForegroundListBox.SelectedIndex = selectedIndex;
                         return;

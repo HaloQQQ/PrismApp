@@ -1,19 +1,16 @@
 ﻿using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
-using System.Windows.Media;
-using System.Windows.Controls;
 
 namespace MusicPlayerModule.Converters
 {
     /// <summary>
-    /// 桌面歌词
+    /// 非英文垂直桌面歌词
     /// </summary>
-    internal class DesktopLyricColorfulMultiConverter : IMultiValueConverter
+    internal class NoEnglishDesktopLyricColorfulMultiConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values.Length != 4)
+            if (values.Length != 5)
             {
                 return 0d;
             }
@@ -23,22 +20,14 @@ namespace MusicPlayerModule.Converters
                 return 0d;
             }
 
-            var text = values[3] as TextBlock;
-                FormattedText formattedText = new FormattedText(
-                    text.Text,
-                    CultureInfo.InvariantCulture,
-                    FlowDirection.LeftToRight,
-                    new Typeface(text.FontFamily.ToString()),
-                          text.FontSize,
-                          Brushes.Black,
-                          VisualTreeHelper.GetDpi(text).PixelsPerDip
-                        );
+            var wordsLength = int.Parse(values[3].ToString());
+            var fontSize = double.Parse(values[4].ToString());
 
-            var lineWidth = formattedText.WidthIncludingTrailingWhitespace;
+            var wordsHeight = wordsLength * fontSize;
 
             if (values[0] is bool isPlayed && isPlayed)
             {
-                return lineWidth;
+                return wordsHeight;
             }
 
             var isPlayingLine = bool.Parse(values[1].ToString());
@@ -49,7 +38,7 @@ namespace MusicPlayerModule.Converters
 
             var wordProgress = double.Parse(values[2].ToString());
 
-            return wordProgress * lineWidth;
+            return wordProgress * wordsHeight;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

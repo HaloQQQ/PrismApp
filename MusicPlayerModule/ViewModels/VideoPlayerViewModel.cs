@@ -78,7 +78,7 @@ namespace MusicPlayerModule.ViewModels
                             if (int.TryParse(
                                     this._config.ReadConfigNode(new[]
                                     {
-                                        "Video", "VideoABPoints", _currentVideo.Video.Name,
+                                        CustomStatics.VIDEO, CustomStatics.VideoABPoints, _currentVideo.Video.Name,
                                         nameof(_currentVideo.PointAMills)
                                     }), out int mills))
                             {
@@ -89,7 +89,7 @@ namespace MusicPlayerModule.ViewModels
                             if (int.TryParse(
                                     this._config.ReadConfigNode(new[]
                                     {
-                                        "Video", "VideoABPoints", _currentVideo.Video.Name,
+                                        CustomStatics.VIDEO, CustomStatics.VideoABPoints, _currentVideo.Video.Name,
                                         nameof(_currentVideo.PointBMills)
                                     }), out mills))
                             {
@@ -349,7 +349,7 @@ namespace MusicPlayerModule.ViewModels
 
             if (!dir.EqualsIgnoreCase(CustomStatics.LastVideoDir))
             {
-                _config.WriteConfigNode(dir, new[] { "Video", nameof(CustomStatics.LastVideoDir) });
+                _config.WriteConfigNode(dir, CustomStatics.LastVideoDir_ConfigKey);
 
                 CustomStatics.LastVideoDir = dir;
             }
@@ -439,12 +439,9 @@ namespace MusicPlayerModule.ViewModels
 
         private void LoadConfig(IConfigManager config)
         {
-            var baseNode = "Video";
-            var videoPlayOrder = "VideoPlayOrder";
-            var videoStretch = "VideoStretch";
-            var videoABPoints = "VideoABPoints";
+            
 
-            var playOrder = config.ReadConfigNode(new[] { baseNode, videoPlayOrder });
+            var playOrder = config.ReadConfigNode(CustomStatics.VideoPlayOrder_ConfigKey);
             if (!string.IsNullOrEmpty(playOrder))
             {
                 this.CurrentPlayOrder =
@@ -452,29 +449,29 @@ namespace MusicPlayerModule.ViewModels
                     CustomStatics.MediaPlayOrderList.First();
             }
 
-            var stretch = config.ReadConfigNode(new[] { baseNode, videoStretch });
+            var stretch = config.ReadConfigNode(CustomStatics.VideoStretch_ConfigKey);
             if (!string.IsNullOrEmpty(stretch) && Enum.TryParse<Stretch>(stretch, true, out Stretch result))
             {
                 this.Stretch = result;
             }
 
-            CustomStatics.LastVideoDir = config.ReadConfigNode(new[] { baseNode, nameof(CustomStatics.LastVideoDir) });
+            CustomStatics.LastVideoDir = config.ReadConfigNode(CustomStatics.LastVideoDir_ConfigKey);
 
             config.SetConfig += config =>
             {
-                config.WriteConfigNode(this.CurrentPlayOrder.Description, new[] { baseNode, videoPlayOrder });
-                config.WriteConfigNode(this.Stretch, new[] { baseNode, videoStretch });
+                config.WriteConfigNode(this.CurrentPlayOrder.Description, CustomStatics.VideoPlayOrder_ConfigKey);
+                config.WriteConfigNode(this.Stretch, CustomStatics.VideoStretch_ConfigKey);
             };
 
             config.PostSetConfig += config =>
             {
                 foreach (var item in this.DisplayPlaying)
                 {
-                    config.WriteConfigNode(item.Video.Name, new[] { baseNode, videoABPoints, item.Video.Name });
+                    config.WriteConfigNode(item.Video.Name, new[] { CustomStatics.VIDEO, CustomStatics.VideoABPoints, item.Video.Name });
                     config.WriteConfigNode(item.PointAMills,
-                        new[] { baseNode, videoABPoints, item.Video.Name, nameof(item.PointAMills) });
+                        new[] { CustomStatics.VIDEO, CustomStatics.VideoABPoints, item.Video.Name, nameof(item.PointAMills) });
                     config.WriteConfigNode(item.PointBMills,
-                        new[] { baseNode, videoABPoints, item.Video.Name, nameof(item.PointBMills) });
+                        new[] { CustomStatics.VIDEO, CustomStatics.VideoABPoints, item.Video.Name, nameof(item.PointBMills) });
                 }
             };
         }

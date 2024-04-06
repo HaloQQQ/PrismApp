@@ -1,5 +1,6 @@
 ﻿using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
+using MusicPlayerModule.Common;
 using MusicPlayerModule.Converters;
 using System.Windows;
 using System.Windows.Data;
@@ -23,7 +24,7 @@ namespace MusicPlayerModule.Views
             this.MaxWidth = SystemParameters.PrimaryScreenWidth;
 
             this._configManager = configManager;
-            var pointStr = configManager.ReadConfigNode(new string[] { "Music", "Horizontal_DesktopLyric_WindowLeftTop" });
+            var pointStr = configManager.ReadConfigNode(CustomStatics.Horizontal_DesktopLyric_WindowLeftTop_ConfigKey);
             if (!pointStr.IsNullOrEmpty())
             {
                 var arr = pointStr.Split(",");
@@ -37,7 +38,7 @@ namespace MusicPlayerModule.Views
         {
             base.OnClosed(e);
 
-            _configManager.WriteConfigNode(string.Join(",", new double[] { this.Left, this.Top }), new string[] { "Music", "Horizontal_DesktopLyric_WindowLeftTop" });
+            _configManager.WriteConfigNode(string.Join(",", new double[] { this.Left, this.Top }), CustomStatics.Horizontal_DesktopLyric_WindowLeftTop_ConfigKey);
         }
 
         private void DesktopLyricPanel_Visible(object sender, MouseEventArgs e)

@@ -36,7 +36,7 @@ namespace MusicPlayerModule.Utils
         public string KRCLineString
         {
             get
-            {             
+            {
                 return string.Format(@"[{0},{1}]{2}", this.LineStart.TotalMilliseconds, this.LineDuring.TotalMilliseconds,
                     string.Join("", this.Chars.Select(x => x.KRCCharString)));
             }
@@ -110,10 +110,14 @@ namespace MusicPlayerModule.Utils
             var line = string.Join(string.Empty, this.Chars.Select(item => item.Word));
             this.IsEnglish = Regex.IsMatch(line, "^[a-zA-Z]+.*[a-zA-Z]+$");
 
-            return line;
+            return this.IsEnglish ? line : line.Replace(' ', '\u3000');
         }
+        private string _words;
+        public string Words => _words ??= this.ToString();
 
-        public string Words => this.ToString();
+        private string _verticalWords;
+        public string VerticalWords =>
+            _verticalWords ??= string.Join(string.Empty, this.Chars.Select(item => item.Word)).Replace(' ', '\u00a0');
 
         public void Dispose()
         {

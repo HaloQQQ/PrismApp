@@ -18,7 +18,6 @@ using IceTea.Wpf.Core.Utils;
 using IceTea.Wpf.Core.Contracts.MediaInfo;
 using IceTea.Atom.Contracts;
 using IceTea.General.Extensions;
-using System.Windows.Media;
 using PrismAppBasicLib.MsgEvents;
 using IceTea.Atom.GeneralModels;
 
@@ -26,44 +25,6 @@ namespace MusicPlayerModule.ViewModels
 {
     internal class MusicPlayerViewModel : BindableBase, IDisposable
     {
-        public IEnumerable<SolidColorBrush> DefaultLyricForegrounds => new List<SolidColorBrush>()
-        {
-            "#FD6C6C".GetBrushFromString(),
-            "#F2910D".GetBrushFromString(),
-            "#FFAF00".GetBrushFromString(),
-            "#C0DF4E".GetBrushFromString(),
-            "#51DAC9".GetBrushFromString(),
-            "#4DB0FF".GetBrushFromString(),
-            "#A587F3".GetBrushFromString(),
-            "#FF8DBB".GetBrushFromString(),
-            "#8C8796".GetBrushFromString(),
-            "#00FF7F".GetBrushFromString()
-        };
-
-        private SolidColorBrush _currentLyricForeground;
-
-        public SolidColorBrush CurrentLyricForeground
-        {
-            get => this._currentLyricForeground;
-            set
-            {
-                if (SetProperty<SolidColorBrush>(ref _currentLyricForeground, value))
-                {
-                    RaisePropertyChanged(nameof(CurrentLyricForegroundColor));
-                }
-            }
-        }
-
-        public Color CurrentLyricForegroundColor => this.CurrentLyricForeground.Color;
-
-        private double _currentLyricFontSize;
-
-        public double CurrentLyricFontSize
-        {
-            get => this._currentLyricFontSize;
-            set => SetProperty<double>(ref _currentLyricFontSize, value);
-        }
-
         public DesktopLyricViewModel DesktopLyric { get; }
 
         public bool Running
@@ -620,7 +581,7 @@ namespace MusicPlayerModule.ViewModels
 
                 var lyricDir = LoadLyricToMusicModel.TryGetLyricDir(musicDir);
 
-                _config.WriteConfigNode(lyricDir, new[] { "Music", nameof(CustomStatics.LyricDir) });
+                _config.WriteConfigNode(lyricDir, CustomStatics.LyricDir_ConfigKey);
             }
         }
 
@@ -643,7 +604,7 @@ namespace MusicPlayerModule.ViewModels
 
             if (!dir.EqualsIgnoreCase(CustomStatics.LastMusicDir))
             {
-                _config.WriteConfigNode(dir, new[] { "Music", nameof(CustomStatics.LastMusicDir) });
+                _config.WriteConfigNode(dir, CustomStatics.LastMusicDir_ConfigKey);
 
                 CustomStatics.LastMusicDir = dir;
             }
@@ -1004,13 +965,7 @@ namespace MusicPlayerModule.ViewModels
 
         private void LoadConfig(IConfigManager config)
         {
-            var baseNode = "Music";
-            var musicKey = "MusicPlayOrder";
-
-            var currentLyricForegroundKey = "CurrentLyricForeground";
-            var currentLyricFontSizeKey = "CurrentLyricFontSize";
-
-            var musicPlayOrder = config.ReadConfigNode(new[] { baseNode, musicKey });
+            var musicPlayOrder = config.ReadConfigNode(CustomStatics.MusicPlayOrder_ConfigKey);
 
             if (!musicPlayOrder.IsNullOrBlank())
             {
@@ -1019,29 +974,13 @@ namespace MusicPlayerModule.ViewModels
                     CustomStatics.MediaPlayOrderList.First();
             }
 
-            var currentLyricForeground = config.ReadConfigNode(new[] { baseNode, currentLyricForegroundKey });
-            this.CurrentLyricForeground = this.DefaultLyricForegrounds.FirstOrDefault(f => f.Color.ToString() == currentLyricForeground) ??
-                this.DefaultLyricForegrounds.First();
+            CustomStatics.LastMusicDir = config.ReadConfigNode(CustomStatics.LastMusicDir_ConfigKey);
 
-            var currentLyricFontSize = config.ReadConfigNode(new[] { baseNode, currentLyricFontSizeKey });
-            double fontSize = 20;
-            if (!currentLyricFontSize.IsNullOrBlank())
-            {
-                double.TryParse(currentLyricFontSize, out fontSize);
-            }
-            this.CurrentLyricFontSize = fontSize;
-
-            CustomStatics.LastMusicDir = config.ReadConfigNode(new[] { baseNode, nameof(CustomStatics.LastMusicDir) });
-
-            CustomStatics.LyricDir = config.ReadConfigNode(new[] { baseNode, nameof(CustomStatics.LyricDir) });
+            CustomStatics.LyricDir = config.ReadConfigNode(CustomStatics.LyricDir_ConfigKey);
 
             config.SetConfig += config =>
             {
-                config.WriteConfigNode(this.CurrentPlayOrder.Description, new[] { baseNode, musicKey });
-
-                config.WriteConfigNode(this.CurrentLyricForeground.ToString(), new[] { baseNode, currentLyricForegroundKey });
-
-                config.WriteConfigNode(this.CurrentLyricFontSize, new[] { baseNode, currentLyricFontSizeKey });
+                config.WriteConfigNode(this.CurrentPlayOrder.Description, CustomStatics.MusicPlayOrder_ConfigKey);
             };
         }
 

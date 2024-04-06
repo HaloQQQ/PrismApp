@@ -41,6 +41,7 @@ namespace MyApp.Prisms.ViewModels
             this.UserContext = userContext;
             this.Settings = settings;
             this._imageDisplayViewModel = imageDisplayViewModel;
+            this.AppHotKeyManager = appHotKeyManager;
 
             var bitmap = new QRCoderCreator().GenerateQRCodeImage(new QRModel("Hello3Q", Color.GreenYellow, Color.White, 20));
 
@@ -51,7 +52,7 @@ namespace MyApp.Prisms.ViewModels
             eventAggregator.GetEvent<DialogMessageEvent>().Subscribe(item => this.DialogMessage = item);
 
             this.LoadConfig(config);
-            this.InitHotkeys(config, appHotKeyManager);
+            this.InitHotkeys(config);
 
             this.SubscribeCustomCommandEvent();
 
@@ -59,6 +60,8 @@ namespace MyApp.Prisms.ViewModels
 
             this.InitBackgroundSwitch(eventAggregator);
         }
+
+        public IAppHotKeyManager AppHotKeyManager { get; }
 
         public ICommand SwitchThemeCommand { get; private set; }
 
@@ -183,7 +186,7 @@ namespace MyApp.Prisms.ViewModels
             set => SetProperty<double>(ref _ramRate, value);
         }
 
-        private string _title;
+        private string _title = string.Empty;
         public string Title { get => this._title; set => SetProperty<string>(ref this._title, value); }
 
         private string _currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -265,9 +268,9 @@ namespace MyApp.Prisms.ViewModels
         #region 窗口标题栏快捷键
         public Dictionary<string, AppHotKeyModel> WindowKeyBindingMap { get; private set; }
 
-        private void InitHotkeys(IConfigManager config, IAppHotKeyManager appHotKeyManager)
+        private void InitHotkeys(IConfigManager config)
         {
-            this.WindowKeyBindingMap = HotKeyUtils.Provide(config, appHotKeyManager, new AppHotKeyGroup("窗口", PreDefinedHotKeys.ConfigWindowAppHotKeys, PreDefinedHotKeys.WindowAppHotKeys));
+            this.WindowKeyBindingMap = HotKeyUtils.Provide(config, this.AppHotKeyManager, new AppHotKeyGroup("窗口", PreDefinedHotKeys.ConfigWindowAppHotKeys, PreDefinedHotKeys.WindowAppHotKeys));
         }
         #endregion
 

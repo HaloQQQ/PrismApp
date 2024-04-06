@@ -41,7 +41,7 @@
                     <Button
                         Margin="0,10,20,0"
                         HorizontalAlignment="Right"
-                        Command="{Binding DataContext.ResetGroupHotKeysCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        Command="{Binding DataContext.ResetGroupHotKeysCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         CommandParameter="{Binding}"
                         Content="&#xe614;"
                         Style="{StaticResource IconButtonBase_Expand}"
@@ -247,20 +247,20 @@
                         <TextBox
                             Width="250"
                             attaches:MyAttachProperty.PlaceHolder="邮箱"
-                            Text="{Binding DataContext.CurrentMailPair.Key, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding DataContext.CurrentMailPair.Key, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=TabControl}}" />
                         <TextBlock Style="{StaticResource ThemeBlk}" Text="授权码:" />
                         <PasswordBox
                             Width="250"
-                            attaches:MyAttachProperty.Password="{Binding DataContext.CurrentMailPair.Value, Mode=TwoWay}"
+                            attaches:MyAttachProperty.Password="{Binding DataContext.CurrentMailPair.Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=TabControl}}"
                             attaches:MyAttachProperty.PlaceHolder="授权码" />
 
                         <Button
-                            Command="{Binding DataContext.AddMailAccountCommand}"
+                            Command="{Binding DataContext.AddMailAccountCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                             Content="&#xe622;"
                             FontSize="30"
                             Style="{StaticResource IconButtonBase_Small_Scale}" />
                     </StackPanel>
-                    <ListBox ItemContainerStyle="{StaticResource ListBoxItem_General}" ItemsSource="{Binding DataContext.MailAccounts}" />
+                    <ListBox ItemContainerStyle="{StaticResource ListBoxItem_General}" ItemsSource="{Binding DataContext.MailAccounts, RelativeSource={RelativeSource AncestorType=TabControl}}" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="全局快捷键">
@@ -316,11 +316,11 @@
                             Minimum="0"
                             Style="{StaticResource Slider_ObviousThumb}"
                             TickFrequency="5"
-                            Value="{Binding DataContext.CornerRadius, Converter={StaticResource CornerRadiusToDigitConverter}}" />
+                            Value="{Binding DataContext.CornerRadius, Converter={StaticResource CornerRadiusToDigitConverter}, RelativeSource={RelativeSource AncestorType=TabControl}}" />
                     </WrapPanel>
 
                     <Button
-                        Command="{Binding DataContext.CleanConfigWhenExitAppCommand}"
+                        Command="{Binding DataContext.CleanConfigWhenExitAppCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         Style="{StaticResource TransparentButtonBase}"
                         ToolTip="关闭程序时清空所有配置">
                         <Button.Content>

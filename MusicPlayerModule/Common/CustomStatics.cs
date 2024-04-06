@@ -21,15 +21,47 @@ namespace MusicPlayerModule.Common
             new MediaPlayOrderModel("\ue621","单曲播放", MediaPlayOrderModel.EnumOrderType.SingleOnce)
         };
 
-        internal static readonly string[] AppMusicHotkeys = new string[] { "HotKeys", "App", "Music" };
-        internal static readonly string[] AppVideoHotkeys = new string[] { "HotKeys", "App", "Video" };
+        #region Music
+        internal const string MUSIC = "Music";
 
-        private static class AppMediaHotKeys
+        internal static readonly string[] MusicPlayOrder_ConfigKey = new[] { MUSIC, "MusicPlayOrder" };
+        internal static readonly string[] LastMusicDir_ConfigKey = new[] { MUSIC, nameof(LastMusicDir) };
+        internal static readonly string[] LyricDir_ConfigKey = new[] { MUSIC, nameof(LyricDir) };
+
+        internal static readonly string[] Vertical_DesktopLyric_WindowLeftTop_ConfigKey = new string[] { MUSIC, "Vertical_DesktopLyric_WindowLeftTop" };
+        internal static readonly string[] Horizontal_DesktopLyric_WindowLeftTop_ConfigKey = new string[] { MUSIC, "Horizontal_DesktopLyric_WindowLeftTop" };
+
+        internal static readonly string[] IsDesktopLyricShow_ConfigKey = new[] { MUSIC, "IsDesktopLyricShow" };
+        internal static readonly string[] IsVertical_ConfigKey = new[] { MUSIC, "IsVertical" };
+        internal static readonly string[] IsSingleLine_ConfigKey = new[] { MUSIC, "IsSingleLine" };
+
+        internal static readonly string[] CurrentLyricForeground_ConfigKey = new[] { MUSIC, "CurrentLyricForeground" };
+        internal static readonly string[] CurrentLyricFontSize_ConfigKey = new[] { MUSIC, "CurrentLyricFontSize" };
+
+        internal static readonly string[] LinearGradientLyricColor_ConfigKey = new[] { MUSIC, "LinearGradientLyricColor" };
+
+        internal static readonly string[] AppMusicHotkeys = new string[] { "HotKeys", "App", MUSIC };
+        internal static readonly string[] AppVideoHotkeys = new string[] { "HotKeys", "App", "Video" };
+        #endregion
+
+        #region Video
+        internal const string VIDEO = "Video";
+        internal const string VideoABPoints = "VideoABPoints";
+
+        internal static readonly string[] VideoPlayOrder_ConfigKey = new[] { VIDEO, "VideoPlayOrder" };
+        internal static readonly string[] VideoStretch_ConfigKey = new[] { VIDEO, "VideoStretch" };
+
+        internal static readonly string[] LastVideoDir_ConfigKey = new[] { VIDEO, nameof(LastVideoDir) };
+
+
+    #endregion
+
+    private static class AppMediaHotKeys
         {
             internal const string ResetPointAB = "重置AB点";
             internal const string SetPointA = "设置A点";
             internal const string SetPointB = "设置B点";
- 
+
             internal const string DecreaseVolume = "降低音量";
             internal const string IncreaseVolume = "提高音量";
 
@@ -55,7 +87,7 @@ namespace MusicPlayerModule.Common
             internal const string DesktopLyric = "桌面歌词";
             internal const string PlayAllMusic = "播放所有音乐";
 
-            internal const string LyricPanel = "歌词封面";                                                      
+            internal const string LyricPanel = "歌词封面";
         }
 
         internal static AppHotKeyModel[] MusicHotKeys = new AppHotKeyModel[] {
