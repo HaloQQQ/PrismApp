@@ -134,11 +134,7 @@ namespace MyApp.Prisms
             containerRegistry.RegisterScoped<TcpServerViewModel>();
             containerRegistry.RegisterScoped<AnotherTcpServerViewModel>();
 
-            //containerRegistry.RegisterScoped<CommunicationViewModel>();
-
-
             ViewModelLocationProvider.Register<WindowTitleBarView, SoftwareViewModel>();
-            //ViewModelLocationProvider.Register<ImageDisplayView, ImageDisplayViewModel>();
             ViewModelLocationProvider.Register<SwitchBackgroundView, ImageDisplayViewModel>();
 
             containerRegistry.Register<Settings>();
@@ -155,7 +151,6 @@ namespace MyApp.Prisms
             regionManager.RegisterViewWithRegion("SmtpQQMailRegion", () => new SmtpQQMailView());
 
             regionManager.RegisterViewWithRegion("ColorRegion", () => new ColorView());
-
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

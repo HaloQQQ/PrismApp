@@ -97,14 +97,14 @@
         MouseWheel="Grid_MouseWheel">
         <Grid.InputBindings>
             <KeyBinding
+                Key="{Binding KeyGestureDic[搜索].SelectedKey}"
+                Command="Find"
+                Modifiers="{Binding KeyGestureDic[搜索].ModifierKey}" />
+
+            <KeyBinding
                 Key="{Binding KeyGestureDic[歌词封面].SelectedKey}"
                 Command="GoToPage"
                 Modifiers="{Binding KeyGestureDic[歌词封面].ModifierKey}" />
-
-            <!--<KeyBinding
-                Key="{Binding KeyGestureDic[桌面歌词].SelectedKey}"
-                Command="{Binding DesktopLyricPanelCommand}"
-                Modifiers="{Binding KeyGestureDic[桌面歌词].ModifierKey}" />-->
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[播放列表].SelectedKey}"
@@ -1047,8 +1047,9 @@
                                     <Border
                                         Width="40"
                                         Height="40"
-                                        Background="{Binding DesktopLyric.LinearGradientLyricColorBrush}"
-                                        CornerRadius="20" />
+                                        Background="{Binding DesktopLyric.LinearGradientLyricStartColorBrush}"
+                                        CornerRadius="20"
+                                        ToolTip="{Binding DesktopLyric.LinearGradientLyricStartColorBrush.Color}" />
 
                                     <Button
                                         MinWidth="0"
@@ -1123,8 +1124,7 @@
                                 <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
                                 <EventSetter Event="PreviewMouseRightButtonDown" Handler="SwitchLyricMode" />
 
-                                <Setter Property="Height" Value="50" />
-                                <Setter Property="Padding" Value="100,0" />
+                                <Setter Property="Padding" Value="120,10" />
 
                                 <Setter Property="IsSelected" Value="{Binding IsPlayingLine, Mode=OneWay}" />
 
@@ -1587,9 +1587,16 @@
                             MouseLeftButtonDown="EmptyHandler"
                             Opened="DataGrid_UpdateScrollBar"
                             Placement="Top"
+                            CommandManager.Executed="PlayingList_Executed"
                             PlacementTarget="{Binding ElementName=PlayingListButton}"
                             PopupAnimation="Fade"
                             VerticalOffset="-18">
+                            <Popup.InputBindings>
+                                <KeyBinding
+                                    Key="{Binding KeyGestureDic[搜索].SelectedKey}"
+                                    Command="Find"
+                                    Modifiers="{Binding KeyGestureDic[搜索].ModifierKey}" />
+                            </Popup.InputBindings>
                             <Border Background="{StaticResource PopupBackground}" CornerRadius="10">
                                 <Grid>
                                     <Grid.RowDefinitions>

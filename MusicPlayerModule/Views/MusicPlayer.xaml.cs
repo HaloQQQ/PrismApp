@@ -216,7 +216,7 @@ namespace MusicPlayerModule.Views
                 {
                     this.mediaPlayer.Position = line.LineStart;
                 }
-            }      
+            }
         }
 
         private void musicSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -309,7 +309,13 @@ namespace MusicPlayerModule.Views
 
         private void UserControl_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (e.Command == MediaCommands.IncreaseVolume)
+            if (e.Command == ApplicationCommands.Find)
+            {
+                this.FavoritesKeyWordsTxt.Focus();
+
+                e.Handled = true;
+            }
+            else if (e.Command == MediaCommands.IncreaseVolume)
             {
                 IncreaseVolume();
 
@@ -539,6 +545,16 @@ namespace MusicPlayerModule.Views
         private void EmptyHandler(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
+        }
+
+        private void PlayingList_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Command == ApplicationCommands.Find)
+            {
+                this.QueryButton.IsChecked = true;
+
+                e.Handled = true;
+            }
         }
     }
 }

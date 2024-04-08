@@ -54,9 +54,9 @@ namespace MusicPlayerModule.Common
         internal static readonly string[] LastVideoDir_ConfigKey = new[] { VIDEO, nameof(LastVideoDir) };
 
 
-    #endregion
+        #endregion
 
-    private static class AppMediaHotKeys
+        private static class AppMediaHotKeys
         {
             internal const string ResetPointAB = "重置AB点";
             internal const string SetPointA = "设置A点";
@@ -88,6 +88,8 @@ namespace MusicPlayerModule.Common
             internal const string PlayAllMusic = "播放所有音乐";
 
             internal const string LyricPanel = "歌词封面";
+
+            internal const string Find = "搜索";
         }
 
         internal static AppHotKeyModel[] MusicHotKeys = new AppHotKeyModel[] {
@@ -105,6 +107,8 @@ namespace MusicPlayerModule.Common
             new AppHotKeyModel(AppMusicHotKeys.DesktopLyric, ModifierKeys.Alt, Key.C),
             new AppHotKeyModel(AppMediaHotKeys.PlayingListPanel, ModifierKeys.Alt, Key.X),
             new AppHotKeyModel(AppMusicHotKeys.LyricPanel, ModifierKeys.None, Key.Escape),
+
+            new AppHotKeyModel(AppMusicHotKeys.Find, ModifierKeys.Control, Key.F),
 
             new AppHotKeyModel(AppMediaHotKeys.DecreaseVolume, ModifierKeys.Control, Key.Down),
             new AppHotKeyModel(AppMediaHotKeys.IncreaseVolume, ModifierKeys.Control, Key.Up),
@@ -141,6 +145,5 @@ namespace MusicPlayerModule.Common
 
             new AppHotKeyModel(AppMediaHotKeys.PlayingListPanel, ModifierKeys.Alt, Key.X),
         };
-
     }
 }

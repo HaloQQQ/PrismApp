@@ -48,7 +48,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 item.PropertyChanged += (sender, e) =>
                 {
-                    RaisePropertyChanged(nameof(LinearGradientLyricColorBrush));
+                    RaisePropertyChanged(nameof(LinearGradientLyricStartColorBrush));
                 };
             }
             
@@ -63,7 +63,7 @@ namespace MusicPlayerModule.ViewModels
 
             config.SetConfig += config =>
             {
-                config.WriteConfigNode(LinearGradientLyricColorBrush.ToString(), CustomStatics.LinearGradientLyricColor_ConfigKey);
+                config.WriteConfigNode(LinearGradientLyricStartColorBrush.ToString(), CustomStatics.LinearGradientLyricColor_ConfigKey);
             };
 
             this.ResetColorCommand = new DelegateCommand(() =>
@@ -109,7 +109,7 @@ namespace MusicPlayerModule.ViewModels
 
         public ICommand ResetColorCommand { get; }
 
-        public Brush LinearGradientLyricColorBrush
+        public Brush LinearGradientLyricStartColorBrush
         {
             get
             {
@@ -140,16 +140,8 @@ namespace MusicPlayerModule.ViewModels
         public SolidColorBrush CurrentLyricForeground
         {
             get => this._currentLyricForeground;
-            set
-            {
-                if (SetProperty<SolidColorBrush>(ref _currentLyricForeground, value))
-                {
-                    RaisePropertyChanged(nameof(CurrentLyricForegroundColor));
-                }
-            }
+            set => SetProperty<SolidColorBrush>(ref _currentLyricForeground, value);
         }
-
-        public Color CurrentLyricForegroundColor => this.CurrentLyricForeground.Color;
 
         private double _currentLyricFontSize;
 

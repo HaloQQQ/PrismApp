@@ -100,8 +100,8 @@
                 TextWrapping="NoWrap">
                 <TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0.5" Color="{Binding DataContext.DesktopLyric.LinearGradientLyricColorBrush.Color, RelativeSource={RelativeSource AncestorType=Border}}" />
-                        <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForegroundColor, RelativeSource={RelativeSource AncestorType=Border}}" />
+                        <GradientStop Offset="0.5" Color="{Binding DataContext.DesktopLyric.LinearGradientLyricStartColorBrush.Color, RelativeSource={RelativeSource AncestorType=Border}}" />
+                        <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForeground.Color, RelativeSource={RelativeSource AncestorType=Border}}" />
                     </LinearGradientBrush>
                 </TextBlock.Foreground>
                 <TextBlock.Width>
@@ -146,8 +146,8 @@
                 TextWrapping="Wrap">
                 <TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                        <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientLyricColorBrush.Color, RelativeSource={RelativeSource AncestorType=Border}}" />
-                        <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForegroundColor, RelativeSource={RelativeSource AncestorType=Border}}" />
+                        <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientLyricStartColorBrush.Color, RelativeSource={RelativeSource AncestorType=Border}}" />
+                        <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForeground.Color, RelativeSource={RelativeSource AncestorType=Border}}" />
                     </LinearGradientBrush>
                 </TextBlock.Foreground>
                 <TextBlock.Height>
@@ -208,8 +208,8 @@
                 </TextBlock.LayoutTransform>
                 <TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientLyricColorBrush.Color, RelativeSource={RelativeSource AncestorType=Border}}" />
-                        <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForegroundColor, RelativeSource={RelativeSource AncestorType=Border}}" />
+                        <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientLyricStartColorBrush.Color, RelativeSource={RelativeSource AncestorType=Border}}" />
+                        <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForeground.Color, RelativeSource={RelativeSource AncestorType=Border}}" />
                     </LinearGradientBrush>
                 </TextBlock.Foreground>
                 <TextBlock.Width>
