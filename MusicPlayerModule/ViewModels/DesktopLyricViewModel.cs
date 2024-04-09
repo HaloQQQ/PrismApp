@@ -16,7 +16,7 @@ namespace MusicPlayerModule.ViewModels
             var currentLyricForeground = config.ReadConfigNode(CustomStatics.CurrentLyricForeground_ConfigKey);
             this.CurrentLyricForeground = this.DefaultLyricForegrounds.FirstOrDefault(f => f.Color.ToString() == currentLyricForeground) ??
                 this.DefaultLyricForegrounds.First();
-            
+
             var currentLyricFontSize = config.ReadConfigNode(CustomStatics.CurrentLyricFontSize_ConfigKey);
             double fontSize = 20;
             if (!currentLyricFontSize.IsNullOrBlank())
@@ -51,7 +51,7 @@ namespace MusicPlayerModule.ViewModels
                     RaisePropertyChanged(nameof(LinearGradientLyricStartColorBrush));
                 };
             }
-            
+
             var colorString = config.ReadConfigNode(CustomStatics.LinearGradientLyricColor_ConfigKey);
             if (!colorString.IsNullOrBlank())
             {
@@ -118,6 +118,20 @@ namespace MusicPlayerModule.ViewModels
                 byte blue = this.Colors[2].Value;
 
                 return new SolidColorBrush(Color.FromRgb(red, green, blue));
+            }
+
+            set
+            {
+                if (value is SolidColorBrush solidColor)
+                {
+                    var color = solidColor.Color;
+
+                    this.Colors[0].Value = color.R;
+                    this.Colors[1].Value = color.G;
+                    this.Colors[2].Value = color.B;
+
+                    RaisePropertyChanged(nameof(LinearGradientLyricStartColorBrush));
+                }
             }
         }
 

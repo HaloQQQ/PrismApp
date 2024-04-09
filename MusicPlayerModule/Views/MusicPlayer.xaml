@@ -1017,6 +1017,10 @@
                                                 <Setter Property="BorderThickness" Value="2" />
                                                 <Setter Property="ToolTip" Value="{Binding Color}" />
 
+                                                <Setter Property="AllowDrop" Value="True" />
+
+                                                <EventSetter Event="MouseMove" Handler="DragLeaveFrom" />
+
                                                 <Setter Property="Width" Value="40" />
                                                 <Setter Property="Height" Value="40" />
 
@@ -1045,10 +1049,13 @@
                                         ItemsSource="{Binding DesktopLyric.Colors}" />
 
                                     <Border
+                                        x:Name="LinearGradientStartColor"
                                         Width="40"
                                         Height="40"
-                                        Background="{Binding DesktopLyric.LinearGradientLyricStartColorBrush}"
+                                        AllowDrop="True"
+                                        Background="{Binding DesktopLyric.LinearGradientLyricStartColorBrush, Mode=TwoWay}"
                                         CornerRadius="20"
+                                        Drop="DropIn"
                                         ToolTip="{Binding DesktopLyric.LinearGradientLyricStartColorBrush.Color}" />
 
                                     <Button
@@ -1582,12 +1589,12 @@
                             Width="400"
                             Height="490"
                             Closed="PlayingListPopup_Closed"
+                            CommandManager.Executed="PlayingList_Executed"
                             HorizontalOffset="-334"
                             IsOpen="{Binding IsChecked, ElementName=PlayingListButton}"
                             MouseLeftButtonDown="EmptyHandler"
                             Opened="DataGrid_UpdateScrollBar"
                             Placement="Top"
-                            CommandManager.Executed="PlayingList_Executed"
                             PlacementTarget="{Binding ElementName=PlayingListButton}"
                             PopupAnimation="Fade"
                             VerticalOffset="-18">

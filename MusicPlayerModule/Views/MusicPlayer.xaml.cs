@@ -556,5 +556,28 @@ namespace MusicPlayerModule.Views
                 e.Handled = true;
             }
         }
+
+        private void DropIn(object sender, DragEventArgs e)
+        {
+            var data = e.Data;
+
+            if (data.GetDataPresent(typeof(SolidColorBrush)))
+            {
+                var color = data.GetData(typeof(SolidColorBrush)) as Brush;
+
+                this.LinearGradientStartColor.Background = color;
+            }
+        }
+
+        private void DragLeaveFrom(object sender, MouseEventArgs e)
+        {
+            e.Handled = true;
+
+            if (e.MouseDevice.LeftButton == MouseButtonState.Pressed)
+            {
+                var item = (ListBoxItem)sender;
+                DragDrop.DoDragDrop(item, item.Background, DragDropEffects.Copy);
+            }
+        }
     }
 }
