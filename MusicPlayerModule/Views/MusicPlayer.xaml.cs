@@ -267,7 +267,7 @@ namespace MusicPlayerModule.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DataGrid_UpdateScrollBar(object sender, EventArgs e)
+        private void PlayingListPopup_UpdateDataGridScrollBar(object sender, EventArgs e)
         {
             if (this.PlayingDataGrid.SelectedItem != null)
             {
@@ -507,33 +507,16 @@ namespace MusicPlayerModule.Views
             }
         }
 
+        /// <summary>
+        /// 播放列表搜索某个歌曲时搜索框获取焦点
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlayingListFilterPanel_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is bool b && b)
             {
                 this.PlayingKeyWordsTxt.Focus();
-            }
-        }
-
-        private void LyricSettings_Opened(object sender, EventArgs e)
-        {
-            if (this.LyricForegroundListBox.SelectedIndex >= 0)
-            {
-                return;
-            }
-
-            if (this.DataContext is MusicPlayerViewModel viewModel)
-            {
-                int selectedIndex = -1;
-                foreach (var item in this.LyricForegroundListBox.Items)
-                {
-                    selectedIndex++;
-                    if (item.ToString() == viewModel.DesktopLyric.CurrentLyricForeground.ToString())
-                    {
-                        LyricForegroundListBox.SelectedIndex = selectedIndex;
-                        return;
-                    }
-                }
             }
         }
 
@@ -557,7 +540,7 @@ namespace MusicPlayerModule.Views
             }
         }
 
-        private void DropIn(object sender, DragEventArgs e)
+        private void DropIn_LinearGradientForegroundColor(object sender, DragEventArgs e)
         {
             var data = e.Data;
 
@@ -577,6 +560,18 @@ namespace MusicPlayerModule.Views
             {
                 var item = (ListBoxItem)sender;
                 DragDrop.DoDragDrop(item, item.Background, DragDropEffects.Copy);
+            }
+        }
+
+        private void DropIn_ForegroundColor(object sender, DragEventArgs e)
+        {
+            var data = e.Data;
+
+            if (data.GetDataPresent(typeof(SolidColorBrush)))
+            {
+                var color = data.GetData(typeof(SolidColorBrush)) as Brush;
+
+                this.ForegroundColor.Background = color;
             }
         }
     }

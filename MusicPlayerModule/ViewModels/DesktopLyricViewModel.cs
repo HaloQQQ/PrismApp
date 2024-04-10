@@ -13,10 +13,6 @@ namespace MusicPlayerModule.ViewModels
     {
         public DesktopLyricViewModel(IConfigManager config)
         {
-            var currentLyricForeground = config.ReadConfigNode(CustomStatics.CurrentLyricForeground_ConfigKey);
-            this.CurrentLyricForeground = this.DefaultLyricForegrounds.FirstOrDefault(f => f.Color.ToString() == currentLyricForeground) ??
-                this.DefaultLyricForegrounds.First();
-
             var currentLyricFontSize = config.ReadConfigNode(CustomStatics.CurrentLyricFontSize_ConfigKey);
             double fontSize = 20;
             if (!currentLyricFontSize.IsNullOrBlank())
@@ -38,42 +34,97 @@ namespace MusicPlayerModule.ViewModels
 
                 config.WriteConfigNode(this.IsSingleLine, CustomStatics.IsSingleLine_ConfigKey);
 
-                config.WriteConfigNode(this.CurrentLyricForeground.ToString(), CustomStatics.CurrentLyricForeground_ConfigKey);
+                config.WriteConfigNode(this.CurrentLyricForeground.ColorBrush.ToString(), CustomStatics.CurrentLyricForeground_ConfigKey);
 
                 config.WriteConfigNode(this.CurrentLyricFontSize, CustomStatics.CurrentLyricFontSize_ConfigKey);
             };
 
-            #region 桌面歌词渐变色起点
-            foreach (var item in this.Colors)
+            this.LinearGradientColorBrush = new ColorModel(config, CustomStatics.LinearGradientLyricColor_ConfigKey, 190, 250, 253);
+
+            var currentLyricForeground = config.ReadConfigNode(CustomStatics.CurrentLyricForeground_ConfigKey);
+
+            var colorBrush = currentLyricForeground.IsNullOrBlank()
+                                ? this.DefaultLyricForegrounds.First().ColorBrush
+                                : currentLyricForeground.GetBrushFromString();
+
+            var color = ((SolidColorBrush)colorBrush).Color;
+            this.LyricColorBrush = new ColorModel(config, CustomStatics.CurrentLyricForeground_ConfigKey, color.R, color.G, color.B);
+
+            void SetCurrentLyric(Brush brush)
             {
-                item.PropertyChanged += (sender, e) =>
+                SelectableColorBrush.Default.ColorBrush = brush;
+                this.CurrentLyricForeground = SelectableColorBrush.Default;
+            }
+
+            this.LyricColorBrush.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(ColorModel.ColorBrush))
                 {
-                    RaisePropertyChanged(nameof(LinearGradientLyricStartColorBrush));
-                };
-            }
-
-            var colorString = config.ReadConfigNode(CustomStatics.LinearGradientLyricColor_ConfigKey);
-            if (!colorString.IsNullOrBlank())
-            {
-                var color = colorString.GetColorFromString();
-                this.Colors[0].Value = color.R;
-                this.Colors[1].Value = color.G;
-                this.Colors[2].Value = color.B;
-            }
-
-            config.SetConfig += config =>
-            {
-                config.WriteConfigNode(LinearGradientLyricStartColorBrush.ToString(), CustomStatics.LinearGradientLyricColor_ConfigKey);
+                    SetCurrentLyric(this.LyricColorBrush.ColorBrush);
+                }
             };
 
-            this.ResetColorCommand = new DelegateCommand(() =>
+            SetCurrentLyric(colorBrush);
+
+            this.SelectLyricColorCommand = new DelegateCommand(() => SetCurrentLyric(this.LyricColorBrush.ColorBrush))
+                                            .ObservesCanExecute(() => IsUnSelected)
+                                            .ObservesProperty(() => this.LyricColorBrush.IsSelected);
+        }
+
+        public bool IsUnSelected => !this.LyricColorBrush.IsSelected;
+
+        /// <summary>
+        /// 桌面歌词前景渐变色
+        /// </summary>
+        public ColorModel LinearGradientColorBrush { get; }
+
+        /// <summary>
+        /// 桌面歌词非渐变色
+        /// </summary>
+        public ColorModel LyricColorBrush { get; }
+
+        /// <summary>
+        /// 设置自定义颜色为当前非渐变色
+        /// </summary>
+        public ICommand SelectLyricColorCommand { get; }
+
+        public IEnumerable<SelectableColorBrush> DefaultLyricForegrounds { get; } = new List<SelectableColorBrush>()
+        {
+            new SelectableColorBrush("#FD6C6C".GetBrushFromString()),
+            new SelectableColorBrush("#F2910D".GetBrushFromString()),
+            new SelectableColorBrush("#FFAF00".GetBrushFromString()),
+            new SelectableColorBrush("#C0DF4E".GetBrushFromString()),
+            new SelectableColorBrush("#51DAC9".GetBrushFromString()),
+            new SelectableColorBrush("#4DB0FF".GetBrushFromString()),
+            new SelectableColorBrush("#A587F3".GetBrushFromString()),
+            new SelectableColorBrush("#FF8DBB".GetBrushFromString()),
+            new SelectableColorBrush("#8C8796".GetBrushFromString()),
+            new SelectableColorBrush("#00FF7F".GetBrushFromString())
+        };
+
+        private SelectableColorBrush _currentLyricForeground;
+
+        public SelectableColorBrush CurrentLyricForeground
+        {
+            get => this._currentLyricForeground;
+            set
             {
-                foreach (var item in this.Colors)
+                if (value == null)
                 {
-                    item.Reset();
+                    return;
                 }
-            });
-            #endregion
+
+                SetProperty<SelectableColorBrush>(ref _currentLyricForeground, value);
+                {
+                    var colorStr = _currentLyricForeground.ColorBrush.ToString();
+                    this.LyricColorBrush.IsSelected = this.LyricColorBrush.ColorBrush.ToString() == colorStr;
+
+                    this.DefaultLyricForegrounds.ForEach(item =>
+                    {
+                        item.Selected = item.ColorBrush.ToString() == colorStr;
+                    });
+                }
+            }
         }
 
         private bool _isDesktopLyricShow;
@@ -100,16 +151,88 @@ namespace MusicPlayerModule.ViewModels
             set => SetProperty<bool>(ref _isSingleLine, value);
         }
 
-        public IList<LinearGradientModel> Colors { get; } = new List<LinearGradientModel>
+        private double _currentLyricFontSize;
+
+        public double CurrentLyricFontSize
         {
-            new LinearGradientModel("R:", 190),
-            new LinearGradientModel("G:", 250),
-            new LinearGradientModel("B:", 253)
-        };
+            get => this._currentLyricFontSize;
+            set => SetProperty<double>(ref _currentLyricFontSize, value);
+        }
+    }
+
+    internal class SelectableColorBrush : BindableBase
+    {
+        public static SelectableColorBrush Default = new SelectableColorBrush(new SolidColorBrush(Color.FromRgb(0, 0, 0)));
+
+        public SelectableColorBrush(Brush colorBrush)
+        {
+            ColorBrush = colorBrush;
+        }
+
+        private Brush _colorBrush;
+
+        public Brush ColorBrush
+        {
+            get => this._colorBrush;
+            set => SetProperty<Brush>(ref _colorBrush, value);
+        }
+
+        private bool _selected;
+
+        public bool Selected
+        {
+            get => this._selected;
+            set => SetProperty<bool>(ref _selected, value);
+        }
+    }
+
+    internal class ColorModel : BindableBase
+    {
+        public ColorModel(IConfigManager config, string[] configKeys, byte r = 0, byte g = 0, byte b = 0)
+        {
+            this.Colors = new List<ThreePrimaryColorModel>
+            {
+                new ThreePrimaryColorModel("R:", r),
+                new ThreePrimaryColorModel("G:", g),
+                new ThreePrimaryColorModel("B:", b)
+            };
+
+            foreach (var item in this.Colors)
+            {
+                item.PropertyChanged += (sender, e) =>
+                {
+                    RaisePropertyChanged(nameof(ColorBrush));
+                };
+            }
+
+            var colorString = config.ReadConfigNode(configKeys);
+            if (!colorString.IsNullOrBlank())
+            {
+                var color = colorString.GetColorFromString();
+                this.Colors[0].Value = color.R;
+                this.Colors[1].Value = color.G;
+                this.Colors[2].Value = color.B;
+            }
+
+            config.PreSetConfig += config =>
+            {
+                config.WriteConfigNode(ColorBrush.ToString(), configKeys);
+            };
+
+            this.ResetColorCommand = new DelegateCommand(() =>
+            {
+                foreach (var item in this.Colors)
+                {
+                    item.Reset();
+                }
+            });
+        }
+
+        public IList<ThreePrimaryColorModel> Colors { get; }
 
         public ICommand ResetColorCommand { get; }
 
-        public Brush LinearGradientLyricStartColorBrush
+        public Brush ColorBrush
         {
             get
             {
@@ -130,45 +253,24 @@ namespace MusicPlayerModule.ViewModels
                     this.Colors[1].Value = color.G;
                     this.Colors[2].Value = color.B;
 
-                    RaisePropertyChanged(nameof(LinearGradientLyricStartColorBrush));
+                    RaisePropertyChanged(nameof(ColorBrush));
                 }
             }
         }
 
-        public IEnumerable<SolidColorBrush> DefaultLyricForegrounds => new List<SolidColorBrush>()
+
+        private bool _isSelected;
+
+        public bool IsSelected
         {
-            "#FD6C6C".GetBrushFromString(),
-            "#F2910D".GetBrushFromString(),
-            "#FFAF00".GetBrushFromString(),
-            "#C0DF4E".GetBrushFromString(),
-            "#51DAC9".GetBrushFromString(),
-            "#4DB0FF".GetBrushFromString(),
-            "#A587F3".GetBrushFromString(),
-            "#FF8DBB".GetBrushFromString(),
-            "#8C8796".GetBrushFromString(),
-            "#00FF7F".GetBrushFromString()
-        };
-
-        private SolidColorBrush _currentLyricForeground;
-
-        public SolidColorBrush CurrentLyricForeground
-        {
-            get => this._currentLyricForeground;
-            set => SetProperty<SolidColorBrush>(ref _currentLyricForeground, value);
-        }
-
-        private double _currentLyricFontSize;
-
-        public double CurrentLyricFontSize
-        {
-            get => this._currentLyricFontSize;
-            set => SetProperty<double>(ref _currentLyricFontSize, value);
+            get => this._isSelected;
+            set => SetProperty<bool>(ref _isSelected, value);
         }
     }
 
-    internal class LinearGradientModel : BindableBase
+    internal class ThreePrimaryColorModel : BindableBase
     {
-        public LinearGradientModel(string name, byte defaultValue)
+        public ThreePrimaryColorModel(string name, byte defaultValue)
         {
             Name = name;
             Value = defaultValue;
