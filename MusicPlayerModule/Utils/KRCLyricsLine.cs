@@ -108,7 +108,7 @@ namespace MusicPlayerModule.Utils
         public override string ToString()
         {
             var line = string.Join(string.Empty, this.Chars.Select(item => item.Word));
-            this.IsEnglish = Regex.IsMatch(line, "^[a-zA-Z]+.*[a-zA-Z]+$");
+            this.IsEnglish = Regex.IsMatch(line, "[a-zA-Z]");
 
             return this.IsEnglish ? line : line.Replace(' ', '\u3000');
         }
