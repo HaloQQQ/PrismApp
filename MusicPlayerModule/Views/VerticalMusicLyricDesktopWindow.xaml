@@ -7,6 +7,7 @@
     xmlns:datatemplateselectors="clr-namespace:MusicPlayerModule.DataTemplateSelectors"
     xmlns:prism="http://prismlibrary.com/"
     Title="VerticalMusicLyricDesktopWindow"
+    MinWidth="166"
     MinHeight="650"
     attaches:MyAttachProperty.CornerRadius="10"
     attaches:MyAttachProperty.UseWindowCommand="False"
@@ -54,6 +55,7 @@
             <StackPanel
                 Grid.Row="0"
                 HorizontalAlignment="Left"
+                VerticalAlignment="Top"
                 Orientation="Vertical">
                 <TextBlock
                     Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
@@ -62,12 +64,48 @@
                     FontSize="18"
                     Foreground="#EBEBEB"
                     Text="{Binding CurrentMusic.Music.Name}"
-                    TextTrimming="WordEllipsis" />
+                    TextTrimming="WordEllipsis"
+                    Visibility="{Binding CurrentMusic.Music.IsEnglishTitle, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
+
+                <TextBlock
+                    MaxWidth="180"
+                    Margin="10"
+                    FontSize="18"
+                    Foreground="#EBEBEB"
+                    Text="{Binding CurrentMusic.Music.Name}"
+                    TextTrimming="WordEllipsis"
+                    TextWrapping="NoWrap"
+                    Visibility="{Binding CurrentMusic.Music.IsEnglishTitle, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
+                    <TextBlock.LayoutTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="90" />
+                        </TransformGroup>
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+
+
                 <TextBlock
                     Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                     Foreground="#EBEBEB"
                     Text="{Binding CurrentMusic.Music.Singer}"
-                    TextTrimming="WordEllipsis" />
+                    TextTrimming="WordEllipsis"
+                    Visibility="{Binding CurrentMusic.Music.IsEnglishSinger, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
+
+
+                <TextBlock
+                    Margin="10"
+                    FontSize="18"
+                    Foreground="#EBEBEB"
+                    Text="{Binding CurrentMusic.Music.Singer}"
+                    TextTrimming="CharacterEllipsis"
+                    TextWrapping="NoWrap"
+                    Visibility="{Binding CurrentMusic.Music.IsEnglishSinger, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
+                    <TextBlock.LayoutTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="90" />
+                        </TransformGroup>
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
             </StackPanel>
 
             <StackPanel
@@ -190,9 +228,9 @@
                     Margin="10"
                     Foreground="#EBEBEB"
                     Style="{StaticResource NotImportantTxt_Black}">
-                    <TextBlock.RenderTransform>
-                        <RotateTransform Angle="-90" />
-                    </TextBlock.RenderTransform>
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
                     <TextBlock Text="{Binding CurrentMusic.CurrentTime, FallbackValue=00:00}" />
                     /
                     <TextBlock Text="{Binding CurrentMusic.Music.Duration, FallbackValue=00:00}" />

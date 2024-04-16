@@ -6,11 +6,15 @@ using Prism.Mvvm;
 using TagLib;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
+using System.Text.RegularExpressions;
 
 namespace MusicPlayerModule.Models;
 
 internal class MusicModel : BindableBase, IDisposable
 {
+    public bool IsEnglishTitle { get; private set; }
+    public bool IsEnglishSinger { get; private set; }
+
     public MusicModel(string filePath)
     {
         this.FilePath = filePath;
@@ -32,6 +36,9 @@ internal class MusicModel : BindableBase, IDisposable
             this.Singer = file.Tag.Performers.Length > 0 ? file.Tag.Performers[0] : null;   // 歌手名
             this.Name = file.Tag.Title;             // 歌曲标题
         }
+
+        this.IsEnglishTitle = Regex.IsMatch(Name, "[a-zA-Z]");
+        this.IsEnglishSinger = Regex.IsMatch(Singer, "[a-zA-Z]");
 
         this.Album = file.Tag.Album;             // 专辑名称
         this.Year = (int)file.Tag.Year;             // 年份
