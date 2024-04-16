@@ -135,7 +135,7 @@
                             Grid.Row="2"
                             HorizontalAlignment="Center"
                             Orientation="Horizontal">
-                            <TextBlock Text="用户名：" />
+                            <TextBlock Style="{StaticResource ThemeBlk}" Text="用户名：" />
                             <TextBox
                                 Width="250"
                                 attaches:MyAttachProperty.PlaceHolder="请输入用户名"
@@ -147,7 +147,7 @@
                             Grid.Row="3"
                             HorizontalAlignment="Center"
                             Orientation="Horizontal">
-                            <TextBlock Text="密   码：" />
+                            <TextBlock Style="{StaticResource ThemeBlk}" Text="密   码：" />
                             <PasswordBox
                                 x:Name="Pwd"
                                 Width="250"
