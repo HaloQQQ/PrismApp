@@ -152,7 +152,6 @@
                                 x:Name="Pwd"
                                 Width="250"
                                 attaches:MyAttachProperty.Password="{Binding UserContext.Password}"
-                                attaches:MyAttachProperty.PlaceHolder="请输入密码"
                                 TabIndex="2" />
                         </StackPanel>
                         <Button
