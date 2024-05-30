@@ -22,6 +22,7 @@ using PrismAppBasicLib.MsgEvents;
 using IceTea.Atom.GeneralModels;
 using Prism.Regions;
 using MusicPlayerModule.MsgEvents;
+using MusicPlayerModule.Views;
 
 namespace MyApp.Prisms
 {
@@ -151,6 +152,15 @@ namespace MyApp.Prisms
             regionManager.RegisterViewWithRegion("SmtpQQMailRegion", () => new SmtpQQMailView());
 
             regionManager.RegisterViewWithRegion("ColorRegion", () => new ColorView());
+
+            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video1PlayerRegion");
+            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video2PlayerRegion");
+            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video3PlayerRegion");
+            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video4PlayerRegion");
+            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video5PlayerRegion");
+            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video6PlayerRegion");
+            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video7PlayerRegion");
+            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video8PlayerRegion");
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

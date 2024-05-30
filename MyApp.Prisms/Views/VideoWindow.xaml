@@ -66,6 +66,8 @@
                     <ContentControl prism:RegionManager.RegionName="Video4PlayerRegion" TabIndex="4" />
                     <ContentControl prism:RegionManager.RegionName="Video5PlayerRegion" TabIndex="5" />
                     <ContentControl prism:RegionManager.RegionName="Video6PlayerRegion" TabIndex="6" />
+                    <ContentControl prism:RegionManager.RegionName="Video7PlayerRegion" TabIndex="7" />
+                    <ContentControl prism:RegionManager.RegionName="Video8PlayerRegion" TabIndex="8" />
                 </UniformGrid>
             </DockPanel>
         </Grid>

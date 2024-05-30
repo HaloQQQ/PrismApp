@@ -26,13 +26,6 @@ namespace MusicPlayerModule
         {
             _regionManager.RegisterViewWithRegion<MusicPlayer>("MusicPlayerRegion");
             _regionManager.RegisterViewWithRegion<VideoPlayerView>("VideoPlayerRegion");
-
-            _regionManager.RegisterViewWithRegion<VideoPlayerView>("Video1PlayerRegion");
-            _regionManager.RegisterViewWithRegion<VideoPlayerView>("Video2PlayerRegion");
-            _regionManager.RegisterViewWithRegion<VideoPlayerView>("Video3PlayerRegion");
-            _regionManager.RegisterViewWithRegion<VideoPlayerView>("Video4PlayerRegion");
-            _regionManager.RegisterViewWithRegion<VideoPlayerView>("Video5PlayerRegion");
-            _regionManager.RegisterViewWithRegion<VideoPlayerView>("Video6PlayerRegion");
         }
     }
 }
