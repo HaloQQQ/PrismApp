@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PrismAppBasicLib\PrismAppBasicLib.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="ExportModels\" />
   </ItemGroup>
 
