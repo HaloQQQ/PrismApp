@@ -11,7 +11,7 @@ using System.IO;
 using IceTea.Atom.Utils;
 using IceTea.Wpf.Core.Utils;
 using PrismAppBasicLib.MsgEvents;
-using IceTea.Atom.GeneralModels;
+using IceTea.Atom.Contracts;
 
 namespace MusicPlayerModule.ViewModels
 {

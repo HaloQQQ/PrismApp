@@ -12,6 +12,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using IceTea.Wpf.Core.Extensions;
 using IceTea.Atom.Contracts;
+using System.Diagnostics;
 
 namespace MusicPlayerModule.Views
 {
@@ -41,13 +42,13 @@ namespace MusicPlayerModule.Views
                 this.mediaPlayer.Play();
 
                 var mainWindow = Window.GetWindow(this);
-                if (_horizentalDesktopLyricWindow == null && mainWindow != null)
+                if ((_horizentalDesktopLyricWindow == null || _horizentalDesktopLyricWindow.DataContext == null) && mainWindow != null)
                 {
                     _horizentalDesktopLyricWindow = new HorizontalMusicLyricDesktopWindow(configManager);
                     mainWindow.Closing += (sender, e) => _horizentalDesktopLyricWindow.Close();
                 }
 
-                if (_verticalDesktopLyricWindow == null && mainWindow != null)
+                if ((_verticalDesktopLyricWindow == null || _verticalDesktopLyricWindow.DataContext == null) && mainWindow != null)
                 {
                     _verticalDesktopLyricWindow = new VerticalMusicLyricDesktopWindow(configManager);
                     mainWindow.Closing += (sender, e) => _verticalDesktopLyricWindow.Close();

@@ -7,7 +7,6 @@ using IceTea.SocketStandard.Base;
 using Prism.Events;
 using Prism.Ioc;
 using PrismAppBasicLib.MsgEvents;
-using IceTea.Atom.GeneralModels;
 
 namespace MyApp.Prisms.ViewModels
 {

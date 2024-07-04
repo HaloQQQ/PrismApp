@@ -60,7 +60,7 @@ namespace MyApp.Prisms.ViewModels
 
         private IEnumerable<string> GetImageUris(string imageDir)
         {
-            List<string> list = imageDir.GetFiles(file =>
+            IList<string> list = imageDir.GetFiles(file =>
             {
                 System.Drawing.Image img = System.Drawing.Image.FromFile(file);
                 return img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Jpeg) || img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Png);

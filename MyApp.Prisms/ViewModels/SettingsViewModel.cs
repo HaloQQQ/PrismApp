@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
 using PrismAppBasicLib.MsgEvents;
-using IceTea.Atom.GeneralModels;
 using System.Windows;
 
 namespace MyApp.Prisms.ViewModels

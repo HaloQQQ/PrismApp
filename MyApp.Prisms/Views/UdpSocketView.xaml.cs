@@ -1,6 +1,5 @@
 ﻿using IceTea.SocketStandard.Base;
 using System;
-using System.Net.Sockets;
 using System.Windows.Controls;
 using System.Windows.Input;
 using MyApp.Prisms.Helper;

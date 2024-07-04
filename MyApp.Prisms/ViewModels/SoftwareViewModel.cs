@@ -22,7 +22,6 @@ using IceTea.General.Utils;
 using IceTea.Wpf.Core.Contracts.MyEvents;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.Events;
-using IceTea.Atom.GeneralModels;
 using PrismAppBasicLib.MsgEvents;
 
 namespace MyApp.Prisms.ViewModels

@@ -12,7 +12,6 @@ using DryIoc;
 using Prism.Ioc;
 using Prism.Events;
 using PrismAppBasicLib.MsgEvents;
-using IceTea.Atom.GeneralModels;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {

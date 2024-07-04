@@ -10,7 +10,6 @@ using IceTea.Atom.Extensions;
 using IceTea.Atom.Contracts;
 using System.Collections.Generic;
 using PrismAppBasicLib.MsgEvents;
-using IceTea.Atom.GeneralModels;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {

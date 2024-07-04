@@ -19,7 +19,6 @@ using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.Setting;
 using MyApp.Prisms.Views.ToolBox;
 using PrismAppBasicLib.MsgEvents;
-using IceTea.Atom.GeneralModels;
 using Prism.Regions;
 using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.Views;

@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="IceTea.SqlStandard" Version="1.0.16" />
+    <PackageReference Include="IceTea.SqlStandard" Version="1.0.19" />
   </ItemGroup>
 
   <ItemGroup>

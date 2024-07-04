@@ -1,5 +1,5 @@
 ﻿using IceTea.Atom.Extensions;
-using IceTea.Atom.GeneralModels;
+using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils;
 using IceTea.SqlStandard.Contracts;
 using IceTea.SqlStandard.DbModels;
