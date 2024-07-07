@@ -6,10 +6,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using MyApp.Prisms.Helper;
 using IceTea.Atom.Utils;
-using IceTea.Atom.Utils.HotKey.GlobalHotKey;
 using IceTea.Atom.Extensions;
-using IceTea.General.Utils.AppHotKey;
-using IceTea.General.Utils;
 using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Contracts;
 using System.Collections.Generic;
@@ -17,6 +14,9 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using PrismAppBasicLib.MsgEvents;
 using System.Windows;
+using IceTea.General.Utils.HotKey.App;
+using IceTea.Atom.Utils.HotKey.Global;
+using System;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -40,12 +40,17 @@ namespace MyApp.Prisms.ViewModels
             this.LoadMailAccounts(config, settingManager);
             this.LoadWindowCornerRadius(config);
 
-            this.InitHotkeys(config);
-
             this.InitCommands(containerProvider, eventAggregator, settingManager);
         }
 
         public IAppHotKeyManager AppHotKeyManager { get; private set; }
+
+        private IGlobalHotKeyManager _globalHotKeyManager;
+        public IGlobalHotKeyManager GlobalHotKeyManager
+        {
+            get => _globalHotKeyManager;
+            set => SetProperty<IGlobalHotKeyManager>(ref _globalHotKeyManager, value.AssertNotNull(nameof(IGlobalHotKeyManager)));
+        }
 
         private IConfigManager _config;
 
@@ -117,49 +122,41 @@ namespace MyApp.Prisms.ViewModels
                 this.IsEditingSetting = true;
             });
 
-            this.CancelCommand = new DelegateCommand(() =>
+            this.CancelCommand = new DelegateCommand<IGlobalConfigFileHotKeyGroup>(globalHotKeyGroup =>
             {
-                if (this.IsEditingSetting)
-                {
-                    this.IsEditingSetting = false;
-                }
-
-                foreach (var item in this.GlobalHotKeys)
-                {
-                    item.GoBack();
-                }
-            });
-
-            this.SubmitCommand = new DelegateCommand(() =>
-            {
-                var resultStr = containerProvider.Resolve<GlobalHotKeyManager>().RegisterHotKeys(this.GlobalHotKeys);
-
-                resultStr = resultStr.IsNullOrEmpty() ? "注册快捷键无错误" : resultStr;
-
                 this.IsEditingSetting = false;
 
-                eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(resultStr, 4));
+                globalHotKeyGroup.GoBack();
             });
 
-            this.ResetGlobalHotKeysCommand = new DelegateCommand(() =>
+            this.SubmitCommand = new DelegateCommand<IGlobalConfigFileHotKeyGroup>(globalHotKeyGroup =>
             {
-                foreach (var item in this.GlobalHotKeys)
-                {
-                    item.Reset();
-                }
+                this.IsEditingSetting = false;
 
-                this.SubmitCommand.Execute(null);
+                var failedItems = globalHotKeyGroup.Submit();
+                var message = failedItems.Any() ? $"{string.Join(Environment.NewLine, failedItems.Select(i => i.ToString()))}{Environment.NewLine}提交失败" : "提交成功";
+
+                eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(message, 4));
             });
 
-            this.ResetGroupHotKeysCommand = new DelegateCommand<AppHotKeyGroup>(groupHotKey =>
+            this.ResetGlobalHotKeyGroupCommand = new DelegateCommand<IGlobalConfigFileHotKeyGroup>(globalHotKeyGroup =>
             {
-                if (!groupHotKey.KeyBindings.IsNullOrEmpty())
-                {
-                    foreach (var keyBinding in groupHotKey.KeyBindings)
-                    {
-                        keyBinding.Reset();
-                    }
-                }
+                this.IsEditingSetting = false;
+
+                var failedItems = globalHotKeyGroup.Reset();
+                var message = failedItems.Any() ? $"{string.Join(Environment.NewLine, failedItems.Select(i => i.ToString()))}{Environment.NewLine}重置失败" : "重置成功";
+
+                eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(message, 4));
+            });
+
+            this.ResetAppHotKeyGroupCommand = new DelegateCommand<IAppConfigFileHotKeyGroup>(appHotKeyGroup =>
+            {
+                this.IsEditingSetting = false;
+
+                var failedItems = appHotKeyGroup.Reset();
+                var message = failedItems.Any() ? $"{string.Join(Environment.NewLine, failedItems.Select(i => i.ToString()))}{Environment.NewLine}重置失败" : "重置成功";
+
+                eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(message, 4));
             });
         }
 
@@ -188,15 +185,6 @@ namespace MyApp.Prisms.ViewModels
         }
         #endregion
 
-        #region GlobalHotKeys
-        public ObservableCollection<GlobalHotKeyModel> GlobalHotKeys { get; private set; }
-
-        private void InitHotkeys(IConfigManager config)
-        {
-            this.GlobalHotKeys = HotKeyUtils.Provide(config, CustomConstants.ConfigGlobalHotkeys, CustomConstants.GlobalHotKeys);
-        }
-        #endregion
-
         #region Commands
 
         public ICommand CleanConfigWhenExitAppCommand { get; private set; }
@@ -208,9 +196,9 @@ namespace MyApp.Prisms.ViewModels
         public ICommand FindMusicDirCommand { get; private set; }
         public ICommand FindVideoDirCommand { get; private set; }
 
-        public ICommand ResetGlobalHotKeysCommand { get; private set; }
+        public ICommand ResetGlobalHotKeyGroupCommand { get; private set; }
 
-        public ICommand ResetGroupHotKeysCommand { get; private set; }
+        public ICommand ResetAppHotKeyGroupCommand { get; private set; }
 
         /// <summary>
         /// 还原未提交的修改
@@ -256,10 +244,7 @@ namespace MyApp.Prisms.ViewModels
             get => this._isEditingSetting;
             set
             {
-                if (SetProperty<bool>(ref _isEditingSetting, value) && !value)
-                {
-                    this.CancelCommand.Execute(null);
-                }
+                SetProperty<bool>(ref _isEditingSetting, value);
             }
         }
 

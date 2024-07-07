@@ -2,10 +2,10 @@
     x:Class="MyApp.Prisms.Views.Settings"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:appHotKey="clr-namespace:IceTea.General.Utils.AppHotKey;assembly=IceTea.General"
+    xmlns:appHotKey="clr-namespace:IceTea.General.Utils.HotKey.App;assembly=IceTea.General"
     xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
     xmlns:converters="http://IceTea.Wpf.Core.com/"
-    xmlns:globalhotkey="clr-namespace:IceTea.Atom.Utils.HotKey.GlobalHotKey;assembly=IceTea.Atom"
+    xmlns:globalHotKey="clr-namespace:IceTea.Atom.Utils.HotKey.Global;assembly=IceTea.Atom"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:MyApp.Prisms.ViewModels"
     MinWidth="800"
@@ -18,9 +18,9 @@
         <ObjectDataProvider
             x:Key="CustomKeys"
             MethodName="GetValues"
-            ObjectType="{x:Type globalhotkey:CustomKeys}">
+            ObjectType="{x:Type globalHotKey:CustomKeys}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="globalhotkey:CustomKeys" />
+                <x:Type TypeName="globalHotKey:CustomKeys" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
@@ -33,7 +33,7 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
-        <DataTemplate DataType="{x:Type appHotKey:AppHotKeyGroup}">
+        <DataTemplate DataType="{x:Type appHotKey:AppConfigFileHotKeyGroup}">
             <GroupBox Header="{Binding GroupName}">
                 <StackPanel>
                     <TextBlock Text="{Binding Description}" />
@@ -41,7 +41,7 @@
                     <Button
                         Margin="0,10,20,0"
                         HorizontalAlignment="Right"
-                        Command="{Binding DataContext.ResetGroupHotKeysCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        Command="{Binding DataContext.ResetAppHotKeyGroupCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         CommandParameter="{Binding}"
                         Content="&#xe614;"
                         Style="{StaticResource IconButtonBase_Expand}"
@@ -50,12 +50,12 @@
                     <ListBox
                         HorizontalAlignment="Stretch"
                         ItemContainerStyle="{StaticResource ListBoxItem_General}"
-                        ItemsSource="{Binding KeyBindings}" />
+                        ItemsSource="{Binding}" />
                 </StackPanel>
             </GroupBox>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type appHotKey:AppHotKeyModel}">
+        <DataTemplate DataType="{x:Type appHotKey:AppHotKey}">
             <StackPanel MinHeight="40" Orientation="Horizontal">
                 <TextBlock
                     MinWidth="110"
@@ -113,7 +113,46 @@
             </StackPanel>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type globalhotkey:GlobalHotKeyModel}">
+        <DataTemplate DataType="{x:Type globalHotKey:GlobalConfigFileHotKeyGroup}">
+            <GroupBox Header="{Binding GroupName}">
+                <StackPanel>
+                    <TextBlock Text="{Binding Description}" />
+
+                    <Button
+                        Margin="0,10,20,0"
+                        HorizontalAlignment="Right"
+                        Command="{Binding DataContext.ResetGlobalHotKeyGroupCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        CommandParameter="{Binding}"
+                        Content="&#xe614;"
+                        Style="{StaticResource IconButtonBase_Expand}"
+                        ToolTip="重置快捷键" />
+
+                    <ListBox
+                        HorizontalAlignment="Stretch"
+                        ItemContainerStyle="{StaticResource ListBoxItem_General}"
+                        ItemsSource="{Binding}" />
+
+                    <DockPanel LastChildFill="False">
+                        <Button
+                            Margin="20,10"
+                            Command="{Binding DataContext.CancelCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                            CommandParameter="{Binding}"
+                            Content="取消"
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource TransparentButtonBase}" />
+                        <Button
+                            Margin="20,10"
+                            Command="{Binding DataContext.SubmitCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                            CommandParameter="{Binding}"
+                            Content="确认"
+                            DockPanel.Dock="Right"
+                            Style="{StaticResource TransparentButtonBase}" />
+                    </DockPanel>
+                </StackPanel>
+            </GroupBox>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type globalHotKey:GlobalHotKey}">
             <StackPanel MinHeight="40" Orientation="Horizontal">
                 <TextBlock
                     MinWidth="110"
@@ -264,40 +303,10 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="全局快捷键">
-                <GroupBox
-                    Margin="5,0"
-                    Foreground="{DynamicResource TextBlock.Foreground}"
-                    Header="全局">
-                    <StackPanel>
-                        <Button
-                            Margin="0,10,20,0"
-                            HorizontalAlignment="Right"
-                            Command="{Binding DataContext.ResetGlobalHotKeysCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
-                            Content="&#xe614;"
-                            Style="{StaticResource IconButtonBase_Expand}"
-                            ToolTip="重置快捷键" />
-
-                        <ListBox
-                            HorizontalAlignment="Stretch"
-                            ItemContainerStyle="{StaticResource ListBoxItem_General}"
-                            ItemsSource="{Binding DataContext.GlobalHotKeys, RelativeSource={RelativeSource AncestorType=TabControl}}" />
-
-                        <DockPanel LastChildFill="False">
-                            <Button
-                                Margin="20,10"
-                                Command="{Binding DataContext.CancelCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
-                                Content="取消"
-                                DockPanel.Dock="Right"
-                                Style="{StaticResource TransparentButtonBase}" />
-                            <Button
-                                Margin="20,10"
-                                Command="{Binding DataContext.SubmitCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
-                                Content="确认"
-                                DockPanel.Dock="Right"
-                                Style="{StaticResource TransparentButtonBase}" />
-                        </DockPanel>
-                    </StackPanel>
-                </GroupBox>
+                <ListBox
+                    HorizontalAlignment="Stretch"
+                    ItemContainerStyle="{StaticResource ListBoxItem_General}"
+                    ItemsSource="{Binding DataContext.GlobalHotKeyManager, RelativeSource={RelativeSource AncestorType=TabControl}}" />
             </TabItem>
             <TabItem Header="应用快捷键">
                 <ListBox

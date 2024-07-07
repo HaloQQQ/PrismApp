@@ -1,4 +1,4 @@
-﻿using IceTea.General.Utils.AppHotKey;
+﻿using IceTea.General.Utils.HotKey.App;
 using MusicPlayerModule.Models.Common;
 using System.Windows.Input;
 
@@ -92,58 +92,58 @@ namespace MusicPlayerModule.Common
             internal const string Find = "搜索";
         }
 
-        internal static AppHotKeyModel[] MusicHotKeys = new AppHotKeyModel[] {
-            new AppHotKeyModel(AppMediaHotKeys.ResetPointAB, ModifierKeys.Control, Key.Delete),
-            new AppHotKeyModel(AppMediaHotKeys.SetPointA, ModifierKeys.Control, Key.D1),
-            new AppHotKeyModel(AppMediaHotKeys.SetPointB, ModifierKeys.Control, Key.D2),
+        internal static AppHotKey[] MusicHotKeys = new AppHotKey[] {
+            new AppHotKey(AppMediaHotKeys.ResetPointAB, Key.Delete, ModifierKeys.Control),
+            new AppHotKey(AppMediaHotKeys.SetPointA, Key.D1, ModifierKeys.Control),
+            new AppHotKey(AppMediaHotKeys.SetPointB, Key.D2, ModifierKeys.Control),
 
-            new AppHotKeyModel(AppMediaHotKeys.MoveToHome, ModifierKeys.None, Key.Home),
-            new AppHotKeyModel(AppMediaHotKeys.MoveToEnd, ModifierKeys.None, Key.End),
-            new AppHotKeyModel(AppMediaHotKeys.Rewind, ModifierKeys.None, Key.Left),
-            new AppHotKeyModel(AppMediaHotKeys.FastForward, ModifierKeys.None, Key.Right),
-            new AppHotKeyModel(AppMediaHotKeys.Prev, ModifierKeys.None, Key.PageUp),
-            new AppHotKeyModel(AppMediaHotKeys.Next, ModifierKeys.None, Key.PageDown),
+            new AppHotKey(AppMediaHotKeys.MoveToHome, Key.Home, ModifierKeys.None),
+            new AppHotKey(AppMediaHotKeys.MoveToEnd, Key.End, ModifierKeys.None),
+            new AppHotKey(AppMediaHotKeys.Rewind, Key.Left, ModifierKeys.None),
+            new AppHotKey(AppMediaHotKeys.FastForward, Key.Right, ModifierKeys.None),
+            new AppHotKey(AppMediaHotKeys.Prev, Key.PageUp, ModifierKeys.None),
+            new AppHotKey(AppMediaHotKeys.Next, Key.PageDown, ModifierKeys.None),
 
-            new AppHotKeyModel(AppMusicHotKeys.DesktopLyric, ModifierKeys.Alt, Key.C),
-            new AppHotKeyModel(AppMediaHotKeys.PlayingListPanel, ModifierKeys.Alt, Key.X),
-            new AppHotKeyModel(AppMusicHotKeys.LyricPanel, ModifierKeys.None, Key.Escape),
+            new AppHotKey(AppMusicHotKeys.DesktopLyric, Key.C, ModifierKeys.Alt),
+            new AppHotKey(AppMediaHotKeys.PlayingListPanel, Key.X, ModifierKeys.Alt),
+            new AppHotKey(AppMusicHotKeys.LyricPanel, Key.Escape, ModifierKeys.None),
 
-            new AppHotKeyModel(AppMusicHotKeys.Find, ModifierKeys.Control, Key.F),
+            new AppHotKey(AppMusicHotKeys.Find, Key.F, ModifierKeys.Control),
 
-            new AppHotKeyModel(AppMediaHotKeys.DecreaseVolume, ModifierKeys.Control, Key.Down),
-            new AppHotKeyModel(AppMediaHotKeys.IncreaseVolume, ModifierKeys.Control, Key.Up),
+            new AppHotKey(AppMediaHotKeys.DecreaseVolume, Key.Down, ModifierKeys.Control),
+            new AppHotKey(AppMediaHotKeys.IncreaseVolume, Key.Up, ModifierKeys.Control),
 
-            new AppHotKeyModel(AppMediaHotKeys.OpenFolder, ModifierKeys.Control, Key.O),
-            new AppHotKeyModel(AppMusicHotKeys.PlayAllMusic, ModifierKeys.Alt, Key.P),
+            new AppHotKey(AppMediaHotKeys.OpenFolder, Key.O, ModifierKeys.Control),
+            new AppHotKey(AppMusicHotKeys.PlayAllMusic, Key.P, ModifierKeys.Alt),
 
-            new AppHotKeyModel(AppMediaHotKeys.PlayPlaying, ModifierKeys.Alt, Key.F),
-            new AppHotKeyModel(AppMediaHotKeys.CleanPlaying, ModifierKeys.Alt, Key.D),
-            new AppHotKeyModel(AppMediaHotKeys.StopPlayMusic, ModifierKeys.Alt, Key.W)
+            new AppHotKey(AppMediaHotKeys.PlayPlaying, Key.F, ModifierKeys.Alt),
+            new AppHotKey(AppMediaHotKeys.CleanPlaying, Key.D, ModifierKeys.Alt),
+            new AppHotKey(AppMediaHotKeys.StopPlayMusic, Key.W, ModifierKeys.Alt)
         };
 
-        internal static AppHotKeyModel[] VideoHotKeys = new AppHotKeyModel[] {
-            new AppHotKeyModel(AppMediaHotKeys.ResetPointAB, ModifierKeys.Control, Key.Delete),
-            new AppHotKeyModel(AppMediaHotKeys.SetPointA, ModifierKeys.Control, Key.D1),
-            new AppHotKeyModel(AppMediaHotKeys.SetPointB, ModifierKeys.Control, Key.D2),
+        internal static AppHotKey[] VideoHotKeys = new AppHotKey[] {
+            new AppHotKey(AppMediaHotKeys.ResetPointAB, Key.Delete, ModifierKeys.Control),
+            new AppHotKey(AppMediaHotKeys.SetPointA, Key.D1, ModifierKeys.Control),
+            new AppHotKey(AppMediaHotKeys.SetPointB, Key.D2, ModifierKeys.Control),
 
-            new AppHotKeyModel(AppMediaHotKeys.MoveToHome, ModifierKeys.None, Key.Home),
-            new AppHotKeyModel(AppMediaHotKeys.MoveToEnd, ModifierKeys.None, Key.End),
-            new AppHotKeyModel(AppMediaHotKeys.Rewind, ModifierKeys.None, Key.Left),
-            new AppHotKeyModel(AppMediaHotKeys.FastForward, ModifierKeys.None, Key.Right),
-            new AppHotKeyModel(AppMediaHotKeys.Prev, ModifierKeys.None, Key.PageUp),
-            new AppHotKeyModel(AppMediaHotKeys.Next, ModifierKeys.None, Key.PageDown),
+            new AppHotKey(AppMediaHotKeys.MoveToHome, Key.Home, ModifierKeys.None),
+            new AppHotKey(AppMediaHotKeys.MoveToEnd, Key.End, ModifierKeys.None),
+            new AppHotKey(AppMediaHotKeys.Rewind, Key.Left, ModifierKeys.None),
+            new AppHotKey(AppMediaHotKeys.FastForward, Key.Right, ModifierKeys.None),
+            new AppHotKey(AppMediaHotKeys.Prev, Key.PageUp, ModifierKeys.None),
+            new AppHotKey(AppMediaHotKeys.Next, Key.PageDown, ModifierKeys.None),
 
-            new AppHotKeyModel(AppMediaHotKeys.DecreaseVolume, ModifierKeys.Control, Key.Down),
-            new AppHotKeyModel(AppMediaHotKeys.IncreaseVolume, ModifierKeys.Control, Key.Up),
+            new AppHotKey(AppMediaHotKeys.DecreaseVolume, Key.Down, ModifierKeys.Control),
+            new AppHotKey(AppMediaHotKeys.IncreaseVolume, Key.Up, ModifierKeys.Control),
 
-            new AppHotKeyModel(AppMediaHotKeys.OpenFolder, ModifierKeys.Control, Key.O),
+            new AppHotKey(AppMediaHotKeys.OpenFolder, Key.O, ModifierKeys.Control),
 
-            new AppHotKeyModel(AppMediaHotKeys.CleanPlaying, ModifierKeys.Alt, Key.D),
-            new AppHotKeyModel(AppMediaHotKeys.StopPlayMusic, ModifierKeys.Alt, Key.W),
+            new AppHotKey(AppMediaHotKeys.CleanPlaying, Key.D, ModifierKeys.Alt),
+            new AppHotKey(AppMediaHotKeys.StopPlayMusic, Key.W, ModifierKeys.Alt),
 
-            new AppHotKeyModel(AppMediaHotKeys.PlayPlaying, ModifierKeys.None, Key.Space),
+            new AppHotKey(AppMediaHotKeys.PlayPlaying, Key.Space, ModifierKeys.None),
 
-            new AppHotKeyModel(AppMediaHotKeys.PlayingListPanel, ModifierKeys.Alt, Key.X),
+            new AppHotKey(AppMediaHotKeys.PlayingListPanel, Key.X, ModifierKeys.Alt),
         };
     }
 }

@@ -19,8 +19,8 @@
             </ResourceDictionary.MergedDictionaries>
 
             <personalConverter:MultiLyricHeightMultiConverter x:Key="MultiLyricHeightMultiConverter" />
-            <personalConverter:KeyGestureDicConverter x:Key="KeyGestureDicConverter" />
-            <personalConverter:ModifierKeyGestureDicConverter x:Key="ModifierKeyGestureDicConverter" />
+            <!--<personalConverter:KeyGestureDicConverter x:Key="KeyGestureDicConverter" />
+            <personalConverter:ModifierKeyGestureDicConverter x:Key="ModifierKeyGestureDicConverter" />-->
 
             <DataTemplate x:Key="ThreePrimaryColorModel" DataType="{x:Type viewmodels:ThreePrimaryColorModel}">
                 <StackPanel Orientation="Horizontal">

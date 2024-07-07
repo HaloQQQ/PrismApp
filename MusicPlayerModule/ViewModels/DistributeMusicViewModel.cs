@@ -515,7 +515,7 @@ namespace MusicPlayerModule.ViewModels
                     this.MusicDirFavorites.FirstOrDefault(item => item.ClassifyKey == musicModel.Music.FileDir);
                 if (currentDirModel != null)
                 {
-                    currentDirModel.DisplayByClassifyKeyFavorites.AddIfNotWhileOrNotContains(musicModel);
+                    currentDirModel.DisplayByClassifyKeyFavorites.AddIfItemNotWhileOrNotExists(musicModel);
                 }
                 else
                 {

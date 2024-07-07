@@ -17,12 +17,13 @@ using IceTea.Core.Utils.OS;
 using IceTea.Core.Utils.QRCodes;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using IceTea.General.Utils.AppHotKey;
 using IceTea.General.Utils;
 using IceTea.Wpf.Core.Contracts.MyEvents;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.Events;
 using PrismAppBasicLib.MsgEvents;
+using IceTea.General.Utils.HotKey.App;
+using IceTea.Atom.Utils.HotKey.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -51,7 +52,7 @@ namespace MyApp.Prisms.ViewModels
             eventAggregator.GetEvent<DialogMessageEvent>().Subscribe(item => this.DialogMessage = item);
 
             this.LoadConfig(config);
-            this.InitHotkeys(config);
+            this.InitHotkeys(config, appHotKeyManager);
 
             this.SubscribeCustomCommandEvent();
 
@@ -265,11 +266,17 @@ namespace MyApp.Prisms.ViewModels
         #endregion
 
         #region 窗口标题栏快捷键
-        public Dictionary<string, AppHotKeyModel> WindowKeyBindingMap { get; private set; }
+        public Dictionary<string, IHotKey<Key, ModifierKeys>> WindowKeyBindingMap { get; private set; }
 
-        private void InitHotkeys(IConfigManager config)
+        private void InitHotkeys(IConfigManager config, IAppHotKeyManager appHotKeyManager)
         {
-            this.WindowKeyBindingMap = HotKeyUtils.Provide(config, this.AppHotKeyManager, new AppHotKeyGroup("窗口", PreDefinedHotKeys.ConfigWindowAppHotKeys, PreDefinedHotKeys.WindowAppHotKeys));
+            var groupName = "窗口";
+            foreach (var item in PreDefinedHotKeys.WindowAppHotKeys)
+            {
+                appHotKeyManager.TryAddItem(groupName, PreDefinedHotKeys.ConfigWindowAppHotKeys, item);
+            }
+
+            this.WindowKeyBindingMap = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
         }
         #endregion
 

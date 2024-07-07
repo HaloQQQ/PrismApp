@@ -14,11 +14,11 @@ using System.Windows.Media;
 using Microsoft.Win32;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
-using IceTea.General.Utils.AppHotKey;
-using IceTea.General.Utils;
 using IceTea.Wpf.Core.Contracts.MediaInfo;
 using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Contracts;
+using IceTea.Atom.Utils.HotKey.Contracts;
+using IceTea.General.Utils.HotKey.App;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -413,11 +413,17 @@ namespace MusicPlayerModule.ViewModels
         }
 
         #region 应用内快捷键
-        public Dictionary<string, AppHotKeyModel> KeyGestureDic { get; private set; }
+        public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; private set; }
 
         private void InitHotkeys(IConfigManager config, IAppHotKeyManager appHotKeyManager)
         {
-            this.KeyGestureDic = HotKeyUtils.Provide(config, appHotKeyManager, new AppHotKeyGroup("视频", CustomStatics.AppVideoHotkeys, CustomStatics.VideoHotKeys));
+            var groupName = "视频";
+            foreach (var item in CustomStatics.VideoHotKeys)
+            {
+                appHotKeyManager.TryAddItem(groupName, CustomStatics.AppVideoHotkeys, item);
+            }
+
+            this.KeyGestureDic = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
         }
         #endregion
 

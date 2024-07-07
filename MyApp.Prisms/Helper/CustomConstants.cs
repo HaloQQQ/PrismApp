@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System;
 using System.Windows.Media;
-using IceTea.Atom.Utils.HotKey.GlobalHotKey;
+using IceTea.Atom.Utils.HotKey.Global;
 
 namespace MyApp.Prisms.Helper
 {
@@ -56,6 +56,7 @@ namespace MyApp.Prisms.Helper
         internal static readonly string[] MailAccounts = new string[] { "MailAccounts" };
 
         internal static readonly string[] ConfigGlobalHotkeys = new string[] { "HotKeys", "Global" };
+
         internal static class GlobalHotKeysConst
         {
             internal const string Pause = "暂停";
@@ -75,22 +76,38 @@ namespace MyApp.Prisms.Helper
             internal const string MusicLyricDesktop = "歌词桌面栏";
         }
 
-        internal static GlobalHotKeyModel[] GlobalHotKeys = new GlobalHotKeyModel[] {
-            new GlobalHotKeyModel(GlobalHotKeysConst.Pause, CustomModifierKeys.Alt, CustomKeys.S),
+        internal class GlobalHotKeyInfo
+        {
+            public GlobalHotKeyInfo(string name, CustomModifierKeys customModifierKeys, CustomKeys customKeys, bool isUsable = true)
+            {
+                Name = name;
+                CustomModifierKeys = customModifierKeys;
+                CustomKeys = customKeys;
+                IsUsable = isUsable;
+            }
 
-            new GlobalHotKeyModel(GlobalHotKeysConst.Prev, CustomModifierKeys.Alt, CustomKeys.Left),
-            new GlobalHotKeyModel(GlobalHotKeysConst.Next, CustomModifierKeys.Alt, CustomKeys.Right),
+            public string Name { get; }
+            public CustomModifierKeys CustomModifierKeys { get; }
+            public CustomKeys CustomKeys { get; }
+            public bool IsUsable { get; }
+        }
 
-            new GlobalHotKeyModel(GlobalHotKeysConst.Delay, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Left),
-            new GlobalHotKeyModel(GlobalHotKeysConst.Ahead, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Right),
+        internal static GlobalHotKeyInfo[] GlobalHotKeys = {
+            new GlobalHotKeyInfo(GlobalHotKeysConst.Pause, CustomModifierKeys.Alt, CustomKeys.S),
 
-            new GlobalHotKeyModel(GlobalHotKeysConst.IncreaseVolume, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Up),
-            new GlobalHotKeyModel(GlobalHotKeysConst.DecreaseVolume, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Down),
+            new GlobalHotKeyInfo(GlobalHotKeysConst.Prev, CustomModifierKeys.Alt, CustomKeys.Left),
+            new GlobalHotKeyInfo(GlobalHotKeysConst.Next, CustomModifierKeys.Alt, CustomKeys.Right),
 
-            new GlobalHotKeyModel(GlobalHotKeysConst.UpScreenBright, CustomModifierKeys.Alt, CustomKeys.F3),
-            new GlobalHotKeyModel(GlobalHotKeysConst.DownScreenBright, CustomModifierKeys.Alt, CustomKeys.F2),
+            new GlobalHotKeyInfo(GlobalHotKeysConst.Delay, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Left),
+            new GlobalHotKeyInfo(GlobalHotKeysConst.Ahead, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Right),
 
-            new GlobalHotKeyModel(GlobalHotKeysConst.MusicLyricDesktop, CustomModifierKeys.Alt, CustomKeys.C)
+            new GlobalHotKeyInfo(GlobalHotKeysConst.IncreaseVolume, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Up),
+            new GlobalHotKeyInfo(GlobalHotKeysConst.DecreaseVolume, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Down),
+
+            new GlobalHotKeyInfo(GlobalHotKeysConst.UpScreenBright, CustomModifierKeys.Alt, CustomKeys.F3),
+            new GlobalHotKeyInfo(GlobalHotKeysConst.DownScreenBright, CustomModifierKeys.Alt, CustomKeys.F2),
+
+            new GlobalHotKeyInfo(GlobalHotKeysConst.MusicLyricDesktop, CustomModifierKeys.Alt, CustomKeys.C)
         };
     }
 }

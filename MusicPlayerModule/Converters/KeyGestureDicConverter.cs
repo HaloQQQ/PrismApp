@@ -1,4 +1,4 @@
-﻿using IceTea.General.Utils.AppHotKey;
+﻿using IceTea.General.Utils.HotKey.App;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -9,7 +9,7 @@ namespace MusicPlayerModule.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values != null && values[0] is IDictionary<ICommand, AppHotKeyModel> dic && values[1] is ICommand command)
+            if (values != null && values[0] is IDictionary<ICommand, AppHotKey> dic && values[1] is ICommand command)
             {
                 return dic[command].SelectedKey;
             }
@@ -27,7 +27,7 @@ namespace MusicPlayerModule.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values != null && values[0] is IDictionary<ICommand, AppHotKeyModel> dic && values[1] is ICommand command)
+            if (values != null && values[0] is IDictionary<ICommand, AppHotKey> dic && values[1] is ICommand command)
             {
                 return dic[command].ModifierKey;
             }

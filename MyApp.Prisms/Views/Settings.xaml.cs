@@ -1,5 +1,5 @@
-﻿using IceTea.Atom.Utils.HotKey;
-using IceTea.Atom.Utils.HotKey.GlobalHotKey;
+﻿using IceTea.Atom.Utils.HotKey.Contracts;
+using IceTea.Atom.Utils.HotKey.Global;
 using IceTea.General.Utils;
 using System.Windows;
 using System.Windows.Controls;
