@@ -23,6 +23,7 @@ using MusicPlayerModule.Views;
 using IceTea.Atom.Utils.HotKey.Global;
 using IceTea.General.Utils.HotKey.App;
 using System.Linq;
+using IceTea.Atom.Utils.HotKey.Global.Contracts;
 
 namespace MyApp.Prisms
 {

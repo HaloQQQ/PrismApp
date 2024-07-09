@@ -6,6 +6,7 @@
     xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
     xmlns:converters="http://IceTea.Wpf.Core.com/"
     xmlns:globalHotKey="clr-namespace:IceTea.Atom.Utils.HotKey.Global;assembly=IceTea.Atom"
+    xmlns:globalHotKeyContracts="clr-namespace:IceTea.Atom.Utils.HotKey.Global.Contracts;assembly=IceTea.Atom"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:MyApp.Prisms.ViewModels"
     MinWidth="800"
@@ -18,9 +19,9 @@
         <ObjectDataProvider
             x:Key="CustomKeys"
             MethodName="GetNames"
-            ObjectType="{x:Type globalHotKey:CustomKeys}">
+            ObjectType="{x:Type globalHotKeyContracts:CustomKeys}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="globalHotKey:CustomKeys" />
+                <x:Type TypeName="globalHotKeyContracts:CustomKeys" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
@@ -89,7 +90,7 @@
                     IsEnabled="{Binding IsUsable}"
                     IsReadOnly="True"
                     ItemsSource="{Binding Source={StaticResource AppHotKeys}}"
-                    Text="{Binding SelectedKey, Converter={StaticResource Key2StringConverter}}" />
+                    SelectedValue="{Binding SelectedKey, Converter={StaticResource Key2StringConverter}}" />
 
                 <TextBox
                     MinWidth="170"

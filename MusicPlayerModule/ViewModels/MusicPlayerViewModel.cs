@@ -948,7 +948,7 @@ namespace MusicPlayerModule.ViewModels
         }
 
         #region Music应用内快捷键
-        public Dictionary<string, IHotKey<Key, ModifierKeys>> MusicBindingMap { get; private set; }
+        public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; private set; }
 
         private void InitHotkeys(IAppHotKeyManager appHotKeyManager)
         {
@@ -958,7 +958,7 @@ namespace MusicPlayerModule.ViewModels
                 appHotKeyManager.TryAddItem(groupName, CustomStatics.AppMusicHotkeys, item);
             }
 
-            this.MusicBindingMap = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
+            this.KeyGestureDic = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
         }
         #endregion
 

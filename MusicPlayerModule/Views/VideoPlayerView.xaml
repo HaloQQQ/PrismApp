@@ -47,97 +47,97 @@
         MouseWheel="Grid_MouseWheel">
         <Grid.InputBindings>
             <KeyBinding
-                Key="{Binding VideoBindingMap[播放/暂停].SelectedKey}"
+                Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"
                 Command="{Binding PlayPlayingCommand}"
                 CommandParameter="{Binding CurrentVideo}"
-                Modifiers="{Binding VideoBindingMap[播放/暂停].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" />
 
             <KeyBinding
-                Key="{Binding VideoBindingMap[设置A点].SelectedKey}"
+                Key="{Binding KeyGestureDic[设置A点].SelectedKey}"
                 Command="{Binding PointACommand}"
-                Modifiers="{Binding VideoBindingMap[设置A点].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[设置A点].ModifierKey}" />
             <KeyBinding
-                Key="{Binding VideoBindingMap[设置B点].SelectedKey}"
+                Key="{Binding KeyGestureDic[设置B点].SelectedKey}"
                 Command="{Binding PointBCommand}"
-                Modifiers="{Binding VideoBindingMap[设置B点].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[设置B点].ModifierKey}" />
             <KeyBinding
-                Key="{Binding VideoBindingMap[重置AB点].SelectedKey}"
+                Key="{Binding KeyGestureDic[重置AB点].SelectedKey}"
                 Command="{Binding ResetPointABCommand}"
-                Modifiers="{Binding VideoBindingMap[重置AB点].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[重置AB点].ModifierKey}" />
 
             <KeyBinding
-                Key="{Binding VideoBindingMap[打开文件夹].SelectedKey}"
+                Key="{Binding KeyGestureDic[打开文件夹].SelectedKey}"
                 Command="{Binding AddFolderCommand}"
-                Modifiers="{Binding VideoBindingMap[打开文件夹].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[打开文件夹].ModifierKey}" />
 
             <KeyBinding
-                Key="{Binding VideoBindingMap[返回开头].SelectedKey}"
+                Key="{Binding KeyGestureDic[返回开头].SelectedKey}"
                 Command="{x:Static ComponentCommands.MoveToHome}"
-                Modifiers="{Binding VideoBindingMap[返回开头].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[返回开头].ModifierKey}" />
 
             <KeyBinding
-                Key="{Binding VideoBindingMap[快退].SelectedKey}"
+                Key="{Binding KeyGestureDic[快退].SelectedKey}"
                 Command="{Binding DelayCommand}"
-                Modifiers="{Binding VideoBindingMap[快退].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[快退].ModifierKey}" />
 
             <KeyBinding
-                Key="{Binding VideoBindingMap[降低音量].SelectedKey}"
+                Key="{Binding KeyGestureDic[降低音量].SelectedKey}"
                 Command="{x:Static MediaCommands.DecreaseVolume}"
-                Modifiers="{Binding VideoBindingMap[降低音量].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[降低音量].ModifierKey}" />
 
             <KeyBinding
-                Key="{Binding VideoBindingMap[上一个].SelectedKey}"
+                Key="{Binding KeyGestureDic[上一个].SelectedKey}"
                 Command="{Binding PrevCommand}"
                 CommandParameter="{Binding CurrentVideo}"
-                Modifiers="{Binding VideoBindingMap[上一个].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[上一个].ModifierKey}" />
 
             <KeyBinding
-                Key="{Binding VideoBindingMap[播放/暂停].SelectedKey}"
+                Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"
                 Command="{Binding PlayPlayingCommand}"
                 CommandParameter="{Binding CurrentVideo}"
-                Modifiers="{Binding VideoBindingMap[播放/暂停].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" />
 
             <KeyBinding
-                Key="{Binding VideoBindingMap[清空播放队列].SelectedKey}"
+                Key="{Binding KeyGestureDic[清空播放队列].SelectedKey}"
                 Command="{Binding CleanPlayingCommand}"
-                Modifiers="{Binding VideoBindingMap[清空播放队列].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[清空播放队列].ModifierKey}" />
 
             <KeyBinding
-                Key="{Binding VideoBindingMap[下一个].SelectedKey}"
+                Key="{Binding KeyGestureDic[下一个].SelectedKey}"
                 Command="{Binding NextCommand}"
                 CommandParameter="{Binding CurrentVideo}"
-                Modifiers="{Binding VideoBindingMap[下一个].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[下一个].ModifierKey}" />
 
             <KeyBinding
-                Key="{Binding VideoBindingMap[停止].SelectedKey}"
+                Key="{Binding KeyGestureDic[停止].SelectedKey}"
                 Command="{Binding StopPlayVideoCommand}"
                 CommandParameter="{Binding CurrentVideo}"
-                Modifiers="{Binding VideoBindingMap[停止].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[停止].ModifierKey}" />
 
             <KeyBinding
-                Key="{Binding VideoBindingMap[清空播放队列].SelectedKey}"
+                Key="{Binding KeyGestureDic[清空播放队列].SelectedKey}"
                 Command="{Binding CleanPlayingCommand}"
-                Modifiers="{Binding VideoBindingMap[清空播放队列].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[清空播放队列].ModifierKey}" />
 
             <KeyBinding
-                Key="{Binding VideoBindingMap[播放列表].SelectedKey}"
+                Key="{Binding KeyGestureDic[播放列表].SelectedKey}"
                 Command="Open"
-                Modifiers="{Binding VideoBindingMap[播放列表].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[播放列表].ModifierKey}" />
 
             <KeyBinding
-                Key="{Binding VideoBindingMap[提高音量].SelectedKey}"
+                Key="{Binding KeyGestureDic[提高音量].SelectedKey}"
                 Command="{x:Static MediaCommands.IncreaseVolume}"
-                Modifiers="{Binding VideoBindingMap[提高音量].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[提高音量].ModifierKey}" />
 
             <KeyBinding
-                Key="{Binding VideoBindingMap[快进].SelectedKey}"
+                Key="{Binding KeyGestureDic[快进].SelectedKey}"
                 Command="{Binding AheadCommand}"
-                Modifiers="{Binding VideoBindingMap[快进].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[快进].ModifierKey}" />
 
             <KeyBinding
-                Key="{Binding VideoBindingMap[跳至结尾].SelectedKey}"
+                Key="{Binding KeyGestureDic[跳至结尾].SelectedKey}"
                 Command="{x:Static ComponentCommands.MoveToEnd}"
-                Modifiers="{Binding VideoBindingMap[跳至结尾].ModifierKey}" />
+                Modifiers="{Binding KeyGestureDic[跳至结尾].ModifierKey}" />
         </Grid.InputBindings>
 
         <MediaElement
@@ -292,7 +292,7 @@
                             Content="&#xea79;"
                             FontSize="20"
                             Style="{StaticResource IconButtonBase_Big_Scale_SkyBlue}"
-                            ToolTip="{Binding VideoBindingMap[打开文件夹].ToolTip}">
+                            ToolTip="{Binding KeyGestureDic[打开文件夹].ToolTip}">
                             <Button.InputBindings>
                                 <MouseBinding Command="{Binding AddFolderCommand}" MouseAction="RightClick" />
                             </Button.InputBindings>
@@ -331,7 +331,7 @@
                             x:Name="PlayingListButton"
                             Click="PlayingListButton_Click"
                             DockPanel.Dock="Right"
-                            ToolTip="{Binding VideoBindingMap[播放列表].ToolTip}">
+                            ToolTip="{Binding KeyGestureDic[播放列表].ToolTip}">
                             <ToggleButton.Style>
                                 <Style BasedOn="{StaticResource IconButtonBase_Small}" TargetType="ToggleButton">
                                     <Style.Triggers>
@@ -381,7 +381,7 @@
                                                     Command="{Binding CleanPlayingCommand}"
                                                     Content="&#xec7b;"
                                                     Style="{StaticResource IconButtonBase_Small}"
-                                                    ToolTip="{Binding VideoBindingMap[清空播放队列].ToolTip}" />
+                                                    ToolTip="{Binding KeyGestureDic[清空播放队列].ToolTip}" />
                                             </TextBlock>
                                         </DockPanel>
                                     </DockPanel>
