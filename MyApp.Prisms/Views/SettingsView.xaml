@@ -6,7 +6,6 @@
     xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
     xmlns:converters="http://IceTea.Wpf.Core.com/"
     xmlns:globalHotKey="clr-namespace:IceTea.Atom.Utils.HotKey.Global;assembly=IceTea.Atom"
-    xmlns:hotKeyContracts="clr-namespace:IceTea.Atom.Utils.HotKey.Contracts;assembly=IceTea.Atom"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:MyApp.Prisms.ViewModels"
     MinWidth="800"
@@ -19,9 +18,9 @@
         <ObjectDataProvider
             x:Key="CustomKeys"
             MethodName="GetNames"
-            ObjectType="{x:Type hotKeyContracts:CustomKeys}">
+            ObjectType="{x:Type globalHotKey:CustomKeys}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="hotKeyContracts:CustomKeys" />
+                <x:Type TypeName="globalHotKey:CustomKeys" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
