@@ -413,7 +413,7 @@ namespace MusicPlayerModule.ViewModels
         }
 
         #region 应用内快捷键
-        public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; private set; }
+        public Dictionary<string, IHotKey<Key, ModifierKeys>> VideoBindingMap { get; private set; }
 
         private void InitHotkeys(IConfigManager config, IAppHotKeyManager appHotKeyManager)
         {
@@ -423,7 +423,7 @@ namespace MusicPlayerModule.ViewModels
                 appHotKeyManager.TryAddItem(groupName, CustomStatics.AppVideoHotkeys, item);
             }
 
-            this.KeyGestureDic = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
+            this.VideoBindingMap = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
         }
         #endregion
 

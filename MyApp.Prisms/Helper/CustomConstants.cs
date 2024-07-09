@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Media;
 using IceTea.Atom.Utils.HotKey.Global;
+using IceTea.Atom.Utils.HotKey.Contracts;
 
 namespace MyApp.Prisms.Helper
 {

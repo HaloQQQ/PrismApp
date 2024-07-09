@@ -1,6 +1,5 @@
 ﻿using Prism.Commands;
 using Prism.Events;
-using Prism.Ioc;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -23,48 +22,41 @@ namespace MyApp.Prisms.ViewModels
     internal class SettingsViewModel : BindableBase
     {
         public SettingsViewModel(
-                IConfigManager config,
+                IConfigManager configManager,
                 ISettingManager settingManager,
                 IAppHotKeyManager appHotKeyManager,
-                IContainerProvider containerProvider,
                 IEventAggregator eventAggregator
             )
         {
-            this._config = config.AssertNotNull(nameof(IConfigManager));
             this.AppHotKeyManager = appHotKeyManager.AssertNotNull(nameof(IAppHotKeyManager));
 
-            this.ImageDir = config.ReadConfigNode(nameof(this.ImageDir));
-            this.LastMusicDir = config.ReadConfigNode("Music", nameof(this.LastMusicDir));
-            this.LastVideoDir = config.ReadConfigNode("Video", nameof(this.LastVideoDir));
+            this.LoadConfig(configManager);
 
-            this.LoadMailAccounts(config, settingManager);
-            this.LoadWindowCornerRadius(config);
+            this.LoadMailAccounts(configManager, settingManager);
 
-            this.InitCommands(containerProvider, eventAggregator, settingManager);
+            this.InitCommands(eventAggregator, settingManager, configManager);
         }
 
-        public IAppHotKeyManager AppHotKeyManager { get; private set; }
+        public IAppHotKeyManager AppHotKeyManager { get; }
 
         private IGlobalHotKeyManager _globalHotKeyManager;
         public IGlobalHotKeyManager GlobalHotKeyManager
         {
             get => _globalHotKeyManager;
-            set => SetProperty<IGlobalHotKeyManager>(ref _globalHotKeyManager, value.AssertNotNull(nameof(IGlobalHotKeyManager)));
+            internal set => SetProperty(ref _globalHotKeyManager, value);
         }
 
-        private IConfigManager _config;
-
-        private void CleanAll(IConfigManager configManager)
-        {
-            configManager.CleanAll();
-        }
-
-        private void InitCommands(IContainerProvider containerProvider, IEventAggregator eventAggregator, ISettingManager settingManager)
+        private void InitCommands(IEventAggregator eventAggregator, ISettingManager settingManager, IConfigManager configManager)
         {
             this.CleanConfigWhenExitAppCommand = new DelegateCommand(() =>
             {
-                _config.PostSetConfig -= CleanAll;
-                _config.PostSetConfig += CleanAll;
+                configManager.PostSetConfig -= CleanAll;
+                configManager.PostSetConfig += CleanAll;
+
+                void CleanAll(IConfigManager config)
+                {
+                    config.CleanAll();
+                }
             });
 
             this.AddMailAccountCommand = new DelegateCommand(() =>
@@ -210,16 +202,14 @@ namespace MyApp.Prisms.ViewModels
         public ICommand SubmitCommand { get; private set; }
         #endregion
 
-        #region Props
-        /// <summary>
-        /// 窗口圆角
-        /// </summary>
-        private CornerRadius _cornerRadius;
-
-        public CornerRadius CornerRadius
+        #region 读取和保存配置
+        private void LoadConfig(IConfigManager configManager)
         {
-            get => this._cornerRadius;
-            set => SetProperty<CornerRadius>(ref _cornerRadius, value);
+            this.LoadImageDir(configManager);
+            this.LoadLastMusicDir(configManager);
+            this.LoadLastVideoDir(configManager);
+
+            this.LoadWindowCornerRadius(configManager);
         }
 
         private void LoadWindowCornerRadius(IConfigManager configManager)
@@ -237,6 +227,55 @@ namespace MyApp.Prisms.ViewModels
             };
         }
 
+        private void LoadImageDir(IConfigManager configManager)
+        {
+            var configPath = nameof(this.ImageDir);
+
+            this.ImageDir = configManager.ReadConfigNode(configPath);
+
+            configManager.SetConfig += config =>
+            {
+                config.WriteConfigNode(this.ImageDir, configPath);
+            };
+        }
+
+        private void LoadLastMusicDir(IConfigManager configManager)
+        {
+            var configPath = new string[] { "Music", nameof(this.LastMusicDir) };
+
+            this.LastMusicDir = configManager.ReadConfigNode(configPath);
+
+            configManager.SetConfig += config =>
+            {
+                config.WriteConfigNode(this.LastMusicDir, configPath);
+            };
+        }
+
+        private void LoadLastVideoDir(IConfigManager configManager)
+        {
+            var configPath = new string[] { "Video", nameof(this.LastVideoDir) };
+
+            this.LastVideoDir = configManager.ReadConfigNode(configPath);
+
+            configManager.SetConfig += config =>
+            {
+                config.WriteConfigNode(this.LastVideoDir, configPath);
+            };
+        }
+        #endregion
+
+        #region Props
+        /// <summary>
+        /// 窗口圆角
+        /// </summary>
+        private CornerRadius _cornerRadius;
+
+        public CornerRadius CornerRadius
+        {
+            get => this._cornerRadius;
+            set => SetProperty<CornerRadius>(ref _cornerRadius, value);
+        }
+
         private bool _isEditingSetting;
 
         public bool IsEditingSetting
@@ -244,7 +283,13 @@ namespace MyApp.Prisms.ViewModels
             get => this._isEditingSetting;
             set
             {
-                SetProperty<bool>(ref _isEditingSetting, value);
+                if (SetProperty<bool>(ref _isEditingSetting, value))
+                {
+                    if (value)
+                    {
+                        this.GlobalHotKeyManager.GoBack();
+                    }
+                }
             }
         }
 
@@ -253,13 +298,7 @@ namespace MyApp.Prisms.ViewModels
         public string ImageDir
         {
             get => this._imageDir;
-            set
-            {
-                if (SetProperty<string>(ref _imageDir, value))
-                {
-                    _config.WriteConfigNode(this.ImageDir, nameof(this.ImageDir));
-                }
-            }
+            set => SetProperty<string>(ref _imageDir, value);
         }
 
         private string _lastMusicDir;
@@ -267,13 +306,7 @@ namespace MyApp.Prisms.ViewModels
         public string LastMusicDir
         {
             get => this._lastMusicDir;
-            set
-            {
-                if (SetProperty<string>(ref _lastMusicDir, value))
-                {
-                    _config.WriteConfigNode(this.LastMusicDir, "Music", nameof(this.LastMusicDir));
-                }
-            }
+            set => SetProperty<string>(ref _lastMusicDir, value);
         }
 
         private string _lastVideoDir;
@@ -281,13 +314,7 @@ namespace MyApp.Prisms.ViewModels
         public string LastVideoDir
         {
             get => this._lastVideoDir;
-            set
-            {
-                if (SetProperty<string>(ref _lastVideoDir, value))
-                {
-                    _config.WriteConfigNode(this.LastVideoDir, "Video", nameof(this.LastVideoDir));
-                }
-            }
+            set => SetProperty<string>(ref _lastVideoDir, value);
         }
         #endregion
     }

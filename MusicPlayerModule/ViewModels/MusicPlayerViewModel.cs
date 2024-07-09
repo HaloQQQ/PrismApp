@@ -578,9 +578,7 @@ namespace MusicPlayerModule.ViewModels
                 var musicDir = openFileDialog.FileName.GetParentPath();
                 this.TryRefreshLastMusicDir(musicDir);
 
-                var lyricDir = LoadLyricToMusicModel.TryGetLyricDir(musicDir);
-
-                _config.WriteConfigNode(lyricDir, CustomStatics.LyricDir_ConfigKey);
+                CustomStatics.LyricDir = LoadLyricToMusicModel.TryGetLyricDir(musicDir);
             }
         }
 
@@ -603,8 +601,6 @@ namespace MusicPlayerModule.ViewModels
 
             if (!dir.EqualsIgnoreCase(CustomStatics.LastMusicDir))
             {
-                _config.WriteConfigNode(dir, CustomStatics.LastMusicDir_ConfigKey);
-
                 CustomStatics.LastMusicDir = dir;
             }
         }
@@ -934,16 +930,14 @@ namespace MusicPlayerModule.ViewModels
 
         #endregion
 
-        private IConfigManager _config;
         public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppHotKeyManager appHotKeyManager)
         {
-            this._config = config.AssertNotNull(nameof(IConfigManager));
             this._eventAggregator = eventAggregator.AssertNotNull(nameof(IEventAggregator));
 
             this.LoadConfig(config);
 
             this.InitCommands();
-            this.InitHotkeys(config, appHotKeyManager);
+            this.InitHotkeys(appHotKeyManager);
 
             this.SubscribeEvents(eventAggregator);
 
@@ -953,10 +947,10 @@ namespace MusicPlayerModule.ViewModels
             this.DesktopLyric = new DesktopLyricViewModel(config);
         }
 
-        #region 应用内快捷键
-        public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; private set; }
+        #region Music应用内快捷键
+        public Dictionary<string, IHotKey<Key, ModifierKeys>> MusicBindingMap { get; private set; }
 
-        private void InitHotkeys(IConfigManager config, IAppHotKeyManager appHotKeyManager)
+        private void InitHotkeys(IAppHotKeyManager appHotKeyManager)
         {
             var groupName = "音乐";
             foreach (var item in CustomStatics.MusicHotKeys)
@@ -964,13 +958,13 @@ namespace MusicPlayerModule.ViewModels
                 appHotKeyManager.TryAddItem(groupName, CustomStatics.AppMusicHotkeys, item);
             }
 
-            this.KeyGestureDic = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
+            this.MusicBindingMap = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
         }
         #endregion
 
-        private void LoadConfig(IConfigManager config)
+        private void LoadConfig(IConfigManager configManager)
         {
-            var musicPlayOrder = config.ReadConfigNode(CustomStatics.MusicPlayOrder_ConfigKey);
+            var musicPlayOrder = configManager.ReadConfigNode(CustomStatics.MusicPlayOrder_ConfigKey);
 
             if (!musicPlayOrder.IsNullOrBlank())
             {
@@ -979,13 +973,17 @@ namespace MusicPlayerModule.ViewModels
                     CustomStatics.MediaPlayOrderList.First();
             }
 
-            CustomStatics.LastMusicDir = config.ReadConfigNode(CustomStatics.LastMusicDir_ConfigKey);
+            CustomStatics.LastMusicDir = configManager.ReadConfigNode(CustomStatics.LastMusicDir_ConfigKey);
 
-            CustomStatics.LyricDir = config.ReadConfigNode(CustomStatics.LyricDir_ConfigKey);
+            CustomStatics.LyricDir = configManager.ReadConfigNode(CustomStatics.LyricDir_ConfigKey);
 
-            config.SetConfig += config =>
+            configManager.SetConfig += config =>
             {
                 config.WriteConfigNode(this.CurrentPlayOrder.Description, CustomStatics.MusicPlayOrder_ConfigKey);
+
+                config.WriteConfigNode(CustomStatics.LastMusicDir, CustomStatics.LastMusicDir_ConfigKey);
+
+                config.WriteConfigNode(CustomStatics.LyricDir, CustomStatics.LyricDir_ConfigKey);
             };
         }
 

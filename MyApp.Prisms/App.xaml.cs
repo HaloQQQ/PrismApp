@@ -72,29 +72,6 @@ namespace MyApp.Prisms
             MessageBox.Show(message);
         }
 
-        protected override Window CreateShell()
-        {
-            var config = Container.Resolve<IConfigManager>();
-
-            if (config.IsTrue(CustomConstants.IsMusicPlayer))
-            {
-                ViewModelLocationProvider.Register<MusicWindow, SoftwareViewModel>();
-
-                return Container.Resolve<MusicWindow>();
-            }
-
-            if (config.IsTrue(CustomConstants.IsVideoPlayer))
-            {
-                ViewModelLocationProvider.Register<VideoWindow, SoftwareViewModel>();
-
-                return Container.Resolve<VideoWindow>();
-            }
-
-            ViewModelLocationProvider.Register<MainWindow, SoftwareViewModel>();
-
-            return Container.Resolve<MainWindow>();
-        }
-
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             App.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
@@ -138,15 +115,13 @@ namespace MyApp.Prisms
             ViewModelLocationProvider.Register<WindowTitleBarView, SoftwareViewModel>();
             ViewModelLocationProvider.Register<SwitchBackgroundView, ImageDisplayViewModel>();
 
-            containerRegistry.Register<Settings>();
-
             this.RegisterRegion();
         }
 
         private void RegisterRegion()
         {
             var regionManager = this.Container.Resolve<IRegionManager>();
-            regionManager.RegisterViewWithRegion("SettingRegion", nameof(Settings));
+            regionManager.RegisterViewWithRegion("SettingRegion", () => new SettingsView());
 
             regionManager.RegisterViewWithRegion("Smtp163MailRegion", () => new Smtp163MailView());
             regionManager.RegisterViewWithRegion("SmtpQQMailRegion", () => new SmtpQQMailView());
@@ -170,10 +145,38 @@ namespace MyApp.Prisms
             moduleCatalog.AddModule<SqlCreatorModule.SqlCreatorModule>();
         }
 
+        protected override Window CreateShell()
+        {
+            var config = Container.Resolve<IConfigManager>();
+
+            if (config.IsTrue(CustomConstants.IsMusicPlayer))
+            {
+                ViewModelLocationProvider.Register<MusicWindow, SoftwareViewModel>();
+
+                return Container.Resolve<MusicWindow>();
+            }
+
+            if (config.IsTrue(CustomConstants.IsVideoPlayer))
+            {
+                ViewModelLocationProvider.Register<VideoWindow, SoftwareViewModel>();
+
+                return Container.Resolve<VideoWindow>();
+            }
+
+            ViewModelLocationProvider.Register<MainWindow, SoftwareViewModel>();
+
+            return Container.Resolve<MainWindow>();
+        }
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
 
+            this.RegisterGloablHotKey();
+        }
+
+        private void RegisterGloablHotKey()
+        {
             IGlobalHotKeyManager globalHotKeyManager = null;
 
             globalHotKeyManager = new GlobalHotKeyManager(App.Current.MainWindow.RegisterHotKeyManager(mid =>
@@ -227,13 +230,13 @@ namespace MyApp.Prisms
 
             ContainerLocator.Current.RegisterSingleton<IGlobalHotKeyManager>(() => globalHotKeyManager);
 
+            this.Container.Resolve<SettingsViewModel>().GlobalHotKeyManager = globalHotKeyManager;
+
             var systemGroupName = "系统";
             foreach (var item in CustomConstants.GlobalHotKeys)
             {
                 globalHotKeyManager.TryAddItem(systemGroupName, CustomConstants.ConfigGlobalHotkeys, item.Name, item.CustomKeys, item.CustomModifierKeys, item.IsUsable);
             }
-
-            this.Container.Resolve<SettingsViewModel>().GlobalHotKeyManager = globalHotKeyManager;
 
             var failedKeys = globalHotKeyManager.First(g => g.GroupName == systemGroupName).Where(i => i.HasChanged).Select(i => i.ToString());
 
