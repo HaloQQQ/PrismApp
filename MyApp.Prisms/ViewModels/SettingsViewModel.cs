@@ -13,9 +13,9 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using PrismAppBasicLib.MsgEvents;
 using System.Windows;
-using IceTea.General.Utils.HotKey.App;
 using System;
 using IceTea.Atom.Utils.HotKey.Global.Contracts;
+using IceTea.General.Utils.HotKey.App.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {

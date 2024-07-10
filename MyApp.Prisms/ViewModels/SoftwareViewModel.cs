@@ -22,8 +22,8 @@ using IceTea.Wpf.Core.Contracts.MyEvents;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.Events;
 using PrismAppBasicLib.MsgEvents;
-using IceTea.General.Utils.HotKey.App;
 using IceTea.Atom.Utils.HotKey.Contracts;
+using IceTea.General.Utils.HotKey.App.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {

@@ -18,7 +18,7 @@ using IceTea.Wpf.Core.Contracts.MediaInfo;
 using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.HotKey.Contracts;
-using IceTea.General.Utils.HotKey.App;
+using IceTea.General.Utils.HotKey.App.Contracts;
 
 namespace MusicPlayerModule.ViewModels
 {
