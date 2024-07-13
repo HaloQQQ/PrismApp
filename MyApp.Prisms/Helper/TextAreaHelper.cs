@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Extensions;
-using IceTea.SocketStandard.Base;
+using IceTea.SocketStandard.Contracts;
 
 namespace MyApp.Prisms.Helper
 {

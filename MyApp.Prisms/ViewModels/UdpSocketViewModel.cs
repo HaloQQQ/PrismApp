@@ -3,10 +3,10 @@ using MyApp.Prisms.ViewModels.BaseViewModels;
 using System.Text;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
-using IceTea.SocketStandard.Base;
 using Prism.Events;
 using Prism.Ioc;
 using PrismAppBasicLib.MsgEvents;
+using IceTea.SocketStandard.Udp.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {

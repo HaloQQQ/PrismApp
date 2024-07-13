@@ -1,7 +1,7 @@
 ﻿using IceTea.Atom.BaseModels;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
-using IceTea.SocketStandard.Base;
+using IceTea.SocketStandard.Contracts;
 using System.Windows.Input;
 using Prism.Commands;
 using System.Text;

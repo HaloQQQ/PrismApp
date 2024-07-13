@@ -1,7 +1,7 @@
 ﻿using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
-using IceTea.SocketStandard.Base;
 using IceTea.SocketStandard.Tcp;
+using IceTea.SocketStandard.Tcp.Contracts;
 using IceTea.Wpf.Core.Utils;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using Prism.Commands;

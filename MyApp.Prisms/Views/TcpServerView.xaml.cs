@@ -2,13 +2,13 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using MyApp.Prisms.Helper;
-using IceTea.SocketStandard.Base;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
 using IceTea.Wpf.Core.Contracts;
 using MyApp.Prisms.ViewModels;
 using System.ComponentModel;
 using MyApp.Prisms.ViewModels.BaseViewModels;
+using IceTea.SocketStandard.Tcp.Contracts;
 
 namespace MyApp.Prisms.Views
 {
