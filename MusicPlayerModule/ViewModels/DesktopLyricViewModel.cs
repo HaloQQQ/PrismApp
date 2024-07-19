@@ -1,5 +1,6 @@
 ﻿using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
+using IceTea.Atom.Utils;
 using IceTea.General.Extensions;
 using MusicPlayerModule.Common;
 using Prism.Commands;
@@ -26,6 +27,17 @@ namespace MusicPlayerModule.ViewModels
             this.IsVertical = config.IsTrue(CustomStatics.IsVertical_ConfigKey);
             this.IsSingleLine = config.IsTrue(CustomStatics.IsSingleLine_ConfigKey);
 
+            string currentFontFamily = config.ReadConfigNode(CustomStatics.CurrentLyricFontFamily_ConfigKey);
+
+            if (currentFontFamily.IsNullOrBlank())
+            {
+                this.CurrentFontModel = this.Fonts.First();
+            }
+            else
+            {
+                this.CurrentFontModel = this.Fonts.FirstOrDefault(f => f.DisplayName.EqualsIgnoreCase(currentFontFamily));
+            }
+
             config.SetConfig += config =>
             {
                 config.WriteConfigNode(this.IsDesktopLyricShow, CustomStatics.IsDesktopLyricShow_ConfigKey);
@@ -37,6 +49,8 @@ namespace MusicPlayerModule.ViewModels
                 config.WriteConfigNode(this.CurrentLyricForeground.ColorBrush.ToString(), CustomStatics.CurrentLyricForeground_ConfigKey);
 
                 config.WriteConfigNode(this.CurrentLyricFontSize, CustomStatics.CurrentLyricFontSize_ConfigKey);
+
+                config.WriteConfigNode(this.CurrentFontModel.DisplayName, CustomStatics.CurrentLyricFontFamily_ConfigKey);
             };
 
             this.LinearGradientColorBrush = new ColorModel(config, CustomStatics.LinearGradientLyricColor_ConfigKey, 190, 250, 253);
@@ -88,6 +102,7 @@ namespace MusicPlayerModule.ViewModels
         /// </summary>
         public ICommand SelectLyricColorCommand { get; }
 
+        #region 歌词颜色
         public IEnumerable<SelectableColorBrush> DefaultLyricForegrounds { get; } = new List<SelectableColorBrush>()
         {
             new SelectableColorBrush("#FD6C6C".GetBrushFromString()),
@@ -126,6 +141,27 @@ namespace MusicPlayerModule.ViewModels
                 }
             }
         }
+        #endregion
+
+        #region 歌词字体
+        public IEnumerable<FontModel> Fonts { get; } =
+        [
+          new FontModel("微软雅黑", "Microsoft YaHei"),
+          new FontModel("宋体", "SimSun"),
+          new FontModel("黑体", "SimHei"),
+          new FontModel("微软正黑体", "Microsoft JhengHei"),
+          new FontModel("楷体", "KaiTi"),
+          new FontModel("细明体", "MingLiU")
+        ];
+
+        private FontModel _fontModel;
+        public FontModel CurrentFontModel
+        {
+            get => _fontModel;
+            set { SetProperty(ref _fontModel, value); }
+        }
+
+        #endregion
 
         private bool _isDesktopLyricShow;
 
@@ -158,6 +194,20 @@ namespace MusicPlayerModule.ViewModels
             get => this._currentLyricFontSize;
             set => SetProperty<double>(ref _currentLyricFontSize, value);
         }
+    }
+
+    internal class FontModel
+    {
+        public FontModel(string displayName, string familyName)
+        {
+            DisplayName = displayName.AssertNotNull(nameof(displayName));
+            FamilyName = familyName.AssertNotNull(nameof(familyName));
+            Family = new FontFamily(familyName);
+        }
+
+        public FontFamily Family { get; }
+        public string DisplayName { get; }
+        public string FamilyName { get; }
     }
 
     internal class SelectableColorBrush : BindableBase

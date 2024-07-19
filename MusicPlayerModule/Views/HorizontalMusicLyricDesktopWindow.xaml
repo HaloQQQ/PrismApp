@@ -182,6 +182,7 @@
                     HorizontalAlignment="Left"
                     Content="{Binding CurrentMusic.OneLine}"
                     ContentTemplate="{StaticResource HorizentalDesktopLyric}"
+                    FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                     MouseEnter="DesktopLyricPanel_Visible"
                     Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToHiddenVisibleConverter}}" />
 
@@ -189,6 +190,7 @@
                     HorizontalAlignment="Right"
                     Content="{Binding CurrentMusic.AnotherLine}"
                     ContentTemplate="{StaticResource HorizentalDesktopLyric}"
+                    FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                     MouseEnter="DesktopLyricPanel_Visible"
                     Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToHiddenVisibleConverter}}" />
             </StackPanel>
@@ -197,6 +199,7 @@
                 HorizontalAlignment="Center"
                 Content="{Binding CurrentMusic.CurrentLine}"
                 ContentTemplate="{StaticResource HorizentalDesktopLyric}"
+                FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                 MouseEnter="DesktopLyricPanel_Visible"
                 Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BooleanToVisibilityConverter}}" />
         </Grid>

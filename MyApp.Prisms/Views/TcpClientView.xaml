@@ -132,11 +132,7 @@
                 Grid.Row="1"
                 Background="Transparent"
                 ContextMenu="{StaticResource ForMessageBoard}"
-                DockPanel.Dock="Bottom">
-                <RichTextBox.CommandBindings>
-                    <CommandBinding Command="Open" />
-                </RichTextBox.CommandBindings>
-            </RichTextBox>
+                DockPanel.Dock="Bottom" />
 
             <Viewbox
                 Grid.Row="2"

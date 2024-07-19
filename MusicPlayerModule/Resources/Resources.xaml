@@ -424,6 +424,7 @@
                     <Grid HorizontalAlignment="Center">
                         <TextBlock
                             HorizontalAlignment="Left"
+                            FontFamily="{Binding DataContext.DesktopLyric.CurrentFontModel.Family, RelativeSource={RelativeSource AncestorType=ListBox}}"
                             FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ListBox}}"
                             Text="{Binding Words}"
                             TextWrapping="NoWrap" />
@@ -431,6 +432,7 @@
                         <TextBlock
                             HorizontalAlignment="Left"
                             ClipToBounds="True"
+                            FontFamily="{Binding DataContext.DesktopLyric.CurrentFontModel.Family, RelativeSource={RelativeSource AncestorType=ListBox}}"
                             FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ListBox}}"
                             Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=ListBox}}"
                             Text="{Binding Words}"

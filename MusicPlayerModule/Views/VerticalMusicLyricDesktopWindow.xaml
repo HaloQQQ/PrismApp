@@ -244,6 +244,7 @@
                     VerticalAlignment="Top"
                     Content="{Binding CurrentMusic.OneLine}"
                     ContentTemplateSelector="{StaticResource LyricDataTemlateSelector}"
+                    FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                     MouseEnter="DesktopLyricPanel_Visible"
                     Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToHiddenVisibleConverter}}" />
 
@@ -251,6 +252,7 @@
                     VerticalAlignment="Bottom"
                     Content="{Binding CurrentMusic.AnotherLine}"
                     ContentTemplateSelector="{StaticResource LyricDataTemlateSelector}"
+                    FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                     MouseEnter="DesktopLyricPanel_Visible"
                     Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToHiddenVisibleConverter}}" />
             </StackPanel>
@@ -259,6 +261,7 @@
                 VerticalAlignment="Center"
                 Content="{Binding CurrentMusic.CurrentLine}"
                 ContentTemplateSelector="{StaticResource LyricDataTemlateSelector}"
+                FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                 MouseEnter="DesktopLyricPanel_Visible"
                 Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BooleanToVisibilityConverter}}" />
         </Grid>
