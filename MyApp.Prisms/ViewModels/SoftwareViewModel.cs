@@ -34,14 +34,14 @@ namespace MyApp.Prisms.ViewModels
                 ImageDisplayViewModel imageDisplayViewModel,
                 SettingsViewModel settings,
                 IConfigManager config,
-                IAppHotKeyManager appHotKeyManager,
+                IAppConfigFileHotKeyManager appConfigFileHotKeyManager,
                 IEventAggregator eventAggregator
             )
         {
             this.UserContext = userContext;
             this.Settings = settings;
             this._imageDisplayViewModel = imageDisplayViewModel;
-            this.AppHotKeyManager = appHotKeyManager;
+            this.AppConfigFileHotKeyManager = appConfigFileHotKeyManager;
 
             var bitmap = new QRCoderCreator().GenerateQRCodeImage(new QRModel("Hello3Q", Color.GreenYellow, Color.White, 20));
 
@@ -52,7 +52,7 @@ namespace MyApp.Prisms.ViewModels
             eventAggregator.GetEvent<DialogMessageEvent>().Subscribe(item => this.DialogMessage = item);
 
             this.LoadConfig(config);
-            this.InitHotkeys(config, appHotKeyManager);
+            this.InitHotkeys(config, appConfigFileHotKeyManager);
 
             this.SubscribeCustomCommandEvent();
 
@@ -61,7 +61,7 @@ namespace MyApp.Prisms.ViewModels
             this.InitBackgroundSwitch(eventAggregator);
         }
 
-        public IAppHotKeyManager AppHotKeyManager { get; }
+        public IAppConfigFileHotKeyManager AppConfigFileHotKeyManager { get; }
 
         public ICommand SwitchThemeCommand { get; private set; }
 
@@ -268,15 +268,16 @@ namespace MyApp.Prisms.ViewModels
         #region 窗口标题栏快捷键
         public Dictionary<string, IHotKey<Key, ModifierKeys>> WindowKeyBindingMap { get; private set; }
 
-        private void InitHotkeys(IConfigManager config, IAppHotKeyManager appHotKeyManager)
+        private void InitHotkeys(IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
         {
             var groupName = "窗口";
+            appConfigFileHotKeyManager.TryAdd(groupName, PreDefinedHotKeys.ConfigWindowAppHotKeys);
             foreach (var item in PreDefinedHotKeys.WindowAppHotKeys)
             {
-                appHotKeyManager.TryAddItem(groupName, PreDefinedHotKeys.ConfigWindowAppHotKeys, item);
+                appConfigFileHotKeyManager.TryRegisterItem(groupName, item);
             }
 
-            this.WindowKeyBindingMap = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
+            this.WindowKeyBindingMap = appConfigFileHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
         }
         #endregion
 

@@ -309,13 +309,13 @@
                 <ListBox
                     HorizontalAlignment="Stretch"
                     ItemContainerStyle="{StaticResource ListBoxItem_General}"
-                    ItemsSource="{Binding DataContext.GlobalHotKeyManager, RelativeSource={RelativeSource AncestorType=TabControl}}" />
+                    ItemsSource="{Binding DataContext.GlobaConfigFilelHotKeyManager, RelativeSource={RelativeSource AncestorType=TabControl}}" />
             </TabItem>
             <TabItem Header="应用快捷键">
                 <ListBox
                     HorizontalAlignment="Stretch"
                     ItemContainerStyle="{StaticResource ListBoxItem_General}"
-                    ItemsSource="{Binding DataContext.AppHotKeyManager, RelativeSource={RelativeSource AncestorType=TabControl}}" />
+                    ItemsSource="{Binding DataContext.AppConfigFileHotKeyManager, RelativeSource={RelativeSource AncestorType=TabControl}}" />
             </TabItem>
             <TabItem Header="常用">
                 <StackPanel>

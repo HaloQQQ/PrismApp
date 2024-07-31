@@ -149,10 +149,6 @@ namespace MyApp.Prisms.Views
                     e.CanExecute = !forbid;
                 }
             }
-            else if (e.Command == NavigationCommands.Refresh)
-            {
-                e.CanExecute = this.rhTxt.Document.Blocks.Count > 0 || (this._tcpSocketViewModel != null && !string.IsNullOrEmpty(this._tcpSocketViewModel.SendMessage?.Trim()));
-            }
         }
     }
 }

@@ -1120,7 +1120,6 @@
                                         </ListBox.ItemsPanel>
                                         <ListBox.ItemContainerStyle>
                                             <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
-                                                <Setter Property="VerticalContentAlignment" Value="Bottom" />
                                                 <Setter Property="attaches:MyAttachProperty.CornerRadius" Value="10" />
                                                 <Style.Triggers>
                                                     <Trigger Property="IsSelected" Value="True">
@@ -1132,9 +1131,8 @@
                                         <ListBox.ItemTemplate>
                                             <DataTemplate DataType="viewmodels:FontModel">
                                                 <TextBlock
-                                                    Width="60"
-                                                    Height="40"
-                                                    HorizontalAlignment="Center"
+                                                    MinWidth="60"
+                                                    Padding="10,5"
                                                     FontSize="14"
                                                     Text="{Binding DisplayName}"
                                                     TextAlignment="Center"
@@ -1627,7 +1625,7 @@
                             IsChecked="{Binding DesktopLyric.IsDesktopLyricShow, Mode=OneWay}"
                             ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
                             <ToggleButton.Style>
-                                <Style BasedOn="{StaticResource ExpandIconToggleButton}" TargetType="ToggleButton">
+                                <Style BasedOn="{StaticResource ColoredExpandIconToggleButton}" TargetType="ToggleButton">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding DisplayPlaying.Count}" Value="0">
                                             <Setter Property="IsEnabled" Value="False" />

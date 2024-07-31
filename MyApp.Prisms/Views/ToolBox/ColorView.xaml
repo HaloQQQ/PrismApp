@@ -47,7 +47,7 @@
                 Grid.Column="0"
                 Orientation="Horizontal">
                 <TextBlock
-                    Width="120"
+                    Width="130"
                     Margin="10,0"
                     VerticalAlignment="Center"
                     Text="十六进制颜色码:"
@@ -63,7 +63,7 @@
                 Grid.Column="0"
                 Orientation="Horizontal">
                 <TextBlock
-                    Width="120"
+                    Width="130"
                     Margin="10,0"
                     VerticalAlignment="Center"
                     Text="ARGB数值:"

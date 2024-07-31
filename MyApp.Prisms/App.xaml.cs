@@ -102,7 +102,7 @@ namespace MyApp.Prisms
 
             Helper.Helper.Log(CustomConstants.Software_Log_Dir, $"进程{processName}启动成功!");
 
-            containerRegistry.RegisterSingleton<IAppHotKeyManager, AppHotKeyManager>();
+            containerRegistry.RegisterSingleton<IAppConfigFileHotKeyManager, AppConfigFileHotKeyManager>();
             containerRegistry.RegisterSingleton<ISettingManager, SettingManager>();
 
             containerRegistry.RegisterSingleton<ImageDisplayViewModel>();
@@ -179,11 +179,11 @@ namespace MyApp.Prisms
 
         private void RegisterGloablHotKey()
         {
-            IGlobalHotKeyManager globalHotKeyManager = null;
+            IGlobalConfigFileHotKeyManager globalConfigFileHotKeyManager = null;
 
-            globalHotKeyManager = new GlobalHotKeyManager(App.Current.MainWindow.RegisterHotKeyManager(mid =>
+            globalConfigFileHotKeyManager = new GlobalConfigFileHotKeyManager(App.Current.MainWindow.RegisterHotKeyManager(mid =>
             {
-                foreach (var group in globalHotKeyManager)
+                foreach (var group in globalConfigFileHotKeyManager)
                 {
                     foreach (var item in group)
                     {
@@ -230,17 +230,19 @@ namespace MyApp.Prisms
                 }
             }), this.Container.Resolve<IConfigManager>());
 
-            ContainerLocator.Current.RegisterSingleton<IGlobalHotKeyManager>(() => globalHotKeyManager);
+            ContainerLocator.Current.RegisterSingleton<IGlobalConfigFileHotKeyManager>(() => globalConfigFileHotKeyManager);
 
-            this.Container.Resolve<SettingsViewModel>().GlobalHotKeyManager = globalHotKeyManager;
+            this.Container.Resolve<SettingsViewModel>().GlobaConfigFilelHotKeyManager = globalConfigFileHotKeyManager;
 
             var systemGroupName = "系统";
+            globalConfigFileHotKeyManager.TryAdd(systemGroupName, CustomConstants.ConfigGlobalHotkeys);
+
             foreach (var item in CustomConstants.GlobalHotKeys)
             {
-                globalHotKeyManager.TryAddItem(systemGroupName, CustomConstants.ConfigGlobalHotkeys, item.Name, item.CustomKeys, item.CustomModifierKeys, item.IsUsable);
+                globalConfigFileHotKeyManager.TryRegisterItem(systemGroupName, item.Name, item.CustomKeys, item.CustomModifierKeys, item.IsUsable);
             }
 
-            var failedKeys = globalHotKeyManager.First(g => g.GroupName == systemGroupName).Where(i => i.HasChanged).Select(i => i.ToString());
+            var failedKeys = globalConfigFileHotKeyManager.First(g => g.GroupName == systemGroupName).Where(i => i.HasChanged).Select(i => i.ToString());
 
             if (failedKeys.Any())
             {

@@ -397,7 +397,7 @@ namespace MusicPlayerModule.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private readonly IConfigManager _config;
 
-        public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppHotKeyManager appHotKeyManager)
+        public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
         {
             this._eventAggregator = eventAggregator.AssertNotNull(nameof(IEventAggregator));
             this._config = config.AssertNotNull(nameof(IConfigManager));
@@ -407,7 +407,7 @@ namespace MusicPlayerModule.ViewModels
             this.LoadConfig(config);
 
             this.InitCommands();
-            this.InitHotkeys(config, appHotKeyManager);
+            this.InitHotkeys(config, appConfigFileHotKeyManager);
 
             this.SubscribeEvents();
         }
@@ -415,15 +415,16 @@ namespace MusicPlayerModule.ViewModels
         #region 应用内快捷键
         public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; private set; }
 
-        private void InitHotkeys(IConfigManager config, IAppHotKeyManager appHotKeyManager)
+        private void InitHotkeys(IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
         {
             var groupName = "视频";
+            appConfigFileHotKeyManager.TryAdd(groupName, CustomStatics.AppVideoHotkeys);
             foreach (var item in CustomStatics.VideoHotKeys)
             {
-                appHotKeyManager.TryAddItem(groupName, CustomStatics.AppVideoHotkeys, item);
+                appConfigFileHotKeyManager.TryRegisterItem(groupName, item);
             }
 
-            this.KeyGestureDic = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
+            this.KeyGestureDic = appConfigFileHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
         }
         #endregion
 

@@ -930,14 +930,14 @@ namespace MusicPlayerModule.ViewModels
 
         #endregion
 
-        public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppHotKeyManager appHotKeyManager)
+        public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
         {
             this._eventAggregator = eventAggregator.AssertNotNull(nameof(IEventAggregator));
 
             this.LoadConfig(config);
 
             this.InitCommands();
-            this.InitHotkeys(appHotKeyManager);
+            this.InitHotkeys(appConfigFileHotKeyManager);
 
             this.SubscribeEvents(eventAggregator);
 
@@ -950,15 +950,16 @@ namespace MusicPlayerModule.ViewModels
         #region Music应用内快捷键
         public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; private set; }
 
-        private void InitHotkeys(IAppHotKeyManager appHotKeyManager)
+        private void InitHotkeys(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
         {
             var groupName = "音乐";
+            appConfigFileHotKeyManager.TryAdd(groupName, CustomStatics.AppMusicHotkeys);
             foreach (var item in CustomStatics.MusicHotKeys)
             {
-                appHotKeyManager.TryAddItem(groupName, CustomStatics.AppMusicHotkeys, item);
+                appConfigFileHotKeyManager.TryRegisterItem(groupName, item);
             }
 
-            this.KeyGestureDic = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
+            this.KeyGestureDic = appConfigFileHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
         }
         #endregion
 

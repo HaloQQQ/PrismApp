@@ -24,11 +24,11 @@ namespace MyApp.Prisms.ViewModels
         public SettingsViewModel(
                 IConfigManager configManager,
                 ISettingManager settingManager,
-                IAppHotKeyManager appHotKeyManager,
+                IAppConfigFileHotKeyManager appConfigFileHotKeyManager,
                 IEventAggregator eventAggregator
             )
         {
-            this.AppHotKeyManager = appHotKeyManager.AssertNotNull(nameof(IAppHotKeyManager));
+            this.AppConfigFileHotKeyManager = appConfigFileHotKeyManager.AssertNotNull(nameof(IAppConfigFileHotKeyManager));
 
             this.LoadConfig(configManager);
 
@@ -37,13 +37,13 @@ namespace MyApp.Prisms.ViewModels
             this.InitCommands(eventAggregator, settingManager, configManager);
         }
 
-        public IAppHotKeyManager AppHotKeyManager { get; }
+        public IAppConfigFileHotKeyManager AppConfigFileHotKeyManager { get; }
 
-        private IGlobalHotKeyManager _globalHotKeyManager;
-        public IGlobalHotKeyManager GlobalHotKeyManager
+        private IGlobalConfigFileHotKeyManager _globalConfigFileHotKeyManager;
+        public IGlobalConfigFileHotKeyManager GlobaConfigFilelHotKeyManager
         {
-            get => _globalHotKeyManager;
-            internal set => SetProperty(ref _globalHotKeyManager, value);
+            get => _globalConfigFileHotKeyManager;
+            internal set => SetProperty(ref _globalConfigFileHotKeyManager, value);
         }
 
         private void InitCommands(IEventAggregator eventAggregator, ISettingManager settingManager, IConfigManager configManager)
@@ -287,7 +287,7 @@ namespace MyApp.Prisms.ViewModels
                 {
                     if (value)
                     {
-                        this.GlobalHotKeyManager.GoBack();
+                        this.GlobaConfigFilelHotKeyManager.GoBack();
                     }
                 }
             }

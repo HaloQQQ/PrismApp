@@ -149,7 +149,7 @@ namespace MusicPlayerModule.ViewModels
           new FontModel("微软雅黑", "Microsoft YaHei"),
           new FontModel("宋体", "SimSun"),
           new FontModel("黑体", "SimHei"),
-          new FontModel("微软正黑体", "Microsoft JhengHei"),
+          new FontModel("微软正黑", "Microsoft JhengHei"),
           new FontModel("楷体", "KaiTi"),
           new FontModel("细明体", "MingLiU")
         ];

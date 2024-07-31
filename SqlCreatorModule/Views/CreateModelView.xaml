@@ -167,7 +167,7 @@
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Binding="{Binding DataType}" Header="数据类型" />
                 <DataGridComboBoxColumn
-                    Header="数据类型"
+                    Header="日期模式"
                     IsReadOnly="True"
                     ItemsSource="{Binding Source={StaticResource EnumDataSetDateTime}}"
                     SelectedValueBinding="{Binding DateTimeMode, Mode=OneTime}" />
