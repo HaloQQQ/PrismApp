@@ -6,22 +6,15 @@
 
     <!--  VirtualizingStackPanel  -->
     <Style x:Key="VirtualStackPanelImageSelector" TargetType="VirtualizingStackPanel">
-        <Setter Property="Width" Value="300" />
-
-        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
     </Style>
 
     <!--  VirtualizingWrapPanel  -->
     <Style x:Key="VirtualWrapPanelImageSelector" TargetType="panelCtrls:VirtualizingWrapPanel">
-        <Setter Property="ChildHeight" Value="100" />
-        <Setter Property="ChildWidth" Value="100" />
+        <Setter Property="ChildHeight" Value="98" />
+        <Setter Property="ChildWidth" Value="98" />
 
         <Setter Property="ScrollOffset" Value="100" />
-
-        <Setter Property="Width" Value="300" />
-
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="VerticalAlignment" Value="Stretch" />
     </Style>
 
     <!--  菜单  -->

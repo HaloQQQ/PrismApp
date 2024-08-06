@@ -79,10 +79,6 @@
             </DockPanel>
         </Grid>
 
-        <views:SwitchBackgroundView Width="300" HorizontalAlignment="Right">
-            <views:SwitchBackgroundView.RenderTransform>
-                <TranslateTransform X="300" />
-            </views:SwitchBackgroundView.RenderTransform>
-        </views:SwitchBackgroundView>
+        <views:SwitchBackgroundView HorizontalAlignment="Right" />
     </Grid>
 </Window>

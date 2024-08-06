@@ -87,7 +87,7 @@ namespace MyApp.Prisms.Views
         // 隐藏侧边栏
         private void SlideIn()
         {
-            SwitchBackgroundSlider_MoveTo(Width);
+            SwitchBackgroundSlider_MoveTo(this.ActualWidth);
         }
 
         #endregion

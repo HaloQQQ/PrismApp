@@ -10,6 +10,7 @@ using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Contracts;
 using System.Windows.Input;
 using Prism.Commands;
+using System.Threading;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -71,8 +72,6 @@ namespace MyApp.Prisms.ViewModels
 
         public ImageDisplayViewModel(IConfigManager config)
         {
-            this.Data.CollectionChanged += (sender, e) => CallModel(nameof(this.ActualData));
-
             this.RefreshData(config);
 
             this.RefreshCommand = new DelegateCommand(() => this.RefreshData(config));
@@ -106,9 +105,9 @@ namespace MyApp.Prisms.ViewModels
                         Data.Add(image);
                     });
 
-                    await Task.Delay(20);
+                    Thread.Sleep(20);
                 }
-            }).ContinueWith(task => this.IsLoading = false);
+            }).ContinueWith(task => CallModel(nameof(this.ActualData))).ContinueWith(task => this.IsLoading = false);
         }
 
         public ICommand RefreshCommand { get; private set; }
