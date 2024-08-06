@@ -15,7 +15,7 @@ namespace MyApp.Prisms.ViewModels
 
         protected override void InitEmailTransfer()
         {
-            base._emailTransfer = new SmtpMail163Transfer(null);
+            base._emailTransfer = new SmtpMail163Manager(null);
         }
     }
 }

@@ -16,6 +16,7 @@ using System.Windows;
 using System;
 using IceTea.Atom.Utils.HotKey.Global.Contracts;
 using IceTea.General.Utils.HotKey.App.Contracts;
+using CustomControlsDemoModule.Views;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -150,6 +151,11 @@ namespace MyApp.Prisms.ViewModels
 
                 eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(message, 4));
             });
+
+            this._2048Command = new DelegateCommand(() => 
+            {
+                new _2048Window().ShowDialog();
+            });
         }
 
         #region Emails
@@ -178,6 +184,8 @@ namespace MyApp.Prisms.ViewModels
         #endregion
 
         #region Commands
+
+        public ICommand _2048Command { get; private set; }
 
         public ICommand CleanConfigWhenExitAppCommand { get; private set; }
 

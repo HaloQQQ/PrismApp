@@ -15,7 +15,7 @@ namespace MyApp.Prisms.ViewModels
 
         protected override void InitEmailTransfer()
         {
-            base._emailTransfer = new SmtpMailQQTransfer(null);
+            base._emailTransfer = new SmtpMailQQManager(null);
         }
     }
 }

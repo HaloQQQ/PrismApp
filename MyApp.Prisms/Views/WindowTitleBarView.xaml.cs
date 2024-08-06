@@ -37,12 +37,12 @@ namespace MyApp.Prisms.Views
 
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                if (Helper.Helper.IsInPopup(e.Source as FrameworkElement))
+                Window window = Window.GetWindow(this);
+
+                if(window == null)
                 {
                     return;
                 }
-
-                Window window = Window.GetWindow(this);
 
                 if (window.WindowState == WindowState.Maximized)
                 {

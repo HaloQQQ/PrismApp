@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PrismAppBasicLib\PrismAppBasicLib.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\TextBoxesView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ToggleButtonsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>

@@ -108,6 +108,8 @@
                                 <Setter Property="IsEnabled" Value="True" />
                                 <Setter Property="Margin" Value="3,0" />
 
+                                <Setter Property="Width" Value="135" />
+
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Socket.IsConnected}" Value="True">
                                         <Setter Property="IsEnabled" Value="False" />

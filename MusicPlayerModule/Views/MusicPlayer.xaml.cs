@@ -450,40 +450,6 @@ namespace MusicPlayerModule.Views
             e.Handled = true;
         }
 
-        private void FavoritesKeyWordsTxtBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-
-            var element = this.FavoritesKeyWordsTxt;
-            if (element.Text?.Length == 0 && element.Width > 70)
-            {
-                var storyboard = new Storyboard();
-
-                var widthAnimation = new DoubleAnimation();
-                widthAnimation.To = 70;
-                widthAnimation.Duration = TimeSpan.FromSeconds(0.2);
-
-                Storyboard.SetTarget(widthAnimation, element);
-                Storyboard.SetTargetProperty(widthAnimation, new PropertyPath("Width"));
-
-                storyboard.Children.Add(widthAnimation);
-
-                var visibilityAnimation = new ObjectAnimationUsingKeyFrames();
-                var keyFrame = new DiscreteObjectKeyFrame();
-                keyFrame.KeyTime = TimeSpan.FromSeconds(0.2);
-                keyFrame.Value = Visibility.Visible;
-
-                var target = element.GetVisualChildObject<FrameworkElement>(element => element.Name == "Txt");
-
-                Storyboard.SetTarget(visibilityAnimation, target);
-                Storyboard.SetTargetProperty(visibilityAnimation, new PropertyPath("Visibility"));
-
-                storyboard.Children.Add(visibilityAnimation);
-
-                storyboard.Begin();
-            }
-        }
-
         private void PlayingListButton_Click(object sender, RoutedEventArgs e)
         {
             e.Handled = true;

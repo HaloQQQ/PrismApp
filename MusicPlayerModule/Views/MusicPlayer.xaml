@@ -315,8 +315,6 @@
 
                                 <Setter Property="IsEnabled" Value="{Binding IsLoading, Converter={StaticResource OppositeBoolConverter}}" />
 
-                                <EventSetter Event="LostFocus" Handler="FavoritesKeyWordsTxtBox_LostFocus" />
-
                                 <Setter Property="Text" Value="{Binding FavoriteListFilteKeyWords, UpdateSourceTrigger=PropertyChanged}" />
 
                                 <Style.Triggers>

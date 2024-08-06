@@ -20,7 +20,7 @@ namespace SqlCreatorModule
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            _regionManager.RegisterViewWithRegion<CreateModelView>(nameof(CreateModelView));
+            _regionManager.RegisterViewWithRegion<CreateModelView>("CreateModelRegion");
         }
     }
 }

@@ -45,14 +45,20 @@
                 Style="{StaticResource OnlyDownViewbox}">
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
                     <TextBlock Style="{StaticResource Lable}" Text="本机IP：" />
-                    <ComboBox Style="{StaticResource cmbIP}" Text="{Binding Ip, UpdateSourceTrigger=PropertyChanged}" />
+                    <ComboBox
+                        Width="135"
+                        Style="{StaticResource cmbIP}"
+                        Text="{Binding Ip, UpdateSourceTrigger=PropertyChanged}" />
 
                     <TextBlock Style="{StaticResource Lable}" Text="本机本机端口：" />
                     <TextBox
                         IsEnabled="{Binding Socket.IsConnected, Converter={StaticResource OppositeBoolConverter}}"
                         Style="{StaticResource TextBox_DisplayInfo}"
                         Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" />
-                    <TextBlock Style="{StaticResource Lable}" Text="目标IP：" />
+                    <TextBlock
+                        Width="135"
+                        Style="{StaticResource Lable}"
+                        Text="目标IP：" />
 
                     <ComboBox Style="{StaticResource cmbIP}" Text="{Binding RemoteIp, UpdateSourceTrigger=PropertyChanged}" />
 

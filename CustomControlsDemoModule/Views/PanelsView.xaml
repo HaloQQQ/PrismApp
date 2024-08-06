@@ -1,0 +1,266 @@
+﻿<UserControl
+    x:Class="CustomControlsDemoModule.Views.PanelsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:icetea="http://IceTea.Wpf.Core.com/"
+    xmlns:local="clr-namespace:CustomControlsDemoModule.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="clr-namespace:System;assembly=netstandard">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <x:Array x:Key="Data" Type="system:Double">
+                <system:Double>1</system:Double>
+                <system:Double>2</system:Double>
+                <system:Double>3</system:Double>
+                <system:Double>4</system:Double>
+                <system:Double>5</system:Double>
+            </x:Array>
+
+            <Style x:Key="VirtualWrapPanel" TargetType="icetea:VirtualizingWrapPanel">
+                <Setter Property="ChildHeight" Value="80" />
+                <Setter Property="ChildWidth" Value="80" />
+
+                <Setter Property="ScrollOffset" Value="10" />
+
+                <Setter Property="HorizontalAlignment" Value="Left" />
+                <Setter Property="VerticalAlignment" Value="Stretch" />
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <UniformGrid Columns="4" Rows="3">
+        <Grid Background="Purple">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[2].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[0].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[0].Items[0].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <TextBlock Text="Grid" />
+        </Grid>
+
+        <UniformGrid
+            Background="DarkBlue"
+            Columns="1"
+            Rows="2">
+            <UniformGrid.Style>
+                <Style TargetType="UniformGrid">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[2].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[0].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[0].Items[1].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </UniformGrid.Style>
+
+            <TextBlock Text="UniformGrid" />
+        </UniformGrid>
+
+        <StackPanel Background="Red">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[2].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[1].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[1].Items[0].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+
+            <TextBlock Text="StackPanel" />
+        </StackPanel>
+
+        <WrapPanel Background="Blue">
+            <WrapPanel.Style>
+                <Style TargetType="WrapPanel">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[2].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[1].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[1].Items[1].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </WrapPanel.Style>
+
+            <TextBlock Text="WrapPanel" />
+        </WrapPanel>
+
+        <DockPanel Background="Green">
+            <DockPanel.Style>
+                <Style TargetType="DockPanel">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[2].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[1].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[1].Items[2].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DockPanel.Style>
+
+            <TextBlock DockPanel.Dock="Top" Text="DockPanel" />
+        </DockPanel>
+
+        <Canvas
+            MinWidth="80"
+            MinHeight="80"
+            Background="Coral">
+            <Canvas.Style>
+                <Style TargetType="Canvas">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[2].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[2].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Canvas.Style>
+
+            <TextBlock Text="Canvas" />
+        </Canvas>
+
+        <VirtualizingStackPanel Background="LightPink">
+            <VirtualizingStackPanel.Style>
+                <Style TargetType="VirtualizingStackPanel">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[2].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[3].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[3].Items[0].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </VirtualizingStackPanel.Style>
+
+            <TextBlock Text="VirtualizingStackPanel" />
+        </VirtualizingStackPanel>
+
+        <ListBox
+            MaxHeight="160"
+            HorizontalContentAlignment="Center"
+            ItemsSource="{StaticResource Data}">
+            <ListBox.Style>
+                <Style BasedOn="{StaticResource {x:Type ListBox}}" TargetType="ListBox">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[2].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[3].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[3].Items[1].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.Style>
+
+            <ListBox.ItemContainerStyle>
+                <Style BasedOn="{StaticResource ListBoxItem_SelectedBackground}" TargetType="ListBoxItem">
+                    <Setter Property="attaches:MyAttachProperty.CornerRadius" Value="10" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <icetea:VirtualizingWrapPanel Style="{StaticResource VirtualWrapPanel}" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ListBox>
+
+        <Border Background="Brown" CornerRadius="10">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[2].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[4].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <TextBlock Margin="20,0" Text="Border" />
+        </Border>
+
+        <ScrollViewer Background="Chocolate">
+            <ScrollViewer.Style>
+                <Style BasedOn="{StaticResource {x:Type ScrollViewer}}" TargetType="ScrollViewer">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[2].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[2].Items[5].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ScrollViewer.Style>
+
+            <Border Height="100">
+                <TextBlock Text="ScrollViewer" />
+            </Border>
+        </ScrollViewer>
+    </UniformGrid>
+</UserControl>

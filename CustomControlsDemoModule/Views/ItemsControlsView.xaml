@@ -1,0 +1,84 @@
+﻿<UserControl
+    x:Class="CustomControlsDemoModule.Views.ItemsControlsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CustomControlsDemoModule.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:CustomControlsDemoModule.Models">
+    <UniformGrid Columns="3" Rows="3">
+        <Menu ItemsSource="{Binding Menus}">
+            <Menu.Style>
+                <Style BasedOn="{StaticResource {x:Type Menu}}" TargetType="Menu">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[4].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[4].Items[0].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Menu.Style>
+
+            <Menu.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type models:MenuNode}" ItemsSource="{Binding Items}">
+                    <ContentPresenter Content="{Binding Name}" />
+                </HierarchicalDataTemplate>
+            </Menu.ItemTemplate>
+        </Menu>
+
+        <Button Content="上下文菜单">
+            <Button.Style>
+                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[4].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[4].Items[1].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+
+            <Button.ContextMenu>
+                <ContextMenu ItemsSource="{Binding Menus}">
+                    <ContextMenu.ItemTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type models:MenuNode}" ItemsSource="{Binding Items}">
+                            <ContentPresenter Content="{Binding Name}" />
+                        </HierarchicalDataTemplate>
+                    </ContextMenu.ItemTemplate>
+                </ContextMenu>
+            </Button.ContextMenu>
+        </Button>
+
+        <TreeView ItemsSource="{Binding Controls}">
+            <TreeView.Style>
+                <Style BasedOn="{StaticResource {x:Type TreeView}}" TargetType="TreeView">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[4].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[4].Items[2].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.Style>
+
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type models:ControlNode}" ItemsSource="{Binding Items}">
+                    <ContentPresenter Content="{Binding Name}" />
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+    </UniformGrid>
+</UserControl>

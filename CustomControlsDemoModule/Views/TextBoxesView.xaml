@@ -1,0 +1,85 @@
+﻿<UserControl
+    x:Class="CustomControlsDemoModule.Views.TextBoxesView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CustomControlsDemoModule.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+    <WrapPanel>
+        <WrapPanel>
+            <WrapPanel.Style>
+                <Style TargetType="WrapPanel">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[1].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[1].Items[0].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </WrapPanel.Style>
+
+            <TextBox attaches:MyAttachProperty.PlaceHolder="TextBox" />
+            <TextBox attaches:MyAttachProperty.PlaceHolder="TextBox" IsReadOnly="True" />
+            <TextBox attaches:MyAttachProperty.PlaceHolder="TextBox" IsEnabled="False" />
+
+            <TextBox attaches:MyAttachProperty.PlaceHolder="TextBox_DisplayInfo" Style="{StaticResource TextBox_DisplayInfo}" />
+            <TextBox attaches:MyAttachProperty.PlaceHolder="TransparentTextBox" Style="{StaticResource TransparentTextBox}" />
+            <TextBox attaches:MyAttachProperty.PlaceHolder="TextBox_FilteList" Style="{StaticResource TextBox_FilteList}" />
+            <TextBox attaches:MyAttachProperty.PlaceHolder="TextBox_QueryTxt" Style="{StaticResource TextBox_QueryTxt}" />
+            <TextBox attaches:MyAttachProperty.PlaceHolder="CopyAsTextBlock" Style="{StaticResource CopyAsTextBlock}" />
+            <TextBox
+                attaches:MyAttachProperty.PlaceHolder="TextBox_PlaceHolderAsLable"
+                FontSize="25"
+                Style="{StaticResource TextBox_PlaceHolderAsLable}" />
+        </WrapPanel>
+
+        <WrapPanel>
+            <WrapPanel.Style>
+                <Style TargetType="WrapPanel">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[1].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[1].Items[1].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </WrapPanel.Style>
+
+            <RichTextBox IsReadOnly="False" />
+
+            <RichTextBox IsReadOnly="True" />
+
+            <RichTextBox IsEnabled="False" />
+        </WrapPanel>
+
+        <WrapPanel>
+            <WrapPanel.Style>
+                <Style TargetType="WrapPanel">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[1].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[1].Items[2].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </WrapPanel.Style>
+
+            <PasswordBox attaches:MyAttachProperty.Password="123456" />
+
+            <PasswordBox attaches:MyAttachProperty.Password="123456" IsEnabled="False" />
+        </WrapPanel>
+    </WrapPanel>
+</UserControl>

@@ -57,14 +57,17 @@
                     <TabItem Header="进程服务">
                         <views:ProcessServiceView />
                     </TabItem>
-                    <TabItem Header="Sql创建器">
-                        <ContentControl regions:RegionManager.RegionName="CreateModelView" Focusable="False" />
-                    </TabItem>
                     <TabItem Header="邮件客户端">
                         <views:MailManager />
                     </TabItem>
+                    <TabItem Header="Sql创建器">
+                        <ContentControl regions:RegionManager.RegionName="CreateModelRegion" Focusable="False" />
+                    </TabItem>
                     <TabItem Header="颜色转换">
                         <ContentControl regions:RegionManager.RegionName="ColorRegion" Focusable="False" />
+                    </TabItem>
+                    <TabItem Header="控件样例">
+                        <ContentControl regions:RegionManager.RegionName="ControlsDemoRegion" />
                     </TabItem>
                     <TabItem Header="音乐播放器">
                         <ContentControl regions:RegionManager.RegionName="MusicPlayerRegion" Focusable="False" />

@@ -37,6 +37,7 @@
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <ProjectReference Include="..\CustomControlsDemoModule\CustomControlsDemoModule.csproj" />
     <ProjectReference Include="..\MusicPlayerModule\MusicPlayerModule.csproj" />
     <ProjectReference Include="..\SqlCreatorModule\SqlCreatorModule.csproj" />
     <Resource Include="Resources\apple.ico" />

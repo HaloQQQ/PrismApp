@@ -6,14 +6,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MyApp.Prisms.Models;
-using IceTea.Atom.BaseModels;
 using IceTea.Core.Utils.OS;
 using System.ServiceProcess;
 using IceTea.Wpf.Core.Utils;
+using Prism.Mvvm;
+using IceTea.Atom.Extensions;
 
 namespace MyApp.Prisms.ViewModels
 {
-    internal class ProcessServiceViewModel : BaseNotifyModel, IDisposable
+    internal class ProcessServiceViewModel : BindableBase, IDisposable
     {
         public ObservableCollection<ProcessContext> ProcessList { get; private set; } = new ObservableCollection<ProcessContext>();
 
@@ -23,8 +24,6 @@ namespace MyApp.Prisms.ViewModels
             {
                 try
                 {
-
-                    ProcessContext processContext;
                     if (ProcessList.Count > 0)
                     {
                         CommonUtils.BeginInvokeAtOnce(() => ProcessList.Clear());
@@ -37,7 +36,7 @@ namespace MyApp.Prisms.ViewModels
                             break;
                         }
 
-                        processContext = new ProcessContext(process.Value);
+                        ProcessContext processContext = new ProcessContext(process.Value);
                         CommonUtils.BeginInvoke(() => ProcessList.Add(processContext));
 
                         await Task.Delay(50);
@@ -57,7 +56,6 @@ namespace MyApp.Prisms.ViewModels
             {
                 try
                 {
-                    ServiceContext serviceContext;
                     if (ServiceList.Count > 0)
                     {
                         CommonUtils.BeginInvokeAtOnce(() => ServiceList.Clear());
@@ -70,7 +68,7 @@ namespace MyApp.Prisms.ViewModels
                             break;
                         }
 
-                        serviceContext = new ServiceContext(service.Value);
+                        ServiceContext serviceContext = new ServiceContext(service.Value);
                         CommonUtils.BeginInvoke(() => { ServiceList.Add(serviceContext); });
 
                         await Task.Delay(50);
@@ -103,13 +101,20 @@ namespace MyApp.Prisms.ViewModels
 
             RefreshServices();
 
-            this.SelectAllCommand = new DelegateCommand<bool?>(isChecked =>
+            ProcessContext.SelectStatusChanged += status =>
             {
-                foreach (var item in ProcessList)
+                if (status != IsSelectedAllProcesses)
                 {
-                    item.IsChecked = (bool)isChecked;
+                    if (status && this.ProcessList.Any(p => !p.IsChecked))
+                    {
+                        return;
+                    }
+
+                    _isSelectedAllProcesses = status;
+
+                    RaisePropertyChanged(nameof(IsSelectedAllProcesses));
                 }
-            });
+            };
 
             this.StartServiceCommand = new DelegateCommand(() =>
             {
@@ -157,10 +162,21 @@ namespace MyApp.Prisms.ViewModels
             this.ReloaProcessCommand = new DelegateCommand(() => this.RefreshProcesses());
         }
 
+        private bool _isSelectedAllProcesses;
+        public bool IsSelectedAllProcesses
+        {
+            get => _isSelectedAllProcesses;
+            set
+            {
+                if (SetProperty(ref _isSelectedAllProcesses, value))
+                {
+                    this.ProcessList.ForEach(i => i.IsChecked = value);
+                }
+            }
+        }
+
         public ProcessContext CurrentProcess { get; set; }
         public ServiceContext CurrentService { get; set; }
-
-        public ICommand SelectAllCommand { get; private set; }
 
         public ICommand StartServiceCommand { get; private set; }
 

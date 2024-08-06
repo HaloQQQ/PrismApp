@@ -1,11 +1,11 @@
-﻿using IceTea.Atom.BaseModels;
+﻿using Prism.Mvvm;
 using System;
 using System.Diagnostics;
 using System.ServiceProcess;
 
 namespace MyApp.Prisms.Models
 {
-    public class ProcessContext : BaseNotifyModel
+    public class ProcessContext : BindableBase
     {
         private bool _isChecked;
 
@@ -14,13 +14,17 @@ namespace MyApp.Prisms.Models
             get => _isChecked;
             set
             {
-                _isChecked = value;
-                CallModel();
+                if (SetProperty(ref _isChecked, value))
+                {
+                    SelectStatusChanged?.Invoke(value);
+                }
             }
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
+
+        public static event Action<bool> SelectStatusChanged;
 
         public ProcessContext(Process process)
         {

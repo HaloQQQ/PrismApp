@@ -25,6 +25,7 @@ using IceTea.General.Utils.HotKey.App;
 using System.Linq;
 using IceTea.Atom.Utils.HotKey.Global.Contracts;
 using IceTea.General.Utils.HotKey.App.Contracts;
+using CustomControlsDemoModule;
 
 namespace MyApp.Prisms
 {
@@ -145,6 +146,8 @@ namespace MyApp.Prisms
             moduleCatalog.AddModule<MusicPlayerModule.MusicPlayerModule>();
 
             moduleCatalog.AddModule<SqlCreatorModule.SqlCreatorModule>();
+
+            moduleCatalog.AddModule<CustomControlsDemoModuleModule>();
         }
 
         protected override Window CreateShell()

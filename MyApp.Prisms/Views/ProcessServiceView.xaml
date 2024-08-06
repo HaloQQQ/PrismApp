@@ -39,12 +39,11 @@
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn MinWidth="60" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}">
-                    <DataGridCheckBoxColumn.Header>
-                        <CheckBox
-                            Command="{Binding DataContext.SelectAllCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                            CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
-                            Style="{StaticResource CheckBoxSelectAll}" />
-                    </DataGridCheckBoxColumn.Header>
+                    <DataGridCheckBoxColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding DataContext.IsSelectedAllProcesses, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource CheckBoxSelectAll}" />
+                        </DataTemplate>
+                    </DataGridCheckBoxColumn.HeaderTemplate>
                     <DataGridCheckBoxColumn.ElementStyle>
                         <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="CheckBox" />
                     </DataGridCheckBoxColumn.ElementStyle>

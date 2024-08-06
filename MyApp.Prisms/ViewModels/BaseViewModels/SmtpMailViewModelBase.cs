@@ -15,7 +15,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 {
     internal abstract class SmtpMailViewModelBase : BindableBase
     {
-        protected IEmailTransfer _emailTransfer;
+        protected IEmailManager _emailTransfer;
 
         protected abstract void InitEmailTransfer();
 

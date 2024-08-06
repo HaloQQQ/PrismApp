@@ -1,0 +1,50 @@
+﻿<UserControl
+    x:Class="CustomControlsDemoModule.Views.ButtonsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:CustomControlsDemoModule.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+    <WrapPanel>
+        <Button Content="普通按钮" />
+        <Button Content="普通按钮" IsEnabled="False" />
+
+        <Button Content="透明按钮" Style="{StaticResource TransparentButtonBase}" />
+        <Button
+            Content="透明按钮"
+            IsEnabled="False"
+            Style="{StaticResource TransparentButtonBase}" />
+
+        <Button
+            attaches:MyAttachProperty.CornerRadius="10"
+            Content="环形按钮"
+            Style="{StaticResource CircleButton}" />
+        <Button
+            attaches:MyAttachProperty.CornerRadius="10"
+            Content="环形按钮"
+            IsEnabled="False"
+            Style="{StaticResource CircleButton}" />
+
+        <Button Style="{StaticResource CloseIconButton}" />
+        <Button Style="{StaticResource MinWindowIconButton}" />
+        <Button Style="{StaticResource MainMenuIconButton}" />
+        <Button Style="{StaticResource RestartIconButton}" />
+        <Button Style="{StaticResource LockScreenIconButton}" />
+
+        <Button Style="{StaticResource RewindIconButton}" />
+        <Button Style="{StaticResource Rewind5sIconButton}" />
+        <Button Style="{StaticResource Rewind1sIconButton}" />
+
+        <Button Style="{StaticResource PrevOneIconButton}" />
+        <Button Style="{StaticResource NextOneIconButton}" />
+
+        <Button Style="{StaticResource FastForwardIconButton}" />
+        <Button Style="{StaticResource FastForward5sIconButton}" />
+        <Button Style="{StaticResource FastForward1sIconButton}" />
+
+        <Button Style="{StaticResource StopMediaIconButton}" />
+
+        <Button Style="{StaticResource SwitchThemeIconButton}" />
+    </WrapPanel>
+</UserControl>

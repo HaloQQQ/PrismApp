@@ -302,7 +302,10 @@
                             FontSize="30"
                             Style="{StaticResource IconButtonBase_Small_Scale}" />
                     </StackPanel>
-                    <ListBox ItemContainerStyle="{StaticResource ListBoxItem_General}" ItemsSource="{Binding DataContext.MailAccounts, RelativeSource={RelativeSource AncestorType=TabControl}}" />
+                    <ListBox
+                        HorizontalContentAlignment="Left"
+                        ItemContainerStyle="{StaticResource ListBoxItem_General}"
+                        ItemsSource="{Binding DataContext.MailAccounts, RelativeSource={RelativeSource AncestorType=TabControl}}" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="全局快捷键">
@@ -330,6 +333,11 @@
                             TickFrequency="5"
                             Value="{Binding DataContext.CornerRadius, Converter={StaticResource CornerRadiusToDigitConverter}, RelativeSource={RelativeSource AncestorType=TabControl}}" />
                     </WrapPanel>
+
+                    <Button
+                        Command="{Binding DataContext._2048Command, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        Content="2048"
+                        Style="{StaticResource TransparentButtonBase}" />
 
                     <Button
                         Command="{Binding DataContext.CleanConfigWhenExitAppCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
