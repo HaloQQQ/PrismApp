@@ -1,6 +1,6 @@
 ﻿using IceTea.Atom.Extensions;
-using IceTea.SocketStandard.Base;
 using IceTea.SocketStandard.Tcp;
+using IceTea.SocketStandard.Tcp.Contracts;
 using System.Text;
 
 namespace MauiAppNet8.ViewModels.Socket

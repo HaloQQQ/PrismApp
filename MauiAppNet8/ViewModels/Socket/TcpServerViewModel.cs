@@ -1,6 +1,6 @@
 ﻿using IceTea.Atom.Extensions;
-using IceTea.SocketStandard.Base;
 using IceTea.SocketStandard.Tcp;
+using IceTea.SocketStandard.Tcp.Contracts;
 using Prism.Commands;
 using System.Collections.ObjectModel;
 using System.Text;
