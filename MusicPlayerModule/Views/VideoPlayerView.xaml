@@ -554,10 +554,10 @@
                                     Orientation="Vertical"
                                     Style="{StaticResource Slider_ObviousThumb}"
                                     ValueChanged="Slider_ValueChanged"
-                                    Value="{Binding Volume, ElementName=mediaPlayer, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=100}" />
+                                    Value="{Binding Volume, ElementName=mediaPlayer, Converter={StaticResource DigitMultiConverter}, ConverterParameter=100}" />
 
                                 <TextBlock HorizontalAlignment="Center" Style="{StaticResource NotImportantTxt_White}">
-                                    <TextBlock Text="{Binding ElementName=mediaPlayer, Path=Volume, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=100, Mode=OneWay}" />
+                                    <TextBlock Text="{Binding ElementName=mediaPlayer, Path=Volume, Converter={StaticResource DigitMultiConverter}, ConverterParameter=100, Mode=OneWay}" />
                                     %
                                 </TextBlock>
                             </StackPanel>
@@ -698,7 +698,7 @@
 
         <Viewbox
             x:Name="OperationResultBox"
-            Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=0.25}"
+            Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=0.25}"
             Margin="20,50"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"

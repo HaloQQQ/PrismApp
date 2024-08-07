@@ -11,7 +11,7 @@
     Background="Transparent">
     <UserControl.Resources>
         <ResourceDictionary>
-            <converters:DigitDoubleConverter x:Key="DigitDoubleConverter" />
+            <converters:DigitMultiConverter x:Key="DigitMultiConverter" />
 
             <Style
                 x:Key="StartPauseButton"

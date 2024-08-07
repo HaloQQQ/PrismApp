@@ -60,13 +60,13 @@
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
-    <converter:DigitDoubleConverter x:Key="DigitDoubleConverter" />
+    <converter:DigitMultiConverter x:Key="DigitMultiConverter" />
 
     <DataTemplate x:Key="HorizentalDesktopLyric">
         <Grid Margin="20,5" HorizontalAlignment="Center">
             <TextBlock
                 HorizontalAlignment="Left"
-                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=Border}}"
                 Text="{Binding Words, FallbackValue=狗空音乐，就是歌多}"
                 TextAlignment="Center"
@@ -75,7 +75,7 @@
             <TextBlock
                 HorizontalAlignment="Left"
                 ClipToBounds="True"
-                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 Text="{Binding Words}"
                 TextAlignment="Center"
                 TextTrimming="None"
@@ -109,7 +109,7 @@
             <TextBlock
                 Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                 VerticalAlignment="Top"
-                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=Border}}"
                 LineHeight="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                 LineStackingStrategy="BlockLineHeight"
@@ -120,7 +120,7 @@
             <TextBlock
                 Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                 VerticalAlignment="Top"
-                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 LineHeight="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                 LineStackingStrategy="BlockLineHeight"
                 Text="{Binding VerticalWords}"
@@ -160,7 +160,7 @@
             <TextBlock
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=Border}}"
                 Text="{Binding Words, FallbackValue=狗空音乐，就是歌多}"
                 TextAlignment="Center"
@@ -177,7 +177,7 @@
             <TextBlock
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 Text="{Binding Words}"
                 TextAlignment="Center"
                 TextTrimming="None"
@@ -215,14 +215,14 @@
     <DataTemplate x:Key="PanelSimpleLyric">
         <Grid Margin="20,10" HorizontalAlignment="Center">
             <TextBlock
-                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 Foreground="{DynamicResource TextBlock.Foreground}"
                 Text="{Binding Words}" />
 
             <TextBlock
                 HorizontalAlignment="Left"
                 ClipToBounds="True"
-                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=SkyBlue}"
                 Text="{Binding Words}"
                 TextTrimming="None">

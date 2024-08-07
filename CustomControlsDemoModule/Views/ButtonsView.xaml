@@ -6,8 +6,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CustomControlsDemoModule.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/IceTea.Wpf.Core;component/Resources/ProgressBar.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <WrapPanel>
-        <Button Content="普通按钮" />
+        <Button Click="UpdateProgressBar_ClickHandler" Content="普通按钮" />
         <Button Content="普通按钮" IsEnabled="False" />
 
         <Button Content="透明按钮" Style="{StaticResource TransparentButtonBase}" />
@@ -46,5 +55,21 @@
         <Button Style="{StaticResource StopMediaIconButton}" />
 
         <Button Style="{StaticResource SwitchThemeIconButton}" />
+
+        <ProgressBar
+            x:Name="ProgressBar"
+            Width="200"
+            Height="30"
+            Maximum="60" />
+
+        <ProgressBar
+            x:Name="ProgressBar1"
+            Width="200"
+            BorderThickness="20"
+            Style="{StaticResource PieProgressBar}" />
+
+        <Calendar />
+
+        <DatePicker />
     </WrapPanel>
 </UserControl>

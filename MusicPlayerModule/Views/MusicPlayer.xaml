@@ -1544,7 +1544,7 @@
                                     Orientation="Vertical"
                                     Style="{StaticResource Slider_ObviousThumb}"
                                     ValueChanged="Slider_ValueChanged"
-                                    Value="{Binding Volume, ElementName=mediaPlayer, Converter={StaticResource DigitDoubleConverter}, ConverterParameter=100}" />
+                                    Value="{Binding Volume, ElementName=mediaPlayer, Converter={StaticResource DigitMultiConverter}, ConverterParameter=100}" />
 
                                 <TextBlock
                                     x:Name="volumeStr"
