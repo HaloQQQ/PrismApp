@@ -12,11 +12,5 @@ namespace CustomControlsDemoModule.Views
         {
             InitializeComponent();
         }
-
-        private void UpdateProgressBar_ClickHandler(object sender, System.Windows.RoutedEventArgs e)
-        {
-            this.ProgressBar.Value = DateTime.Now.Second;
-            this.ProgressBar1.Value = DateTime.Now.Second * 6;
-        }
     }
 }

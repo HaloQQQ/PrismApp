@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using Prism.Events;
@@ -29,12 +28,6 @@ namespace MyApp.Prisms.Helper
             }
 
             return false;
-        }
-
-        internal static ResourceDictionary GetDict(Uri uri)
-        {
-            return Application.Current.Resources.MergedDictionaries
-                .FirstOrDefault(dict => dict.Source.ToString() == uri.ToString())!;
         }
 
         private static string GetWrapMsg(string message)
@@ -77,14 +70,6 @@ namespace MyApp.Prisms.Helper
                     ?.GetEvent<DialogMessageEvent>()
                     ?.Publish(new DialogMessage($"日志文件{filePath}不存在!", 2));
             }
-        }
-
-        internal static ResourceDictionary GetDict(string url)
-        {
-            return new ResourceDictionary()
-            {
-                Source = new Uri(url, UriKind.RelativeOrAbsolute)
-            };
         }
     }
 }

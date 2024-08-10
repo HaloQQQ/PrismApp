@@ -15,10 +15,10 @@ using IceTea.Atom.Utils;
 using IceTea.Wpf.Core.Utils;
 using IceTea.Wpf.Core.Contracts.MediaInfo;
 using IceTea.Atom.Contracts;
-using IceTea.General.Extensions;
+using IceTea.Wpf.Core.Extensions;
 using PrismAppBasicLib.MsgEvents;
 using IceTea.Atom.Utils.HotKey.Contracts;
-using IceTea.General.Utils.HotKey.App.Contracts;
+using IceTea.Wpf.Core.Utils.HotKey.App.Contracts;
 
 namespace MusicPlayerModule.ViewModels
 {

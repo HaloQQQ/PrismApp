@@ -1,8 +1,8 @@
 ﻿using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils.HotKey.Contracts;
-using IceTea.General.Utils.HotKey.App;
-using IceTea.General.Utils.HotKey.App.Contracts;
+using IceTea.Wpf.Core.Utils.HotKey.App;
+using IceTea.Wpf.Core.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;

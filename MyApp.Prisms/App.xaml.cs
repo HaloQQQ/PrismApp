@@ -12,7 +12,7 @@ using MyApp.Prisms.MsgEvents;
 using MyApp.Prisms.ViewModels;
 using MyApp.Prisms.Views;
 using IceTea.Atom.Utils;
-using IceTea.General.Utils;
+using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.Setting;
 using MyApp.Prisms.Views.ToolBox;
@@ -21,10 +21,10 @@ using Prism.Regions;
 using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.Views;
 using IceTea.Atom.Utils.HotKey.Global;
-using IceTea.General.Utils.HotKey.App;
+using IceTea.Wpf.Core.Utils.HotKey.App;
 using System.Linq;
 using IceTea.Atom.Utils.HotKey.Global.Contracts;
-using IceTea.General.Utils.HotKey.App.Contracts;
+using IceTea.Wpf.Core.Utils.HotKey.App.Contracts;
 using CustomControlsDemoModule;
 
 namespace MyApp.Prisms

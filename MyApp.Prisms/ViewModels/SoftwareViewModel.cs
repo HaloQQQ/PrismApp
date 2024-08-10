@@ -17,13 +17,13 @@ using IceTea.Core.Utils.OS;
 using IceTea.Core.Utils.QRCodes;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using IceTea.General.Utils;
 using IceTea.Wpf.Core.Contracts.MyEvents;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.Events;
 using PrismAppBasicLib.MsgEvents;
 using IceTea.Atom.Utils.HotKey.Contracts;
-using IceTea.General.Utils.HotKey.App.Contracts;
+using IceTea.Wpf.Core.Utils.HotKey.App.Contracts;
+using IceTea.General.Utils;
 
 namespace MyApp.Prisms.ViewModels
 {

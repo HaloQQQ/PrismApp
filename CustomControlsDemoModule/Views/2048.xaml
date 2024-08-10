@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
-    xmlns:converters="http://IceTea.Wpf.Core.com/"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     attaches:MyAttachProperty.IsElementFocused="True"
@@ -11,8 +10,6 @@
     Background="Transparent">
     <UserControl.Resources>
         <ResourceDictionary>
-            <converters:DigitMultiConverter x:Key="DigitMultiConverter" />
-
             <Style
                 x:Key="StartPauseButton"
                 BasedOn="{StaticResource IconButtonBase_Big_Scale_SkyBlue}"
@@ -181,7 +178,6 @@
                                     </BeginStoryboard>
                                 </DataTrigger.EnterActions>
                             </DataTrigger>
-
 
 
                             <DataTrigger Binding="{Binding Value}" Value="2">

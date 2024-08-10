@@ -1,4 +1,4 @@
-﻿using IceTea.General.Utils.HotKey.App;
+﻿using IceTea.Wpf.Core.Utils.HotKey.App;
 using MusicPlayerModule.Models.Common;
 using System.Windows.Input;
 
