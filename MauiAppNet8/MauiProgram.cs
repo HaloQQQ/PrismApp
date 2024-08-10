@@ -1,4 +1,6 @@
-﻿using MauiAppNet8.ViewModels;
+﻿using IceTea.Atom.Contracts;
+using IceTea.Maui.Core.Contracts;
+using MauiAppNet8.ViewModels;
 using MauiAppNet8.ViewModels.Socket;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
@@ -13,7 +15,6 @@ namespace MauiAppNet8
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                .UseMauiMaps()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -57,6 +58,10 @@ namespace MauiAppNet8
             builder.Services.TryAddSingleton<CommonViewModel, CommonViewModel>();
 
             builder.Services.TryAddSingleton<NewsViewModel, NewsViewModel>();
+
+            builder.Services.TryAddSingleton<_2048ViewModel>();
+
+            builder.Services.TryAddSingleton<IConfigManager, MauiConfigManager>();
 
             return builder;
         }

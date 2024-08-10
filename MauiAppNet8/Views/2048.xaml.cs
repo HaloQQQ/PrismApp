@@ -1,8 +1,8 @@
 namespace MauiAppNet8.Views;
 
-public partial class Map : ContentPage
+public partial class _2048 : ContentPage
 {
-	public Map()
+	public _2048()
 	{
 		InitializeComponent();
 	}

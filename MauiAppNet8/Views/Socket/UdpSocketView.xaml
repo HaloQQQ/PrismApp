@@ -3,9 +3,9 @@
     x:Class="MauiAppNet8.Views.Socket.UdpSocketView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:attachs="clr-namespace:MauiAppNet8.Contracts"
+    xmlns:attachs="clr-namespace:IceTea.Maui.Core.Attaches;assembly=IceTea.Maui.Core"
     Title="UdpSocketView"
-    attachs:AppAttachProperty.IsAutowire="True">
+    attachs:MyAttachProperty.IsAutowire="True">
     <Shell.BackButtonBehavior>
         <BackButtonBehavior IconOverride="back.png" TextOverride="返回" />
     </Shell.BackButtonBehavior>
