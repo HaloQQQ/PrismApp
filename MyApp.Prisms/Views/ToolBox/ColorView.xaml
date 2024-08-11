@@ -12,24 +12,6 @@
             <Setter Property="Margin" Value="0" />
             <Setter Property="BorderThickness" Value="0,0,0,1" />
         </Style>
-
-        <Style
-            x:Key="CopyAsTextBlock"
-            BasedOn="{StaticResource {x:Type TextBox}}"
-            TargetType="TextBox">
-            <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="IsReadOnly" Value="True" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="MinWidth" Value="0" />
-
-            <Style.Triggers>
-                <Trigger Property="IsReadOnly" Value="True">
-                    <Setter Property="Background" Value="Transparent" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
     </UserControl.Resources>
 
     <StackPanel HorizontalAlignment="Center">
@@ -110,7 +92,8 @@
             <ListBox
                 MaxHeight="400"
                 ItemContainerStyle="{StaticResource ListBoxItem_General}"
-                ItemsSource="{Binding Colors}">
+                ItemsSource="{Binding Colors}"
+                VirtualizingPanel.IsVirtualizing="True">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <customcontrols:VirtualizingWrapPanel
@@ -139,11 +122,6 @@
                                 Foreground="{Binding Foreground}"
                                 Style="{StaticResource CopyAsTextBlock}"
                                 Text="{Binding ColorCode, Mode=OneTime}" />
-                            <!--<TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Foreground="{Binding Foreground}"
-                                Text="{Binding ColorCode}" />-->
                         </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

@@ -355,7 +355,7 @@ namespace MyApp.Prisms.ViewModels
 
         private void InitBackgroundSwitch(IEventAggregator eventAggregator)
         {
-            eventAggregator.GetEvent<BackgroundImageUpdateEvent>().Subscribe(uri => this.SetBackgroundImage(uri));
+            eventAggregator.GetEvent<BackgroundImageUpdateEvent>().Subscribe(this.SetBackgroundImage);
 
             this._timer = new DispatcherTimer();
             this._timer.Tick += (sender, e) =>
