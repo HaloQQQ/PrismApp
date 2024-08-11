@@ -7,12 +7,22 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     attaches:MyAttachProperty.IsElementFocused="True"
     prism:ViewModelLocator.AutoWireViewModel="True"
-    Background="Transparent">
+    Background="Transparent"
+    FocusVisualStyle="{x:Null}">
     <UserControl.Resources>
         <ResourceDictionary>
             <Style
-                x:Key="StartPauseButton"
+                x:Key="FunctionButton"
                 BasedOn="{StaticResource IconButtonBase_Big_Scale_SkyBlue}"
+                TargetType="Button">
+                <Setter Property="Margin" Value="10,0" />
+
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            </Style>
+
+            <Style
+                x:Key="StartPauseButton"
+                BasedOn="{StaticResource FunctionButton}"
                 TargetType="Button">
                 <Setter Property="Content" Value="&#xe87c;" />
 
@@ -29,7 +39,7 @@
 
             <Style
                 x:Key="RePlayButton"
-                BasedOn="{StaticResource IconButtonBase_Big_Scale_SkyBlue}"
+                BasedOn="{StaticResource FunctionButton}"
                 TargetType="Button">
                 <Setter Property="Command" Value="{Binding RePlayCommand}" />
                 <Setter Property="Content" Value="&#xe63e;" />
@@ -81,11 +91,10 @@
                     TextAlignment="Center" />
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Margin="20,10" Orientation="Horizontal">
                 <Button FontSize="30" Style="{StaticResource RePlayButton}" />
 
                 <Button FontSize="38" Style="{StaticResource StartPauseButton}" />
-
             </StackPanel>
         </DockPanel>
 
@@ -149,11 +158,13 @@
                                                 Storyboard.TargetName="Back"
                                                 Storyboard.TargetProperty="(Border.RenderTransform).(ScaleTransform.ScaleX)"
                                                 From="0.2"
+                                                To="1"
                                                 Duration="0:0:0.3" />
                                             <DoubleAnimation
                                                 Storyboard.TargetName="Back"
                                                 Storyboard.TargetProperty="(Border.RenderTransform).(ScaleTransform.ScaleY)"
                                                 From="0.2"
+                                                To="1"
                                                 Duration="0:0:0.3" />
                                         </Storyboard>
                                     </BeginStoryboard>
@@ -167,11 +178,13 @@
                                             <DoubleAnimation
                                                 Storyboard.TargetName="Back"
                                                 Storyboard.TargetProperty="(Border.RenderTransform).(ScaleTransform.ScaleX)"
+                                                From="1"
                                                 To="1.1"
                                                 Duration="0:0:0.1" />
                                             <DoubleAnimation
                                                 Storyboard.TargetName="Back"
                                                 Storyboard.TargetProperty="(Border.RenderTransform).(ScaleTransform.ScaleY)"
+                                                From="1"
                                                 To="1.1"
                                                 Duration="0:0:0.1" />
                                         </Storyboard>

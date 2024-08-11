@@ -59,7 +59,8 @@
         <Slider
             x:Name="slider"
             Width="200"
-            MinHeight="4" />
+            Height="10"
+            attaches:MyAttachProperty.CornerRadius="0" />
 
         <ProgressBar
             x:Name="ProgressBar"
@@ -69,8 +70,9 @@
 
         <ProgressBar
             x:Name="ProgressBar1"
-            Width="200"
+            Width="150"
             BorderThickness="20"
+            Maximum="100"
             Style="{StaticResource PieProgressBar}"
             Value="{Binding Value, Source={x:Reference slider}}" />
 

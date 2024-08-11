@@ -233,7 +233,9 @@ namespace CustomControlsDemoModule.ViewModels
                 this.IsGameOver = true;
                 this.IsUsable = false;
 
-                _eventAggregator.GetEvent<DialogMessageEvent>().Publish(new IceTea.Atom.Contracts.DialogMessage("游戏结束"));
+                this.MaxScore = Math.Max(this.MaxScore, this.Score);
+
+                _eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage("游戏结束"));
 
                 return true;
             }
