@@ -13,6 +13,8 @@
             <Style x:Key="StartPauseButton" TargetType="Button">
                 <Setter Property="Text" Value="开始" />
 
+                <Setter Property="Margin" Value="10,0" />
+
                 <Setter Property="Command" Value="{Binding StartPauseCommand}" />
 
                 <Setter Property="ToolTipProperties.Text" Value="{Binding KeyGestureDic[播放/暂停].ToolTip}" />
@@ -28,6 +30,8 @@
             </Style>
 
             <Style x:Key="RePlayButton" TargetType="Button">
+                <Setter Property="Margin" Value="10,0" />
+
                 <Setter Property="Command" Value="{Binding RePlayCommand}" />
                 <Setter Property="Text" Value="重玩" />
 
@@ -85,7 +89,7 @@
                     Text="{Binding Score}" />
             </VerticalStackLayout>
 
-            <HorizontalStackLayout>
+            <HorizontalStackLayout Margin="20,10">
                 <Button FontSize="30" Style="{StaticResource RePlayButton}" />
 
                 <Button FontSize="38" Style="{StaticResource StartPauseButton}" />

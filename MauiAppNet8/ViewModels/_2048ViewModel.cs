@@ -213,6 +213,8 @@ namespace MauiAppNet8.ViewModels
                 this.IsGameOver = true;
                 this.IsUsable = false;
 
+                this.MaxScore = Math.Max(this.MaxScore, this.Score);
+
                 _eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage("游戏结束"));
 
                 return true;
