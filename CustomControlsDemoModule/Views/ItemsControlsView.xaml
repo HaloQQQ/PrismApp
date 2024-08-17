@@ -80,5 +80,28 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
+
+        <TreeView ItemsSource="{Binding Controls}" MyAttachProperty.TreeViewItemExpandIconPosition="Left">
+            <TreeView.Style>
+                <Style BasedOn="{StaticResource {x:Type TreeView}}" TargetType="TreeView">
+                    <Setter Property="Visibility" Value="Collapsed" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Controls[4].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Controls[4].Items[2].IsSelected}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.Style>
+
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type models:ControlNode}" ItemsSource="{Binding Items}">
+                    <ContentPresenter Content="{Binding Name}" />
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
     </UniformGrid>
 </UserControl>

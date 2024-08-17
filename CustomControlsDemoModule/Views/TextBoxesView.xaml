@@ -54,7 +54,7 @@
                 </Style>
             </WrapPanel.Style>
 
-            <RichTextBox IsReadOnly="False" />
+            <RichTextBox attaches:MyAttachProperty.PlaceHolder="RichTextBox" IsReadOnly="False" />
 
             <RichTextBox IsReadOnly="True" />
 
@@ -77,8 +77,8 @@
                 </Style>
             </WrapPanel.Style>
 
-            <PasswordBox attaches:MyAttachProperty.Password="123456" />
-
+            <PasswordBox attaches:MyAttachProperty.PlaceHolder="请输入密码.." />
+            <PasswordBox attaches:MyAttachProperty.Password="123456" MyAttachProperty.IsReadOnly="True" />
             <PasswordBox attaches:MyAttachProperty.Password="123456" IsEnabled="False" />
         </WrapPanel>
     </WrapPanel>
