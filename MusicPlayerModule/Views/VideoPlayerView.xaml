@@ -548,8 +548,8 @@
                             <!--  音量调节模态框  -->
                             <StackPanel Background="{StaticResource PopupBackground}" Clip="{StaticResource PopupGeometryGroup_Volume}">
                                 <Slider
+                                    Width="4"
                                     Height="130"
-                                    MinWidth="4"
                                     Margin="10,25,10,10"
                                     Orientation="Vertical"
                                     Style="{StaticResource Slider_ObviousThumb}"

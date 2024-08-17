@@ -22,7 +22,6 @@
         </Grid.ColumnDefinitions>
 
         <DataGrid
-            x:Name="DataGridProcess"
             Grid.Column="0"
             attaches:MyAttachProperty.DataGridCellHorizontalAlignment="Center"
             ItemsSource="{Binding ProcessList}"
