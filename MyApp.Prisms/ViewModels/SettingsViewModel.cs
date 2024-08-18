@@ -15,8 +15,8 @@ using PrismAppBasicLib.MsgEvents;
 using System.Windows;
 using System;
 using IceTea.Atom.Utils.HotKey.Global.Contracts;
-using IceTea.Wpf.Core.Utils.HotKey.App.Contracts;
 using CustomControlsDemoModule.Views;
+using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -84,7 +84,7 @@ namespace MyApp.Prisms.ViewModels
 
             this.FindImageDirCommand = new DelegateCommand(() =>
             {
-                var str = CommonUtils.OpenFolderDialog(this.ImageDir);
+                var str = CommonCoreUtils.OpenFolderDialog(this.ImageDir);
                 if (!string.IsNullOrEmpty(str))
                 {
                     this.ImageDir = str;
@@ -95,7 +95,7 @@ namespace MyApp.Prisms.ViewModels
 
             this.FindMusicDirCommand = new DelegateCommand(() =>
             {
-                var str = CommonUtils.OpenFolderDialog(this.LastMusicDir);
+                var str = CommonCoreUtils.OpenFolderDialog(this.LastMusicDir);
                 if (!string.IsNullOrEmpty(str))
                 {
                     this.LastMusicDir = str;
@@ -106,7 +106,7 @@ namespace MyApp.Prisms.ViewModels
 
             this.FindVideoDirCommand = new DelegateCommand(() =>
             {
-                var str = CommonUtils.OpenFolderDialog(this.LastVideoDir);
+                var str = CommonCoreUtils.OpenFolderDialog(this.LastVideoDir);
                 if (!string.IsNullOrEmpty(str))
                 {
                     this.LastVideoDir = str;

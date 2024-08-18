@@ -1,8 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:contracts="clr-namespace:IceTea.Wpf.Core.Contracts;assembly=IceTea.Wpf.Core"
-    xmlns:panelCtrls="clr-namespace:IceTea.Wpf.Core.CustomControls;assembly=IceTea.Wpf.Core">
+    xmlns:contracts="http://IceTea.Wpf.Atom.com/">
 
     <!--  VirtualizingStackPanel  -->
     <Style x:Key="VirtualStackPanelImageSelector" TargetType="VirtualizingStackPanel">
@@ -10,7 +9,7 @@
     </Style>
 
     <!--  VirtualizingWrapPanel  -->
-    <Style x:Key="VirtualWrapPanelImageSelector" TargetType="panelCtrls:VirtualizingWrapPanel">
+    <Style x:Key="VirtualWrapPanelImageSelector" TargetType="VirtualizingWrapPanel">
         <Setter Property="ChildHeight" Value="98" />
         <Setter Property="ChildWidth" Value="98" />
 

@@ -9,8 +9,8 @@ using System.Windows.Media.Animation;
 using MyApp.Prisms.MsgEvents;
 using MyApp.Prisms.ViewModels;
 using IceTea.Atom.Extensions;
-using IceTea.Wpf.Core.Utils;
-using IceTea.Wpf.Core.Contracts.MediaInfo;
+using IceTea.Wpf.Atom.Contracts.MediaInfo;
+using IceTea.Wpf.Atom.Utils;
 
 namespace MyApp.Prisms.Views
 {
@@ -98,7 +98,7 @@ namespace MyApp.Prisms.Views
         {
             var setting = ContainerLocator.Current.Resolve<SettingsViewModel>();
 
-            var openFileDialog = CommonUtils.OpenFileDialog(setting.ImageDir, new PictureMedia());
+            var openFileDialog = CommonAtomUtils.OpenFileDialog(setting.ImageDir, new PictureMedia());
 
             if (openFileDialog != null)
             {

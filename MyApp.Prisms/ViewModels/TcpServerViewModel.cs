@@ -2,7 +2,7 @@
 using IceTea.Atom.Extensions;
 using IceTea.SocketStandard.Tcp;
 using IceTea.SocketStandard.Tcp.Contracts;
-using IceTea.Wpf.Core.Utils;
+using IceTea.Wpf.Atom.Utils;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using Prism.Commands;
 using System.Collections.Generic;
@@ -60,7 +60,7 @@ namespace MyApp.Prisms.ViewModels
             {
                 if (socket.RemoteEndPoint != null)
                 {
-                    CommonUtils.BeginInvokeAtOnce(() =>
+                    CommonAtomUtils.BeginInvokeAtOnce(() =>
                         this.ConnList.Add(socket.RemoteEndPoint.ToString()!)
                     );
                 }
@@ -68,7 +68,7 @@ namespace MyApp.Prisms.ViewModels
 
             tcpServer.ExceptionOccurred += (socketName, exception) =>
             {
-                CommonUtils.BeginInvokeAtOnce(() =>
+                CommonAtomUtils.BeginInvokeAtOnce(() =>
                 {
                     if (this.ConnList.Contains(socketName))
                     {

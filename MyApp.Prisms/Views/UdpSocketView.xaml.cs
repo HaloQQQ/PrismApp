@@ -4,7 +4,7 @@ using System.Windows.Input;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.ViewModels;
 using IceTea.Atom.Extensions;
-using IceTea.Wpf.Core.Contracts;
+using IceTea.Wpf.Atom.Contracts;
 using System.ComponentModel;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using IceTea.SocketStandard.Udp.Contracts;

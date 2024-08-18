@@ -2,7 +2,6 @@
     x:Class="MyApp.Prisms.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
     xmlns:converters="clr-namespace:MyApp.Prisms.Converters"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:regions="http://prismlibrary.com/"
@@ -10,9 +9,9 @@
     Title="{Binding Title, Mode=OneWay, FallbackValue=标题}"
     MinWidth="1200"
     MinHeight="640"
-    attaches:MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius, Mode=OneWay}"
-    attaches:MyAttachProperty.IsMinimalScreen="True"
     prism:ViewModelLocator.AutoWireViewModel="True"
+    MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius, Mode=OneWay}"
+    MyAttachProperty.IsMinimalScreen="True"
     Style="{StaticResource NoTitleWithAnimation}"
     WindowStartupLocation="CenterScreen">
     <Window.Resources>
@@ -47,9 +46,9 @@
                     DockPanel.Dock="Top" />
 
                 <TabControl
-                    attaches:MyAttachProperty.IsCollapsed="{Binding IsTitleBarHidden}"
                     DockPanel.Dock="Bottom"
                     ItemContainerStyle="{StaticResource TabItem_Transparent}"
+                    MyAttachProperty.IsCollapsed="{Binding IsTitleBarHidden}"
                     SelectedItem="{Binding Title, Mode=OneWayToSource, Converter={StaticResource TabItemHeaderToTitleConverter}}">
                     <TabItem Header="通讯工具">
                         <views:CommunicationView />

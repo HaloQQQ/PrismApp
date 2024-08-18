@@ -1,7 +1,7 @@
 ﻿using IceTea.Atom.BaseModels;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
-using IceTea.Wpf.Core.Extensions;
+using IceTea.Wpf.Atom.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

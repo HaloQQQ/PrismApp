@@ -13,12 +13,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Win32;
 using IceTea.Atom.Extensions;
-using IceTea.Atom.Utils;
-using IceTea.Wpf.Core.Contracts.MediaInfo;
-using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.HotKey.Contracts;
-using IceTea.Wpf.Core.Utils.HotKey.App.Contracts;
+using IceTea.Wpf.Atom.Contracts.MediaInfo;
+using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
+using IceTea.Wpf.Atom.Utils;
+using IceTea.Wpf.Core.Utils;
+using IceTea.Atom.Utils;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -320,7 +321,7 @@ namespace MusicPlayerModule.ViewModels
         private void AddVideoFromFileDialog()
         {
             OpenFileDialog openFileDialog =
-                CommonUtils.OpenFileDialog(CustomStatics.LastVideoDir, new VideoMedia());
+                CommonAtomUtils.OpenFileDialog(CustomStatics.LastVideoDir, new VideoMedia());
 
             if (openFileDialog != null)
             {
@@ -332,7 +333,7 @@ namespace MusicPlayerModule.ViewModels
 
         private void AddVideoFromFolderDialog()
         {
-            var selectedPath = CommonUtils.OpenFolderDialog(CustomStatics.LastVideoDir);
+            var selectedPath = CommonCoreUtils.OpenFolderDialog(CustomStatics.LastVideoDir);
             if (!selectedPath.IsNullOrEmpty())
             {
                 this.TryRefreshLastVideoDir(selectedPath);

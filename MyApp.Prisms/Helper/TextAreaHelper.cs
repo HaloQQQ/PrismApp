@@ -3,9 +3,9 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Extensions;
 using IceTea.SocketStandard.Contracts;
+using IceTea.Wpf.Atom.Utils;
 
 namespace MyApp.Prisms.Helper
 {
@@ -23,7 +23,7 @@ namespace MyApp.Prisms.Helper
                 Helper.Log(name, message);
             }
 
-            CommonUtils.BeginInvoke(() =>
+            CommonAtomUtils.BeginInvoke(() =>
             {
                 Paragraph paragraph = new Paragraph();
                 paragraph.Inlines.Add(
@@ -56,7 +56,7 @@ namespace MyApp.Prisms.Helper
         internal static void Send(this RichTextBox txt, EndPoint from, EndPoint to, bool isLogging, ISocket socket,
             string message)
         {
-            CommonUtils.BeginInvoke(() =>
+            CommonAtomUtils.BeginInvoke(() =>
             {
                 var paragraph = GetParagraph("Send", from, to, isLogging, socket, message);
                 paragraph.Inlines.LastInline.Foreground = CustomConstants.SendBrush;
@@ -68,7 +68,7 @@ namespace MyApp.Prisms.Helper
         internal static void Recv(this RichTextBox txt, EndPoint from, EndPoint to, bool isLogging, ISocket socket,
             string message)
         {
-            CommonUtils.BeginInvoke(() =>
+            CommonAtomUtils.BeginInvoke(() =>
             {
                 var paragraph = GetParagraph("Recv", from, to, isLogging, socket, message);
                 paragraph.Inlines.LastInline.Foreground = CustomConstants.RecvBrush;

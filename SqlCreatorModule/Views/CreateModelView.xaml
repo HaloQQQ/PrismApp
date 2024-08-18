@@ -2,7 +2,6 @@
     x:Class="SqlCreatorModule.Views.CreateModelView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
     xmlns:data="clr-namespace:System.Data;assembly=netstandard"
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
@@ -44,38 +43,38 @@
         <WrapPanel Grid.Row="1" Orientation="Horizontal">
             <!--<TextBlock Text="服务器地址*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
             <TextBox
-                attaches:MyAttachProperty.PlaceHolder="服务器地址*"
+                MyAttachProperty.PlaceHolder="服务器地址*"
                 Text="{Binding Host, UpdateSourceTrigger=PropertyChanged}"
                 Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
             <!--<TextBlock Text="数据库名*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
             <TextBox
-                attaches:MyAttachProperty.PlaceHolder="数据库名*"
+                MyAttachProperty.PlaceHolder="数据库名*"
                 Text="{Binding CurrentDbName, UpdateSourceTrigger=PropertyChanged}"
                 Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
             <!--<TextBlock Text="用户名*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
             <TextBox
-                attaches:MyAttachProperty.PlaceHolder="用户名*"
+                MyAttachProperty.PlaceHolder="用户名*"
                 Text="{Binding Uid, UpdateSourceTrigger=PropertyChanged}"
                 Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
             <!--<TextBlock Text="密码*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
             <PasswordBox
-                attaches:MyAttachProperty.Password="{Binding Pwd, Mode=TwoWay}"
-                attaches:MyAttachProperty.PlaceHolder="密码*"
+                MyAttachProperty.Password="{Binding Pwd, Mode=TwoWay}"
+                MyAttachProperty.PlaceHolder="密码*"
                 Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
             <!--<TextBlock Text="服务器端口:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
             <TextBox
-                attaches:MyAttachProperty.PlaceHolder="服务器端口"
+                MyAttachProperty.PlaceHolder="服务器端口"
                 Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}"
                 Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
             <TextBlock Text="数据库文件*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
             <TextBox
                 Width="175"
-                attaches:MyAttachProperty.PlaceHolder="数据库文件"
+                MyAttachProperty.PlaceHolder="数据库文件"
                 IsReadOnly="True"
                 Text="{Binding DbFilePath}"
                 Visibility="{Binding IsSqlite, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
@@ -99,7 +98,7 @@
 
             <TextBox
                 Width="300"
-                attaches:MyAttachProperty.PlaceHolder="导出模型目录"
+                MyAttachProperty.PlaceHolder="导出模型目录"
                 IsReadOnly="True"
                 Text="{Binding ModelExportDir}" />
             <Button Command="{Binding OpenExportDirCommand}" Content="选择导出目录" />
@@ -108,7 +107,7 @@
 
         <DataGrid
             Grid.Row="2"
-            attaches:MyAttachProperty.DataGridCellHorizontalAlignment="Center"
+            MyAttachProperty.DataGridCellHorizontalAlignment="Center"
             ItemsSource="{Binding TableColumnsStructure}"
             MinColumnWidth="0"
             Style="{StaticResource DataGrid_Transparent}">
@@ -121,7 +120,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox
-                                attaches:MyAttachProperty.IsReadOnly="True"
+                                MyAttachProperty.IsReadOnly="True"
                                 IsChecked="{Binding Unique, Mode=OneTime}"
                                 IsEnabled="False"
                                 Style="{StaticResource CheckMarkCheckBox}" />
@@ -132,7 +131,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox
-                                attaches:MyAttachProperty.IsReadOnly="True"
+                                MyAttachProperty.IsReadOnly="True"
                                 IsChecked="{Binding AllowDBNull, Mode=OneTime}"
                                 IsEnabled="False"
                                 Style="{StaticResource CheckMarkCheckBox}" />
@@ -145,7 +144,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox
-                                attaches:MyAttachProperty.IsReadOnly="True"
+                                MyAttachProperty.IsReadOnly="True"
                                 IsChecked="{Binding AutoIncrement, Mode=OneTime}"
                                 IsEnabled="False"
                                 Style="{StaticResource CheckMarkCheckBox}" />
@@ -158,7 +157,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox
-                                attaches:MyAttachProperty.IsReadOnly="True"
+                                MyAttachProperty.IsReadOnly="True"
                                 IsChecked="{Binding ReadOnly, Mode=OneTime}"
                                 IsEnabled="False"
                                 Style="{StaticResource CheckMarkCheckBox}" />

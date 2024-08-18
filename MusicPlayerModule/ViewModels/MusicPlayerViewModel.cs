@@ -13,12 +13,12 @@ using Microsoft.Win32;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
 using IceTea.Wpf.Core.Utils;
-using IceTea.Wpf.Core.Contracts.MediaInfo;
 using IceTea.Atom.Contracts;
-using IceTea.Wpf.Core.Extensions;
 using PrismAppBasicLib.MsgEvents;
 using IceTea.Atom.Utils.HotKey.Contracts;
-using IceTea.Wpf.Core.Utils.HotKey.App.Contracts;
+using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
+using IceTea.Wpf.Atom.Utils;
+using IceTea.Wpf.Atom.Contracts.MediaInfo;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -569,7 +569,7 @@ namespace MusicPlayerModule.ViewModels
         private async void AddMusicFromFileDialog()
         {
             OpenFileDialog openFileDialog =
-                CommonUtils.OpenFileDialog(CustomStatics.LastMusicDir, new MusicMedia());
+                CommonAtomUtils.OpenFileDialog(CustomStatics.LastMusicDir, new MusicMedia());
 
             if (openFileDialog != null)
             {
@@ -584,7 +584,7 @@ namespace MusicPlayerModule.ViewModels
 
         private async void AddMusicFromFolderDialog()
         {
-            var selectedPath = CommonUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
+            var selectedPath = CommonCoreUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
             if (!selectedPath.IsNullOrEmpty())
             {
                 this.TryRefreshLastMusicDir(selectedPath);
@@ -667,7 +667,7 @@ namespace MusicPlayerModule.ViewModels
                                                      .Take(step)
                                          )
                             {
-                                CommonUtils.Invoke(() =>
+                                CommonAtomUtils.Invoke(() =>
                                 {
                                     var musicModel = new FavoriteMusicViewModel(new MusicModel(item));
                                     this.DisplayFavorites.Add(musicModel);

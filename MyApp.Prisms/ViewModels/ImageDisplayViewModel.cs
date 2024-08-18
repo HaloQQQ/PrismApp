@@ -6,11 +6,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.BaseModels;
-using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Contracts;
 using System.Windows.Input;
 using Prism.Commands;
 using System.Threading;
+using IceTea.Wpf.Atom.Utils;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -100,7 +100,7 @@ namespace MyApp.Prisms.ViewModels
                     //_synchronizationContext.Post(_ => Data.Add(image), null);
 
                     // B.跨线程同步
-                    CommonUtils.BeginInvoke(() =>
+                    CommonAtomUtils.BeginInvoke(() =>
                     {
                         Data.Add(image);
                     });

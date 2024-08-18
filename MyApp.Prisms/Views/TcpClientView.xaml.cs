@@ -5,11 +5,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using MyApp.Prisms.Helper;
 using IceTea.Atom.Extensions;
-using IceTea.Wpf.Core.Contracts;
 using MyApp.Prisms.ViewModels;
 using System.ComponentModel;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using IceTea.SocketStandard.Tcp.Contracts;
+using IceTea.Wpf.Atom.Contracts;
 
 namespace MyApp.Prisms.Views
 {

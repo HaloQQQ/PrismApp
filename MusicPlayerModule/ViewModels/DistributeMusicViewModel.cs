@@ -9,9 +9,9 @@ using System.Windows.Input;
 using IceTea.Atom.Extensions;
 using System.IO;
 using IceTea.Atom.Utils;
-using IceTea.Wpf.Core.Utils;
 using PrismAppBasicLib.MsgEvents;
 using IceTea.Atom.Contracts;
+using IceTea.Wpf.Core.Utils;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -197,7 +197,7 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
-                var selectedPath = CommonUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
+                var selectedPath = CommonCoreUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
 
                 if (!selectedPath.IsNullOrEmpty())
                 {
@@ -215,7 +215,7 @@ namespace MusicPlayerModule.ViewModels
 
             this.AddMusicDirCommand = new DelegateCommand(() =>
             {
-                var selectedPath = CommonUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
+                var selectedPath = CommonCoreUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
 
                 if (!selectedPath.IsNullOrEmpty())
                 {
@@ -236,7 +236,7 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
-                var selectedPath = CommonUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
+                var selectedPath = CommonCoreUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
 
                 if (!selectedPath.IsNullOrEmpty())
                 {

@@ -8,9 +8,9 @@ using System.Windows.Input;
 using MyApp.Prisms.Models;
 using IceTea.Core.Utils.OS;
 using System.ServiceProcess;
-using IceTea.Wpf.Core.Utils;
 using Prism.Mvvm;
 using IceTea.Atom.Extensions;
+using IceTea.Wpf.Atom.Utils;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -26,7 +26,7 @@ namespace MyApp.Prisms.ViewModels
                 {
                     if (ProcessList.Count > 0)
                     {
-                        CommonUtils.BeginInvokeAtOnce(() => ProcessList.Clear());
+                        CommonAtomUtils.BeginInvokeAtOnce(() => ProcessList.Clear());
                     }
 
                     foreach (var process in ProcessUtil.GetAllProcessList().OrderBy(p => p.Key))
@@ -37,7 +37,7 @@ namespace MyApp.Prisms.ViewModels
                         }
 
                         ProcessContext processContext = new ProcessContext(process.Value);
-                        CommonUtils.BeginInvoke(() => ProcessList.Add(processContext));
+                        CommonAtomUtils.BeginInvoke(() => ProcessList.Add(processContext));
 
                         await Task.Delay(50);
                     }
@@ -58,7 +58,7 @@ namespace MyApp.Prisms.ViewModels
                 {
                     if (ServiceList.Count > 0)
                     {
-                        CommonUtils.BeginInvokeAtOnce(() => ServiceList.Clear());
+                        CommonAtomUtils.BeginInvokeAtOnce(() => ServiceList.Clear());
                     }
 
                     foreach (var service in ServiceUtil.GetAllNormalServiceList().OrderBy(s => s.Key))
@@ -69,7 +69,7 @@ namespace MyApp.Prisms.ViewModels
                         }
 
                         ServiceContext serviceContext = new ServiceContext(service.Value);
-                        CommonUtils.BeginInvoke(() => { ServiceList.Add(serviceContext); });
+                        CommonAtomUtils.BeginInvoke(() => { ServiceList.Add(serviceContext); });
 
                         await Task.Delay(50);
                     }

@@ -1,7 +1,7 @@
 ﻿using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
-using IceTea.Wpf.Core.Extensions;
+using IceTea.Wpf.Atom.Extensions;
 using MusicPlayerModule.Common;
 using Prism.Commands;
 using Prism.Mvvm;

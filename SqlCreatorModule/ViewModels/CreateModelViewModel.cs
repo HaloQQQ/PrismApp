@@ -3,7 +3,7 @@ using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils;
 using IceTea.SqlStandard.Contracts;
 using IceTea.SqlStandard.DbModels;
-using IceTea.Wpf.Core.Contracts.MediaInfo;
+using IceTea.Wpf.Atom.Contracts.MediaInfo;
 using IceTea.Wpf.Core.Utils;
 using Prism.Commands;
 using Prism.Events;
@@ -12,6 +12,7 @@ using PrismAppBasicLib.MsgEvents;
 using SqlCreatorModule.Models;
 using System.Data;
 using System.Windows.Input;
+using IceTea.Wpf.Atom.Utils;
 
 namespace SqlCreatorModule.ViewModels
 {
@@ -125,7 +126,7 @@ namespace SqlCreatorModule.ViewModels
 
             this.OpenExportDirCommand = new DelegateCommand(() =>
             {
-                var targetDir = CommonUtils.OpenFolderDialog(null);
+                var targetDir = CommonCoreUtils.OpenFolderDialog(null);
 
                 if (targetDir.IsNullOrBlank())
                 {
@@ -159,7 +160,7 @@ namespace SqlCreatorModule.ViewModels
         {
             if (openFileDialog)
             {
-                var fileDialog = CommonUtils.OpenFileDialog(null, new AnyMedia());
+                var fileDialog = CommonAtomUtils.OpenFileDialog(null, new AnyMedia());
 
                 if (fileDialog == null)
                 {

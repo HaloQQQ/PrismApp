@@ -2,8 +2,7 @@
     x:Class="MyApp.Prisms.Views.WindowTitleBarView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
-    xmlns:convert="clr-namespace:MyApp.Prisms.Converters"
+    xmlns:converters="clr-namespace:MyApp.Prisms.Converters"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:regions="http://prismlibrary.com/"
     xmlns:waitLoads="http://IceTea.Wpf.Core.com/"
@@ -13,7 +12,7 @@
     Cursor="SizeAll">
 
     <UserControl.Resources>
-        <convert:BitmapToImageSourceConverter x:Key="BitmapToImageSourceConverter" />
+        <converters:BitmapToImageSourceConverter x:Key="BitmapToImageSourceConverter" />
     </UserControl.Resources>
 
     <UserControl.InputBindings>
@@ -71,9 +70,9 @@
                 Text="&#xe63a;" />
 
             <Button
-                attaches:MyAttachProperty.HasContextMenu="True"
                 ContextMenu="{StaticResource MainMenu}"
                 DockPanel.Dock="Right"
+                MyAttachProperty.HasContextMenu="True"
                 Style="{StaticResource MainMenuIconButton}" />
 
 
@@ -138,8 +137,8 @@
                             <TextBlock Style="{StaticResource ThemeBlk}" Text="用户名：" />
                             <TextBox
                                 Width="250"
-                                attaches:MyAttachProperty.PlaceHolder="请输入用户名"
                                 MaxLength="12"
+                                MyAttachProperty.PlaceHolder="请输入用户名"
                                 TabIndex="1"
                                 Text="{Binding UserContext.Account}" />
                         </StackPanel>
@@ -151,7 +150,7 @@
                             <PasswordBox
                                 x:Name="Pwd"
                                 Width="250"
-                                attaches:MyAttachProperty.Password="{Binding UserContext.Password}"
+                                MyAttachProperty.Password="{Binding UserContext.Password}"
                                 TabIndex="2" />
                         </StackPanel>
                         <Button
@@ -172,8 +171,8 @@
                 x:Name="brightPopup"
                 Width="250"
                 Height="80"
-                attaches:MyAttachProperty.IsAppearOnHovered="True"
                 HorizontalOffset="-117"
+                MyAttachProperty.IsAppearOnHovered="True"
                 Opened="BrightPopup_Opened"
                 Placement="Bottom"
                 PlacementTarget="{Binding ElementName=brightToggleButton}"
@@ -188,7 +187,7 @@
                         Width="180"
                         MinHeight="4"
                         Margin="15,0,12,0"
-                        attaches:MyAttachProperty.IsSliderThumbObvious="True"
+                        MyAttachProperty.IsSliderThumbObvious="True"
                         Style="{StaticResource Slider_ObviousThumb}"
                         TickFrequency="5"
                         Value="{Binding CurrentBright}" />

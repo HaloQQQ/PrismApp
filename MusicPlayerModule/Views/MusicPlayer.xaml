@@ -2,13 +2,12 @@
     x:Class="MusicPlayerModule.Views.MusicPlayer"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
     xmlns:common="clr-namespace:MusicPlayerModule.Common"
     xmlns:commonModel="clr-namespace:MusicPlayerModule.Models.Common"
+    xmlns:icetea="http://IceTea.Wpf.Core.com/"
     xmlns:personalConverter="clr-namespace:MusicPlayerModule.Converters"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewmodels="clr-namespace:MusicPlayerModule.ViewModels"
-    xmlns:waitLoads="http://IceTea.Wpf.Core.com/"
     prism:ViewModelLocator.AutoWireViewModel="True"
     FocusVisualStyle="{x:Null}">
     <UserControl.Resources>
@@ -89,10 +88,10 @@
     </UserControl.Resources>
 
     <Grid
-        attaches:MyAttachProperty.IsElementFocused="True"
         CommandManager.Executed="UserControl_Executed"
         FocusVisualStyle="{x:Null}"
-        MouseWheel="Grid_MouseWheel">
+        MouseWheel="Grid_MouseWheel"
+        MyAttachProperty.IsElementFocused="True">
         <Grid.InputBindings>
             <KeyBinding
                 Key="{Binding KeyGestureDic[搜索].SelectedKey}"
@@ -361,11 +360,11 @@
                 VerticalAlignment="Stretch">
                 <FrameworkElement x:Name="dummyElement" Visibility="Collapsed" />
 
-                <waitLoads:NeedleWaitLoad
+                <icetea:NeedleWaitLoad
                     Width="80"
                     Height="80"
                     Foreground="DodgerBlue">
-                    <waitLoads:NeedleWaitLoad.Style>
+                    <icetea:NeedleWaitLoad.Style>
                         <Style TargetType="UserControl">
                             <Setter Property="Visibility" Value="Collapsed" />
 
@@ -380,8 +379,8 @@
                                 </MultiDataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </waitLoads:NeedleWaitLoad.Style>
-                </waitLoads:NeedleWaitLoad>
+                    </icetea:NeedleWaitLoad.Style>
+                </icetea:NeedleWaitLoad>
 
                 <Viewbox
                     Grid.Row="0"
@@ -390,9 +389,9 @@
                     <DataGrid
                         x:Name="DataGrid_ShowBySong"
                         Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay}"
-                        attaches:MyAttachProperty.DisplayRowNumber="False"
                         HeadersVisibility="All"
                         ItemsSource="{Binding DisplayFavorites}"
+                        MyAttachProperty.DisplayRowNumber="False"
                         Visibility="{Binding IsChecked, ElementName=RadioBtnShowBySong, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <DataGrid.Style>
                             <Style BasedOn="{StaticResource DataGrid_Transparent}" TargetType="DataGrid">
@@ -535,8 +534,8 @@
                     </Grid.ColumnDefinitions>
                     <DockPanel Grid.Column="0">
                         <TextBox
-                            attaches:MyAttachProperty.PlaceHolder="搜索专辑"
                             DockPanel.Dock="Top"
+                            MyAttachProperty.PlaceHolder="搜索专辑"
                             Style="{StaticResource TextBox_QueryTxt}"
                             Text="{Binding DistributeMusicViewModel.AlbumMusicFilteKeyWords, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -587,9 +586,9 @@
                             x:Name="DataGrid_ShowByAlbum"
                             Grid.Column="1"
                             Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay}"
-                            attaches:MyAttachProperty.DisplayRowNumber="True"
                             HeadersVisibility="All"
-                            ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites, ElementName=MusicByAlbumListBox}">
+                            ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites, ElementName=MusicByAlbumListBox}"
+                            MyAttachProperty.DisplayRowNumber="True">
                             <DataGrid.Style>
                                 <Style BasedOn="{StaticResource DataGrid_Transparent}" TargetType="DataGrid">
                                     <Setter Property="ContextMenu" Value="{StaticResource FavoriteDataGridContextMenu}" />
@@ -669,8 +668,8 @@
                     <!--<Viewbox Grid.Column="0" Style="{StaticResource OnlyDownViewbox}">-->
                     <DockPanel Grid.Column="0">
                         <TextBox
-                            attaches:MyAttachProperty.PlaceHolder="搜索歌手"
                             DockPanel.Dock="Top"
+                            MyAttachProperty.PlaceHolder="搜索歌手"
                             Style="{StaticResource TextBox_QueryTxt}"
                             Text="{Binding DistributeMusicViewModel.SingerMusicFilteKeyWords, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -718,9 +717,9 @@
                             x:Name="DataGrid_ShowBySinger"
                             Grid.Column="1"
                             Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay}"
-                            attaches:MyAttachProperty.DisplayRowNumber="True"
                             HeadersVisibility="All"
-                            ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites, ElementName=MusicBySingerListBox}">
+                            ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites, ElementName=MusicBySingerListBox}"
+                            MyAttachProperty.DisplayRowNumber="True">
                             <DataGrid.Style>
                                 <Style BasedOn="{StaticResource DataGrid_Transparent}" TargetType="DataGrid">
                                     <Setter Property="ContextMenu" Value="{StaticResource FavoriteDataGridContextMenu}" />
@@ -840,9 +839,9 @@
                             x:Name="DataGrid_ShowByDir"
                             Grid.Column="1"
                             Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}, Mode=OneWay}"
-                            attaches:MyAttachProperty.DisplayRowNumber="True"
                             HeadersVisibility="All"
-                            ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites, ElementName=MusicByDirListBox}">
+                            ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites, ElementName=MusicByDirListBox}"
+                            MyAttachProperty.DisplayRowNumber="True">
                             <DataGrid.Style>
                                 <Style BasedOn="{StaticResource DataGrid_Transparent}" TargetType="DataGrid">
                                     <Setter Property="ContextMenu" Value="{StaticResource FavoriteDataGridContextMenu}" />
@@ -1022,7 +1021,7 @@
                                                     <Setter Property="Width" Value="40" />
                                                     <Setter Property="Height" Value="40" />
 
-                                                    <Setter Property="attaches:MyAttachProperty.CornerRadius" Value="20" />
+                                                    <Setter Property="MyAttachProperty.CornerRadius" Value="20" />
                                                     <Setter Property="Content" Value="{x:Null}" />
 
                                                     <Style.Triggers>
@@ -1054,7 +1053,7 @@
                                                         <Setter Property="MinWidth" Value="0" />
                                                         <Setter Property="MinHeight" Value="0" />
 
-                                                        <Setter Property="attaches:MyAttachProperty.CornerRadius" Value="20" />
+                                                        <Setter Property="MyAttachProperty.CornerRadius" Value="20" />
 
                                                         <Setter Property="BorderThickness" Value="2" />
                                                         <Setter Property="BorderBrush" Value="Transparent" />
@@ -1095,10 +1094,10 @@
                                     <Button
                                         MinWidth="0"
                                         Padding="7,5"
-                                        attaches:MyAttachProperty.CornerRadius="10"
                                         Command="{Binding DesktopLyric.LinearGradientColorBrush.ResetColorCommand}"
                                         Content="重置"
                                         FontSize="14"
+                                        MyAttachProperty.CornerRadius="10"
                                         Style="{StaticResource TransparentButtonBase}" />
                                 </StackPanel>
 
@@ -1118,7 +1117,7 @@
                                         </ListBox.ItemsPanel>
                                         <ListBox.ItemContainerStyle>
                                             <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
-                                                <Setter Property="attaches:MyAttachProperty.CornerRadius" Value="10" />
+                                                <Setter Property="MyAttachProperty.CornerRadius" Value="10" />
                                                 <Style.Triggers>
                                                     <Trigger Property="IsSelected" Value="True">
                                                         <Setter Property="Background" Value="{StaticResource TransparentButtonBackground}" />
@@ -1452,9 +1451,9 @@
                                 <Popup
                                     Width="280"
                                     Height="110"
-                                    attaches:MyAttachProperty.IsAppearOnHovered="True"
                                     HorizontalOffset="-115"
                                     MouseLeftButtonDown="EmptyHandler"
+                                    MyAttachProperty.IsAppearOnHovered="True"
                                     Placement="Top"
                                     PlacementTarget="{Binding ElementName=MusicSpeedToggleButton}"
                                     VerticalOffset="7">
@@ -1525,9 +1524,9 @@
                             x:Name="VolumePopup"
                             Width="65"
                             Height="202"
-                            attaches:MyAttachProperty.IsAppearOnHovered="True"
                             HorizontalOffset="-23"
                             MouseLeftButtonDown="EmptyHandler"
+                            MyAttachProperty.IsAppearOnHovered="True"
                             Placement="Top"
                             PlacementTarget="{Binding ElementName=VolumeToggleButton}"
                             VerticalOffset="5">
@@ -1566,9 +1565,9 @@
                             </ToggleButton.Style>
                         </ToggleButton>
                         <Popup
-                            attaches:MyAttachProperty.IsAppearOnHovered="True"
                             HorizontalOffset="-67"
                             MouseLeftButtonDown="EmptyHandler"
+                            MyAttachProperty.IsAppearOnHovered="True"
                             Placement="Top"
                             PlacementTarget="{Binding ElementName=listButton}"
                             VerticalOffset="10">
@@ -1715,13 +1714,13 @@
                                                 Width="310"
                                                 Margin="0,5,5,5"
                                                 Padding="10,0,0,0"
-                                                attaches:MyAttachProperty.CornerRadius="15"
-                                                attaches:MyAttachProperty.PlaceHolder="请输入关键字"
                                                 Background="Transparent"
                                                 BorderBrush="{StaticResource LightWhite}"
                                                 BorderThickness="1"
                                                 Focusable="True"
                                                 IsVisibleChanged="PlayingListFilterPanel_IsVisibleChanged"
+                                                MyAttachProperty.CornerRadius="15"
+                                                MyAttachProperty.PlaceHolder="请输入关键字"
                                                 Text="{Binding PlayingListFilteKeyWords, UpdateSourceTrigger=PropertyChanged}" />
                                             <Button
                                                 Command="Close"

@@ -1,9 +1,9 @@
 ﻿using IceTea.Atom.Utils.HotKey.Contracts;
 using IceTea.Atom.Utils.HotKey.Global.Contracts;
-using IceTea.Wpf.Core.Utils;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using IceTea.Wpf.Atom.Utils;
 
 namespace MyApp.Prisms.Views
 {

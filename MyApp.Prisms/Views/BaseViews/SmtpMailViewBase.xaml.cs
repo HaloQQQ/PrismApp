@@ -1,7 +1,7 @@
 ﻿using IceTea.Atom.Extensions;
-using IceTea.Wpf.Core.Contracts;
-using IceTea.Wpf.Core.Contracts.MediaInfo;
-using IceTea.Wpf.Core.Utils;
+using IceTea.Wpf.Atom.Contracts;
+using IceTea.Wpf.Atom.Contracts.MediaInfo;
+using IceTea.Wpf.Atom.Utils;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using System;
 using System.Text.RegularExpressions;
@@ -87,7 +87,7 @@ namespace MyApp.Prisms.Views.BaseViews
             {
                 e.Handled = true;
 
-                var selectFile = CommonUtils.OpenFileDialog(string.Empty, new AnyMedia());
+                var selectFile = CommonAtomUtils.OpenFileDialog(string.Empty, new AnyMedia());
 
                 if (selectFile != null)
                 {

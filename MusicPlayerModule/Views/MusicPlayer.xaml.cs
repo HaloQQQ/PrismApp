@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using IceTea.Wpf.Core.Extensions;
+using IceTea.Wpf.Atom.Extensions;
 using IceTea.Atom.Contracts;
 
 namespace MusicPlayerModule.Views

@@ -2,7 +2,6 @@
     x:Class="CustomControlsDemoModule.Views.ControlsDemoView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
     xmlns:models="clr-namespace:CustomControlsDemoModule.Models"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:views="clr-namespace:CustomControlsDemoModule.Views"

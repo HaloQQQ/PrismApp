@@ -2,16 +2,15 @@
     x:Class="MusicPlayerModule.Views.HorizontalMusicLyricDesktopWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:attaches="http://IceTea.Wpf.Core.Attaches.com/"
-    xmlns:customcontrols="http://IceTea.Wpf.Core.com/"
+    xmlns:icetea="http://IceTea.Wpf.Core.com/"
     xmlns:prism="http://prismlibrary.com/"
     Title="HorizontalMusicLyricDesktopWindow"
     MinWidth="900"
-    attaches:MyAttachProperty.CornerRadius="10"
-    attaches:MyAttachProperty.UseWindowCommand="False"
     prism:ViewModelLocator.AutoWireViewModel="True"
     Background="Transparent"
     Cursor="SizeAll"
+    MyAttachProperty.CornerRadius="10"
+    MyAttachProperty.UseWindowCommand="False"
     ResizeMode="NoResize"
     ShowInTaskbar="False"
     SizeToContent="WidthAndHeight"
@@ -23,7 +22,7 @@
                 <ResourceDictionary Source="/MusicPlayerModule;component/Resources/Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <customcontrols:BoolToHiddenVisibleConverter x:Key="BoolToHiddenVisibleConverter" />
+            <icetea:BoolToHiddenVisibleConverter x:Key="BoolToHiddenVisibleConverter" />
         </ResourceDictionary>
     </Window.Resources>
 
