@@ -5,6 +5,7 @@ using MauiAppNet8.ViewModels.Socket;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Prism.Mvvm;
+using Prism.Events;
 
 namespace MauiAppNet8
 {
@@ -62,6 +63,7 @@ namespace MauiAppNet8
             builder.Services.TryAddSingleton<_2048ViewModel>();
 
             builder.Services.TryAddSingleton<IConfigManager, MauiConfigManager>();
+            builder.Services.TryAddSingleton<IEventAggregator, EventAggregator>();
 
             return builder;
         }

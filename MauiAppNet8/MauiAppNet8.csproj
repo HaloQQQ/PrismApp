@@ -83,18 +83,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\MySourceCode\IceTea.Maui.Core\IceTea.Maui.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Update="Views\Socket\SocketMainView.xaml.cs">
 	    <DependentUpon>SocketMainPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\Socket\TcpClientView.xaml.cs">
 	    <DependentUpon>TcpClientView.xaml</DependentUpon>
 	  </Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <MauiFont Update="Resources\Fonts\iconfont.ttf">
-	    <CopyToOutputDirectory></CopyToOutputDirectory>
-	  </MauiFont>
 	</ItemGroup>
 
 	<ItemGroup>

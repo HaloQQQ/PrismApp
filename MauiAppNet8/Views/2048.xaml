@@ -3,15 +3,17 @@
     x:Class="MauiAppNet8.Views._2048"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:attaches="clr-namespace:IceTea.Maui.Core.Attaches;assembly=IceTea.Maui.Core"
     xmlns:triggeraction="using:MauiAppNet8.Contracts.TriggerActions"
     Title="_2048"
-    attaches:MyAttachProperty.IsAutowire="True">
+    MyAttachProperty.IsAutowire="True">
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="StartPauseButton" TargetType="Button">
-                <Setter Property="Text" Value="开始" />
+            <Style
+                x:Key="StartPauseButton"
+                BasedOn="{StaticResource IconButton_Big_SkyBlue_Pressed}"
+                TargetType="Button">
+                <Setter Property="Text" Value="&#xe87c;" />
 
                 <Setter Property="Margin" Value="10,0" />
 
@@ -24,39 +26,24 @@
                         Binding="{Binding IsUsable}"
                         TargetType="Button"
                         Value="True">
-                        <Setter Property="Text" Value="暂停" />
+                        <Setter Property="Text" Value="&#xe62a;" />
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
 
-            <Style x:Key="RePlayButton" TargetType="Button">
+            <Style
+                x:Key="RePlayButton"
+                BasedOn="{StaticResource IconButton_Big_SkyBlue_Pressed}"
+                TargetType="Button">
                 <Setter Property="Margin" Value="10,0" />
 
                 <Setter Property="Command" Value="{Binding RePlayCommand}" />
-                <Setter Property="Text" Value="重玩" />
+                <Setter Property="Text" Value="&#xe63e;" />
 
                 <Setter Property="ToolTipProperties.Text" Value="{Binding KeyGestureDic[重玩].ToolTip}" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
-
-    <!--<ContentPage.InputBindings>
-        <KeyBinding
-            Key="{Binding KeyGestureDic[重玩].SelectedKey}"
-            Command="{Binding RePlayCommand}"
-            Modifiers="{Binding KeyGestureDic[重玩].ModifierKey}" />
-
-        <KeyBinding
-            Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"
-            Command="{Binding StartPauseCommand}"
-            Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" />
-
-        <KeyBinding Key="Left" Command="{Binding LeftCommand}" />
-        <KeyBinding Key="Right" Command="{Binding RightCommand}" />
-
-        <KeyBinding Key="Up" Command="{Binding UpCommand}" />
-        <KeyBinding Key="Down" Command="{Binding DownCommand}" />
-    </ContentPage.InputBindings>-->
 
     <VerticalStackLayout>
         <VerticalStackLayout.GestureRecognizers>
@@ -67,18 +54,18 @@
         </VerticalStackLayout.GestureRecognizers>
 
         <HorizontalStackLayout>
-            <VerticalStackLayout Margin="20,10" HorizontalOptions="End">
-                <Label HorizontalOptions="Center" Text="最高分" />
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="30"
-                    HorizontalOptions="Center"
-                    HorizontalTextAlignment="Center"
-                    MinimumWidthRequest="80"
-                    Text="{Binding MaxScore}" />
-            </VerticalStackLayout>
+            <HorizontalStackLayout Margin="20,10">
+                <Button FontSize="30" Style="{StaticResource RePlayButton}" />
 
-            <VerticalStackLayout Margin="20,10" HorizontalOptions="End">
+                <Button FontSize="38" Style="{StaticResource StartPauseButton}" />
+
+                <Button Command="{Binding LeftCommand}" Text="&#xe660;" />
+                <Button Command="{Binding RightCommand}" Text="&#xe65f;" />
+                <Button Command="{Binding UpCommand}" Text="&#xe65d;" />
+                <Button Command="{Binding DownCommand}" Text="&#xe65e;" />
+            </HorizontalStackLayout>
+
+            <VerticalStackLayout Margin="20,10" HorizontalOptions="Center">
                 <Label HorizontalOptions="Center" Text="分数" />
                 <Label
                     FontAttributes="Bold"
@@ -89,16 +76,16 @@
                     Text="{Binding Score}" />
             </VerticalStackLayout>
 
-            <HorizontalStackLayout Margin="20,10">
-                <Button FontSize="30" Style="{StaticResource RePlayButton}" />
-
-                <Button FontSize="38" Style="{StaticResource StartPauseButton}" />
-
-                <Button Command="{Binding LeftCommand}" Text="←" />
-                <Button Command="{Binding RightCommand}" Text="→" />
-                <Button Command="{Binding UpCommand}" Text="↑" />
-                <Button Command="{Binding DownCommand}" Text="↓" />
-            </HorizontalStackLayout>
+            <VerticalStackLayout Margin="20,10" HorizontalOptions="Center">
+                <Label HorizontalOptions="Center" Text="最高分" />
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="30"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    MinimumWidthRequest="80"
+                    Text="{Binding MaxScore}" />
+            </VerticalStackLayout>
         </HorizontalStackLayout>
 
         <Grid>
@@ -107,9 +94,9 @@
                 HeightRequest="400"
                 ItemsSource="{Binding Data}"
                 WidthRequest="400">
-                <CollectionView.Clip>
+                <!--<CollectionView.Clip>
                     <RoundRectangleGeometry CornerRadius="10" Rect="0,0,400,400" />
-                </CollectionView.Clip>
+                </CollectionView.Clip>-->
 
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout
@@ -360,9 +347,9 @@
                 HeightRequest="400"
                 IsVisible="{Binding IsUsable, Converter={StaticResource OppositeBoolConverter}}"
                 WidthRequest="400">
-                <Grid.Clip>
+                <!--<Grid.Clip>
                     <RoundRectangleGeometry CornerRadius="10" Rect="0,0,400,400" />
-                </Grid.Clip>
+                </Grid.Clip>-->
 
                 <Button
                     FontSize="80"
