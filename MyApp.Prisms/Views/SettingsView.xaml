@@ -240,7 +240,7 @@
         CornerRadius="20">
         <TabControl ItemContainerStyle="{StaticResource TabItem_Transparent}" Style="{StaticResource TabControl_ScrollContent}">
             <TabItem Header="默认目录">
-                <StackPanel Margin="6,0">
+                <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Style="{StaticResource ThemeBlk}" Text="图片默认目录：" />
                         <TextBox
@@ -283,7 +283,7 @@
             </TabItem>
             <TabItem Header="默认邮箱">
                 <StackPanel>
-                    <StackPanel Margin="6,0" Orientation="Horizontal">
+                    <StackPanel Margin="2,0,0,0" Orientation="Horizontal">
                         <TextBlock Style="{StaticResource ThemeBlk}" Text="邮箱:" />
                         <TextBox
                             Width="250"
@@ -324,8 +324,8 @@
                     <WrapPanel>
                         <TextBlock Style="{StaticResource ThemeBlk}" Text="窗口圆角:" />
                         <Slider
-                            MinWidth="570"
-                            MinHeight="4"
+                            Width="630"
+                            Height="4"
                             Maximum="20"
                             Minimum="0"
                             Style="{StaticResource Slider_ObviousThumb}"

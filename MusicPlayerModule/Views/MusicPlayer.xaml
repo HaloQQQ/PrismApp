@@ -1058,6 +1058,8 @@
                                                         <Setter Property="BorderThickness" Value="2" />
                                                         <Setter Property="BorderBrush" Value="Transparent" />
 
+                                                        <Setter Property="Effect" Value="{x:Null}" />
+
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding DesktopLyric.LyricColorBrush.IsSelected}" Value="True">
                                                                 <Setter Property="BorderBrush" Value="{StaticResource HoveredTransparentButtonBackground}" />
@@ -1130,6 +1132,7 @@
                                                 <TextBlock
                                                     MinWidth="60"
                                                     Padding="10,5"
+                                                    FontFamily="{Binding Family}"
                                                     FontSize="14"
                                                     Text="{Binding DisplayName}"
                                                     TextAlignment="Center"
