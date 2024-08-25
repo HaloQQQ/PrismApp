@@ -63,6 +63,7 @@
         <ProgressBar
             Width="200"
             Height="30"
+            MyAttachProperty.PlaceHolder="当前进度"
             Value="{Binding Value, Source={x:Reference slider}}" />
 
         <ProgressBar
