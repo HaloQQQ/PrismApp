@@ -28,6 +28,8 @@
                             <Style TargetType="Button">
                                 <Setter Property="Background" Value="#EEEEEE" />
 
+                                <Setter Property="Shadow" Value="{x:Null}" />
+
                                 <Style.Triggers>
                                     <DataTrigger
                                         Binding="{Binding UnStarted}"

@@ -81,7 +81,7 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <Grid ColumnDefinitions="*,85">
+        <Grid ColumnDefinitions="*,Auto">
             <Editor
                 Grid.Column="0"
                 HeightRequest="200"
@@ -96,7 +96,7 @@
             </VerticalStackLayout>
         </Grid>
 
-        <Grid ColumnDefinitions="*,60">
+        <Grid ColumnDefinitions="*,Auto">
             <Entry
                 Grid.Column="0"
                 Keyboard="Text"
