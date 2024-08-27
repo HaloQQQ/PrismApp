@@ -53,7 +53,10 @@
                 </Style>
             </WrapPanel.Style>
 
-            <RichTextBox IsReadOnly="False" MyAttachProperty.PlaceHolder="RichTextBox" />
+            <RichTextBox
+                IsReadOnly="False"
+                MyAttachProperty.AttachPlaceHolderToRichTextBox="True"
+                MyAttachProperty.PlaceHolder="RichTextBox" />
 
             <RichTextBox IsReadOnly="True" />
 
