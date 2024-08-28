@@ -1658,7 +1658,7 @@
                             Height="490"
                             Closed="PlayingListPopup_Closed"
                             CommandManager.Executed="PlayingList_Executed"
-                            HorizontalOffset="-334"
+                            HorizontalOffset="-343"
                             IsOpen="{Binding IsChecked, ElementName=PlayingListButton}"
                             MouseLeftButtonDown="EmptyHandler"
                             Opened="PlayingListPopup_UpdateDataGridScrollBar"

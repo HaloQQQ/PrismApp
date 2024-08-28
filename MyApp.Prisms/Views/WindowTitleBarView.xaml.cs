@@ -1,12 +1,9 @@
 ﻿using Prism.Events;
 using Prism.Ioc;
 using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 using MyApp.Prisms.MsgEvents;
 using MyApp.Prisms.ViewModels;
 using Point = System.Windows.Point;
@@ -39,7 +36,7 @@ namespace MyApp.Prisms.Views
             {
                 Window window = Window.GetWindow(this);
 
-                if(window == null)
+                if (window == null)
                 {
                     return;
                 }
@@ -60,32 +57,6 @@ namespace MyApp.Prisms.Views
             }
         }
 
-        private void SlideTitleBar(UIElement element, double containerYTo, double textYTo)
-        {
-            var storyBoard = new Storyboard();
-
-            var animation = new ThicknessAnimation(this.Margin,
-                new Thickness(0, containerYTo, 0, 0),
-                new Duration(TimeSpan.FromSeconds(1)));
-
-            Storyboard.SetTarget(animation, this);
-            Storyboard.SetTargetProperty(animation, new PropertyPath("Margin"));
-            storyBoard.Children.Add(animation);
-
-
-            Debug.Assert((element.RenderTransform as TranslateTransform) != null, "标题栏下拉按钮的TranslateTransform不允许未定义");
-            var y = ((element.RenderTransform as TranslateTransform)!).Y;
-            var translateAnimation = new DoubleAnimation(y, textYTo,
-                new Duration(TimeSpan.FromSeconds(1)));
-
-            Storyboard.SetTarget(translateAnimation, element);
-            Storyboard.SetTargetProperty(translateAnimation,
-                new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
-            storyBoard.Children.Add(translateAnimation);
-
-            storyBoard.Begin();
-        }
-
         #endregion
 
         #region 更换主题、背景
@@ -99,25 +70,6 @@ namespace MyApp.Prisms.Views
         }
 
         #endregion
-
-        private void Slider_CheckedStatusChanged(object sender, RoutedEventArgs e)
-        {
-            if (e.OriginalSource is UIElement element)
-            {
-                if (this.Margin.Top == 0)
-                {
-                    // 标题栏收起动画
-                    this.SlideTitleBar(element, -42, 42);
-                }
-                else
-                {
-                    // 标题栏下拉动画
-                    this.SlideTitleBar(element, 0, 0);
-                }
-            }
-
-            e.Handled = true;
-        }
 
         #region 消息框
 

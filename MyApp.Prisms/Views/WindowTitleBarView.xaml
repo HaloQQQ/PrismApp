@@ -2,9 +2,11 @@
     x:Class="MyApp.Prisms.Views.WindowTitleBarView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="http://IceTea.Wpf.Core.com/"
     xmlns:converters="clr-namespace:MyApp.Prisms.Converters"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:regions="http://prismlibrary.com/"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
     xmlns:waitLoads="http://IceTea.Wpf.Core.com/"
     Panel.ZIndex="100"
     prism:ViewModelLocator.AutoWireViewModel="True"
@@ -13,7 +15,52 @@
 
     <UserControl.Resources>
         <converters:BitmapToImageSourceConverter x:Key="BitmapToImageSourceConverter" />
+
+        <converter:MultiConverter_DigitToThickness x:Key="MultiConverter_DigitToThickness" />
+
     </UserControl.Resources>
+
+    <UserControl.Tag>
+        <system:Double>0</system:Double>
+    </UserControl.Tag>
+    <UserControl.Margin>
+        <MultiBinding Converter="{StaticResource MultiConverter_DigitToThickness}" ConverterParameter="{x:Static EnumThickness.Top}">
+            <MultiBinding.Bindings>
+                <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
+                <Binding Path="Tag" RelativeSource="{RelativeSource Self}" />
+            </MultiBinding.Bindings>
+        </MultiBinding>
+    </UserControl.Margin>
+
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsTitleBarHidden}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                                    Storyboard.TargetProperty="Tag"
+                                    To="-1"
+                                    Duration="0:0:1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.EnterActions>
+
+                    <DataTrigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                                    Storyboard.TargetProperty="Tag"
+                                    To="0"
+                                    Duration="0:0:1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </DataTrigger.ExitActions>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
 
     <UserControl.InputBindings>
         <MouseBinding Command="{x:Static SystemCommands.MaximizeWindowCommand}" MouseAction="LeftDoubleClick" />
@@ -85,12 +132,53 @@
                 </Button.InputBindings>
             </Button>
 
-            <ToggleButton
-                Checked="Slider_CheckedStatusChanged"
-                DockPanel.Dock="Right"
-                IsChecked="{Binding IsTitleBarHidden}"
-                Style="{StaticResource SlideIconToggleButton}"
-                Unchecked="Slider_CheckedStatusChanged" />
+            <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding IsTitleBarHidden}">
+                <ToggleButton.Tag>
+                    <system:Double>0</system:Double>
+                </ToggleButton.Tag>
+                <ToggleButton.RenderTransform>
+                    <TranslateTransform>
+                        <TranslateTransform.Y>
+                            <MultiBinding Converter="{StaticResource MultiConverter_Multiplication}">
+                                <MultiBinding.Bindings>
+                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                    <Binding Path="Tag" RelativeSource="{RelativeSource AncestorType=ToggleButton}" />
+                                </MultiBinding.Bindings>
+                            </MultiBinding>
+                        </TranslateTransform.Y>
+                    </TranslateTransform>
+                </ToggleButton.RenderTransform>
+
+                <ToggleButton.Style>
+                    <Style BasedOn="{StaticResource SlideIconToggleButton}" TargetType="ToggleButton">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsTitleBarHidden}" Value="True">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="Tag"
+                                                To="1"
+                                                Duration="0:0:1" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetProperty="Tag"
+                                                To="0"
+                                                Duration="0:0:1" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
 
 
             <ToggleButton
@@ -185,7 +273,7 @@
                     <Slider
                         x:Name="brightSlider"
                         Width="180"
-                        MinHeight="4"
+                        Height="4"
                         Margin="15,0,12,0"
                         MyAttachProperty.IsSliderThumbObvious="True"
                         Style="{StaticResource Slider_ObviousThumb}"

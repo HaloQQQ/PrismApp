@@ -325,7 +325,10 @@
                     Grid.Column="2"
                     HorizontalAlignment="Right"
                     Style="{StaticResource OnlyDownViewbox}">
-                    <DockPanel Grid.Column="2" LastChildFill="False">
+                    <DockPanel
+                        Grid.Column="2"
+                        Margin="10,5"
+                        LastChildFill="False">
                         <ToggleButton
                             x:Name="PlayingListButton"
                             Click="PlayingListButton_Click"
@@ -349,13 +352,13 @@
                             x:Name="PlayingListPopup"
                             Width="400"
                             Height="501"
-                            HorizontalOffset="-344"
+                            HorizontalOffset="-343"
                             IsOpen="{Binding IsChecked, ElementName=PlayingListButton}"
                             Opened="DataGrid_UpdateScrollBar"
                             Placement="Top"
                             PlacementTarget="{Binding ElementName=PlayingListButton}"
                             PopupAnimation="Fade"
-                            VerticalOffset="-42">
+                            VerticalOffset="-18">
                             <Border Background="{StaticResource PopupBackground}" CornerRadius="10">
                                 <Grid>
                                     <Grid.RowDefinitions>
