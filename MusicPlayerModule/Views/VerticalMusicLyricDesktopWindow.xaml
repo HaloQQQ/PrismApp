@@ -62,19 +62,19 @@
                     Margin="10"
                     FontSize="18"
                     Foreground="#EBEBEB"
-                    Text="{Binding CurrentMusic.Music.Name}"
+                    Text="{Binding CurrentMedia.Music.Name}"
                     TextTrimming="WordEllipsis"
-                    Visibility="{Binding CurrentMusic.Music.IsEnglishTitle, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
+                    Visibility="{Binding CurrentMedia.Music.IsEnglishTitle, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
                 <TextBlock
                     MaxWidth="180"
                     Margin="10"
                     FontSize="18"
                     Foreground="#EBEBEB"
-                    Text="{Binding CurrentMusic.Music.Name}"
+                    Text="{Binding CurrentMedia.Music.Name}"
                     TextTrimming="WordEllipsis"
                     TextWrapping="NoWrap"
-                    Visibility="{Binding CurrentMusic.Music.IsEnglishTitle, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
+                    Visibility="{Binding CurrentMedia.Music.IsEnglishTitle, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
                     <TextBlock.LayoutTransform>
                         <TransformGroup>
                             <RotateTransform Angle="90" />
@@ -86,19 +86,19 @@
                 <TextBlock
                     Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                     Foreground="#EBEBEB"
-                    Text="{Binding CurrentMusic.Music.Singer}"
+                    Text="{Binding CurrentMedia.Music.Singer}"
                     TextTrimming="WordEllipsis"
-                    Visibility="{Binding CurrentMusic.Music.IsEnglishSinger, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
+                    Visibility="{Binding CurrentMedia.Music.IsEnglishSinger, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
 
                 <TextBlock
                     Margin="10"
                     FontSize="18"
                     Foreground="#EBEBEB"
-                    Text="{Binding CurrentMusic.Music.Singer}"
+                    Text="{Binding CurrentMedia.Music.Singer}"
                     TextTrimming="CharacterEllipsis"
                     TextWrapping="NoWrap"
-                    Visibility="{Binding CurrentMusic.Music.IsEnglishSinger, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
+                    Visibility="{Binding CurrentMedia.Music.IsEnglishSinger, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
                     <TextBlock.LayoutTransform>
                         <TransformGroup>
                             <RotateTransform Angle="90" />
@@ -118,7 +118,7 @@
                     Style="{StaticResource IconButtonBase_Small_Scale}"
                     ToolTip="{Binding KeyGestureDic[快退].ToolTip}" />
 
-                <Button Command="{Binding PrevCommand}" CommandParameter="{Binding CurrentMusic}">
+                <Button Command="{Binding PrevCommand}" CommandParameter="{Binding CurrentMedia}">
                     <Button.Style>
                         <Style BasedOn="{StaticResource PrevOneIconButton}" TargetType="Button">
                             <Setter Property="FontSize" Value="25" />
@@ -135,7 +135,7 @@
 
                 <ToggleButton
                     Command="{Binding PlayPlayingCommand}"
-                    CommandParameter="{Binding CurrentMusic}"
+                    CommandParameter="{Binding CurrentMedia}"
                     IsChecked="{Binding Running, Mode=OneWay}">
                     <ToggleButton.Style>
                         <Style BasedOn="{StaticResource PlayIconToggleButton}" TargetType="ToggleButton">
@@ -151,7 +151,7 @@
                     </ToggleButton.Style>
                 </ToggleButton>
 
-                <Button Command="{Binding NextCommand}" CommandParameter="{Binding CurrentMusic}">
+                <Button Command="{Binding NextCommand}" CommandParameter="{Binding CurrentMedia}">
                     <Button.Style>
                         <Style BasedOn="{StaticResource NextOneIconButton}" TargetType="Button">
                             <Setter Property="FontSize" Value="25" />
@@ -230,9 +230,9 @@
                     <TextBlock.LayoutTransform>
                         <RotateTransform Angle="90" />
                     </TextBlock.LayoutTransform>
-                    <TextBlock Text="{Binding CurrentMusic.CurrentTime, FallbackValue=00:00}" />
+                    <TextBlock Text="{Binding CurrentMedia.CurrentTime, FallbackValue=00:00}" />
                     /
-                    <TextBlock Text="{Binding CurrentMusic.Music.Duration, FallbackValue=00:00}" />
+                    <TextBlock Text="{Binding CurrentMedia.Music.Duration, FallbackValue=00:00}" />
                 </TextBlock>
             </StackPanel>
         </Grid>
@@ -241,7 +241,7 @@
             <StackPanel Orientation="Horizontal">
                 <ContentControl
                     VerticalAlignment="Top"
-                    Content="{Binding CurrentMusic.OneLine}"
+                    Content="{Binding CurrentMedia.OneLine}"
                     ContentTemplateSelector="{StaticResource LyricDataTemlateSelector}"
                     FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                     MouseEnter="DesktopLyricPanel_Visible"
@@ -249,7 +249,7 @@
 
                 <ContentControl
                     VerticalAlignment="Bottom"
-                    Content="{Binding CurrentMusic.AnotherLine}"
+                    Content="{Binding CurrentMedia.AnotherLine}"
                     ContentTemplateSelector="{StaticResource LyricDataTemlateSelector}"
                     FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                     MouseEnter="DesktopLyricPanel_Visible"
@@ -258,7 +258,7 @@
 
             <ContentControl
                 VerticalAlignment="Center"
-                Content="{Binding CurrentMusic.CurrentLine}"
+                Content="{Binding CurrentMedia.CurrentLine}"
                 ContentTemplateSelector="{StaticResource LyricDataTemlateSelector}"
                 FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                 MouseEnter="DesktopLyricPanel_Visible"

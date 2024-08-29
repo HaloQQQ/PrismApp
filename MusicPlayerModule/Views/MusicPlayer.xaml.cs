@@ -53,7 +53,7 @@ namespace MusicPlayerModule.Views
                     mainWindow.Closing += (sender, e) => _verticalDesktopLyricWindow.Close();
                 }
             });
-            this._eventAggregator.GetEvent<ResetPlayerEvent>().Subscribe(() => this.ResetMediaPlayer());
+            this._eventAggregator.GetEvent<ResetMusicPlayerEvent>().Subscribe(() => this.ResetMediaPlayer());
 
             this._eventAggregator.GetEvent<ContinueCurrentMusicEvent>().Subscribe(() => this.mediaPlayer.Play());
             this._eventAggregator.GetEvent<PauseCurrentMusicEvent>().Subscribe(() => this.mediaPlayer.Pause());
@@ -65,14 +65,14 @@ namespace MusicPlayerModule.Views
 
             this._eventAggregator.GetEvent<IncreaseVolumeEvent>().Subscribe(() =>
             {
-                if (_musicPlayerViewModel.CurrentMusic != null)
+                if (_musicPlayerViewModel.CurrentMedia != null)
                 {
                     this.IncreaseVolume();
                 }
             });
             this._eventAggregator.GetEvent<DecreaseVolumeEvent>().Subscribe(() =>
             {
-                if (_musicPlayerViewModel.CurrentMusic != null)
+                if (_musicPlayerViewModel.CurrentMedia != null)
                 {
                     this.DecreaseVolume();
                 }
@@ -327,21 +327,21 @@ namespace MusicPlayerModule.Views
 
                 e.Handled = true;
             }
-            else if (e.Command == ComponentCommands.MoveToHome)
-            {
-                this.mediaPlayer.Position = TimeSpan.Zero;
+            //else if (e.Command == ComponentCommands.MoveToHome)
+            //{
+            //    this.mediaPlayer.Position = TimeSpan.Zero;
 
-                e.Handled = true;
-            }
-            else if (e.Command == ComponentCommands.MoveToEnd)
-            {
-                if (this.mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds > 5)
-                {
-                    this.mediaPlayer.Position = this.mediaPlayer.NaturalDuration.TimeSpan.Subtract(TimeSpan.FromSeconds(5));
-                }
+            //    e.Handled = true;
+            //}
+            //else if (e.Command == ComponentCommands.MoveToEnd)
+            //{
+            //    if (this.mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds > 5)
+            //    {
+            //        this.mediaPlayer.Position = this.mediaPlayer.NaturalDuration.TimeSpan.Subtract(TimeSpan.FromSeconds(5));
+            //    }
 
-                e.Handled = true;
-            }
+            //    e.Handled = true;
+            //}
             else if (e.Command == MediaCommands.TogglePlayPause)
             {
                 this.SwitchLyric(e);

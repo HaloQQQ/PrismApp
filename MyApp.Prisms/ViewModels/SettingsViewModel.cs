@@ -17,6 +17,7 @@ using System;
 using IceTea.Atom.Utils.HotKey.Global.Contracts;
 using CustomControlsDemoModule.Views;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
+using MusicPlayerModule.Common;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -87,7 +88,7 @@ namespace MyApp.Prisms.ViewModels
                 var str = CommonCoreUtils.OpenFolderDialog(this.ImageDir);
                 if (!string.IsNullOrEmpty(str))
                 {
-                    this.ImageDir = str;
+                    CustomConstants.LastImageDir = this.ImageDir = str;
                 }
 
                 this.IsEditingSetting = true;
@@ -98,7 +99,7 @@ namespace MyApp.Prisms.ViewModels
                 var str = CommonCoreUtils.OpenFolderDialog(this.LastMusicDir);
                 if (!string.IsNullOrEmpty(str))
                 {
-                    this.LastMusicDir = str;
+                    CustomStatics.LastMusicDir = this.LastMusicDir = str;
                 }
 
                 this.IsEditingSetting = true;
@@ -109,7 +110,7 @@ namespace MyApp.Prisms.ViewModels
                 var str = CommonCoreUtils.OpenFolderDialog(this.LastVideoDir);
                 if (!string.IsNullOrEmpty(str))
                 {
-                    this.LastVideoDir = str;
+                    CustomStatics.LastVideoDir = this.LastVideoDir = str;
                 }
 
                 this.IsEditingSetting = true;
@@ -152,7 +153,7 @@ namespace MyApp.Prisms.ViewModels
                 eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(message, 4));
             });
 
-            this._2048Command = new DelegateCommand(() => 
+            this._2048Command = new DelegateCommand(() =>
             {
                 new _2048Window().ShowDialog();
             });
@@ -249,25 +250,21 @@ namespace MyApp.Prisms.ViewModels
 
         private void LoadLastMusicDir(IConfigManager configManager)
         {
-            var configPath = new string[] { "Music", nameof(this.LastMusicDir) };
-
-            this.LastMusicDir = configManager.ReadConfigNode(configPath);
+            this.LastMusicDir = configManager.ReadConfigNode(CustomStatics.LastMusicDir_ConfigKey);
 
             configManager.SetConfig += config =>
             {
-                config.WriteConfigNode(this.LastMusicDir, configPath);
+                config.WriteConfigNode(CustomStatics.LastMusicDir, CustomStatics.LastMusicDir_ConfigKey);
             };
         }
 
         private void LoadLastVideoDir(IConfigManager configManager)
         {
-            var configPath = new string[] { "Video", nameof(this.LastVideoDir) };
-
-            this.LastVideoDir = configManager.ReadConfigNode(configPath);
+            this.LastVideoDir = configManager.ReadConfigNode(CustomStatics.LastVideoDir_ConfigKey);
 
             configManager.SetConfig += config =>
             {
-                config.WriteConfigNode(this.LastVideoDir, configPath);
+                config.WriteConfigNode(CustomStatics.LastVideoDir, CustomStatics.LastVideoDir_ConfigKey);
             };
         }
         #endregion

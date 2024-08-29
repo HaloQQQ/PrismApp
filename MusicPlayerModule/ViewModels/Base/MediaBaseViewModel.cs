@@ -15,19 +15,36 @@ namespace MusicPlayerModule.ViewModels.Base
 
         public string IndexString => this._index.ToString("000");
 
-        public bool IsLongTimeMedia { get; protected set; }
+        public bool IsLongTimeMedia => this.TotalMills > 1000 * 60 * 60;
+
+        public string Name { get; protected set; }
+        public string FilePath { get; protected set; }
 
         public virtual int MillsStep => 1000;
 
         public void Rewind() => this.CurrentMills = Math.Max(this.CurrentMills - this.MillsStep, 0);
         public void FastForward() => this.CurrentMills += this.MillsStep;
 
+        private bool _isPlayingMedia;
+        public bool IsPlayingMedia
+        {
+            get { return _isPlayingMedia; }
+            internal set { SetProperty<bool>(ref _isPlayingMedia, value); }
+        }
+
+        private int _totalMills;
+        public int TotalMills
+        {
+            get => _totalMills;
+            set { SetProperty(ref _totalMills, value); }
+        }
+
         #region 当前时间更新
         public virtual double ProgressPercent { get; }
 
         protected int _currentMills;
 
-        public virtual int CurrentMills { get; set; }
+        public virtual int CurrentMills { get => _currentMills; set { throw new NotImplementedException(); } }
 
         public string CurrentTime => this.GetFormatTime(this._currentMills);
         #endregion
@@ -57,11 +74,14 @@ namespace MusicPlayerModule.ViewModels.Base
 
             if (this._pointBMills != 0 && this._pointBMills < this._pointAMills)
             {
-                this.SetPointToTotalMills();
+                this.PointBMills = this.TotalMills;
             }
         }
 
-        protected abstract void SetPointToTotalMills();
+        public void GoToPointA()
+        {
+            this.CurrentMills = this.PointAMills;
+        }
 
         private int _pointBMills;
 
@@ -110,7 +130,7 @@ namespace MusicPlayerModule.ViewModels.Base
         /// </summary>
         public virtual void Reset()
         {
-            this.ResetABPoint();
+            //this.ResetABPoint();
         }
     }
 }

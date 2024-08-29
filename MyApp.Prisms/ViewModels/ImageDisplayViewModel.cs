@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Prism.Commands;
 using System.Threading;
 using IceTea.Wpf.Atom.Utils;
+using MyApp.Prisms.Helper;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -85,7 +86,7 @@ namespace MyApp.Prisms.ViewModels
             this.Data.Add(new MyImage());
             Task.Run(async () =>
             {
-                var dir = config.ReadConfigNode(nameof(SettingsViewModel.ImageDir));
+                var dir = CustomConstants.LastImageDir ??= config.ReadConfigNode(nameof(SettingsViewModel.ImageDir));
                 var coll = GetImageUris(dir);
                 foreach (var item in coll)
                 {

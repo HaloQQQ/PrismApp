@@ -38,7 +38,7 @@
 
                 <Setter Property="Margin" Value="5" />
 
-                <Setter Property="Source" Value="{Binding CurrentMusic.Music.ImageSource}" />
+                <Setter Property="Source" Value="{Binding CurrentMedia.Music.ImageSource}" />
 
                 <Setter Property="Clip">
                     <Setter.Value>
@@ -50,7 +50,7 @@
                 </Setter>
 
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding CurrentMusic.Music.ImageSource}" Value="{x:Null}">
+                    <DataTrigger Binding="{Binding CurrentMedia.Music.ImageSource}" Value="{x:Null}">
                         <Setter Property="Source">
                             <Setter.Value>
                                 <BitmapImage UriSource="/MusicPlayerModule;component/Resources/音符SVG-87.png" />
@@ -65,7 +65,7 @@
                 BasedOn="{StaticResource PointABTextBlock}"
                 TargetType="TextBlock">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding CurrentMusic}" Value="{x:Null}">
+                    <DataTrigger Binding="{Binding CurrentMedia}" Value="{x:Null}">
                         <Setter Property="Visibility" Value="Collapsed" />
                     </DataTrigger>
                 </Style.Triggers>
@@ -123,6 +123,10 @@
                 Command="{Binding PointBCommand}"
                 Modifiers="{Binding KeyGestureDic[设置B点].ModifierKey}" />
             <KeyBinding
+                Key="{Binding KeyGestureDic[去A点].SelectedKey}"
+                Command="{Binding ToPointACommand}"
+                Modifiers="{Binding KeyGestureDic[去A点].ModifierKey}" />
+            <KeyBinding
                 Key="{Binding KeyGestureDic[重置AB点].SelectedKey}"
                 Command="{Binding ResetPointABCommand}"
                 Modifiers="{Binding KeyGestureDic[重置AB点].ModifierKey}" />
@@ -135,7 +139,7 @@
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[返回开头].SelectedKey}"
-                Command="{x:Static ComponentCommands.MoveToHome}"
+                Command="{Binding MoveToHomeCommand}"
                 Modifiers="{Binding KeyGestureDic[返回开头].ModifierKey}" />
 
             <KeyBinding
@@ -151,13 +155,13 @@
             <KeyBinding
                 Key="{Binding KeyGestureDic[上一个].SelectedKey}"
                 Command="{Binding PrevCommand}"
-                CommandParameter="{Binding CurrentMusic}"
+                CommandParameter="{Binding CurrentMedia}"
                 Modifiers="{Binding KeyGestureDic[上一个].ModifierKey}" />
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"
                 Command="{Binding PlayPlayingCommand}"
-                CommandParameter="{Binding CurrentMusic}"
+                CommandParameter="{Binding CurrentMedia}"
                 Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" />
 
             <KeyBinding
@@ -168,13 +172,13 @@
             <KeyBinding
                 Key="{Binding KeyGestureDic[下一个].SelectedKey}"
                 Command="{Binding NextCommand}"
-                CommandParameter="{Binding CurrentMusic}"
+                CommandParameter="{Binding CurrentMedia}"
                 Modifiers="{Binding KeyGestureDic[下一个].ModifierKey}" />
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[停止].SelectedKey}"
-                Command="{Binding StopPlayMusicCommand}"
-                CommandParameter="{Binding CurrentMusic}"
+                Command="{Binding StopPlayCommand}"
+                CommandParameter="{Binding CurrentMedia}"
                 Modifiers="{Binding KeyGestureDic[停止].ModifierKey}" />
 
             <KeyBinding
@@ -189,7 +193,7 @@
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[跳至结尾].SelectedKey}"
-                Command="{x:Static ComponentCommands.MoveToEnd}"
+                Command="{Binding MoveToEndCommand}"
                 Modifiers="{Binding KeyGestureDic[跳至结尾].ModifierKey}" />
         </Grid.InputBindings>
 
@@ -351,7 +355,7 @@
             <MediaElement
                 x:Name="mediaPlayer"
                 Grid.Row="0"
-                Source="{Binding CurrentMusic.Music.FilePath}" />
+                Source="{Binding CurrentMedia.Music.FilePath}" />
 
             <Grid
                 Grid.Row="1"
@@ -542,6 +546,7 @@
                         <ListBox
                             x:Name="MusicByAlbumListBox"
                             HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Left"
                             DockPanel.Dock="Bottom"
                             ItemsSource="{Binding DistributeMusicViewModel.DisplayMusicAlbumFavorites}"
                             SelectedIndex="0">
@@ -675,6 +680,7 @@
 
                         <ListBox
                             x:Name="MusicBySingerListBox"
+                            HorizontalContentAlignment="Left"
                             DockPanel.Dock="Bottom"
                             ItemsSource="{Binding DistributeMusicViewModel.DisplayMusicSingerFavorites}"
                             SelectedIndex="0">
@@ -800,6 +806,7 @@
                     <ListBox
                         x:Name="MusicByDirListBox"
                         Grid.Column="0"
+                        HorizontalContentAlignment="Left"
                         ContextMenu="{StaticResource MusicDir_CRUD}"
                         DockPanel.Dock="Bottom"
                         ItemsSource="{Binding DistributeMusicViewModel.MusicDirFavorites}"
@@ -1163,7 +1170,7 @@
                         FontSize="21"
                         FontWeight="Bold"
                         Foreground="{Binding DesktopLyric.CurrentLyricForeground.ColorBrush, FallbackValue=SkyBlue}"
-                        Text="{Binding CurrentMusic.Music.Name}" />
+                        Text="{Binding CurrentMedia.Music.Name}" />
 
                     <TextBlock
                         Margin="0,10"
@@ -1171,7 +1178,7 @@
                         DockPanel.Dock="Top"
                         FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                         Foreground="{Binding DesktopLyric.CurrentLyricForeground.ColorBrush, FallbackValue=SkyBlue}"
-                        Text="{Binding CurrentMusic.Music.Singer}" />
+                        Text="{Binding CurrentMedia.Music.Singer}" />
 
                     <StackPanel
                         x:Name="LyricSimple"
@@ -1181,14 +1188,14 @@
                         Visibility="Collapsed">
                         <ContentControl
                             HorizontalAlignment="Left"
-                            Content="{Binding CurrentMusic.OneLine}"
+                            Content="{Binding CurrentMedia.OneLine}"
                             ContentTemplate="{StaticResource PanelSimpleLyric}"
                             FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                             FontSize="30" />
 
                         <ContentControl
                             HorizontalAlignment="Right"
-                            Content="{Binding CurrentMusic.AnotherLine}"
+                            Content="{Binding CurrentMedia.AnotherLine}"
                             ContentTemplate="{StaticResource PanelSimpleLyric}"
                             FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                             FontSize="30" />
@@ -1196,10 +1203,9 @@
 
                     <ListBox
                         x:Name="LyricList"
-                        HorizontalAlignment="Center"
                         DockPanel.Dock="Top"
                         Focusable="False"
-                        ItemsSource="{Binding CurrentMusic.Music.Lyric.Lines}"
+                        ItemsSource="{Binding CurrentMedia.Music.Lyric.Lines}"
                         OpacityMask="{StaticResource GradientOpacityMask}"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                         SelectionChanged="LyricList_SelectionChanged"
@@ -1274,20 +1280,19 @@
                 <Grid>
                     <Slider
                         x:Name="musicSlider"
-                        Width="500"
-                        Maximum="{Binding CurrentMusic.Music.TotalMills}"
-                        Style="{StaticResource MusicProgressSlider}"
+                        Maximum="{Binding CurrentMedia.TotalMills}"
+                        Style="{StaticResource MediaProgressSlider}"
                         ValueChanged="musicSlider_ValueChanged"
-                        Value="{Binding CurrentMusic.CurrentMills}" />
+                        Value="{Binding CurrentMedia.CurrentMills}" />
 
-                    <TextBlock Text="A" ToolTip="{Binding CurrentMusic.PointATime}">
+                    <TextBlock Text="A" ToolTip="{Binding CurrentMedia.PointATime}">
                         <TextBlock.Style>
                             <Style BasedOn="{StaticResource Music_PointABTextBlock}" TargetType="TextBlock">
                                 <Style.Triggers>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding CurrentMusic.PointAMills}" Value="0" />
-                                            <Condition Binding="{Binding CurrentMusic.PointBMills}" Value="0" />
+                                            <Condition Binding="{Binding CurrentMedia.PointAMills}" Value="0" />
+                                            <Condition Binding="{Binding CurrentMedia.PointBMills}" Value="0" />
                                         </MultiDataTrigger.Conditions>
 
                                         <Setter Property="Visibility" Value="Collapsed" />
@@ -1299,23 +1304,23 @@
                             <TranslateTransform>
                                 <TranslateTransform.X>
                                     <MultiBinding Converter="{StaticResource MultiConverter_MultiplicationDivision}">
-                                        <Binding Mode="OneWay" Path="CurrentMusic.PointAMills" />
+                                        <Binding Mode="OneWay" Path="CurrentMedia.PointAMills" />
                                         <Binding
                                             ElementName="musicSlider"
                                             Mode="OneWay"
                                             Path="Width" />
-                                        <Binding Mode="OneWay" Path="CurrentMusic.Music.TotalMills" />
+                                        <Binding Mode="OneWay" Path="CurrentMedia.TotalMills" />
                                     </MultiBinding>
                                 </TranslateTransform.X>
                             </TranslateTransform>
                         </TextBlock.RenderTransform>
                     </TextBlock>
 
-                    <TextBlock Text="B" ToolTip="{Binding CurrentMusic.PointBTime}">
+                    <TextBlock Text="B" ToolTip="{Binding CurrentMedia.PointBTime}">
                         <TextBlock.Style>
                             <Style BasedOn="{StaticResource Music_PointABTextBlock}" TargetType="TextBlock">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentMusic.PointBMills}" Value="0">
+                                    <DataTrigger Binding="{Binding CurrentMedia.PointBMills}" Value="0">
                                         <Setter Property="Visibility" Value="Collapsed" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -1325,12 +1330,12 @@
                             <TranslateTransform>
                                 <TranslateTransform.X>
                                     <MultiBinding Converter="{StaticResource MultiConverter_MultiplicationDivision}">
-                                        <Binding Mode="OneWay" Path="CurrentMusic.PointBMills" />
+                                        <Binding Mode="OneWay" Path="CurrentMedia.PointBMills" />
                                         <Binding
                                             ElementName="musicSlider"
                                             Mode="OneWay"
                                             Path="Width" />
-                                        <Binding Mode="OneWay" Path="CurrentMusic.Music.TotalMills" />
+                                        <Binding Mode="OneWay" Path="CurrentMedia.TotalMills" />
                                     </MultiBinding>
                                 </TranslateTransform.X>
                             </TranslateTransform>
@@ -1365,12 +1370,12 @@
                                     Margin="5,3"
                                     FontSize="14"
                                     Style="{StaticResource ThemeBlk}"
-                                    Text="{Binding CurrentMusic.Music.Singer}" />
+                                    Text="{Binding CurrentMedia.Music.Singer}" />
                                 <TextBlock
                                     Margin="5,3"
                                     FontSize="14"
                                     Style="{StaticResource ThemeBlk}"
-                                    Text="{Binding CurrentMusic.Music.Name}" />
+                                    Text="{Binding CurrentMedia.Music.Name}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <ToggleButton Style="{StaticResource Love}" />
@@ -1404,23 +1409,23 @@
 
                         <Button
                             Command="{Binding PrevCommand}"
-                            CommandParameter="{Binding CurrentMusic}"
+                            CommandParameter="{Binding CurrentMedia}"
                             Style="{StaticResource PrevOneIconButton}" />
 
                         <ToggleButton
                             Command="{Binding PlayPlayingCommand}"
-                            CommandParameter="{Binding CurrentMusic}"
+                            CommandParameter="{Binding CurrentMedia}"
                             IsChecked="{Binding Running, Mode=OneWay}"
                             Style="{StaticResource PlayIconToggleButton}" />
 
                         <Button
                             Command="{Binding NextCommand}"
-                            CommandParameter="{Binding CurrentMusic}"
+                            CommandParameter="{Binding CurrentMedia}"
                             Style="{StaticResource NextOneIconButton}" />
 
                         <Button Command="{Binding AheadCommand}" Style="{StaticResource FastForward1sIconButton}" />
 
-                        <Button Command="{Binding StopPlayMusicCommand}" Style="{StaticResource StopMediaIconButton}" />
+                        <Button Command="{Binding StopPlayCommand}" Style="{StaticResource StopMediaIconButton}" />
                     </StackPanel>
                 </Viewbox>
 
@@ -1441,9 +1446,9 @@
                                 HorizontalAlignment="Center"
                                 Style="{StaticResource NotImportantTxt_Black}"
                                 Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BoolToCollapsedVisibleConverter}}">
-                                <TextBlock Text="{Binding CurrentMusic.CurrentTime, FallbackValue=00:00}" />
+                                <TextBlock Text="{Binding CurrentMedia.CurrentTime, FallbackValue=00:00}" />
                                 /
-                                <TextBlock Text="{Binding CurrentMusic.Music.Duration, FallbackValue=00:00}" />
+                                <TextBlock Text="{Binding CurrentMedia.Music.Duration, FallbackValue=00:00}" />
                             </TextBlock>
 
                             <StackPanel Orientation="Horizontal" Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BoolToVisibleHiddenConverter}}">
@@ -1739,13 +1744,13 @@
                                         ContextMenu="{StaticResource PlayinigDataGridContextMenu}"
                                         HeadersVisibility="Row"
                                         ItemsSource="{Binding DisplayPlaying}"
-                                        SelectedItem="{Binding CurrentMusic, Mode=OneWay}"
+                                        SelectedItem="{Binding CurrentMedia, Mode=OneWay}"
                                         Style="{StaticResource DataGrid_Transparent}">
 
                                         <DataGrid.CellStyle>
                                             <Style BasedOn="{StaticResource DataGridCell_General}" TargetType="DataGridCell">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding DataContext.IsPlayingMusic, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                                    <DataTrigger Binding="{Binding DataContext.IsPlayingMedia, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
                                                         <Setter Property="Foreground" Value="{StaticResource SkyBlue}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>

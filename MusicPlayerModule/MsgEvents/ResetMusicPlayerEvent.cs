@@ -2,7 +2,7 @@
 
 namespace MusicPlayerModule.MsgEvents
 {
-    internal class ResetPlayerEvent : PubSubEvent
+    internal class ResetMusicPlayerEvent : PubSubEvent
     {
     }
 }

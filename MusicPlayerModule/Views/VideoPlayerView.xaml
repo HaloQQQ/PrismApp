@@ -30,7 +30,7 @@
                 BasedOn="{StaticResource PointABTextBlock}"
                 TargetType="TextBlock">
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding CurrentVideo}" Value="{x:Null}">
+                    <DataTrigger Binding="{Binding CurrentMedia}" Value="{x:Null}">
                         <Setter Property="Visibility" Value="Collapsed" />
                     </DataTrigger>
                 </Style.Triggers>
@@ -48,7 +48,7 @@
             <KeyBinding
                 Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"
                 Command="{Binding PlayPlayingCommand}"
-                CommandParameter="{Binding CurrentVideo}"
+                CommandParameter="{Binding CurrentMedia}"
                 Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" />
 
             <KeyBinding
@@ -59,6 +59,10 @@
                 Key="{Binding KeyGestureDic[设置B点].SelectedKey}"
                 Command="{Binding PointBCommand}"
                 Modifiers="{Binding KeyGestureDic[设置B点].ModifierKey}" />
+            <KeyBinding
+                Key="{Binding KeyGestureDic[去A点].SelectedKey}"
+                Command="{Binding ToPointACommand}"
+                Modifiers="{Binding KeyGestureDic[去A点].ModifierKey}" />
             <KeyBinding
                 Key="{Binding KeyGestureDic[重置AB点].SelectedKey}"
                 Command="{Binding ResetPointABCommand}"
@@ -71,7 +75,7 @@
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[返回开头].SelectedKey}"
-                Command="{x:Static ComponentCommands.MoveToHome}"
+                Command="{Binding MoveToHomeCommand}"
                 Modifiers="{Binding KeyGestureDic[返回开头].ModifierKey}" />
 
             <KeyBinding
@@ -87,30 +91,25 @@
             <KeyBinding
                 Key="{Binding KeyGestureDic[上一个].SelectedKey}"
                 Command="{Binding PrevCommand}"
-                CommandParameter="{Binding CurrentVideo}"
+                CommandParameter="{Binding CurrentMedia}"
                 Modifiers="{Binding KeyGestureDic[上一个].ModifierKey}" />
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"
                 Command="{Binding PlayPlayingCommand}"
-                CommandParameter="{Binding CurrentVideo}"
+                CommandParameter="{Binding CurrentMedia}"
                 Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" />
-
-            <KeyBinding
-                Key="{Binding KeyGestureDic[清空播放队列].SelectedKey}"
-                Command="{Binding CleanPlayingCommand}"
-                Modifiers="{Binding KeyGestureDic[清空播放队列].ModifierKey}" />
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[下一个].SelectedKey}"
                 Command="{Binding NextCommand}"
-                CommandParameter="{Binding CurrentVideo}"
+                CommandParameter="{Binding CurrentMedia}"
                 Modifiers="{Binding KeyGestureDic[下一个].ModifierKey}" />
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[停止].SelectedKey}"
-                Command="{Binding StopPlayVideoCommand}"
-                CommandParameter="{Binding CurrentVideo}"
+                Command="{Binding StopPlayCommand}"
+                CommandParameter="{Binding CurrentMedia}"
                 Modifiers="{Binding KeyGestureDic[停止].ModifierKey}" />
 
             <KeyBinding
@@ -135,7 +134,7 @@
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[跳至结尾].SelectedKey}"
-                Command="{x:Static ComponentCommands.MoveToEnd}"
+                Command="{Binding MoveToEndCommand}"
                 Modifiers="{Binding KeyGestureDic[跳至结尾].ModifierKey}" />
         </Grid.InputBindings>
 
@@ -143,12 +142,12 @@
             x:Name="mediaPlayer"
             Grid.Row="0"
             MediaOpened="mediaPlayer_MediaOpened"
-            Source="{Binding CurrentVideo.Video.FilePath}"
+            Source="{Binding CurrentMedia.Video.FilePath}"
             Stretch="{Binding Stretch}">
             <MediaElement.InputBindings>
                 <MouseBinding
                     Command="{Binding PlayPlayingCommand}"
-                    CommandParameter="{Binding CurrentVideo}"
+                    CommandParameter="{Binding CurrentMedia}"
                     MouseAction="LeftClick" />
             </MediaElement.InputBindings>
         </MediaElement>
@@ -182,21 +181,19 @@
                 <Grid>
                     <Slider
                         x:Name="videoSlider"
-                        Width="500"
-                        HorizontalAlignment="Stretch"
-                        Maximum="{Binding CurrentVideo.Video.TotalMills, FallbackValue=100}"
-                        Style="{StaticResource VideoProgressSlider}"
+                        Maximum="{Binding CurrentMedia.TotalMills, FallbackValue=100}"
+                        Style="{StaticResource MediaProgressSlider}"
                         ValueChanged="musicSlider_ValueChanged"
-                        Value="{Binding CurrentVideo.CurrentMills, FallbackValue=0}" />
+                        Value="{Binding CurrentMedia.CurrentMills, FallbackValue=0}" />
 
-                    <TextBlock Text="A" ToolTip="{Binding CurrentVideo.PointATime}">
+                    <TextBlock Text="A" ToolTip="{Binding CurrentMedia.PointATime}">
                         <TextBlock.Style>
                             <Style BasedOn="{StaticResource Video_PointABTextBlock}" TargetType="TextBlock">
                                 <Style.Triggers>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding CurrentVideo.PointAMills}" Value="0" />
-                                            <Condition Binding="{Binding CurrentVideo.PointBMills}" Value="0" />
+                                            <Condition Binding="{Binding CurrentMedia.PointAMills}" Value="0" />
+                                            <Condition Binding="{Binding CurrentMedia.PointBMills}" Value="0" />
                                         </MultiDataTrigger.Conditions>
 
                                         <Setter Property="Visibility" Value="Collapsed" />
@@ -208,23 +205,23 @@
                             <TranslateTransform>
                                 <TranslateTransform.X>
                                     <MultiBinding Converter="{StaticResource MultiConverter_MultiplicationDivision}">
-                                        <Binding Mode="OneWay" Path="CurrentVideo.PointAMills" />
+                                        <Binding Mode="OneWay" Path="CurrentMedia.PointAMills" />
                                         <Binding
                                             ElementName="videoSlider"
                                             Mode="OneWay"
                                             Path="Width" />
-                                        <Binding Mode="OneWay" Path="CurrentVideo.Video.TotalMills" />
+                                        <Binding Mode="OneWay" Path="CurrentMedia.TotalMills" />
                                     </MultiBinding>
                                 </TranslateTransform.X>
                             </TranslateTransform>
                         </TextBlock.RenderTransform>
                     </TextBlock>
 
-                    <TextBlock Text="B" ToolTip="{Binding CurrentVideo.PointBTime}">
+                    <TextBlock Text="B" ToolTip="{Binding CurrentMedia.PointBTime}">
                         <TextBlock.Style>
                             <Style BasedOn="{StaticResource Video_PointABTextBlock}" TargetType="TextBlock">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentVideo.PointBMills}" Value="0">
+                                    <DataTrigger Binding="{Binding CurrentMedia.PointBMills}" Value="0">
                                         <Setter Property="Visibility" Value="Collapsed" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -234,12 +231,12 @@
                             <TranslateTransform>
                                 <TranslateTransform.X>
                                     <MultiBinding Converter="{StaticResource MultiConverter_MultiplicationDivision}">
-                                        <Binding Mode="OneWay" Path="CurrentVideo.PointBMills" />
+                                        <Binding Mode="OneWay" Path="CurrentMedia.PointBMills" />
                                         <Binding
                                             ElementName="videoSlider"
                                             Mode="OneWay"
                                             Path="Width" />
-                                        <Binding Mode="OneWay" Path="CurrentVideo.Video.TotalMills" />
+                                        <Binding Mode="OneWay" Path="CurrentMedia.TotalMills" />
                                     </MultiBinding>
                                 </TranslateTransform.X>
                             </TranslateTransform>
@@ -264,9 +261,9 @@
                             Margin="10,5"
                             DockPanel.Dock="Right"
                             Style="{StaticResource NotImportantTxt_Black}">
-                            <TextBlock Text="{Binding CurrentVideo.CurrentTime, FallbackValue=00:00:00}" />
+                            <TextBlock Text="{Binding CurrentMedia.CurrentTime, FallbackValue=00:00:00}" />
                             /
-                            <TextBlock Text="{Binding CurrentVideo.Video.Duration, FallbackValue=00:00:00}" />
+                            <TextBlock Text="{Binding CurrentMedia.Video.Duration, FallbackValue=00:00:00}" />
                         </TextBlock>
 
                         <StackPanel HorizontalAlignment="Left" DockPanel.Dock="Left">
@@ -274,12 +271,12 @@
                                 Margin="10,5"
                                 FontSize="18"
                                 Style="{StaticResource NotImportantTxt_Black}"
-                                Text="{Binding CurrentVideo.Video.Actor}" />
+                                Text="{Binding CurrentMedia.Video.Actor}" />
                             <TextBlock
                                 Margin="10,5"
                                 FontSize="18"
                                 Style="{StaticResource NotImportantTxt_Black}"
-                                Text="{Binding CurrentVideo.Video.Name}" />
+                                Text="{Binding CurrentMedia.Video.Name}" />
                         </StackPanel>
                     </DockPanel>
                 </Viewbox>
@@ -301,23 +298,23 @@
 
                         <Button
                             Command="{Binding PrevCommand}"
-                            CommandParameter="{Binding CurrentVideo}"
+                            CommandParameter="{Binding CurrentMedia}"
                             Style="{StaticResource PrevOneIconButton}" />
 
                         <ToggleButton
                             Command="{Binding PlayPlayingCommand}"
-                            CommandParameter="{Binding CurrentVideo}"
+                            CommandParameter="{Binding CurrentMedia}"
                             IsChecked="{Binding Running, Mode=OneWay}"
                             Style="{StaticResource PlayIconToggleButton}" />
 
                         <Button
                             Command="{Binding NextCommand}"
-                            CommandParameter="{Binding CurrentVideo}"
+                            CommandParameter="{Binding CurrentMedia}"
                             Style="{StaticResource NextOneIconButton}" />
 
                         <Button Command="{Binding AheadCommand}" Style="{StaticResource FastForward5sIconButton}" />
 
-                        <Button Command="{Binding StopPlayVideoCommand}" Style="{StaticResource StopMediaIconButton}" />
+                        <Button Command="{Binding StopPlayCommand}" Style="{StaticResource StopMediaIconButton}" />
                     </StackPanel>
                 </Viewbox>
 
@@ -394,13 +391,13 @@
                                         ContextMenu="{StaticResource VideoContextMenu_DataGrid}"
                                         HeadersVisibility="Row"
                                         ItemsSource="{Binding DisplayPlaying}"
-                                        SelectedItem="{Binding CurrentVideo, Mode=OneWay}"
+                                        SelectedItem="{Binding CurrentMedia, Mode=OneWay}"
                                         Style="{StaticResource DataGrid_Transparent}">
 
                                         <DataGrid.CellStyle>
                                             <Style BasedOn="{StaticResource DataGridCell_General}" TargetType="DataGridCell">
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding DataContext.IsPlayingVideo, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
+                                                    <DataTrigger Binding="{Binding DataContext.IsPlayingMedia, RelativeSource={RelativeSource AncestorType=DataGridRow}}" Value="True">
                                                         <Setter Property="Foreground" Value="{StaticResource SkyBlue}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
@@ -445,7 +442,7 @@
                                                                             <Style.Triggers>
                                                                                 <MultiDataTrigger>
                                                                                     <MultiDataTrigger.Conditions>
-                                                                                        <Condition Binding="{Binding IsPlayingVideo}" Value="True" />
+                                                                                        <Condition Binding="{Binding IsPlayingMedia}" Value="True" />
                                                                                         <Condition Binding="{Binding DataContext.Running, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="True" />
                                                                                     </MultiDataTrigger.Conditions>
 
@@ -706,10 +703,10 @@
             Visibility="Collapsed">
             <TextBlock FontSize="20" Foreground="{DynamicResource TextBlock.Foreground}">
                 <TextBlock Width="60" Text="{Binding MediaOperationViewModel.CurrentOperation}" />
-                <TextBlock Text="{Binding CurrentVideo.CurrentTime}" />
+                <TextBlock Text="{Binding CurrentMedia.CurrentTime}" />
                 <TextBlock Width="100">
                     (
-                    <TextBlock Text="{Binding CurrentVideo.ProgressPercent}" />
+                    <TextBlock Text="{Binding CurrentMedia.ProgressPercent}" />
                     %)
                 </TextBlock>
             </TextBlock>

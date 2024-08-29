@@ -93,7 +93,7 @@
 
                         <Binding
                             Mode="OneWay"
-                            Path="DataContext.CurrentMusic.WordProgress"
+                            Path="DataContext.CurrentMedia.WordProgress"
                             RelativeSource="{RelativeSource AncestorType=Border}" />
 
                         <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
@@ -139,7 +139,7 @@
 
                         <Binding
                             Mode="OneWay"
-                            Path="DataContext.CurrentMusic.WordProgress"
+                            Path="DataContext.CurrentMedia.WordProgress"
                             RelativeSource="{RelativeSource AncestorType=Border}" />
 
                         <Binding Mode="OneWay" Path="Words.Length" />
@@ -201,7 +201,7 @@
 
                         <Binding
                             Mode="OneWay"
-                            Path="DataContext.CurrentMusic.WordProgress"
+                            Path="DataContext.CurrentMedia.WordProgress"
                             RelativeSource="{RelativeSource AncestorType=Border}" />
 
                         <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
@@ -233,7 +233,7 @@
 
                         <Binding
                             Mode="OneWay"
-                            Path="DataContext.CurrentMusic.WordProgress"
+                            Path="DataContext.CurrentMedia.WordProgress"
                             RelativeSource="{RelativeSource AncestorType=Border}" />
 
                         <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
@@ -425,7 +425,7 @@
                                     <Binding Mode="OneWay" Path="IsPlayingLine" />
                                     <Binding
                                         Mode="OneWay"
-                                        Path="DataContext.CurrentMusic.WordProgress"
+                                        Path="DataContext.CurrentMedia.WordProgress"
                                         RelativeSource="{RelativeSource AncestorType=ListBox}" />
 
                                     <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
@@ -457,26 +457,16 @@
     </Style>
 
     <Style
-        x:Key="MusicProgressSlider"
+        x:Key="MediaProgressSlider"
         BasedOn="{StaticResource {x:Type Slider}}"
         TargetType="Slider">
         <Setter Property="Margin" Value="2,0" />
 
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding CurrentMusic}" Value="{x:Null}">
-                <Setter Property="IsEnabled" Value="False" />
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style
-        x:Key="VideoProgressSlider"
-        BasedOn="{StaticResource {x:Type Slider}}"
-        TargetType="Slider">
-        <Setter Property="Margin" Value="2,0" />
+        <Setter Property="Width" Value="1000" />
+        <Setter Property="Height" Value="5" />
 
         <Style.Triggers>
-            <DataTrigger Binding="{Binding CurrentVideo}" Value="{x:Null}">
+            <DataTrigger Binding="{Binding CurrentMedia}" Value="{x:Null}">
                 <Setter Property="IsEnabled" Value="False" />
             </DataTrigger>
         </Style.Triggers>

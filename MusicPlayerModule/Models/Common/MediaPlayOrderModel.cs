@@ -2,7 +2,7 @@
 
 namespace MusicPlayerModule.Models.Common
 {
-    internal class MediaPlayOrderModel
+    public class MediaPlayOrderModel
     {
         public MediaPlayOrderModel(string iconString, string description, EnumOrderType orderType)
         {

@@ -224,9 +224,9 @@ namespace MusicPlayerModule.Views
 
             if (this.DataContext is VideoPlayerViewModel videoPlayerViewModel)
             {
-                var video = videoPlayerViewModel.CurrentVideo;
+                PlayingVideoViewModel video = videoPlayerViewModel.CurrentMedia as PlayingVideoViewModel;
 
-                if (video != null && video.Video.TotalMills == 0)
+                if (video.TotalMills == 0)
                 {
                     video.SetVideoTotalMills((int)this.mediaPlayer.NaturalDuration.TimeSpan.TotalMilliseconds);
                 }
@@ -300,20 +300,20 @@ namespace MusicPlayerModule.Views
                     this.AdaptPlayingListPanelSize();
                 }
             }
-            else if (e.Command == ComponentCommands.MoveToHome)
-            {
-                this.mediaPlayer.Position = TimeSpan.Zero;
-                e.Handled = true;
-            }
-            else if (e.Command == ComponentCommands.MoveToEnd)
-            {
-                if (this.mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds > 5)
-                {
-                    this.mediaPlayer.Position = this.mediaPlayer.NaturalDuration.TimeSpan.Subtract(TimeSpan.FromSeconds(5));
-                }
+            //else if (e.Command == ComponentCommands.MoveToHome)
+            //{
+            //    this.mediaPlayer.Position = TimeSpan.Zero;
+            //    e.Handled = true;
+            //}
+            //else if (e.Command == ComponentCommands.MoveToEnd)
+            //{
+            //    if (this.mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds > 5)
+            //    {
+            //        this.mediaPlayer.Position = this.mediaPlayer.NaturalDuration.TimeSpan.Subtract(TimeSpan.FromSeconds(5));
+            //    }
 
-                e.Handled = true;
-            }
+            //    e.Handled = true;
+            //}
         }
 
         private void VideoSpeedRatioSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

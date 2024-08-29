@@ -158,7 +158,7 @@
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding PlacementTarget.SelectedItem.IsPlayingMusic, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
+                                <Condition Binding="{Binding PlacementTarget.SelectedItem.IsPlayingMedia, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
                                 <Condition Binding="{Binding PlacementTarget.DataContext.Running, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
                             </MultiDataTrigger.Conditions>
 
@@ -445,7 +445,7 @@
                             <Style.Triggers>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsPlayingMusic}" Value="True" />
+                                        <Condition Binding="{Binding IsPlayingMedia}" Value="True" />
                                         <Condition Binding="{Binding DataContext.Running, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="True" />
                                     </MultiDataTrigger.Conditions>
 
@@ -485,7 +485,7 @@
                                         <Style.Triggers>
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding PlacementTarget.DataContext.IsPlayingMusic, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
+                                                    <Condition Binding="{Binding PlacementTarget.DataContext.IsPlayingMedia, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
                                                     <Condition Binding="{Binding PlacementTarget.Tag.Running, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
                                                 </MultiDataTrigger.Conditions>
 
@@ -619,7 +619,7 @@
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding PlacementTarget.DataContext.IsPlayingVideo, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
+                                <Condition Binding="{Binding PlacementTarget.DataContext.IsPlayingMedia, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
                                 <Condition Binding="{Binding PlacementTarget.Tag.Running, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
                             </MultiDataTrigger.Conditions>
 
@@ -672,7 +672,7 @@
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding PlacementTarget.SelectedItem.IsPlayingVideo, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
+                                <Condition Binding="{Binding PlacementTarget.SelectedItem.IsPlayingMedia, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
                                 <Condition Binding="{Binding PlacementTarget.DataContext.Running, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
                             </MultiDataTrigger.Conditions>
 

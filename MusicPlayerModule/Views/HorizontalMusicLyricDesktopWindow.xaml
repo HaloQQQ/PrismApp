@@ -47,8 +47,8 @@
                         Margin="20,0"
                         FontSize="18"
                         Foreground="#EBEBEB"
-                        Text="{Binding CurrentMusic.Music.Name}" />
-                    <TextBlock Foreground="#EBEBEB" Text="{Binding CurrentMusic.Music.Singer}" />
+                        Text="{Binding CurrentMedia.Music.Name}" />
+                    <TextBlock Foreground="#EBEBEB" Text="{Binding CurrentMedia.Music.Singer}" />
                 </StackPanel>
 
                 <StackPanel
@@ -78,7 +78,7 @@
                         Style="{StaticResource IconButtonBase_Small_Scale}"
                         ToolTip="{Binding KeyGestureDic[快退].ToolTip}" />
 
-                    <Button Command="{Binding PrevCommand}" CommandParameter="{Binding CurrentMusic}">
+                    <Button Command="{Binding PrevCommand}" CommandParameter="{Binding CurrentMedia}">
                         <Button.Style>
                             <Style BasedOn="{StaticResource PrevOneIconButton}" TargetType="Button">
                                 <Setter Property="FontSize" Value="25" />
@@ -95,7 +95,7 @@
 
                     <ToggleButton
                         Command="{Binding PlayPlayingCommand}"
-                        CommandParameter="{Binding CurrentMusic}"
+                        CommandParameter="{Binding CurrentMedia}"
                         IsChecked="{Binding Running, Mode=OneWay}">
                         <ToggleButton.Style>
                             <Style BasedOn="{StaticResource PlayIconToggleButton}" TargetType="ToggleButton">
@@ -111,7 +111,7 @@
                         </ToggleButton.Style>
                     </ToggleButton>
 
-                    <Button Command="{Binding NextCommand}" CommandParameter="{Binding CurrentMusic}">
+                    <Button Command="{Binding NextCommand}" CommandParameter="{Binding CurrentMedia}">
                         <Button.Style>
                             <Style BasedOn="{StaticResource NextOneIconButton}" TargetType="Button">
                                 <Setter Property="FontSize" Value="25" />
@@ -168,9 +168,9 @@
                     HorizontalAlignment="Right"
                     Foreground="#EBEBEB"
                     Style="{StaticResource NotImportantTxt_Black}">
-                    <TextBlock Text="{Binding CurrentMusic.CurrentTime, FallbackValue=00:00}" />
+                    <TextBlock Text="{Binding CurrentMedia.CurrentTime, FallbackValue=00:00}" />
                     /
-                    <TextBlock Text="{Binding CurrentMusic.Music.Duration, FallbackValue=00:00}" />
+                    <TextBlock Text="{Binding CurrentMedia.Music.Duration, FallbackValue=00:00}" />
                 </TextBlock>
             </Grid>
         </StackPanel>
@@ -179,7 +179,7 @@
             <StackPanel>
                 <ContentControl
                     HorizontalAlignment="Left"
-                    Content="{Binding CurrentMusic.OneLine}"
+                    Content="{Binding CurrentMedia.OneLine}"
                     ContentTemplate="{StaticResource HorizentalDesktopLyric}"
                     FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                     MouseEnter="DesktopLyricPanel_Visible"
@@ -187,7 +187,7 @@
 
                 <ContentControl
                     HorizontalAlignment="Right"
-                    Content="{Binding CurrentMusic.AnotherLine}"
+                    Content="{Binding CurrentMedia.AnotherLine}"
                     ContentTemplate="{StaticResource HorizentalDesktopLyric}"
                     FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                     MouseEnter="DesktopLyricPanel_Visible"
@@ -196,7 +196,7 @@
 
             <ContentControl
                 HorizontalAlignment="Center"
-                Content="{Binding CurrentMusic.CurrentLine}"
+                Content="{Binding CurrentMedia.CurrentLine}"
                 ContentTemplate="{StaticResource HorizentalDesktopLyric}"
                 FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                 MouseEnter="DesktopLyricPanel_Visible"

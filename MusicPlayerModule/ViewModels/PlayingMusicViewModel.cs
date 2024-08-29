@@ -12,21 +12,13 @@ namespace MusicPlayerModule.ViewModels
         {
             Music = music.AssertNotNull(nameof(MusicModel));
 
-            base.IsLongTimeMedia = music.TotalMills > 1000 * 60 * 60;
+            this.TotalMills = music.TotalMills;
+
+            this.Name = music.Name;
+            this.FilePath = music.FilePath;
         }
 
         public MusicModel Music { get; private set; }
-
-        private bool _isPlayingMusic;
-
-        /// <summary>
-        /// 当前音乐是否为正在播放的
-        /// </summary>
-        public bool IsPlayingMusic
-        {
-            get { return _isPlayingMusic; }
-            internal set { SetProperty<bool>(ref _isPlayingMusic, value); }
-        }
 
         #region 当前歌曲进度相关
 
@@ -83,7 +75,7 @@ namespace MusicPlayerModule.ViewModels
                 if (_currentMills != value)
                 {
                     _currentMills = Math.Max(value, 0);
-                    _currentMills = Math.Min(value, Music.TotalMills);
+                    _currentMills = Math.Min(value, this.TotalMills);
 
                     // 从B点返回A点
                     if (this.PointBMills != 0 && Math.Abs(this._currentMills - this.PointBMills) < 500)
@@ -108,7 +100,7 @@ namespace MusicPlayerModule.ViewModels
 
         private bool UpdateLyricSelect()
         {
-            if (this._currentMills + 100 > this.Music.TotalMills)
+            if (this._currentMills + 100 > this.TotalMills)
             {
                 ToNextMusic?.Invoke(this);
                 return false;
@@ -259,11 +251,6 @@ namespace MusicPlayerModule.ViewModels
                     }
                 }
             }
-        }
-
-        protected override void SetPointToTotalMills()
-        {
-            this.PointBMills = this.Music.TotalMills;
         }
 
         public override void Dispose()

@@ -34,6 +34,8 @@ namespace MyApp.Prisms.Helper
         internal const string DefaultThemeURI = "DefaultThemeURI";
         internal const string BkgrdUri = "BkgrdUri";
 
+        internal static string LastImageDir;
+
 
 
         internal const string Software_Log_Dir = "软件启停记录";

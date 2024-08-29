@@ -12,42 +12,30 @@ namespace MusicPlayerModule.ViewModels
         {
             Video = video.AssertNotNull(nameof(VideoModelAndGuid));
             _dto = dto.AssertNotNull(nameof(VideoModel));
+
+            this.Name = video.Name;
+            this.FilePath = video.FilePath;
         }
 
         public VideoModel Video { get; private set; }
 
-        public void SetVideoTotalMills(int totalMills)
+        internal void SetVideoTotalMills(int totalMills)
         {
             this.Video.SetTotalMills(totalMills);
 
-            base.IsLongTimeMedia = totalMills > 1000 * 60 * 60;
-        }
-
-        private bool _isPlayingVideo;
-
-        public bool IsPlayingVideo
-        {
-            get { return _isPlayingVideo; }
-            internal set { SetProperty<bool>(ref _isPlayingVideo, value); }
+            this.TotalMills = totalMills;
         }
 
         public override int MillsStep => 5000;
 
-        #region 关键点
-        protected override void SetPointToTotalMills()
-        {
-            this.PointBMills = this.Video.TotalMills;
-        }
-        #endregion
-
-        public override double ProgressPercent => this.Video.TotalMills == 0 ? 0 : Math.Round((this.CurrentMills * 1.0) / this.Video.TotalMills * 100, 1);
+        public override double ProgressPercent => this.TotalMills == 0 ? 0 : Math.Round((this.CurrentMills * 1.0) / this.TotalMills * 100, 1);
 
         public override int CurrentMills
         {
             get => this._currentMills;
             set
             {
-                if (this.Video.TotalMills == 0)
+                if (this.TotalMills == 0)
                 {
                     return;
                 }
@@ -55,7 +43,7 @@ namespace MusicPlayerModule.ViewModels
                 if (_currentMills != value)
                 {
                     _currentMills = Math.Max(value, 0);
-                    _currentMills = Math.Min(value, Video.TotalMills);
+                    _currentMills = Math.Min(value, this.TotalMills);
 
                     // 从B点返回A点
                     if (this.PointBMills != 0 && Math.Abs(this._currentMills - this.PointBMills) < 700)
@@ -67,7 +55,7 @@ namespace MusicPlayerModule.ViewModels
                         RaisePropertyChanged();
                     }
 
-                    if (this._currentMills + 500 > this.Video.TotalMills)
+                    if (this._currentMills + 500 > this.TotalMills)
                     {
                         this._dto.Video = this;
                         ToNextVideo?.Invoke(this._dto);
