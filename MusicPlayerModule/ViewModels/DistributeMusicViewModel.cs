@@ -173,7 +173,7 @@ namespace MusicPlayerModule.ViewModels
         private readonly Collection<FavoriteMusicViewModel> _collection;
         private readonly IEventAggregator _eventAggregator;
 
-        public DistributeMusicViewModel(Collection<FavoriteMusicViewModel> collection, IEventAggregator eventAggregator)
+        public DistributeMusicViewModel(Collection<FavoriteMusicViewModel> collection, IEventAggregator eventAggregator, ISettingManager<SettingModel> settingManager)
         {
             this._collection = collection.AssertNotNull(nameof(Collection<FavoriteMusicViewModel>));
             this._eventAggregator = eventAggregator.AssertNotNull(nameof(IEventAggregator));
@@ -197,7 +197,9 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
-                var selectedPath = CommonCoreUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
+                var path = settingManager[CustomStatics.EnumSettings.Music.ToString()].Value;
+
+                var selectedPath = CommonCoreUtils.OpenFolderDialog(path);
 
                 if (!selectedPath.IsNullOrEmpty())
                 {
@@ -215,7 +217,9 @@ namespace MusicPlayerModule.ViewModels
 
             this.AddMusicDirCommand = new DelegateCommand(() =>
             {
-                var selectedPath = CommonCoreUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
+                var path = settingManager[CustomStatics.EnumSettings.Music.ToString()].Value;
+
+                var selectedPath = CommonCoreUtils.OpenFolderDialog(path);
 
                 if (!selectedPath.IsNullOrEmpty())
                 {
@@ -236,7 +240,8 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
-                var selectedPath = CommonCoreUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
+                var path = settingManager[CustomStatics.EnumSettings.Music.ToString()].Value;
+                var selectedPath = CommonCoreUtils.OpenFolderDialog(path);
 
                 if (!selectedPath.IsNullOrEmpty())
                 {

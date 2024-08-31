@@ -12,6 +12,7 @@ using Prism.Commands;
 using System.Threading;
 using IceTea.Wpf.Atom.Utils;
 using MyApp.Prisms.Helper;
+using MusicPlayerModule.Models;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -71,10 +72,11 @@ namespace MyApp.Prisms.ViewModels
             return list;
         }
 
-        public ImageDisplayViewModel(IConfigManager config)
+        public ImageDisplayViewModel(IConfigManager config, ISettingManager<SettingModel> settingManager)
         {
             this.RefreshData(config);
 
+            this._settingManager = settingManager;
             this.RefreshCommand = new DelegateCommand(() => this.RefreshData(config));
         }
 
@@ -86,7 +88,16 @@ namespace MyApp.Prisms.ViewModels
             this.Data.Add(new MyImage());
             Task.Run(async () =>
             {
-                var dir = CustomConstants.LastImageDir ??= config.ReadConfigNode(nameof(SettingsViewModel.ImageDir));
+                var dir = string.Empty;
+                if (this._settingManager.ContainsKey(CustomConstants.Image))
+                {
+                    dir = this._settingManager[CustomConstants.Image].Value;
+                }
+                else
+                {
+                    dir = config.ReadConfigNode(CustomConstants.LastImageDir_ConfigKey);
+                }
+
                 var coll = GetImageUris(dir);
                 foreach (var item in coll)
                 {
@@ -122,6 +133,8 @@ namespace MyApp.Prisms.ViewModels
         }
 
         private bool _disposed;
+        private readonly ISettingManager<SettingModel> _settingManager;
+
         public void Dispose()
         {
             _disposed = true;

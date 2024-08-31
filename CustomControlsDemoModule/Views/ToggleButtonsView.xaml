@@ -5,36 +5,49 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CustomControlsDemoModule.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
-    <WrapPanel>
-        <ToggleButton>
-            <ToggleButton.Style>
-                <Style BasedOn="{StaticResource IconFillToggleButton}" TargetType="ToggleButton">
-                    <Setter Property="Content" Value="&#xe644;" />
-                    <Setter Property="ToolTip" Value="收藏" />
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <ToggleButton>
+                <ToggleButton.Style>
+                    <Style BasedOn="{StaticResource IconFillToggleButton}" TargetType="ToggleButton">
+                        <Setter Property="Content" Value="&#xe644;" />
+                        <Setter Property="ToolTip" Value="收藏" />
 
-                    <Style.Triggers>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Content" Value="&#xe684;" />
-                            <Setter Property="ToolTip" Value="取消收藏" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ToggleButton.Style>
-        </ToggleButton>
-        <ToggleButton
-            Background="Red"
-            Content="ToggleButton"
-            MyAttachProperty.CornerRadius="10" />
-        <ToggleButton Style="{StaticResource BlockLayoutToggleButton}" />
-        <ToggleButton Style="{StaticResource MaxWindowIconToggleButton}" />
-        <ToggleButton Style="{StaticResource LoginIconToggleButton}" />
-        <ToggleButton Style="{StaticResource SlideIconToggleButton}" />
-        <ToggleButton Style="{StaticResource TopMostIconToggleButton}" />
-        <ToggleButton Style="{StaticResource BrightIconToggleButton}" />
-        <ToggleButton Style="{StaticResource VolumeIconToggleButton}" />
-        <ToggleButton Style="{StaticResource PlayIconToggleButton}" />
-        <ToggleButton Style="{StaticResource ColoredExpandIconToggleButton}" />
+                        <Style.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Content" Value="&#xe684;" />
+                                <Setter Property="ToolTip" Value="取消收藏" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ToggleButton.Style>
+            </ToggleButton>
+            <ToggleButton
+                Background="Red"
+                Content="ToggleButton"
+                MyAttachProperty.CornerRadius="10" />
+            <ToggleButton Style="{StaticResource BlockLayoutToggleButton}" />
+            <ToggleButton Style="{StaticResource MaxWindowIconToggleButton}" />
+            <ToggleButton Style="{StaticResource LoginIconToggleButton}" />
+            <ToggleButton Style="{StaticResource SlideIconToggleButton}" />
+            <ToggleButton Style="{StaticResource TopMostIconToggleButton}" />
+            <ToggleButton Style="{StaticResource BrightIconToggleButton}" />
+            <ToggleButton Style="{StaticResource VolumeIconToggleButton}" />
+            <ToggleButton Style="{StaticResource PlayIconToggleButton}" />
+            <ToggleButton Style="{StaticResource ColoredExpandIconToggleButton}" />
+        </StackPanel>
 
-        <RadioButton />
-    </WrapPanel>
+        <StackPanel Orientation="Horizontal">
+            <CheckBox Height="30" Content="普通CheckBox" />
+            <CheckBox
+                Height="20"
+                Content="Switch CheckBox"
+                Style="{StaticResource SlideCheckBox}" />
+            <CheckBox Content="CheckMark CheckBox" Style="{StaticResource CheckMarkCheckBox}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <RadioButton Content="Radio Button" Style="{x:Null}" />
+        </StackPanel>
+    </StackPanel>
 </UserControl>

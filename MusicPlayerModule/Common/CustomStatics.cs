@@ -4,11 +4,12 @@ namespace MusicPlayerModule.Common
 {
     public static class CustomStatics
     {
-        public static string LastMusicDir;
-
-        public static string LastVideoDir;
-
-        internal static string LyricDir;
+        public enum EnumSettings
+        {
+            Music,
+            Lyric,
+            Video
+        }
 
         public static List<MediaPlayOrderModel> MediaPlayOrderList { get; private set; } = new()
         {
@@ -20,11 +21,11 @@ namespace MusicPlayerModule.Common
         };
 
         #region Music
-        internal const string MUSIC = "Music";
+        internal static string MUSIC = EnumSettings.Music.ToString();
 
         internal static readonly string[] MusicPlayOrder_ConfigKey = new[] { MUSIC, "MusicPlayOrder" };
-        public static readonly string[] LastMusicDir_ConfigKey = new[] { MUSIC, nameof(LastMusicDir) };
-        internal static readonly string[] LyricDir_ConfigKey = new[] { MUSIC, nameof(LyricDir) };
+        public static readonly string[] LastMusicDir_ConfigKey = new[] { MUSIC, "LastMusicDir" };
+        public static readonly string[] LyricDir_ConfigKey = new[] { MUSIC, "LyricDir" };
 
         internal static readonly string[] Vertical_DesktopLyric_WindowLeftTop_ConfigKey = new string[] { MUSIC, "Vertical_DesktopLyric_WindowLeftTop" };
         internal static readonly string[] Horizontal_DesktopLyric_WindowLeftTop_ConfigKey = new string[] { MUSIC, "Horizontal_DesktopLyric_WindowLeftTop" };
@@ -42,13 +43,13 @@ namespace MusicPlayerModule.Common
         #endregion
 
         #region Video
-        internal const string VIDEO = "Video";
+        internal static string VIDEO = EnumSettings.Video.ToString();
         internal const string VideoABPoints = "VideoABPoints";
 
         internal static readonly string[] VideoPlayOrder_ConfigKey = new[] { VIDEO, "VideoPlayOrder" };
         internal static readonly string[] VideoStretch_ConfigKey = new[] { VIDEO, "VideoStretch" };
 
-        public static readonly string[] LastVideoDir_ConfigKey = new[] { VIDEO, nameof(LastVideoDir) };
+        public static readonly string[] LastVideoDir_ConfigKey = new[] { VIDEO, "LastVideoDir" };
         #endregion
     }
 }

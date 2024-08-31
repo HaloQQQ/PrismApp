@@ -15,8 +15,6 @@ namespace MusicPlayerModule.ViewModels.Base
 
         public string IndexString => this._index.ToString("000");
 
-        public bool IsLongTimeMedia => this.TotalMills > 1000 * 60 * 60;
-
         public string Name { get; protected set; }
         public string FilePath { get; protected set; }
 
@@ -120,7 +118,7 @@ namespace MusicPlayerModule.ViewModels.Base
         protected string GetFormatTime(int mills)
         {
             TimeSpan time = TimeSpan.FromMilliseconds(mills);
-            return time.FormatTimeSpan(this.IsLongTimeMedia);
+            return time.FormatTimeSpan(this.TotalMills > 1000 * 60 * 60);
         }
 
         public abstract void Dispose();

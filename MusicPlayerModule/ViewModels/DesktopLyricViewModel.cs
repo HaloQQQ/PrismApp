@@ -16,12 +16,8 @@ namespace MusicPlayerModule.ViewModels
         {
             var currentLyricFontSize = config.ReadConfigNode(CustomStatics.CurrentLyricFontSize_ConfigKey);
             double fontSize = 20;
-            if (!currentLyricFontSize.IsNullOrBlank())
-            {
-                double.TryParse(currentLyricFontSize, out fontSize);
-            }
+            double.TryParse(currentLyricFontSize, out fontSize);
             this.CurrentLyricFontSize = fontSize;
-
 
             this.IsDesktopLyricShow = config.IsTrue(CustomStatics.IsDesktopLyricShow_ConfigKey);
             this.IsVertical = config.IsTrue(CustomStatics.IsVertical_ConfigKey);
@@ -124,12 +120,7 @@ namespace MusicPlayerModule.ViewModels
             get => this._currentLyricForeground;
             set
             {
-                if (value == null)
-                {
-                    return;
-                }
-
-                SetProperty<SelectableColorBrush>(ref _currentLyricForeground, value);
+                if (SetProperty<SelectableColorBrush>(ref _currentLyricForeground, value))
                 {
                     var colorStr = _currentLyricForeground.ColorBrush.ToString();
                     this.LyricColorBrush.IsSelected = this.LyricColorBrush.ColorBrush.ToString() == colorStr;

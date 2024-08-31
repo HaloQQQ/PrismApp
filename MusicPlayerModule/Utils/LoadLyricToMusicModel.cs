@@ -1,5 +1,4 @@
 ﻿using IceTea.Atom.Extensions;
-using MusicPlayerModule.Common;
 using MusicPlayerModule.Models;
 using System.Diagnostics;
 using System.IO;
@@ -68,7 +67,7 @@ namespace MusicPlayerModule.Utils
                 return TryGetLyricDir(originDir.GetParentPath());
             }
 
-            return CustomStatics.LyricDir = lyricFiles.First().GetParentPath();
+            return lyricFiles.First().GetParentPath();
         }
 
         public static IEnumerable<string> GetLyricPaths(string directoryPath)

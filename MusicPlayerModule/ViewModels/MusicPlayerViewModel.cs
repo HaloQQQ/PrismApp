@@ -57,7 +57,7 @@ namespace MusicPlayerModule.ViewModels
                 {
                     PlayingMusicViewModel musicViewModel = value as PlayingMusicViewModel;
 
-                    LoadLyricToMusicModel.LoadLyricAsync(CustomStatics.LyricDir, musicViewModel.Music);
+                    LoadLyricToMusicModel.LoadLyricAsync(this._settingManager[CustomStatics.EnumSettings.Lyric.ToString()].Value, musicViewModel.Music);
 
                     foreach (var item in this.Playing.Where(m => m.IsPlayingMedia))
                     {
@@ -244,7 +244,7 @@ namespace MusicPlayerModule.ViewModels
         private async void AddMusicFromFileDialog()
         {
             OpenFileDialog openFileDialog =
-                CommonAtomUtils.OpenFileDialog(CustomStatics.LastMusicDir, new MusicMedia());
+                CommonAtomUtils.OpenFileDialog(this._settingManager[CustomStatics.EnumSettings.Music.ToString()].Value, new MusicMedia());
 
             if (openFileDialog != null)
             {
@@ -253,13 +253,13 @@ namespace MusicPlayerModule.ViewModels
                 var musicDir = openFileDialog.FileName.GetParentPath();
                 this.TryRefreshLastMusicDir(musicDir);
 
-                CustomStatics.LyricDir = LoadLyricToMusicModel.TryGetLyricDir(musicDir);
+                this._settingManager[CustomStatics.EnumSettings.Lyric.ToString()].Value = LoadLyricToMusicModel.TryGetLyricDir(musicDir);
             }
         }
 
         private async void AddMusicFromFolderDialog()
         {
-            var selectedPath = CommonCoreUtils.OpenFolderDialog(CustomStatics.LastMusicDir);
+            var selectedPath = CommonCoreUtils.OpenFolderDialog(this._settingManager[CustomStatics.EnumSettings.Music.ToString()].Value);
             if (!selectedPath.IsNullOrEmpty())
             {
                 this.TryRefreshLastMusicDir(selectedPath);
@@ -268,7 +268,7 @@ namespace MusicPlayerModule.ViewModels
 
                 await this.LoadMusicAsync(list);
 
-                CustomStatics.LyricDir = LoadLyricToMusicModel.TryGetLyricDir(selectedPath);
+                this._settingManager[CustomStatics.EnumSettings.Lyric.ToString()].Value = LoadLyricToMusicModel.TryGetLyricDir(selectedPath);
             }
         }
 
@@ -276,10 +276,7 @@ namespace MusicPlayerModule.ViewModels
         {
             AppUtils.AssertDataValidation(dir.IsDirectoryPath(), $"{dir}必须为存在的目录");
 
-            if (!dir.EqualsIgnoreCase(CustomStatics.LastMusicDir))
-            {
-                CustomStatics.LastMusicDir = dir;
-            }
+            this._settingManager[CustomStatics.EnumSettings.Lyric.ToString()].Value = dir;
         }
 
         private IEnumerable<string> GetNewFiles(IEnumerable<string> filePaths)
@@ -384,7 +381,7 @@ namespace MusicPlayerModule.ViewModels
 
         private PlayingMusicViewModel AddOneToPlayingList(FavoriteMusicViewModel music)
         {
-            var item = new PlayingMusicViewModel(music.Music);
+            var item = new PlayingMusicViewModel(music.Music, _settingManager[CustomStatics.EnumSettings.Music.ToString()]);
             this.Playing.Add(item);
             this.DisplayPlaying.Add(item);
 
@@ -410,7 +407,7 @@ namespace MusicPlayerModule.ViewModels
                 {
                     if (this.Playing.FirstOrDefault(m => m.Music == item.Music) == null)
                     {
-                        PlayingMusicViewModel temp = new PlayingMusicViewModel(item.Music);
+                        PlayingMusicViewModel temp = new PlayingMusicViewModel(item.Music, _settingManager[CustomStatics.EnumSettings.Music.ToString()]);
                         if (result == null)
                         {
                             result = temp;
@@ -551,12 +548,12 @@ namespace MusicPlayerModule.ViewModels
 
         #endregion
 
-        public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
-            : base(eventAggregator, config, appConfigFileHotKeyManager)
+        public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager, ISettingManager<SettingModel> settingManager)
+            : base(eventAggregator, config, appConfigFileHotKeyManager, settingManager)
         {
             this.SubscribeEvents(eventAggregator);
 
-            this.DistributeMusicViewModel = new DistributeMusicViewModel(this.Favorites, eventAggregator);
+            this.DistributeMusicViewModel = new DistributeMusicViewModel(this.Favorites, eventAggregator, settingManager);
             this.DistributeMusicViewModel.ClearFavoriteListFilteKeyWords += TryClearFavoriteListFilteKeyWords;
 
             this.DesktopLyric = new DesktopLyricViewModel(config);
@@ -654,7 +651,7 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
-                var temp = new PlayingMusicViewModel(music.Music);
+                var temp = new PlayingMusicViewModel(music.Music, _settingManager[CustomStatics.EnumSettings.Music.ToString()]);
                 if (this.CurrentMedia.Index < this.Playing.Count)
                 {
                     this.Playing.Insert(this.CurrentMedia.Index, temp);
@@ -763,17 +760,17 @@ namespace MusicPlayerModule.ViewModels
                     CustomStatics.MediaPlayOrderList.First();
             }
 
-            CustomStatics.LastMusicDir = configManager.ReadConfigNode(CustomStatics.LastMusicDir_ConfigKey);
+            //CustomStatics.LastMusicDir = configManager.ReadConfigNode(CustomStatics.LastMusicDir_ConfigKey);
 
-            CustomStatics.LyricDir = configManager.ReadConfigNode(CustomStatics.LyricDir_ConfigKey);
+            //CustomStatics.LyricDir = configManager.ReadConfigNode(CustomStatics.LyricDir_ConfigKey);
 
             configManager.SetConfig += config =>
             {
                 config.WriteConfigNode(this.CurrentPlayOrder.Description, CustomStatics.MusicPlayOrder_ConfigKey);
 
-                config.WriteConfigNode(CustomStatics.LastMusicDir, CustomStatics.LastMusicDir_ConfigKey);
+                //config.WriteConfigNode(CustomStatics.LastMusicDir, CustomStatics.LastMusicDir_ConfigKey);
 
-                config.WriteConfigNode(CustomStatics.LyricDir, CustomStatics.LyricDir_ConfigKey);
+                //config.WriteConfigNode(CustomStatics.LyricDir, CustomStatics.LyricDir_ConfigKey);
             };
         }
 

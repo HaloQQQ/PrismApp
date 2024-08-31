@@ -6,6 +6,7 @@
     xmlns:converters="http://IceTea.Wpf.Core.com/"
     xmlns:globalHotKey="clr-namespace:IceTea.Atom.Utils.HotKey.Global;assembly=IceTea.Atom"
     xmlns:globalHotKeyContracts="clr-namespace:IceTea.Atom.Utils.HotKey.Global.Contracts;assembly=IceTea.Atom"
+    xmlns:models="clr-namespace:MusicPlayerModule.Models;assembly=MusicPlayerModule"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:MyApp.Prisms.ViewModels"
     MinWidth="800"
@@ -232,6 +233,21 @@
                     Style="{StaticResource IconButtonBase_Small_Scale}" />
             </StackPanel>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type models:SettingModel}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Style="{StaticResource ThemeBlk}" Text="{Binding Name}" />
+                <TextBox
+                    Width="500"
+                    IsReadOnly="True"
+                    MyAttachProperty.PlaceHolder="空目录"
+                    Text="{Binding Value, Mode=OneWay}" />
+                <Button
+                    Command="{Binding OpenFolderCommand}"
+                    Content="浏览"
+                    Style="{StaticResource TransparentButtonBase}" />
+            </StackPanel>
+        </DataTemplate>
     </UserControl.Resources>
 
     <Border
@@ -240,46 +256,10 @@
         CornerRadius="20">
         <TabControl ItemContainerStyle="{StaticResource TabItem_Transparent}" Style="{StaticResource TabControl_ScrollContent}">
             <TabItem Header="默认目录">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource ThemeBlk}" Text="图片默认目录：" />
-                        <TextBox
-                            Width="500"
-                            IsReadOnly="True"
-                            MyAttachProperty.PlaceHolder="空目录"
-                            Text="{Binding DataContext.ImageDir, RelativeSource={RelativeSource AncestorType=TabControl}}" />
-                        <Button
-                            Command="{Binding DataContext.FindImageDirCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
-                            Content="浏览"
-                            Style="{StaticResource TransparentButtonBase}" />
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource ThemeBlk}" Text="音乐默认目录：" />
-                        <TextBox
-                            Width="500"
-                            IsReadOnly="True"
-                            MyAttachProperty.PlaceHolder="空目录"
-                            Text="{Binding DataContext.LastMusicDir, RelativeSource={RelativeSource AncestorType=TabControl}}" />
-                        <Button
-                            Command="{Binding DataContext.FindMusicDirCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
-                            Content="浏览"
-                            Style="{StaticResource TransparentButtonBase}" />
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource ThemeBlk}" Text="视频默认目录：" />
-                        <TextBox
-                            Width="500"
-                            IsReadOnly="True"
-                            MyAttachProperty.PlaceHolder="空目录"
-                            Text="{Binding DataContext.LastVideoDir, RelativeSource={RelativeSource AncestorType=TabControl}}" />
-                        <Button
-                            Command="{Binding DataContext.FindVideoDirCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
-                            Content="浏览"
-                            Style="{StaticResource TransparentButtonBase}" />
-                    </StackPanel>
-                </StackPanel>
+                <ListBox
+                    HorizontalContentAlignment="Left"
+                    ItemContainerStyle="{StaticResource ListBoxItem_General}"
+                    ItemsSource="{Binding DataContext.SettingModels.Values, RelativeSource={RelativeSource AncestorType=TabControl}}" />
             </TabItem>
             <TabItem Header="默认邮箱">
                 <StackPanel>
@@ -308,16 +288,10 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="全局快捷键">
-                <ListBox
-                    HorizontalAlignment="Stretch"
-                    ItemContainerStyle="{StaticResource ListBoxItem_General}"
-                    ItemsSource="{Binding DataContext.GlobaConfigFilelHotKeyManager, RelativeSource={RelativeSource AncestorType=TabControl}}" />
+                <ListBox ItemContainerStyle="{StaticResource ListBoxItem_General}" ItemsSource="{Binding DataContext.GlobaConfigFilelHotKeyManager, RelativeSource={RelativeSource AncestorType=TabControl}}" />
             </TabItem>
             <TabItem Header="应用快捷键">
-                <ListBox
-                    HorizontalAlignment="Stretch"
-                    ItemContainerStyle="{StaticResource ListBoxItem_General}"
-                    ItemsSource="{Binding DataContext.AppConfigFileHotKeyManager, RelativeSource={RelativeSource AncestorType=TabControl}}" />
+                <ListBox ItemContainerStyle="{StaticResource ListBoxItem_General}" ItemsSource="{Binding DataContext.AppConfigFileHotKeyManager, RelativeSource={RelativeSource AncestorType=TabControl}}" />
             </TabItem>
             <TabItem Header="常用">
                 <StackPanel>

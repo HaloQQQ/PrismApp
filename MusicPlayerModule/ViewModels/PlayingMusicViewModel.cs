@@ -1,5 +1,4 @@
 ﻿using IceTea.Atom.Utils;
-using MusicPlayerModule.Common;
 using MusicPlayerModule.Models;
 using MusicPlayerModule.Utils;
 using MusicPlayerModule.ViewModels.Base;
@@ -8,7 +7,7 @@ namespace MusicPlayerModule.ViewModels
 {
     internal class PlayingMusicViewModel : MediaBaseViewModel
     {
-        public PlayingMusicViewModel(MusicModel music)
+        public PlayingMusicViewModel(MusicModel music, SettingModel musicModel)
         {
             Music = music.AssertNotNull(nameof(MusicModel));
 
@@ -16,8 +15,12 @@ namespace MusicPlayerModule.ViewModels
 
             this.Name = music.Name;
             this.FilePath = music.FilePath;
+
+            this._musicModel = musicModel;
         }
 
+
+        private SettingModel _musicModel;
         public MusicModel Music { get; private set; }
 
         #region 当前歌曲进度相关
@@ -111,7 +114,7 @@ namespace MusicPlayerModule.ViewModels
                 return false;
             }
 
-            LoadLyricToMusicModel.LoadLyricAsync(CustomStatics.LyricDir, this.Music);
+            LoadLyricToMusicModel.LoadLyricAsync(_musicModel.Value, this.Music);
 
             var lyric = this.Music.Lyric;
 

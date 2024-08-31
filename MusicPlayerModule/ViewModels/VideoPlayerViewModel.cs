@@ -130,8 +130,10 @@ namespace MusicPlayerModule.ViewModels
 
         private void AddVideoFromFileDialog()
         {
+            var path = this._settingManager[CustomStatics.EnumSettings.Video.ToString()].Value;
+
             OpenFileDialog openFileDialog =
-                CommonAtomUtils.OpenFileDialog(CustomStatics.LastVideoDir, new VideoMedia());
+                CommonAtomUtils.OpenFileDialog(path, new VideoMedia());
 
             if (openFileDialog != null)
             {
@@ -143,7 +145,9 @@ namespace MusicPlayerModule.ViewModels
 
         private void AddVideoFromFolderDialog()
         {
-            var selectedPath = CommonCoreUtils.OpenFolderDialog(CustomStatics.LastVideoDir);
+            var path = this._settingManager[CustomStatics.EnumSettings.Video.ToString()].Value;
+
+            var selectedPath = CommonCoreUtils.OpenFolderDialog(path);
             if (!selectedPath.IsNullOrEmpty())
             {
                 this.TryRefreshLastVideoDir(selectedPath);
@@ -158,12 +162,7 @@ namespace MusicPlayerModule.ViewModels
         {
             AppUtils.AssertDataValidation(dir.IsDirectoryPath(), $"{dir}必须为存在的目录");
 
-            if (!dir.EqualsIgnoreCase(CustomStatics.LastVideoDir))
-            {
-                _config.WriteConfigNode(dir, CustomStatics.LastVideoDir_ConfigKey);
-
-                CustomStatics.LastVideoDir = dir;
-            }
+            this._settingManager[CustomStatics.EnumSettings.Video.ToString()].Value = dir;
         }
 
         private IEnumerable<string> GetNewFiles(IEnumerable<string> filePaths)
@@ -207,8 +206,8 @@ namespace MusicPlayerModule.ViewModels
         private VideoModelAndGuid _dto;
         private readonly IConfigManager _config;
 
-        public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
-            : base(eventAggregator, config, appConfigFileHotKeyManager)
+        public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager, ISettingManager<SettingModel> settingMnager)
+            : base(eventAggregator, config, appConfigFileHotKeyManager, settingMnager)
         {
             this._config = config.AssertNotNull(nameof(IConfigManager));
 
@@ -260,33 +259,20 @@ namespace MusicPlayerModule.ViewModels
             this.AddFilesCommand = new DelegateCommand(AddVideoFromFileDialog);
 
             this.AddFolderCommand = new DelegateCommand(AddVideoFromFolderDialog);
-
-            this.DelayCommand =
-                new DelegateCommand(() => { this.CurrentMedia.Rewind(); this.RefreshMediaOperation(OperationType.Rewind); },
-                    () => this.CurrentMedia != null).ObservesProperty(() => this.CurrentMedia);
-
-            this.AheadCommand =
-                new DelegateCommand(() => { this.CurrentMedia.FastForward(); this.RefreshMediaOperation(OperationType.FastForward); },
-                    () => this.CurrentMedia != null).ObservesProperty(() => this.CurrentMedia);
         }
 
         protected override void LoadConfig(IConfigManager config)
         {
             var playOrder = config.ReadConfigNode(CustomStatics.VideoPlayOrder_ConfigKey);
-            if (!string.IsNullOrEmpty(playOrder))
-            {
-                this.CurrentPlayOrder =
-                    CustomStatics.MediaPlayOrderList.FirstOrDefault(item => item.Description == playOrder) ??
-                    CustomStatics.MediaPlayOrderList.First();
-            }
+            this.CurrentPlayOrder =
+                CustomStatics.MediaPlayOrderList.FirstOrDefault(item => item.Description == playOrder) ??
+                CustomStatics.MediaPlayOrderList.First();
 
             var stretch = config.ReadConfigNode(CustomStatics.VideoStretch_ConfigKey);
             if (!string.IsNullOrEmpty(stretch) && Enum.TryParse<Stretch>(stretch, true, out Stretch result))
             {
                 this.Stretch = result;
             }
-
-            CustomStatics.LastVideoDir = config.ReadConfigNode(CustomStatics.LastVideoDir_ConfigKey);
 
             config.SetConfig += config =>
             {
@@ -336,6 +322,20 @@ namespace MusicPlayerModule.ViewModels
                 this.SetAndPlay(currentMedia);
             }
         }
+
+        protected override void Rewind()
+        {
+            base.Rewind();
+
+            this.RefreshMediaOperation(OperationType.Rewind);
+        }
+
+        protected override void FastForward()
+        {
+            base.FastForward();
+
+            this.RefreshMediaOperation(OperationType.FastForward);
+        }
         #endregion
 
         #region Commands
@@ -361,6 +361,8 @@ namespace MusicPlayerModule.ViewModels
             {
                 item.Dispose();
             }
+
+            this.OpenInExploreCommand = null;
 
             this.PlayPlayingCommand = null;
 

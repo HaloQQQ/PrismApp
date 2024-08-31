@@ -9,6 +9,7 @@ using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using IceTea.Atom.Utils.HotKey.Contracts;
 using MusicPlayerModule.Models.Common;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
+using MusicPlayerModule.Models;
 
 
 namespace MusicPlayerModule.ViewModels.Base
@@ -16,10 +17,12 @@ namespace MusicPlayerModule.ViewModels.Base
     internal abstract class MediaPlayerViewModel : BindableBase, IDisposable
     {
         protected readonly IEventAggregator _eventAggregator;
+        protected readonly ISettingManager<SettingModel> _settingManager;
 
-        protected MediaPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
+        protected MediaPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager, ISettingManager<SettingModel> settingManager)
         {
             this._eventAggregator = eventAggregator.AssertNotNull(nameof(IEventAggregator));
+            this._settingManager = settingManager;
 
             this.LoadConfig(config);
 
@@ -72,7 +75,7 @@ namespace MusicPlayerModule.ViewModels.Base
 
             this.DelayCommand =
                 new DelegateCommand(
-                    () => this.CurrentMedia?.Rewind(),
+                    this.Rewind,
                     () => this.CurrentMedia != null)
                     .ObservesProperty(() => this.CurrentMedia);
 
@@ -92,7 +95,7 @@ namespace MusicPlayerModule.ViewModels.Base
 
             this.AheadCommand =
                 new DelegateCommand(
-                    () => this.CurrentMedia?.FastForward(),
+                    this.FastForward,
                     () => this.CurrentMedia != null)
                     .ObservesProperty(() => this.CurrentMedia);
 
@@ -102,7 +105,8 @@ namespace MusicPlayerModule.ViewModels.Base
                         this.CurrentMedia = null;
                         this.Running = false;
                     },
-                    () => !this.Running && this.CurrentMedia != null).ObservesProperty(() => this.CurrentMedia)
+                    () => !this.Running && this.CurrentMedia != null)
+                    .ObservesProperty(() => this.CurrentMedia)
                     .ObservesProperty(() => this.Running);
 
             this.CleanPlayingCommand = new DelegateCommand(
@@ -140,6 +144,15 @@ namespace MusicPlayerModule.ViewModels.Base
 
                 this.RaiseResetPlayerAndPlayMediaEvent(this._eventAggregator);
             }
+            else
+            {
+                this.RaiseResetMediaEvent(this._eventAggregator);
+            }
+        }
+
+        protected virtual void Rewind()
+        {
+            this.CurrentMedia?.Rewind();
         }
 
         protected void PrevMedia(MediaBaseViewModel currentMedia)
@@ -178,20 +191,17 @@ namespace MusicPlayerModule.ViewModels.Base
                         case MediaPlayOrderModel.EnumOrderType.Order:
                             if (currentMedia.Index == this.DisplayPlaying.Count)
                             {
-                                this.RaiseResetMediaEvent(this._eventAggregator);
                                 this.SetAndPlay(null);
 
                                 return;
                             }
                             break;
                         case MediaPlayOrderModel.EnumOrderType.SingleOnce:
-                            this.RaiseResetMediaEvent(this._eventAggregator);
                             this.SetAndPlay(null);
                             return;
 
                         case MediaPlayOrderModel.EnumOrderType.SingleCycle:
                             this.RaiseResetPlayerAndPlayMediaEvent(this._eventAggregator);
-                            this.SetAndPlay(null);
                             return;
                         case MediaPlayOrderModel.EnumOrderType.Loop:
                             break;
@@ -212,6 +222,11 @@ namespace MusicPlayerModule.ViewModels.Base
                     this.SetAndPlay(this.DisplayPlaying[0]);
                 }
             }
+        }
+
+        protected virtual void FastForward()
+        {
+            this.CurrentMedia?.FastForward();
         }
 
         protected virtual void CleanPlaying()
@@ -375,6 +390,7 @@ namespace MusicPlayerModule.ViewModels.Base
             this.ToPointACommand = null;
 
             this.MoveToHomeCommand = null;
+            this.MoveToEndCommand = null;
 
             this.StopPlayCommand = null;
 

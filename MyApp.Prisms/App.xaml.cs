@@ -26,6 +26,7 @@ using CustomControlsDemoModule;
 using IceTea.Wpf.Atom.Utils;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
+using MusicPlayerModule.Models;
 
 namespace MyApp.Prisms
 {
@@ -105,6 +106,7 @@ namespace MyApp.Prisms
 
             containerRegistry.RegisterSingleton<IAppConfigFileHotKeyManager, AppConfigFileHotKeyManager>();
             containerRegistry.RegisterSingleton<ISettingManager, SettingManager>();
+            containerRegistry.RegisterSingleton<ISettingManager<SettingModel>, SettingManager<SettingModel>>();
 
             containerRegistry.RegisterSingleton<ImageDisplayViewModel>();
             containerRegistry.RegisterSingleton<SoftwareViewModel>();

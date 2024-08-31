@@ -6,7 +6,6 @@ using System.Windows.Input;
 using MyApp.Prisms.Helper;
 using IceTea.Atom.Utils;
 using IceTea.Atom.Extensions;
-using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Contracts;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -18,6 +17,7 @@ using IceTea.Atom.Utils.HotKey.Global.Contracts;
 using CustomControlsDemoModule.Views;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using MusicPlayerModule.Common;
+using MusicPlayerModule.Models;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -26,18 +26,23 @@ namespace MyApp.Prisms.ViewModels
         public SettingsViewModel(
                 IConfigManager configManager,
                 ISettingManager settingManager,
+                ISettingManager<SettingModel> settingModels,
                 IAppConfigFileHotKeyManager appConfigFileHotKeyManager,
                 IEventAggregator eventAggregator
             )
         {
             this.AppConfigFileHotKeyManager = appConfigFileHotKeyManager.AssertNotNull(nameof(IAppConfigFileHotKeyManager));
 
-            this.LoadConfig(configManager);
+            this.SettingModels = settingModels.AssertNotNull(nameof(ISettingManager<SettingModel>));
+
+            this.LoadConfig(configManager, settingModels);
 
             this.LoadMailAccounts(configManager, settingManager);
 
             this.InitCommands(eventAggregator, settingManager, configManager);
         }
+
+        public ISettingManager<SettingModel> SettingModels { get; }
 
         public IAppConfigFileHotKeyManager AppConfigFileHotKeyManager { get; }
 
@@ -81,39 +86,6 @@ namespace MyApp.Prisms.ViewModels
             {
                 this.MailAccounts.Remove(pair);
                 settingManager.Remove(pair.Key);
-            });
-
-            this.FindImageDirCommand = new DelegateCommand(() =>
-            {
-                var str = CommonCoreUtils.OpenFolderDialog(this.ImageDir);
-                if (!string.IsNullOrEmpty(str))
-                {
-                    CustomConstants.LastImageDir = this.ImageDir = str;
-                }
-
-                this.IsEditingSetting = true;
-            });
-
-            this.FindMusicDirCommand = new DelegateCommand(() =>
-            {
-                var str = CommonCoreUtils.OpenFolderDialog(this.LastMusicDir);
-                if (!string.IsNullOrEmpty(str))
-                {
-                    CustomStatics.LastMusicDir = this.LastMusicDir = str;
-                }
-
-                this.IsEditingSetting = true;
-            });
-
-            this.FindVideoDirCommand = new DelegateCommand(() =>
-            {
-                var str = CommonCoreUtils.OpenFolderDialog(this.LastVideoDir);
-                if (!string.IsNullOrEmpty(str))
-                {
-                    CustomStatics.LastVideoDir = this.LastVideoDir = str;
-                }
-
-                this.IsEditingSetting = true;
             });
 
             this.CancelCommand = new DelegateCommand<IGlobalConfigFileHotKeyGroup>(globalHotKeyGroup =>
@@ -174,7 +146,7 @@ namespace MyApp.Prisms.ViewModels
 
                 this.MailAccounts.AddRange(dictionary);
 
-                settingManager.AddRange(dictionary.Select<Pair, KeyValuePair<string, string>>(pair => new KeyValuePair<string, string>(pair.Key, pair.Value)));
+                dictionary.ForEach(item => settingManager.AddOrUpdate(item.Key, item.Value));
             }
 
             configManager.SetConfig += config =>
@@ -212,13 +184,27 @@ namespace MyApp.Prisms.ViewModels
         #endregion
 
         #region 读取和保存配置
-        private void LoadConfig(IConfigManager configManager)
+        private void LoadConfig(IConfigManager configManager, ISettingManager<SettingModel> settingModels)
         {
-            this.LoadImageDir(configManager);
-            this.LoadLastMusicDir(configManager);
-            this.LoadLastVideoDir(configManager);
+            this.InitSetting(configManager, settingModels, "Image", "图片默认目录", "LastImageDir");
+
+            this.InitSetting(configManager, settingModels, "Music", "音乐默认目录", CustomStatics.LastMusicDir_ConfigKey);
+
+            this.InitSetting(configManager, settingModels, "Lyric", "歌词默认目录", CustomStatics.LyricDir_ConfigKey);
+
+            this.InitSetting(configManager, settingModels, "Video", "视频默认目录", CustomStatics.LastVideoDir_ConfigKey);
 
             this.LoadWindowCornerRadius(configManager);
+        }
+
+        private void InitSetting(IConfigManager configManager, ISettingManager<SettingModel> settingModels, string key, string description, params string[] configNode)
+        {
+            settingModels.TryAdd(key, new SettingModel(description, configManager.ReadConfigNode(configNode), () => this.IsEditingSetting = true));
+
+            configManager.SetConfig += config =>
+            {
+                config.WriteConfigNode(settingModels[key].Value, configNode);
+            };
         }
 
         private void LoadWindowCornerRadius(IConfigManager configManager)
@@ -233,38 +219,6 @@ namespace MyApp.Prisms.ViewModels
             configManager.SetConfig += config =>
             {
                 config.WriteConfigNode(this.CornerRadius.TopLeft, CustomConstants.WindowCornerRadius);
-            };
-        }
-
-        private void LoadImageDir(IConfigManager configManager)
-        {
-            var configPath = nameof(this.ImageDir);
-
-            this.ImageDir = configManager.ReadConfigNode(configPath);
-
-            configManager.SetConfig += config =>
-            {
-                config.WriteConfigNode(this.ImageDir, configPath);
-            };
-        }
-
-        private void LoadLastMusicDir(IConfigManager configManager)
-        {
-            this.LastMusicDir = configManager.ReadConfigNode(CustomStatics.LastMusicDir_ConfigKey);
-
-            configManager.SetConfig += config =>
-            {
-                config.WriteConfigNode(CustomStatics.LastMusicDir, CustomStatics.LastMusicDir_ConfigKey);
-            };
-        }
-
-        private void LoadLastVideoDir(IConfigManager configManager)
-        {
-            this.LastVideoDir = configManager.ReadConfigNode(CustomStatics.LastVideoDir_ConfigKey);
-
-            configManager.SetConfig += config =>
-            {
-                config.WriteConfigNode(CustomStatics.LastVideoDir, CustomStatics.LastVideoDir_ConfigKey);
             };
         }
         #endregion
@@ -296,30 +250,6 @@ namespace MyApp.Prisms.ViewModels
                     }
                 }
             }
-        }
-
-        private string _imageDir;
-
-        public string ImageDir
-        {
-            get => this._imageDir;
-            set => SetProperty<string>(ref _imageDir, value);
-        }
-
-        private string _lastMusicDir;
-
-        public string LastMusicDir
-        {
-            get => this._lastMusicDir;
-            set => SetProperty<string>(ref _lastMusicDir, value);
-        }
-
-        private string _lastVideoDir;
-
-        public string LastVideoDir
-        {
-            get => this._lastVideoDir;
-            set => SetProperty<string>(ref _lastVideoDir, value);
         }
         #endregion
     }
