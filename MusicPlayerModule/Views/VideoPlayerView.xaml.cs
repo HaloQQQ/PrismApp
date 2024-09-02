@@ -300,20 +300,6 @@ namespace MusicPlayerModule.Views
                     this.AdaptPlayingListPanelSize();
                 }
             }
-            //else if (e.Command == ComponentCommands.MoveToHome)
-            //{
-            //    this.mediaPlayer.Position = TimeSpan.Zero;
-            //    e.Handled = true;
-            //}
-            //else if (e.Command == ComponentCommands.MoveToEnd)
-            //{
-            //    if (this.mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds > 5)
-            //    {
-            //        this.mediaPlayer.Position = this.mediaPlayer.NaturalDuration.TimeSpan.Subtract(TimeSpan.FromSeconds(5));
-            //    }
-
-            //    e.Handled = true;
-            //}
         }
 
         private void VideoSpeedRatioSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

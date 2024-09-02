@@ -760,17 +760,9 @@ namespace MusicPlayerModule.ViewModels
                     CustomStatics.MediaPlayOrderList.First();
             }
 
-            //CustomStatics.LastMusicDir = configManager.ReadConfigNode(CustomStatics.LastMusicDir_ConfigKey);
-
-            //CustomStatics.LyricDir = configManager.ReadConfigNode(CustomStatics.LyricDir_ConfigKey);
-
             configManager.SetConfig += config =>
             {
                 config.WriteConfigNode(this.CurrentPlayOrder.Description, CustomStatics.MusicPlayOrder_ConfigKey);
-
-                //config.WriteConfigNode(CustomStatics.LastMusicDir, CustomStatics.LastMusicDir_ConfigKey);
-
-                //config.WriteConfigNode(CustomStatics.LyricDir, CustomStatics.LyricDir_ConfigKey);
             };
         }
 
