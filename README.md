@@ -4,7 +4,7 @@
 PrismApp多功能合集
 
 #### 软件架构
-Tcp和Udp调试助手，邮件客户端，颜色转换器，数据库和表结构映射到Class，音乐播放器，视频播放器
+Tcp和Udp调试助手，邮件客户端，颜色转换器，数据库和表结构映射到Class，音乐播放器，视频播放器，WPF样式库Demo
 
 #### 使用说明
 
@@ -21,4 +21,5 @@ Tcp和Udp调试助手，邮件客户端，颜色转换器，数据库和表结�
 ![输入图片说明](https://foruda.gitee.com/images/1701798536835808981/5e1145ec_8918291.png "屏幕截图")
 6.  视频播放器
 ![输入图片说明](https://foruda.gitee.com/images/1701798662166879528/bbd5afb3_8918291.png "屏幕截图")
-
+7. WPF样式库Demo
+![输入图片说明](https://foruda.gitee.com/images/1725361591887877557/aacee581_8918291.png "屏幕截图")
