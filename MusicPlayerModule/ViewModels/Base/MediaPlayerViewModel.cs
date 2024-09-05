@@ -10,6 +10,7 @@ using IceTea.Atom.Utils.HotKey.Contracts;
 using MusicPlayerModule.Models.Common;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using MusicPlayerModule.Models;
+using MusicPlayerModule.Common;
 
 
 namespace MusicPlayerModule.ViewModels.Base
@@ -19,12 +20,16 @@ namespace MusicPlayerModule.ViewModels.Base
         protected readonly IEventAggregator _eventAggregator;
         protected readonly ISettingManager<SettingModel> _settingManager;
 
-        protected MediaPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager, ISettingManager<SettingModel> settingManager)
+        protected MediaPlayerViewModel(IEventAggregator eventAggregator, IConfigManager configManager, IAppConfigFileHotKeyManager appConfigFileHotKeyManager, ISettingManager<SettingModel> settingManager)
         {
             this._eventAggregator = eventAggregator.AssertNotNull(nameof(IEventAggregator));
             this._settingManager = settingManager;
 
-            this.LoadConfig(config);
+            this._settingManager.TryAdd(CustomStatics.MUSIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode(CustomStatics.LastMusicDir_ConfigKey), () => { }));
+            this._settingManager.TryAdd(CustomStatics.LYRIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode(CustomStatics.LastLyricDir_ConfigKey), () => { }));
+            this._settingManager.TryAdd(CustomStatics.VIDEO, () => new SettingModel(string.Empty, configManager.ReadConfigNode(CustomStatics.LastVideoDir_ConfigKey), () => { }));
+
+            this.LoadConfig(configManager);
 
             this.InitCommands();
 
@@ -37,6 +42,7 @@ namespace MusicPlayerModule.ViewModels.Base
         {
             var groupName = this.MediaType;
             appConfigFileHotKeyManager.TryAdd(groupName, this.MediaSettingNode);
+
             foreach (var item in this.MediaHotKeys)
             {
                 appConfigFileHotKeyManager.TryRegisterItem(groupName, item);

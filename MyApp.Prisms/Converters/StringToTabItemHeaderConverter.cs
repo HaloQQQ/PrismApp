@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace MyApp.Prisms.Converters
 {
-    internal class TabItemHeaderToTitleConverter : IValueConverter
+    internal class StringToTabItemHeaderConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

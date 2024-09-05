@@ -74,55 +74,49 @@ namespace MyApp.Prisms.ViewModels
 
         public ImageDisplayViewModel(IConfigManager config, ISettingManager<SettingModel> settingManager)
         {
-            this.RefreshData(config);
+            settingManager.TryAdd(CustomConstants.IMAGE, () => new SettingModel(string.Empty, config.ReadConfigNode(CustomConstants.LastImageDir_ConfigKey), () => { }));
 
-            this._settingManager = settingManager;
-            this.RefreshCommand = new DelegateCommand(() => this.RefreshData(config));
-        }
+            RefreshData(config);
 
-        private void RefreshData(IConfigManager config)
-        {
-            this.IsLoading = true;
+            this.RefreshCommand = new DelegateCommand(() => RefreshData(config));
 
-            this.Data.Clear();
-            this.Data.Add(new MyImage());
-            Task.Run(async () =>
+            void RefreshData(IConfigManager config)
             {
-                var dir = string.Empty;
-                if (this._settingManager.ContainsKey(CustomConstants.Image))
-                {
-                    dir = this._settingManager[CustomConstants.Image].Value;
-                }
-                else
-                {
-                    dir = config.ReadConfigNode(CustomConstants.LastImageDir_ConfigKey);
-                }
+                this.IsLoading = true;
 
-                var coll = GetImageUris(dir);
-                foreach (var item in coll)
+                this.Data.Clear();
+                this.Data.Add(new MyImage());
+
+                Task.Run(() =>
                 {
-                    if (_disposed)
+                    var dir = settingManager[CustomConstants.IMAGE].Value;
+
+                    var coll = GetImageUris(dir);
+                    foreach (var item in coll)
                     {
-                        break;
+                        if (_disposed)
+                        {
+                            break;
+                        }
+
+                        var image = new MyImage(item);
+
+                        // A.跨线程同步
+                        //_synchronizationContext.Post(_ => Data.Add(image), null);
+
+                        // B.跨线程同步
+                        CommonAtomUtils.BeginInvoke(() =>
+                        {
+                            Data.Add(image);
+                        });
+
+                        Thread.Sleep(20);
                     }
-
-                    var image = new MyImage(item);
-
-                    // A.跨线程同步
-                    //_synchronizationContext.Post(_ => Data.Add(image), null);
-
-                    // B.跨线程同步
-                    CommonAtomUtils.BeginInvoke(() =>
-                    {
-                        Data.Add(image);
-                    });
-
-                    Thread.Sleep(20);
-                }
-            }).ContinueWith(task => CallModel(nameof(this.ActualData))).ContinueWith(task => this.IsLoading = false);
+                }).ContinueWith(task => CallModel(nameof(this.ActualData))).ContinueWith(task => this.IsLoading = false);
+            }
         }
 
-        public ICommand RefreshCommand { get; private set; }
+        public ICommand RefreshCommand { get; }
 
         private bool _isLoading;
 
@@ -133,7 +127,6 @@ namespace MyApp.Prisms.ViewModels
         }
 
         private bool _disposed;
-        private readonly ISettingManager<SettingModel> _settingManager;
 
         public void Dispose()
         {

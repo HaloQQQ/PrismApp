@@ -99,7 +99,7 @@ namespace MyApp.Prisms.Views
         {
             var setting = ContainerLocator.Current.Resolve<SettingsViewModel>();
 
-            var openFileDialog = CommonAtomUtils.OpenFileDialog(setting.SettingModels[CustomConstants.Image].Value, new PictureMedia());
+            var openFileDialog = CommonAtomUtils.OpenFileDialog(setting.SettingModels[CustomConstants.IMAGE].Value, new PictureMedia());
 
             if (openFileDialog != null)
             {
@@ -111,7 +111,7 @@ namespace MyApp.Prisms.Views
 
                 SetBackgroundImage(file);
 
-                setting.SettingModels[CustomConstants.Image].Value = file.GetParentPath();
+                setting.SettingModels[CustomConstants.IMAGE].Value = file.GetParentPath();
             }
         }
 

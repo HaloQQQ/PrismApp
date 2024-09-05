@@ -75,7 +75,7 @@ namespace MyApp.Prisms.ViewModels
                 }
 
                 this.MailAccounts.Add(new Pair(this.CurrentMailPair.Key, this.CurrentMailPair.Value));
-                settingManager.AddOrUpdate(this.CurrentMailPair.Key, this.CurrentMailPair.Value);
+                settingManager.AddOrUpdate(this.CurrentMailPair.Key, () => this.CurrentMailPair.Value);
                 this.CurrentMailPair.Clear();
             },
             () => !this.CurrentMailPair.Key.IsNullOrBlank() && !this.CurrentMailPair.Value.IsNullOrBlank()
@@ -186,20 +186,20 @@ namespace MyApp.Prisms.ViewModels
         #region 读取和保存配置
         private void LoadConfig(IConfigManager configManager, ISettingManager<SettingModel> settingModels)
         {
-            this.InitSetting(configManager, settingModels, "Image", "图片默认目录", "LastImageDir");
+            this.InitSetting(configManager, settingModels, CustomConstants.IMAGE, "图片默认目录", CustomConstants.LastImageDir_ConfigKey);
 
-            this.InitSetting(configManager, settingModels, "Music", "音乐默认目录", CustomStatics.LastMusicDir_ConfigKey);
+            this.InitSetting(configManager, settingModels, CustomStatics.MUSIC, "音乐默认目录", CustomStatics.LastMusicDir_ConfigKey);
 
-            this.InitSetting(configManager, settingModels, "Lyric", "歌词默认目录", CustomStatics.LyricDir_ConfigKey);
+            this.InitSetting(configManager, settingModels, CustomStatics.LYRIC, "歌词默认目录", CustomStatics.LastLyricDir_ConfigKey);
 
-            this.InitSetting(configManager, settingModels, "Video", "视频默认目录", CustomStatics.LastVideoDir_ConfigKey);
+            this.InitSetting(configManager, settingModels, CustomStatics.VIDEO, "视频默认目录", CustomStatics.LastVideoDir_ConfigKey);
 
             this.LoadWindowCornerRadius(configManager);
         }
 
         private void InitSetting(IConfigManager configManager, ISettingManager<SettingModel> settingModels, string key, string description, params string[] configNode)
         {
-            settingModels.TryAdd(key, new SettingModel(description, configManager.ReadConfigNode(configNode), () => this.IsEditingSetting = true));
+            settingModels.AddOrUpdate(key, new SettingModel(description, configManager.ReadConfigNode(configNode), () => this.IsEditingSetting = true));
 
             configManager.SetConfig += config =>
             {

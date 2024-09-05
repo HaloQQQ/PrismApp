@@ -1,5 +1,4 @@
 using IceTea.Atom.BaseModels;
-using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SqlCreatorModule.ExportModels

@@ -21,11 +21,12 @@ namespace MusicPlayerModule.Common
         };
 
         #region Music
-        internal static string MUSIC = EnumSettings.Music.ToString();
+        public static string MUSIC = EnumSettings.Music.ToString();
+        public static string LYRIC = EnumSettings.Lyric.ToString();
 
         internal static readonly string[] MusicPlayOrder_ConfigKey = new[] { MUSIC, "MusicPlayOrder" };
         public static readonly string[] LastMusicDir_ConfigKey = new[] { MUSIC, "LastMusicDir" };
-        public static readonly string[] LyricDir_ConfigKey = new[] { MUSIC, "LyricDir" };
+        public static readonly string[] LastLyricDir_ConfigKey = new[] { MUSIC, "LyricDir" };
 
         internal static readonly string[] Vertical_DesktopLyric_WindowLeftTop_ConfigKey = new string[] { MUSIC, "Vertical_DesktopLyric_WindowLeftTop" };
         internal static readonly string[] Horizontal_DesktopLyric_WindowLeftTop_ConfigKey = new string[] { MUSIC, "Horizontal_DesktopLyric_WindowLeftTop" };
@@ -43,7 +44,7 @@ namespace MusicPlayerModule.Common
         #endregion
 
         #region Video
-        internal static string VIDEO = EnumSettings.Video.ToString();
+        public static string VIDEO = EnumSettings.Video.ToString();
         internal const string VideoABPoints = "VideoABPoints";
 
         internal static readonly string[] VideoPlayOrder_ConfigKey = new[] { VIDEO, "VideoPlayOrder" };

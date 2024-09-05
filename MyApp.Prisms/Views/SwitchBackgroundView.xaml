@@ -105,10 +105,11 @@
                     <Setter Property="ItemsPanel">
                         <Setter.Value>
                             <ItemsPanelTemplate>
-                                <VirtualizingWrapPanel Style="{StaticResource VirtualWrapPanelImageSelector}" />
+                                <VirtualizingWrapPanel Style="{StaticResource CustomVirtualizingPanelImageSelector}" />
                             </ItemsPanelTemplate>
                         </Setter.Value>
                     </Setter>
+
                     <Setter Property="ItemTemplateSelector" Value="{StaticResource ImageBlockDataTemplateSelector}" />
 
                     <Style.Triggers>
@@ -120,6 +121,7 @@
                                     </ItemsPanelTemplate>
                                 </Setter.Value>
                             </Setter>
+
                             <Setter Property="ItemTemplateSelector" Value="{StaticResource ImageListDataTemplateSelector}" />
                         </DataTrigger>
                     </Style.Triggers>

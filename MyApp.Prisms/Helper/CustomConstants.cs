@@ -36,7 +36,7 @@ namespace MyApp.Prisms.Helper
 
         //internal static string LastImageDir;
 
-        internal const string Image = "Image";
+        internal const string IMAGE = "Image";
 
         internal static string[] LastImageDir_ConfigKey = ["LastImageDir"];
 

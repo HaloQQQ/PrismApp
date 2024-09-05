@@ -57,7 +57,7 @@ namespace MusicPlayerModule.ViewModels
                 {
                     PlayingMusicViewModel musicViewModel = value as PlayingMusicViewModel;
 
-                    LoadLyricToMusicModel.LoadLyricAsync(this._settingManager[CustomStatics.EnumSettings.Lyric.ToString()].Value, musicViewModel.Music);
+                    LoadLyricToMusicModel.LoadLyricAsync(this.LyricSetting.Value, musicViewModel.Music);
 
                     foreach (var item in this.Playing.Where(m => m.IsPlayingMedia))
                     {
@@ -244,7 +244,7 @@ namespace MusicPlayerModule.ViewModels
         private async void AddMusicFromFileDialog()
         {
             OpenFileDialog openFileDialog =
-                CommonAtomUtils.OpenFileDialog(this._settingManager[CustomStatics.EnumSettings.Music.ToString()].Value, new MusicMedia());
+                CommonAtomUtils.OpenFileDialog(this.MusicSetting.Value, new MusicMedia());
 
             if (openFileDialog != null)
             {
@@ -253,13 +253,13 @@ namespace MusicPlayerModule.ViewModels
                 var musicDir = openFileDialog.FileName.GetParentPath();
                 this.TryRefreshLastMusicDir(musicDir);
 
-                this._settingManager[CustomStatics.EnumSettings.Lyric.ToString()].Value = LoadLyricToMusicModel.TryGetLyricDir(musicDir);
+                this.LyricSetting.Value = LoadLyricToMusicModel.TryGetLyricDir(musicDir);
             }
         }
 
         private async void AddMusicFromFolderDialog()
         {
-            var selectedPath = CommonCoreUtils.OpenFolderDialog(this._settingManager[CustomStatics.EnumSettings.Music.ToString()].Value);
+            var selectedPath = CommonCoreUtils.OpenFolderDialog(this.MusicSetting.Value);
             if (!selectedPath.IsNullOrEmpty())
             {
                 this.TryRefreshLastMusicDir(selectedPath);
@@ -268,7 +268,7 @@ namespace MusicPlayerModule.ViewModels
 
                 await this.LoadMusicAsync(list);
 
-                this._settingManager[CustomStatics.EnumSettings.Lyric.ToString()].Value = LoadLyricToMusicModel.TryGetLyricDir(selectedPath);
+                this.LyricSetting.Value = LoadLyricToMusicModel.TryGetLyricDir(selectedPath);
             }
         }
 
@@ -276,7 +276,7 @@ namespace MusicPlayerModule.ViewModels
         {
             AppUtils.AssertDataValidation(dir.IsDirectoryPath(), $"{dir}必须为存在的目录");
 
-            this._settingManager[CustomStatics.EnumSettings.Lyric.ToString()].Value = dir;
+            this.LyricSetting.Value = dir;
         }
 
         private IEnumerable<string> GetNewFiles(IEnumerable<string> filePaths)
@@ -381,7 +381,7 @@ namespace MusicPlayerModule.ViewModels
 
         private PlayingMusicViewModel AddOneToPlayingList(FavoriteMusicViewModel music)
         {
-            var item = new PlayingMusicViewModel(music.Music, _settingManager[CustomStatics.EnumSettings.Music.ToString()]);
+            var item = new PlayingMusicViewModel(music.Music, this.LyricSetting);
             this.Playing.Add(item);
             this.DisplayPlaying.Add(item);
 
@@ -407,7 +407,7 @@ namespace MusicPlayerModule.ViewModels
                 {
                     if (this.Playing.FirstOrDefault(m => m.Music == item.Music) == null)
                     {
-                        PlayingMusicViewModel temp = new PlayingMusicViewModel(item.Music, _settingManager[CustomStatics.EnumSettings.Music.ToString()]);
+                        PlayingMusicViewModel temp = new PlayingMusicViewModel(item.Music, this.LyricSetting);
                         if (result == null)
                         {
                             result = temp;
@@ -469,6 +469,8 @@ namespace MusicPlayerModule.ViewModels
             set { SetProperty<bool>(ref _selectFavoriteAll, value); }
         }
 
+        private SettingModel MusicSetting => this._settingManager[CustomStatics.MUSIC];
+        private SettingModel LyricSetting => this._settingManager[CustomStatics.LYRIC];
         #endregion
 
         #region Fields
@@ -651,7 +653,7 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
-                var temp = new PlayingMusicViewModel(music.Music, _settingManager[CustomStatics.EnumSettings.Music.ToString()]);
+                var temp = new PlayingMusicViewModel(music.Music, this.LyricSetting);
                 if (this.CurrentMedia.Index < this.Playing.Count)
                 {
                     this.Playing.Insert(this.CurrentMedia.Index, temp);

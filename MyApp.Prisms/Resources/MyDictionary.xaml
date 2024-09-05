@@ -9,11 +9,11 @@
     </Style>
 
     <!--  VirtualizingWrapPanel  -->
-    <Style x:Key="VirtualWrapPanelImageSelector" TargetType="VirtualizingWrapPanel">
+    <Style x:Key="CustomVirtualizingPanelImageSelector" TargetType="CustomVirtualizingPanel">
         <Setter Property="ChildHeight" Value="98" />
         <Setter Property="ChildWidth" Value="98" />
 
-        <Setter Property="ScrollOffset" Value="100" />
+        <Setter Property="ScrollOffset" Value="98" />
     </Style>
 
     <!--  菜单  -->

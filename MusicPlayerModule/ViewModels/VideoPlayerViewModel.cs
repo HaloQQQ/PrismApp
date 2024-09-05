@@ -54,6 +54,8 @@ namespace MusicPlayerModule.ViewModels
             set { SetProperty<Stretch>(ref _stretch, value); IsEditingStretch = false; }
         }
 
+        private SettingModel VideoSetting => this._settingManager[CustomStatics.VIDEO];
+
         public override MediaBaseViewModel CurrentMedia
         {
             get => _currentMedia;
@@ -130,7 +132,7 @@ namespace MusicPlayerModule.ViewModels
 
         private void AddVideoFromFileDialog()
         {
-            var path = this._settingManager[CustomStatics.EnumSettings.Video.ToString()].Value;
+            var path = this.VideoSetting.Value;
 
             OpenFileDialog openFileDialog =
                 CommonAtomUtils.OpenFileDialog(path, new VideoMedia());
@@ -145,7 +147,7 @@ namespace MusicPlayerModule.ViewModels
 
         private void AddVideoFromFolderDialog()
         {
-            var path = this._settingManager[CustomStatics.EnumSettings.Video.ToString()].Value;
+            var path = this.VideoSetting.Value;
 
             var selectedPath = CommonCoreUtils.OpenFolderDialog(path);
             if (!selectedPath.IsNullOrEmpty())
@@ -162,7 +164,7 @@ namespace MusicPlayerModule.ViewModels
         {
             AppUtils.AssertDataValidation(dir.IsDirectoryPath(), $"{dir}必须为存在的目录");
 
-            this._settingManager[CustomStatics.EnumSettings.Video.ToString()].Value = dir;
+            this.VideoSetting.Value = dir;
         }
 
         private IEnumerable<string> GetNewFiles(IEnumerable<string> filePaths)

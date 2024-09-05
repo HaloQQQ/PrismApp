@@ -120,7 +120,7 @@ namespace MusicPlayerModule.ViewModels
             get => this._currentLyricForeground;
             set
             {
-                if (SetProperty<SelectableColorBrush>(ref _currentLyricForeground, value))
+                if (value != null && SetProperty<SelectableColorBrush>(ref _currentLyricForeground, value))
                 {
                     var colorStr = _currentLyricForeground.ColorBrush.ToString();
                     this.LyricColorBrush.IsSelected = this.LyricColorBrush.ColorBrush.ToString() == colorStr;

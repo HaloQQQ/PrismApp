@@ -65,8 +65,8 @@
         <Grid Margin="20,5" HorizontalAlignment="Center">
             <TextBlock
                 HorizontalAlignment="Left"
-                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
-                Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=Border}}"
+                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ContentControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=ContentControl}}"
                 Text="{Binding Words, FallbackValue=狗空音乐，就是歌多}"
                 TextAlignment="Center"
                 TextTrimming="None"
@@ -74,15 +74,15 @@
             <TextBlock
                 HorizontalAlignment="Left"
                 ClipToBounds="True"
-                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ContentControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 Text="{Binding Words}"
                 TextAlignment="Center"
                 TextTrimming="None"
                 TextWrapping="NoWrap">
                 <TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=Border}}" />
-                        <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=Border}}" />
+                        <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
+                        <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
                     </LinearGradientBrush>
                 </TextBlock.Foreground>
                 <TextBlock.Width>
@@ -94,7 +94,7 @@
                         <Binding
                             Mode="OneWay"
                             Path="DataContext.CurrentMedia.WordProgress"
-                            RelativeSource="{RelativeSource AncestorType=Border}" />
+                            RelativeSource="{RelativeSource AncestorType=ContentControl}" />
 
                         <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
                     </MultiBinding>
@@ -108,8 +108,8 @@
             <TextBlock
                 Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                 VerticalAlignment="Top"
-                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
-                Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=Border}}"
+                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ContentControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=ContentControl}}"
                 LineHeight="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                 LineStackingStrategy="BlockLineHeight"
                 Text="{Binding VerticalWords, FallbackValue=狗空音乐，就是歌多}"
@@ -119,7 +119,7 @@
             <TextBlock
                 Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                 VerticalAlignment="Top"
-                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ContentControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 LineHeight="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                 LineStackingStrategy="BlockLineHeight"
                 Text="{Binding VerticalWords}"
@@ -127,8 +127,8 @@
                 TextWrapping="Wrap">
                 <TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="1,0" EndPoint="0,0">
-                        <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=Border}}" />
-                        <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=Border}}" />
+                        <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
+                        <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
                     </LinearGradientBrush>
                 </TextBlock.Foreground>
                 <TextBlock.Height>
@@ -140,7 +140,7 @@
                         <Binding
                             Mode="OneWay"
                             Path="DataContext.CurrentMedia.WordProgress"
-                            RelativeSource="{RelativeSource AncestorType=Border}" />
+                            RelativeSource="{RelativeSource AncestorType=ContentControl}" />
 
                         <Binding Mode="OneWay" Path="Words.Length" />
 
@@ -159,8 +159,8 @@
             <TextBlock
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
-                Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=Border}}"
+                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ContentControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=ContentControl}}"
                 Text="{Binding Words, FallbackValue=狗空音乐，就是歌多}"
                 TextAlignment="Center"
                 TextTrimming="None"
@@ -176,7 +176,7 @@
             <TextBlock
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=Border}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ContentControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 Text="{Binding Words}"
                 TextAlignment="Center"
                 TextTrimming="None"
@@ -189,8 +189,8 @@
                 </TextBlock.LayoutTransform>
                 <TextBlock.Foreground>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=Border}}" />
-                        <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=Border}}" />
+                        <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
+                        <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
                     </LinearGradientBrush>
                 </TextBlock.Foreground>
                 <TextBlock.Width>
@@ -202,7 +202,7 @@
                         <Binding
                             Mode="OneWay"
                             Path="DataContext.CurrentMedia.WordProgress"
-                            RelativeSource="{RelativeSource AncestorType=Border}" />
+                            RelativeSource="{RelativeSource AncestorType=ContentControl}" />
 
                         <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
                     </MultiBinding>

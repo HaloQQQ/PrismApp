@@ -7,7 +7,7 @@ namespace MusicPlayerModule.ViewModels
 {
     internal class PlayingMusicViewModel : MediaBaseViewModel
     {
-        public PlayingMusicViewModel(MusicModel music, SettingModel musicModel)
+        public PlayingMusicViewModel(MusicModel music, SettingModel lyricSetting)
         {
             Music = music.AssertNotNull(nameof(MusicModel));
 
@@ -16,11 +16,11 @@ namespace MusicPlayerModule.ViewModels
             this.Name = music.Name;
             this.FilePath = music.FilePath;
 
-            this._musicModel = musicModel;
+            this._lyricSetting = lyricSetting;
         }
 
 
-        private SettingModel _musicModel;
+        private SettingModel _lyricSetting;
         public MusicModel Music { get; private set; }
 
         #region 当前歌曲进度相关
@@ -114,7 +114,7 @@ namespace MusicPlayerModule.ViewModels
                 return false;
             }
 
-            LoadLyricToMusicModel.LoadLyricAsync(_musicModel.Value, this.Music);
+            LoadLyricToMusicModel.LoadLyricAsync(_lyricSetting.Value, this.Music);
 
             var lyric = this.Music.Lyric;
 

@@ -153,15 +153,13 @@
 
     <!--  EmptyImageDataTemplate  -->
     <DataTemplate x:Key="EmptyImageDataTemplate" DataType="viewModels:MyImage">
-        <Border MinWidth="98">
-            <TextBlock
-                Background="{DynamicResource TextBlock.Background}"
-                FontSize="50"
-                FontWeight="Bold"
-                Foreground="{DynamicResource TextBlock.Foreground}"
-                Style="{StaticResource IconText}"
-                Text="&#xe622;" />
-        </Border>
+        <TextBlock
+            Background="{DynamicResource TextBlock.Background}"
+            FontSize="50"
+            FontWeight="Bold"
+            Foreground="{DynamicResource TextBlock.Foreground}"
+            Style="{StaticResource IconText}"
+            Text="&#xe622;" />
     </DataTemplate>
 
     <DataTemplate x:Key="ProcessDataTemplate" DataType="models:ProcessContext">

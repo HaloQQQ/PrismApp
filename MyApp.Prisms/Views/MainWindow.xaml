@@ -20,7 +20,7 @@
                 <ResourceDictionary Source="pack://application:,,,/IceTea.Wpf.Core;component/Resources/TabControl.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <converters:TabItemHeaderToTitleConverter x:Key="TabItemHeaderToTitleConverter" />
+            <converters:StringToTabItemHeaderConverter x:Key="StringToTabItemHeaderConverter" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -49,7 +49,7 @@
                     DockPanel.Dock="Bottom"
                     ItemContainerStyle="{StaticResource TabItem_Transparent}"
                     MyAttachProperty.IsCollapsed="{Binding IsTitleBarHidden}"
-                    SelectedItem="{Binding Title, Mode=OneWayToSource, Converter={StaticResource TabItemHeaderToTitleConverter}}">
+                    SelectedItem="{Binding Title, Mode=OneWayToSource, Converter={StaticResource StringToTabItemHeaderConverter}}">
                     <TabItem Header="通讯工具">
                         <views:CommunicationView />
                     </TabItem>

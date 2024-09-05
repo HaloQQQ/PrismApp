@@ -197,7 +197,7 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
-                var path = settingManager[CustomStatics.EnumSettings.Music.ToString()].Value;
+                var path = settingManager[CustomStatics.MUSIC].Value;
 
                 var selectedPath = CommonCoreUtils.OpenFolderDialog(path);
 
@@ -217,7 +217,7 @@ namespace MusicPlayerModule.ViewModels
 
             this.AddMusicDirCommand = new DelegateCommand(() =>
             {
-                var path = settingManager[CustomStatics.EnumSettings.Music.ToString()].Value;
+                var path = settingManager[CustomStatics.MUSIC].Value;
 
                 var selectedPath = CommonCoreUtils.OpenFolderDialog(path);
 
@@ -240,7 +240,7 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
-                var path = settingManager[CustomStatics.EnumSettings.Music.ToString()].Value;
+                var path = settingManager[CustomStatics.MUSIC].Value;
                 var selectedPath = CommonCoreUtils.OpenFolderDialog(path);
 
                 if (!selectedPath.IsNullOrEmpty())

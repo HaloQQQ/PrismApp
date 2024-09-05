@@ -1208,8 +1208,7 @@
                         ItemsSource="{Binding CurrentMedia.Music.Lyric.Lines}"
                         OpacityMask="{StaticResource GradientOpacityMask}"
                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                        SelectionChanged="LyricList_SelectionChanged"
-                        Visibility="Visible">
+                        SelectionChanged="LyricList_SelectionChanged">
                         <ListBox.ItemContainerStyle>
                             <Style BasedOn="{StaticResource LyricListBoxItem}" TargetType="ListBoxItem">
                                 <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />

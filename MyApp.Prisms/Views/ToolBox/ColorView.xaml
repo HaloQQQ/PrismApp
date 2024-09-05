@@ -13,8 +13,11 @@
         </Style>
     </UserControl.Resources>
 
-    <StackPanel HorizontalAlignment="Center">
-        <Grid Height="100" HorizontalAlignment="Center">
+    <DockPanel HorizontalAlignment="Center">
+        <Grid
+            Height="100"
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="350" />
                 <ColumnDefinition Width="100" />
@@ -87,44 +90,41 @@
 
         </Grid>
 
-        <ScrollViewer>
-            <ListBox
-                MaxHeight="400"
-                ItemContainerStyle="{StaticResource ListBoxItem_General}"
-                ItemsSource="{Binding Colors}"
-                VirtualizingPanel.IsVirtualizing="True">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingWrapPanel
-                            ChildHeight="40"
-                            ChildWidth="80"
-                            ScrollOffset="40" />
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
+        <ListBox
+            ItemContainerStyle="{StaticResource ListBoxItem_General}"
+            ItemsSource="{Binding Colors}"
+            VirtualizingPanel.IsVirtualizing="True">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingWrapPanel
+                        ChildHeight="40"
+                        ChildWidth="80"
+                        ScrollOffset="40" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type toolBox:ColorModel}">
-                        <Border
-                            Width="80"
-                            Height="40"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Background="{Binding Background}">
-                            <Border.ToolTip>
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Foreground="{Binding Foreground}"
-                                    Text="{Binding ColorCode}" />
-                            </Border.ToolTip>
-                            <TextBox
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type toolBox:ColorModel}">
+                    <Border
+                        Width="80"
+                        Height="40"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="{Binding Background}">
+                        <Border.ToolTip>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
                                 Foreground="{Binding Foreground}"
-                                Style="{StaticResource CopyAsTextBlock}"
-                                Text="{Binding ColorCode, Mode=OneTime}" />
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </ScrollViewer>
-    </StackPanel>
+                                Text="{Binding ColorCode}" />
+                        </Border.ToolTip>
+                        <TextBox
+                            Foreground="{Binding Foreground}"
+                            Style="{StaticResource CopyAsTextBlock}"
+                            Text="{Binding ColorCode, Mode=OneTime}" />
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </DockPanel>
 </UserControl>
