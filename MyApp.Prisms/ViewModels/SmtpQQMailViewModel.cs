@@ -1,7 +1,8 @@
 ﻿using IceTea.Atom.Contracts;
-using IceTea.Atom.Mails;
+using IceTea.Core.Utils.Mails;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using Prism.Events;
+using System;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -9,13 +10,17 @@ namespace MyApp.Prisms.ViewModels
     {
         public SmtpQQMailViewModel(IEventAggregator eventAggregator, IConfigManager configManager, ISettingManager settingManager) : base(eventAggregator, configManager, settingManager)
         {
+            this.TargetFolders = Enum.GetNames<EnumQQMailOtherFolder>();
         }
 
         public override string MailSuffix => "@qq.com";
 
-        protected override void InitEmailTransfer()
+        protected override void InitEmailManager()
         {
-            base._emailTransfer = new SmtpMailQQManager(null);
+            var manager = new SmtpIMAPQQManager();
+
+            base._emailManager = manager;
+            base._imapClient = manager;
         }
     }
 }

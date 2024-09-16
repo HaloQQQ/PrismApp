@@ -13,7 +13,7 @@ namespace MusicPlayerModule.ViewModels
             Video = video.AssertNotNull(nameof(VideoModelAndGuid));
             _dto = dto.AssertNotNull(nameof(VideoModel));
 
-            this.Name = video.Name;
+            this.MediaName = video.Name;
             this.FilePath = video.FilePath;
         }
 

@@ -1,4 +1,4 @@
-﻿using MusicPlayerModule.ViewModels;
+﻿using MusicPlayerModule.Models;
 using Prism.Events;
 
 namespace MusicPlayerModule.MsgEvents

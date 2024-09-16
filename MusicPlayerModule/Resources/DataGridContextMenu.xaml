@@ -262,7 +262,7 @@
                                     <Setter Property="Visibility" Value="Collapsed" />
 
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding DataContext.IsBatchSelect, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="True">
+                                        <DataTrigger Binding="{Binding DataContext.CanBatchSelect, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="True">
                                             <Setter Property="Visibility" Value="Visible" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -279,7 +279,7 @@
                                     <Setter Property="Visibility" Value="Visible" />
 
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding DataContext.IsBatchSelect, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="True">
+                                        <DataTrigger Binding="{Binding DataContext.CanBatchSelect, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="True">
                                             <Setter Property="Visibility" Value="Collapsed" />
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -295,7 +295,7 @@
     <DataTemplate x:Key="FavoriteDataGridFirstColumnCellTemplate">
         <DockPanel Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=DataGridCell}}" HorizontalAlignment="Stretch">
             <StackPanel
-                Margin="0,0,10,0"
+                Margin="0,0,15,0"
                 DockPanel.Dock="Right"
                 Orientation="Horizontal">
                 <Button
@@ -435,7 +435,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="PlayingDataGridFirstColumnCellTemplate">
-        <DockPanel Width="290">
+        <DockPanel Width="280">
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                 <Button Command="{Binding DataContext.PlayPlayingCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}">
                     <Button.Style>

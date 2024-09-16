@@ -69,8 +69,8 @@ namespace MyApp.Prisms.Helper
             internal const string Prev = "上一个";
             internal const string Next = "下一个";
 
-            internal const string Ahead = "快进";
-            internal const string Delay = "快退";
+            internal const string FastForward = "快进";
+            internal const string Rewind = "快退";
 
             internal const string IncreaseVolume = "增大音量";
             internal const string DecreaseVolume = "降低音量";
@@ -103,8 +103,8 @@ namespace MyApp.Prisms.Helper
             new GlobalHotKeyInfo(GlobalHotKeysConst.Prev, CustomModifierKeys.Alt, CustomKeys.Left),
             new GlobalHotKeyInfo(GlobalHotKeysConst.Next, CustomModifierKeys.Alt, CustomKeys.Right),
 
-            new GlobalHotKeyInfo(GlobalHotKeysConst.Delay, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Left),
-            new GlobalHotKeyInfo(GlobalHotKeysConst.Ahead, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Right),
+            new GlobalHotKeyInfo(GlobalHotKeysConst.Rewind, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Left),
+            new GlobalHotKeyInfo(GlobalHotKeysConst.FastForward, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Right),
 
             new GlobalHotKeyInfo(GlobalHotKeysConst.IncreaseVolume, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Up),
             new GlobalHotKeyInfo(GlobalHotKeysConst.DecreaseVolume, CustomModifierKeys.Control|CustomModifierKeys.Shift, CustomKeys.Down),

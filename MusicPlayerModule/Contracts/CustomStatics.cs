@@ -1,6 +1,4 @@
-﻿using MusicPlayerModule.Models.Common;
-
-namespace MusicPlayerModule.Common
+﻿namespace MusicPlayerModule.Contracts
 {
     public static class CustomStatics
     {
@@ -24,7 +22,7 @@ namespace MusicPlayerModule.Common
         public static string MUSIC = EnumSettings.Music.ToString();
         public static string LYRIC = EnumSettings.Lyric.ToString();
 
-        internal static readonly string[] MusicPlayOrder_ConfigKey = new[] { MUSIC, "MusicPlayOrder" };
+        //internal static readonly string[] MusicPlayOrder_ConfigKey = new[] { MUSIC, "MusicPlayOrder" };
         public static readonly string[] LastMusicDir_ConfigKey = new[] { MUSIC, "LastMusicDir" };
         public static readonly string[] LastLyricDir_ConfigKey = new[] { MUSIC, "LyricDir" };
 
@@ -45,9 +43,9 @@ namespace MusicPlayerModule.Common
 
         #region Video
         public static string VIDEO = EnumSettings.Video.ToString();
-        internal const string VideoABPoints = "VideoABPoints";
+        //internal const string VideoABPoints = "VideoABPoints";
 
-        internal static readonly string[] VideoPlayOrder_ConfigKey = new[] { VIDEO, "VideoPlayOrder" };
+        //internal static readonly string[] VideoPlayOrder_ConfigKey = new[] { VIDEO, "VideoPlayOrder" };
         internal static readonly string[] VideoStretch_ConfigKey = new[] { VIDEO, "VideoStretch" };
 
         public static readonly string[] LastVideoDir_ConfigKey = new[] { VIDEO, "LastVideoDir" };

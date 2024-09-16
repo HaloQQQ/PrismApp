@@ -67,28 +67,28 @@ namespace MyApp.Prisms.ViewModels
 
         private void LoadConfig(IConfigManager config)
         {
-            this.OnlyOneProcess = config.IsTrue(CustomConstants.ONLY_ONE_PROCESS);
-            this.AutoStart = config.IsTrue(CustomConstants.AUTO_START);
-            this.BackgroundSwitch = config.IsTrue(CustomConstants.BACKGROUND_SWITCH);
+            this.OnlyOneProcess = config.IsTrue(new string[] { CustomConstants.ONLY_ONE_PROCESS });
+            this.AutoStart = config.IsTrue(new string[] { CustomConstants.AUTO_START });
+            this.BackgroundSwitch = config.IsTrue(new string[] { CustomConstants.BACKGROUND_SWITCH });
 
-            this.DefaultThemeURI = config.ReadConfigNode(CustomConstants.DefaultThemeURI);
+            this.DefaultThemeURI = config.ReadConfigNode(new string[] { CustomConstants.DefaultThemeURI });
             this.LoadDefaultTheme();
 
-            this.SetBackgroundImage(config.ReadConfigNode(CustomConstants.BkgrdUri));
-            this.IsMusicPlayer = config.IsTrue(CustomConstants.IsMusicPlayer);
-            this.IsVideoPlayer = config.IsTrue(CustomConstants.IsVideoPlayer);
+            this.SetBackgroundImage(config.ReadConfigNode(new string[] { CustomConstants.BkgrdUri }));
+            this.IsMusicPlayer = config.IsTrue(new string[] { CustomConstants.IsMusicPlayer });
+            this.IsVideoPlayer = config.IsTrue(new string[] { CustomConstants.IsVideoPlayer });
 
             config.SetConfig += config =>
             {
-                config.WriteConfigNode<bool>(this.OnlyOneProcess, CustomConstants.ONLY_ONE_PROCESS);
-                config.WriteConfigNode<bool>(this.AutoStart, CustomConstants.AUTO_START);
-                config.WriteConfigNode<bool>(this.BackgroundSwitch, CustomConstants.BACKGROUND_SWITCH);
+                config.WriteConfigNode<bool>(this.OnlyOneProcess, new string[] { CustomConstants.ONLY_ONE_PROCESS });
+                config.WriteConfigNode<bool>(this.AutoStart, new string[] { CustomConstants.AUTO_START });
+                config.WriteConfigNode<bool>(this.BackgroundSwitch, new string[] { CustomConstants.BACKGROUND_SWITCH });
 
-                config.WriteConfigNode(this.DefaultThemeURI, CustomConstants.DefaultThemeURI);
-                config.WriteConfigNode(this.CurrentBkGrd, CustomConstants.BkgrdUri);
+                config.WriteConfigNode(this.DefaultThemeURI, new string[] { CustomConstants.DefaultThemeURI });
+                config.WriteConfigNode(this.CurrentBkGrd, new string[] { CustomConstants.BkgrdUri });
 
-                config.WriteConfigNode(this.IsMusicPlayer, CustomConstants.IsMusicPlayer);
-                config.WriteConfigNode(this.IsVideoPlayer, CustomConstants.IsVideoPlayer);
+                config.WriteConfigNode(this.IsMusicPlayer, new string[] { CustomConstants.IsMusicPlayer });
+                config.WriteConfigNode(this.IsVideoPlayer, new string[] { CustomConstants.IsVideoPlayer });
 
                 AppUtils.AutoStartWithDirectory(this.AutoStart);
             };

@@ -1,6 +1,6 @@
 ﻿using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
-using MusicPlayerModule.Common;
+using MusicPlayerModule.Contracts;
 using MusicPlayerModule.Converters;
 using System.Windows;
 using System.Windows.Data;

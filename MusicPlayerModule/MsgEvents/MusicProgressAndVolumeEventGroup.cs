@@ -2,9 +2,9 @@
 
 namespace MusicPlayerModule.MsgEvents
 {
-    public class AheadEvent : PubSubEvent { }
+    public class FastForwardEvent : PubSubEvent { }
 
-    public class DelayEvent : PubSubEvent { }
+    public class RewindEvent : PubSubEvent { }
 
     public class IncreaseVolumeEvent : PubSubEvent { }
 

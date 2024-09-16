@@ -27,7 +27,7 @@ namespace MyApp.Prisms.ViewModels.ToolBox
             {
                 if (SetProperty<string>(ref _contrastColorCode, value))
                 {
-                    CallModel(nameof(ContrastColor));
+                    RaisePropertyChanged(nameof(ContrastColor));
                 }
             }
         }
@@ -70,7 +70,7 @@ namespace MyApp.Prisms.ViewModels.ToolBox
                 this.BInt = byte.Parse(data.Substring(6, 2), System.Globalization.NumberStyles.HexNumber).ToString();
 
                 SetProperty<string>(ref _colorCode, code);
-                CallModel(nameof(Background));
+                RaisePropertyChanged(nameof(Background));
 
                 string result = string.Empty;
                 for (int i = 1; i < code.Length; i += 2)
@@ -110,8 +110,8 @@ namespace MyApp.Prisms.ViewModels.ToolBox
                 SetProperty<byte>(ref _aInt, (byte)v);
 
                 this._colorCode = this.ArgbHex;
-                CallModel(nameof(ColorCode));
-                CallModel(nameof(Background));
+                RaisePropertyChanged(nameof(ColorCode));
+                RaisePropertyChanged(nameof(Background));
             }
         }
 
@@ -127,8 +127,8 @@ namespace MyApp.Prisms.ViewModels.ToolBox
                 SetProperty<byte>(ref _rInt, (byte)v);
 
                 this._colorCode = this.ArgbHex;
-                CallModel(nameof(ColorCode));
-                CallModel(nameof(Background));
+                RaisePropertyChanged(nameof(ColorCode));
+                RaisePropertyChanged(nameof(Background));
             }
         }
 
@@ -144,8 +144,8 @@ namespace MyApp.Prisms.ViewModels.ToolBox
                 SetProperty<byte>(ref _gInt, (byte)v);
 
                 this._colorCode = this.ArgbHex;
-                CallModel(nameof(ColorCode));
-                CallModel(nameof(Background));
+                RaisePropertyChanged(nameof(ColorCode));
+                RaisePropertyChanged(nameof(Background));
             }
         }
 
@@ -161,8 +161,8 @@ namespace MyApp.Prisms.ViewModels.ToolBox
                 SetProperty<byte>(ref _bInt, (byte)v);
 
                 this._colorCode = this.ArgbHex;
-                CallModel(nameof(ColorCode));
-                CallModel(nameof(Background));
+                RaisePropertyChanged(nameof(ColorCode));
+                RaisePropertyChanged(nameof(Background));
             }
         }
 

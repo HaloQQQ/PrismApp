@@ -1,12 +1,8 @@
-﻿using MusicPlayerModule.Common;
-using MusicPlayerModule.Models;
+﻿using MusicPlayerModule.Models;
 using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.MsgEvents.Video;
 using MusicPlayerModule.MsgEvents.Video.Dtos;
-using Prism.Commands;
 using Prism.Events;
-using System.Diagnostics;
-using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Win32;
 using IceTea.Atom.Extensions;
@@ -17,13 +13,20 @@ using IceTea.Wpf.Atom.Utils;
 using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Utils;
 using MusicPlayerModule.ViewModels.Base;
+using MusicPlayerModule.Contracts;
 
 namespace MusicPlayerModule.ViewModels
 {
     internal class VideoPlayerViewModel : MediaPlayerViewModel
     {
         protected override string MediaType => "视频";
-        protected override string[] MediaSettingNode => ["HotKeys", "App", "Video"];
+        protected override string[] MediaHotKey_ConfigKey => ["HotKeys", "App", "Video"];
+
+        protected override string[] MediaPlayOrder_ConfigKey => [CustomStatics.EnumSettings.Video.ToString(), "VideoPlayOrder"];
+
+        protected override string[] MediaABPoints_ConfigKey => [CustomStatics.EnumSettings.Video.ToString(), "VideoABPoints"];
+
+        private SettingModel VideoSetting => this._settingManager[CustomStatics.VIDEO];
 
         public override bool Running
         {
@@ -54,50 +57,6 @@ namespace MusicPlayerModule.ViewModels
             set { SetProperty<Stretch>(ref _stretch, value); IsEditingStretch = false; }
         }
 
-        private SettingModel VideoSetting => this._settingManager[CustomStatics.VIDEO];
-
-        public override MediaBaseViewModel CurrentMedia
-        {
-            get => _currentMedia;
-            set
-            {
-                if (SetProperty<MediaBaseViewModel>(ref _currentMedia, value) && value != null)
-                {
-                    foreach (var item in this.DisplayPlaying.Where(m => m.IsPlayingMedia))
-                    {
-                        item.IsPlayingMedia = false;
-                    }
-
-                    _currentMedia.IsPlayingMedia = true;
-
-                    if (!_currentMedia.LoadedABPoint)
-                    {
-                        if (int.TryParse(
-                                this._config.ReadConfigNode(new[]
-                                {
-                                        CustomStatics.VIDEO, CustomStatics.VideoABPoints, _currentMedia.Name,
-                                        nameof(_currentMedia.PointAMills)
-                                }), out int mills))
-                        {
-                            _currentMedia.CurrentMills = mills;
-                            _currentMedia.SetPointA(mills);
-                        }
-
-                        if (int.TryParse(
-                                this._config.ReadConfigNode(new[]
-                                {
-                                        CustomStatics.VIDEO, CustomStatics.VideoABPoints, _currentMedia.Name,
-                                        nameof(_currentMedia.PointBMills)
-                                }), out mills))
-                        {
-                            _currentMedia.SetPointB(mills);
-                        }
-
-                        _currentMedia.LoadedABPoint = true;
-                    }
-                }
-            }
-        }
 
         public MediaOperationViewModel MediaOperationViewModel { get; } = new MediaOperationViewModel();
 
@@ -110,27 +69,61 @@ namespace MusicPlayerModule.ViewModels
 
         public Guid Identity { get; private set; } = Guid.NewGuid();
 
-        private void RefreshPlayingIndex()
+        private void TryRefreshLastVideoDir(string dir)
         {
-            var index = 1;
-            foreach (var item in this.DisplayPlaying)
+            AppUtils.AssertDataValidation(dir.IsDirectoryPath(), $"{dir}必须为存在的目录");
+
+            this.VideoSetting.Value = dir;
+        }
+
+        private void LoadVideo(IEnumerable<string> filePaths)
+        {
+            if (filePaths.IsNullOrEmpty())
             {
-                item.Index = index++;
+                return;
+            }
+
+            List<string> list = TryGetNewFiles(filePaths).ToList();
+
+            if (list.Count == 0)
+            {
+                return;
+            }
+
+            foreach (var filePath in list)
+            {
+                this.DisplayPlaying.Add(new PlayingVideoViewModel(this._dto, new VideoModel(filePath)));
+            }
+
+            this.RefreshPlayingIndex();
+
+            if (this.CurrentMedia == null)
+            {
+                this.SetAndPlay(this.DisplayPlaying.FirstOrDefault());
+            }
+
+            IEnumerable<string> TryGetNewFiles(IEnumerable<string> filePaths)
+            {
+                foreach (var filePath in filePaths)
+                {
+                    if (!this.DisplayPlaying.Any(item => item.FilePath == filePath))
+                    {
+                        yield return filePath;
+                    }
+                }
             }
         }
 
-        private void SubscribeEvents()
+        private VideoModelAndGuid _dto;
+
+        public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager, ISettingManager<SettingModel> settingMnager)
+            : base(eventAggregator, config, appConfigFileHotKeyManager, settingMnager)
         {
-            PlayingVideoViewModel.ToNextVideo += dto =>
-            {
-                if (dto.Guid == this.Identity)
-                {
-                    this.NextMedia(dto.Video);
-                }
-            };
+            this._dto = new VideoModelAndGuid(this.Identity);
         }
 
-        private void AddVideoFromFileDialog()
+        #region overrides
+        protected override void AddMediaFromFileDialog_CommandExecute()
         {
             var path = this.VideoSetting.Value;
 
@@ -145,7 +138,7 @@ namespace MusicPlayerModule.ViewModels
             }
         }
 
-        private void AddVideoFromFolderDialog()
+        protected override void AddMediaFromFolderDialog_CommandExecute()
         {
             var path = this.VideoSetting.Value;
 
@@ -160,139 +153,43 @@ namespace MusicPlayerModule.ViewModels
             }
         }
 
-        private void TryRefreshLastVideoDir(string dir)
+        protected override void SubscribeEvents(IEventAggregator eventAggregator)
         {
-            AppUtils.AssertDataValidation(dir.IsDirectoryPath(), $"{dir}必须为存在的目录");
+            base.SubscribeEvents(eventAggregator);
 
-            this.VideoSetting.Value = dir;
-        }
-
-        private IEnumerable<string> GetNewFiles(IEnumerable<string> filePaths)
-        {
-            foreach (var filePath in filePaths)
+            PlayingVideoViewModel.ToNextVideo += dto =>
             {
-                if (!this.DisplayPlaying.Any(item => item.FilePath == filePath))
+                if (dto.Guid == this.Identity)
                 {
-                    yield return filePath;
+                    this.NextMedia_CommandExecute(dto.Video);
                 }
-            }
-        }
-
-        private void LoadVideo(IEnumerable<string> filePaths)
-        {
-            if (filePaths == null || !filePaths.Any())
-            {
-                return;
-            }
-
-            List<string> list = this.GetNewFiles(filePaths).ToList();
-
-            if (list.Count == 0)
-            {
-                return;
-            }
-
-            foreach (var filePath in list)
-            {
-                this.DisplayPlaying.Add(new PlayingVideoViewModel(this._dto, new VideoModel(filePath)));
-            }
-
-            this.RefreshPlayingIndex();
-
-            if (this.CurrentMedia is null)
-            {
-                this.SetAndPlay(this.DisplayPlaying.FirstOrDefault());
-            }
-        }
-
-        private VideoModelAndGuid _dto;
-        private readonly IConfigManager _config;
-
-        public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager, ISettingManager<SettingModel> settingMnager)
-            : base(eventAggregator, config, appConfigFileHotKeyManager, settingMnager)
-        {
-            this._config = config.AssertNotNull(nameof(IConfigManager));
-
-            this._dto = new VideoModelAndGuid(this.Identity);
-
-            this.SubscribeEvents();
-        }
-
-        #region overrides
-        protected override void InitCommands()
-        {
-            base.InitCommands();
-
-            this.OpenInExploreCommand = new DelegateCommand<string>(videoDir =>
-            {
-                if (videoDir == null)
-                {
-                    return;
-                }
-
-                Process.Start("explorer", videoDir);
-            });
-
-            this.DeletePlayingCommand = new DelegateCommand<PlayingVideoViewModel>(video =>
-            {
-                if (video == null)
-                {
-                    return;
-                }
-
-                if (video == this.CurrentMedia)
-                {
-                    if (this.DisplayPlaying.Count > 1)
-                    {
-                        this.NextMedia(video);
-                    }
-                    else
-                    {
-                        this.CurrentMedia = null;
-                        this.Running = false;
-                    }
-                }
-
-                this.DisplayPlaying.Remove(video);
-
-                this.RefreshPlayingIndex();
-            });
-
-            this.AddFilesCommand = new DelegateCommand(AddVideoFromFileDialog);
-
-            this.AddFolderCommand = new DelegateCommand(AddVideoFromFolderDialog);
+            };
         }
 
         protected override void LoadConfig(IConfigManager config)
         {
-            var playOrder = config.ReadConfigNode(CustomStatics.VideoPlayOrder_ConfigKey);
-            this.CurrentPlayOrder =
-                CustomStatics.MediaPlayOrderList.FirstOrDefault(item => item.Description == playOrder) ??
-                CustomStatics.MediaPlayOrderList.First();
+            base.LoadConfig(config);
 
             var stretch = config.ReadConfigNode(CustomStatics.VideoStretch_ConfigKey);
-            if (!string.IsNullOrEmpty(stretch) && Enum.TryParse<Stretch>(stretch, true, out Stretch result))
+            if (Enum.TryParse<Stretch>(stretch, true, out Stretch result))
             {
                 this.Stretch = result;
             }
 
             config.SetConfig += config =>
             {
-                config.WriteConfigNode(this.CurrentPlayOrder.Description, CustomStatics.VideoPlayOrder_ConfigKey);
                 config.WriteConfigNode(this.Stretch, CustomStatics.VideoStretch_ConfigKey);
             };
+        }
 
-            config.PostSetConfig += config =>
-            {
-                foreach (var item in this.DisplayPlaying)
-                {
-                    config.WriteConfigNode(item.Name, new[] { CustomStatics.VIDEO, CustomStatics.VideoABPoints, item.Name });
-                    config.WriteConfigNode(item.PointAMills,
-                        new[] { CustomStatics.VIDEO, CustomStatics.VideoABPoints, item.Name, nameof(item.PointAMills) });
-                    config.WriteConfigNode(item.PointBMills,
-                        new[] { CustomStatics.VIDEO, CustomStatics.VideoABPoints, item.Name, nameof(item.PointBMills) });
-                }
-            };
+        protected override void RaiseContinueMediaEvent()
+        {
+            _eventAggregator.GetEvent<ContinueCurrentVideo>().Publish(this.Identity);
+        }
+
+        protected override void RaisePauseMediaEvent()
+        {
+            _eventAggregator.GetEvent<PauseCurrentVideo>().Publish(this.Identity);
         }
 
         protected override void RaiseResetMediaEvent(IEventAggregator eventAggregator)
@@ -305,17 +202,17 @@ namespace MusicPlayerModule.ViewModels
             eventAggregator.GetEvent<ResetPlayerAndPlayVideoEvent>().Publish(this.Identity);
         }
 
-        protected override void PlayPlaying(MediaBaseViewModel currentMedia)
+        protected override void PlayPlaying_CommandExecute(MediaBaseViewModel currentMedia)
         {
             if (currentMedia == this.CurrentMedia)
             {
                 if (this.Running = !this.Running)
                 {
-                    this._eventAggregator.GetEvent<ContinueCurrentVideo>().Publish(this.Identity);
+                    this.RaiseContinueMediaEvent();
                 }
                 else
                 {
-                    this._eventAggregator.GetEvent<PauseCurrentVideo>().Publish(this.Identity);
+                    this.RaisePauseMediaEvent();
                     this.RefreshMediaOperation(OperationType.Pause);
                 }
             }
@@ -325,53 +222,19 @@ namespace MusicPlayerModule.ViewModels
             }
         }
 
-        protected override void Rewind()
+        protected override void Rewind_CommandExecute()
         {
-            base.Rewind();
+            base.Rewind_CommandExecute();
 
             this.RefreshMediaOperation(OperationType.Rewind);
         }
 
-        protected override void FastForward()
+        protected override void FastForward_CommandExecute()
         {
-            base.FastForward();
+            base.FastForward_CommandExecute();
 
             this.RefreshMediaOperation(OperationType.FastForward);
         }
         #endregion
-
-        #region Commands
-
-        public ICommand OpenInExploreCommand { get; private set; }
-
-        public ICommand DeletePlayingCommand { get; private set; }
-
-        /// <summary>
-        /// 从本地添加音乐到列表
-        /// </summary>
-        public ICommand AddFilesCommand { get; private set; }
-
-        /// <summary>
-        /// 从文件夹添加音乐到列表
-        /// </summary>
-        public ICommand AddFolderCommand { get; private set; }
-        #endregion
-
-        public void Dispose()
-        {
-            foreach (var item in this.DisplayPlaying)
-            {
-                item.Dispose();
-            }
-
-            this.OpenInExploreCommand = null;
-
-            this.PlayPlayingCommand = null;
-
-            this.AddFilesCommand = null;
-            this.AddFolderCommand = null;
-
-            base.Dispose();
-        }
     }
 }

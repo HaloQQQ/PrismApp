@@ -2,7 +2,7 @@
 
 namespace MusicPlayerModule.MsgEvents
 {
-    public class ToggleLyricDesktopEvent : PubSubEvent
+    public class GoBackMediaPointAEvent : PubSubEvent
     {
     }
 }

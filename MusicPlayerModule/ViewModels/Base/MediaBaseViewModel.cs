@@ -15,7 +15,7 @@ namespace MusicPlayerModule.ViewModels.Base
 
         public string IndexString => this._index.ToString("000");
 
-        public string Name { get; protected set; }
+        public string MediaName { get; protected set; }
         public string FilePath { get; protected set; }
 
         public virtual int MillsStep => 1000;
@@ -78,7 +78,10 @@ namespace MusicPlayerModule.ViewModels.Base
 
         public void GoToPointA()
         {
-            this.CurrentMills = this.PointAMills;
+            if (PointAMills != 0)
+            {
+                this.CurrentMills = this.PointAMills;
+            }
         }
 
         private int _pointBMills;
@@ -112,7 +115,6 @@ namespace MusicPlayerModule.ViewModels.Base
             this.PointAMills = 0;
             this.PointBMills = 0;
         }
-
         #endregion
 
         protected string GetFormatTime(int mills)

@@ -27,6 +27,7 @@ using IceTea.Wpf.Atom.Utils;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using MusicPlayerModule.Models;
+using IceTea.Atom.Extensions;
 
 namespace MyApp.Prisms
 {
@@ -52,6 +53,11 @@ namespace MyApp.Prisms
             while ((exception = exception.InnerException) != null)
             {
                 list.Add(exception.Message);
+
+                if (!exception.StackTrace.IsNullOrBlank())
+                {
+                    list.Add(exception.StackTrace);
+                }
             }
 
             return list;
@@ -87,7 +93,7 @@ namespace MyApp.Prisms
 
             string processName = Process.GetCurrentProcess().ProcessName;
 
-            if (config.IsTrue(CustomConstants.ONLY_ONE_PROCESS))
+            if (config.IsTrue(new string[] { CustomConstants.ONLY_ONE_PROCESS }))
             {
                 foreach (var process in Process.GetProcessesByName(processName))
                 {
@@ -156,14 +162,14 @@ namespace MyApp.Prisms
         {
             var config = Container.Resolve<IConfigManager>();
 
-            if (config.IsTrue(CustomConstants.IsMusicPlayer))
+            if (config.IsTrue(new[] { CustomConstants.IsMusicPlayer }))
             {
                 ViewModelLocationProvider.Register<MusicWindow, SoftwareViewModel>();
 
                 return Container.Resolve<MusicWindow>();
             }
 
-            if (config.IsTrue(CustomConstants.IsVideoPlayer))
+            if (config.IsTrue(new[] { CustomConstants.IsVideoPlayer }))
             {
                 ViewModelLocationProvider.Register<VideoWindow, SoftwareViewModel>();
 
@@ -206,11 +212,11 @@ namespace MyApp.Prisms
                                     this.Container.Resolve<IEventAggregator>().GetEvent<NextMusicEvent>().Publish();
                                     break;
 
-                                case CustomConstants.GlobalHotKeysConst.Ahead:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<AheadEvent>().Publish();
+                                case CustomConstants.GlobalHotKeysConst.FastForward:
+                                    this.Container.Resolve<IEventAggregator>().GetEvent<FastForwardEvent>().Publish();
                                     break;
-                                case CustomConstants.GlobalHotKeysConst.Delay:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<DelayEvent>().Publish();
+                                case CustomConstants.GlobalHotKeysConst.Rewind:
+                                    this.Container.Resolve<IEventAggregator>().GetEvent<RewindEvent>().Publish();
                                     break;
 
                                 case CustomConstants.GlobalHotKeysConst.IncreaseVolume:
@@ -227,7 +233,7 @@ namespace MyApp.Prisms
                                     this.Container.Resolve<IEventAggregator>().GetEvent<UpdateScreenBrightEvent>().Publish(-5);
                                     break;
                                 case CustomConstants.GlobalHotKeysConst.MusicLyricDesktop:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<ToggleLyricDesktopEvent>().Publish();
+                                    this.Container.Resolve<IEventAggregator>().GetEvent<ToggleDesktopLyricEvent>().Publish();
                                     break;
                             }
                         }

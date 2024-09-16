@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace MusicPlayerModule.Models.Common
+namespace MusicPlayerModule.Contracts
 {
     public class MediaPlayOrderModel
     {

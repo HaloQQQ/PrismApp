@@ -7,18 +7,18 @@ namespace MusicPlayerModule.Utils
 {
     internal class LoadLyricToMusicModel
     {
-        public static async Task LoadLyricAsync(string lyricDir, IEnumerable<MusicModel> musics)
+        public static async Task TryLoadLyricAsync(string lyricDir, IEnumerable<MusicModel> musics)
         {
             await Parallel.ForEachAsync(musics, async (music, token) =>
             {
                 if (!token.IsCancellationRequested)
                 {
-                    await LoadLyricAsync(lyricDir, music);
+                    await TryLoadLyricAsync(lyricDir, music);
                 }
             });
         }
 
-        public static async Task LoadLyricAsync(string lyricDir, MusicModel music)
+        public static async Task TryLoadLyricAsync(string lyricDir, MusicModel music)
         {
             Debug.Assert(music != null, "音乐实体不存在");
 
@@ -29,55 +29,44 @@ namespace MusicPlayerModule.Utils
 
             music.IsLoadingLyric = true;
 
-            await Task.Run(() =>
+            IEnumerable<string> paths = await TryGetLyricPathsAsync(lyricDir);
+
+            string? lyricFilePath = paths.FirstOrDefault(path => path.Contains(music.Name) &&
+                                                            (
+                                                                path.Contains(music.Singer)
+                                                                || path.Contains(
+                                                                    music.Singer.Replace(" ", string.Empty))
+                                                            )
+                                                        );
+
+            if (!(music.IsPureMusic = lyricFilePath == null))
             {
-                IEnumerable<string> paths = GetLyricPaths(lyricDir);
+                music.Lyric = KRCLyrics.LoadFromFile(lyricFilePath);
+            }
 
-                string? lyricFilePath = paths.FirstOrDefault(path => path.Contains(music.Name) &&
-                                                                (
-                                                                    path.Contains(music.Singer)
-                                                                    || path.Contains(
-                                                                        music.Singer.Replace(" ", string.Empty))
-                                                                )
-                                                            );
-
-                if (!(music.IsPureMusic = lyricFilePath == null))
-                {
-                    music.Lyric = KRCLyrics.LoadFromFile(lyricFilePath);
-                }
-            })
-            .ContinueWith(task => music.IsLoadingLyric = false)
-            .ConfigureAwait(false);
+            music.IsLoadingLyric = false;
         }
 
-        public static string TryGetLyricDir(string originDir)
+        public static async Task<string> TryGetLyricDir(string originDir)
         {
-            var lyricFiles = GetLyricPaths(originDir);
+            var lyricFiles = await TryGetLyricPathsAsync(originDir);
 
             if (!lyricFiles.Any())
             {
-                var rootPath = Path.GetPathRoot(originDir);
-                var currentPath = Path.GetFullPath(originDir);
-
-                if (rootPath.EqualsIgnoreCase(currentPath))
-                {
-                    return string.Empty;
-                }
-
-                return TryGetLyricDir(originDir.GetParentPath());
+                return string.Empty;
             }
 
             return lyricFiles.First().GetParentPath();
         }
 
-        public static IEnumerable<string> GetLyricPaths(string directoryPath)
-                => GetLyricPaths(directoryPath, str => str.EndsWithIgnoreCase(".krc"));
+        public static async Task<IEnumerable<string>> TryGetLyricPathsAsync(string directoryPath)
+                => await TryGetLyricPathsAsync(directoryPath, str => str.EndsWithIgnoreCase(".krc"));
 
-        public static IEnumerable<string> GetLyricPaths(string directoryPath, Predicate<string> predicate)
+        public static async Task<IEnumerable<string>> TryGetLyricPathsAsync(string directoryPath, Predicate<string> predicate)
         {
             Debug.Assert(Directory.Exists(directoryPath), "目录不存在");
 
-            return directoryPath.GetFiles(predicate);
+            return await Task.FromResult(directoryPath.GetFiles(predicate));
         }
     }
 }

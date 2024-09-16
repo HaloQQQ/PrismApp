@@ -1,6 +1,4 @@
-﻿using IceTea.Atom.Mails.Contracts;
-using IceTea.Atom.Mails.Dtos;
-using Prism.Commands;
+﻿using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
@@ -10,22 +8,26 @@ using IceTea.Atom.Extensions;
 using IceTea.Atom.Contracts;
 using System.Collections.Generic;
 using PrismAppBasicLib.MsgEvents;
+using IceTea.Atom.Mails;
+using IceTea.Wpf.Atom.Utils;
+using IceTea.Core.Utils.Mails;
+using System;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {
     internal abstract class SmtpMailViewModelBase : BindableBase
     {
-        protected IEmailManager _emailTransfer;
+        protected IEmailManager _emailManager;
+        protected IMAPEmailReceiver _imapClient;
 
-        protected abstract void InitEmailTransfer();
+        /// <summary>
+        /// 初始化IEmailManager
+        /// </summary>
+        protected abstract void InitEmailManager();
 
-        protected void Init()
-        {
-            this.InitEmailTransfer();
+        public IEnumerable<string> TargetFolders { get; protected set; }
 
-            _emailTransfer.ExceptionOccured += ex => PublishMessage(ex.Message);
-            _emailTransfer.SendCompletedEventHandler += (sender, e) => { PublishMessage("发送完成"); this.Reset(); };
-        }
+        public IEnumerable<string> MessageFlags { get; }
 
         public abstract string MailSuffix { get; }
 
@@ -33,25 +35,89 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
         public SmtpMailViewModelBase(IEventAggregator eventAggregator, IConfigManager configManager, ISettingManager settingManager)
         {
-            this.Init();
             _eventAggregator = eventAggregator;
             _configManager = configManager;
             _settingManager = settingManager;
-            SendMailCommand = new DelegateCommand(() =>
-            {
-                var password = Password;
-                if (password.IsNullOrBlank())
-                {
-                    return;
-                }
 
-                _emailTransfer.SendInMailAsync(new Mail(this.FromMail, Tos, Subject, password, Body, false)
+            this.MessageFlags = Enum.GetNames<EnumSearch>();
+
+            this.InitEmail();
+
+            this.InitCommands();
+        }
+
+        protected void InitEmail()
+        {
+            this.InitEmailManager();
+
+            _emailManager.ExceptionOccured += ex => PublishMessage(ex.Message);
+            _emailManager.SendCompletedEventHandler += (sender, e) =>
+            {
+                PublishMessage("发送完成");
+
+                CommonAtomUtils.BeginInvoke(
+                () =>
                 {
-                    CCList = Ccs,
-                    BCCList = Bccs,
-                    AttachmentList = Attachments.Select(filePath => new System.Net.Mail.Attachment(filePath))
+                    this.Reset();
                 });
-            }, () => !this.From.IsNullOrBlank()
+            };
+
+            MailOutDto.SelectStatusChanged += newValue =>
+            {
+                RaisePropertyChanged(nameof(NotUse));
+
+                if (newValue != IsMailsSelectedAll)
+                {
+                    if (newValue && Mails.Any(m => !m.IsSelected))
+                    {
+                        return;
+                    }
+
+                    _isMailsSelectedAll = newValue;
+
+                    RaisePropertyChanged(nameof(IsMailsSelectedAll));
+                }
+            };
+        }
+
+        private void InitCommands()
+        {
+            SetFlagCommand = new DelegateCommand<IList<string>>(async strList =>
+            {
+                var list = this.Mails.Where(m => m.IsSelected).ToList();
+
+                if (list.Any())
+                {
+                    var flag = Enum.Parse<EnumMessageFlags>(strList[0]);
+                    var addOrRemove = bool.Parse(strList[1]);
+
+                    await _imapClient.MarkFlagsAsync(list.Select(m => m.Id.To<uint>()), flag, CurrentFolder, addOrRemove);
+
+                    if (flag != EnumMessageFlags.Deleted)
+                    {
+                        list.ForEach(m => m.IsSelected = false);
+                    }
+                    else
+                    {
+                        this.QueryMailCommand.Execute(null);
+                    }
+                }
+            }, _ => Mails.Any(m => m.IsSelected))
+               .ObservesProperty(() => NotUse);
+
+            SelectAllCommand = new DelegateCommand(() => { }, () => this.Mails.Count > 0).ObservesProperty(() => this.Mails.Count);
+
+            SendMailCommand = new DelegateCommand(async () =>
+            {
+                var dto = new MailInDto([this.FromMail], this.Tos, this.Subject, Password, this.Body, string.Empty);
+
+                this.Ccs.ForEach(c => dto.TryAddCC(c));
+                this.Bccs.ForEach(bc => dto.TryAddBCC(bc));
+
+                dto.Attachments.AddRange(Attachments.Select(filePath => new System.Net.Mail.Attachment(filePath)));
+
+                await _emailManager.SendInMailAsync(dto);
+            }, () => !Password.IsNullOrBlank()
                     && !this.Tos.IsNullOrEmpty()
                     && !this.Subject.IsNullOrBlank()
                     && !this.Body.IsNullOrBlank()
@@ -65,29 +131,78 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
             QueryMailCommand = new DelegateCommand(async () =>
             {
-                var password = Password;
-                if (password.IsNullOrBlank())
-                {
-                    return;
-                }
-
-                this.Mails = null;
-
                 this.IsLoading = true;
 
-                var result = await _emailTransfer.GetMailMessageAsync(this.FromMail, password).ConfigureAwait(false);
+                _emailManager.SetCredentials(this.FromMail, this.Password);
+
+                var result = await _imapClient.SearchMessageAsync(Enum.Parse<EnumSearch>(CurrentFlag), CurrentFolder);
 
                 if (!result.IsSucceed)
                 {
                     PublishMessage(result.ErrorMessage);
                 }
 
-                this.Mails = result.PopMails;
+                this.IsMailsSelectedAll = false;
+
+                this.Mails.Clear();
+                this.Mails.AddRange(result.PopMails);
 
                 this.IsLoading = false;
-            }, () => !this.From.IsNullOrBlank() && !this.IsLoading)
+            }, () => !Password.IsNullOrBlank() && !this.IsLoading)
                 .ObservesProperty(() => this.From)
                 .ObservesProperty(() => this.IsLoading);
+
+            DeleteCommand = new DelegateCommand(async () =>
+            {
+                var list = this.Mails.Where(m => m.IsSelected).ToList();
+
+                if (list.Any())
+                {
+                    var faileds = await _imapClient.DeleteAsync(list.Select(m => m.Id.To<uint>()), CurrentFolder);
+
+                    list.RemoveAll(m => faileds.Contains(m.Id.To<uint>()));
+
+                    this.Mails.RemoveAll(m => list.Contains(m));
+                }
+            }, () => Mails.Any(m => m.IsSelected))
+               .ObservesProperty(() => NotUse);
+
+            DeleteDeletionCommand = new DelegateCommand(async () =>
+            {
+                _emailManager.SetCredentials(this.FromMail, this.Password);
+
+                await _imapClient.DeleteAsync(CurrentFolder);
+
+                this.QueryMailCommand.Execute(null);
+            },
+            () => !Password.IsNullOrBlank())
+                .ObservesProperty(() => From);
+
+            MoveToCommand = new DelegateCommand<string>(async targetFolder =>
+            {
+                var list = this.Mails.Where(m => m.IsSelected).ToList();
+
+                if (list.Any())
+                {
+                    await _imapClient.MoveToAsync(list.Select(m => m.Id.To<uint>()), targetFolder, CurrentFolder);
+                    list.ForEach(m => m.IsSelected = false);
+
+                    this.QueryMailCommand.Execute(null);
+                }
+            }, _ => Mails.Any(m => m.IsSelected))
+            .ObservesProperty(() => NotUse);
+
+            CopyToCommand = new DelegateCommand<string>(async targetFolder =>
+            {
+                var list = this.Mails.Where(m => m.IsSelected).ToList();
+
+                if (list.Any())
+                {
+                    await _imapClient.CopyToAsync(list.Select(m => m.Id.To<uint>()), targetFolder, CurrentFolder);
+                    list.ForEach(m => m.IsSelected = false);
+                }
+            }, _ => Mails.Any(m => m.IsSelected))
+            .ObservesProperty(() => NotUse);
         }
 
         private void PublishMessage(string message)
@@ -107,12 +222,62 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
         }
 
         #region Commands
+        public ICommand SetFlagCommand { get; private set; }
+
+        public ICommand SelectAllCommand { get; private set; }
+
+        public ICommand MoveToCommand { get; private set; }
+        public ICommand CopyToCommand { get; private set; }
+
+        /// <summary>
+        /// 删除指定的标记删除的消息
+        /// </summary>
+        public ICommand DeleteCommand { get; private set; }
+        /// <summary>
+        /// 删除标记为删除的消息
+        /// </summary>
+        public ICommand DeleteDeletionCommand { get; private set; }
+
         public ICommand SendMailCommand { get; private set; }
         public ICommand QueryMailCommand { get; private set; }
         #endregion
 
-        #region Props
+        #region Fields
+        private readonly IEventAggregator _eventAggregator;
+        private readonly IConfigManager _configManager;
+        private readonly ISettingManager _settingManager;
+
         private bool _isLoading;
+        private bool _isMailsSelectedAll;
+
+        private string _from;
+        private string _subject;
+        private string _body;
+        #endregion
+
+        #region Props
+        public bool NotUse { get; }
+
+        private string _currentFolder;
+        public string CurrentFolder
+        {
+            get => _currentFolder;
+            set => SetProperty(ref _currentFolder, value);
+        }
+
+        private string _currentFlag;
+        public string CurrentFlag
+        {
+            get => _currentFlag;
+            set => SetProperty(ref _currentFlag, value);
+        }
+
+        private string _subFolderName;
+        public string SubFolderName
+        {
+            get => _subFolderName;
+            set => SetProperty(ref _subFolderName, value);
+        }
 
         public bool IsLoading
         {
@@ -120,12 +285,25 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
             set => SetProperty<bool>(ref _isLoading, value);
         }
 
-
-        public IEnumerable<PopMail> _mails;
-        public IEnumerable<PopMail> Mails
+        public bool IsMailsSelectedAll
         {
-            get => this._mails;
-            set => SetProperty<IEnumerable<PopMail>>(ref _mails, value);
+            get => _isMailsSelectedAll;
+            set
+            {
+                if (SetProperty(ref _isMailsSelectedAll, value))
+                {
+                    this.Mails.ForEach(i => i.IsSelected = value);
+                }
+            }
+        }
+
+        public ObservableCollection<MailOutDto> Mails { get; } = new();
+
+
+        public string From
+        {
+            get => _from;
+            set => SetProperty(ref _from, value);
         }
 
         public string Password
@@ -135,7 +313,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
                 var fromMail = this.FromMail;
                 if (!this._settingManager.TryGetValue(fromMail, out var password))
                 {
-                    PublishMessage($"未找到{fromMail}邮箱相关配置信息，请在配置页面配置完成后重试");
+                    //PublishMessage($"未找到{fromMail}邮箱相关配置信息，请在配置页面配置完成后重试");
                     return string.Empty;
                 }
 
@@ -143,23 +321,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
             }
         }
 
-        private string _from;
-
-        public string From
-        {
-            get => _from;
-            set => SetProperty(ref _from, value);
-        }
-
-        private ObservableCollection<string> _tos = new();
-
-        public ObservableCollection<string> Tos
-        {
-            get => _tos;
-            set => SetProperty(ref _tos, value);
-        }
-
-        private string _subject;
+        public ObservableCollection<string> Tos { get; } = new();
 
         public string Subject
         {
@@ -167,41 +329,17 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
             set => SetProperty(ref _subject, value);
         }
 
-        private string _body;
-
         public string Body
         {
             get => _body;
             set => SetProperty(ref _body, value);
         }
 
+        public ObservableCollection<string> Ccs { get; } = new();
 
-        private ObservableCollection<string> _ccs = new();
+        public ObservableCollection<string> Bccs { get; } = new();
 
-        public ObservableCollection<string> Ccs
-        {
-            get => _ccs;
-            set => SetProperty(ref _ccs, value);
-        }
-
-        private ObservableCollection<string> _bccs = new();
-
-        public ObservableCollection<string> Bccs
-        {
-            get => _bccs;
-            set => SetProperty(ref _bccs, value);
-        }
-
-        private readonly IEventAggregator _eventAggregator;
-        private readonly IConfigManager _configManager;
-        private readonly ISettingManager _settingManager;
-        private ObservableCollection<string> _attachments = new();
-        public ObservableCollection<string> Attachments
-        {
-            get => _attachments;
-            set => SetProperty(ref _attachments, value);
-        }
-
+        public ObservableCollection<string> Attachments { get; } = new();
         #endregion
     }
 }

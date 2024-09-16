@@ -1,6 +1,9 @@
-﻿using MusicPlayerModule.ViewModels;
+﻿using IceTea.Atom.Utils;
+using MusicPlayerModule.Contracts;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Diagnostics;
 
 namespace MusicPlayerModule.Models
 {
@@ -11,14 +14,26 @@ namespace MusicPlayerModule.Models
         Dir
     }
 
-    internal class MusicWithClassifyModel : BindableBase
+    [DebuggerDisplay("ClassifyType={ClassifyType}, ClassifyKey={ClassifyKey}, IsSelected={IsSelected}")]
+    internal class MusicWithClassifyModel : ChildrenBase
     {
         public MusicClassifyType ClassifyType { get; }
 
-        public MusicWithClassifyModel(string classifyKey, Collection<FavoriteMusicViewModel> displayByClassifyKeyFavorites, MusicClassifyType musicClassifyType)
+        public MusicWithClassifyModel(string classifyKey, ObservableCollection<FavoriteMusicViewModel> displayByClassifyKeyFavorites, MusicClassifyType musicClassifyType)
         {
-            ClassifyKey = classifyKey;
-            DisplayByClassifyKeyFavorites = displayByClassifyKeyFavorites;
+            ClassifyKey = classifyKey.AssertNotNull(nameof(classifyKey));
+            DisplayByClassifyKeyFavorites = displayByClassifyKeyFavorites.AssertNotNull(nameof(displayByClassifyKeyFavorites));
+
+            DisplayByClassifyKeyFavorites.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs e) =>
+            {
+                if (e.Action == NotifyCollectionChangedAction.Remove)
+                {
+                    if (displayByClassifyKeyFavorites.Count == 0)
+                    {
+                        this.RemoveFromAll();
+                    }
+                }
+            };
 
             ClassifyType = musicClassifyType;
         }
@@ -29,19 +44,17 @@ namespace MusicPlayerModule.Models
             get => this._isSelected;
             set
             {
-                SetProperty<bool>(ref _isSelected, value);
-
-                if (!value)
+                if (SetProperty<bool>(ref _isSelected, value) && value)
                 {
-                    SelectStatusChanged?.Invoke(value);
+                    SelectedEvent?.Invoke(this);
                 }
             }
         }
 
-        public static event Action<bool> SelectStatusChanged;
+        internal static event Action<MusicWithClassifyModel> SelectedEvent;
 
         public string ClassifyKey { get; private set; }
 
-        public Collection<FavoriteMusicViewModel> DisplayByClassifyKeyFavorites { get; private set; }
+        public ObservableCollection<FavoriteMusicViewModel> DisplayByClassifyKeyFavorites { get; private set; }
     }
 }

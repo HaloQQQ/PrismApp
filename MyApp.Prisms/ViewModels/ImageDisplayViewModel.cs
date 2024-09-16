@@ -91,6 +91,11 @@ namespace MyApp.Prisms.ViewModels
                 {
                     var dir = settingManager[CustomConstants.IMAGE].Value;
 
+                    if (!Directory.Exists(dir))
+                    {
+                        return;
+                    }
+
                     var coll = GetImageUris(dir);
                     foreach (var item in coll)
                     {
@@ -112,7 +117,7 @@ namespace MyApp.Prisms.ViewModels
 
                         Thread.Sleep(20);
                     }
-                }).ContinueWith(task => CallModel(nameof(this.ActualData))).ContinueWith(task => this.IsLoading = false);
+                }).ContinueWith(task => RaisePropertyChanged(nameof(this.ActualData))).ContinueWith(task => this.IsLoading = false);
             }
         }
 

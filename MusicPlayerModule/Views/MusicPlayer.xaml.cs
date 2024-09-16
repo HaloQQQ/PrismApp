@@ -12,6 +12,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using IceTea.Wpf.Atom.Extensions;
 using IceTea.Atom.Contracts;
+using MusicPlayerModule.Contracts;
 
 namespace MusicPlayerModule.Views
 {
@@ -58,7 +59,7 @@ namespace MusicPlayerModule.Views
             this._eventAggregator.GetEvent<ContinueCurrentMusicEvent>().Subscribe(() => this.mediaPlayer.Play());
             this._eventAggregator.GetEvent<PauseCurrentMusicEvent>().Subscribe(() => this.mediaPlayer.Pause());
 
-            this._eventAggregator.GetEvent<ToggleLyricDesktopEvent>().Subscribe(() =>
+            this._eventAggregator.GetEvent<ToggleDesktopLyricEvent>().Subscribe(() =>
             {
                 _musicPlayerViewModel.DesktopLyric.IsDesktopLyricShow = !_musicPlayerViewModel.DesktopLyric.IsDesktopLyricShow;
             });
@@ -67,14 +68,14 @@ namespace MusicPlayerModule.Views
             {
                 if (_musicPlayerViewModel.CurrentMedia != null)
                 {
-                    this.IncreaseVolume();
+                    Commons.IncreaseVolume(mediaPlayer);
                 }
             });
             this._eventAggregator.GetEvent<DecreaseVolumeEvent>().Subscribe(() =>
             {
                 if (_musicPlayerViewModel.CurrentMedia != null)
                 {
-                    this.DecreaseVolume();
+                    Commons.DecreaseVolume(mediaPlayer);
                 }
             });
         }
@@ -283,47 +284,13 @@ namespace MusicPlayerModule.Views
             this.QueryButton.IsChecked = false;
         }
 
-        private void IncreaseVolume()
-        {
-            var value = this.mediaPlayer.Volume + 0.05;
-
-            if (value > 1)
-            {
-                value = 1;
-            }
-
-            this.mediaPlayer.Volume = value;
-        }
-
-        private void DecreaseVolume()
-        {
-            var value = this.mediaPlayer.Volume - 0.05;
-
-            if (value < 0)
-            {
-                value = 0;
-            }
-
-            this.mediaPlayer.Volume = value;
-        }
+        
 
         private void UserControl_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Command == ApplicationCommands.Find)
             {
                 this.FavoritesKeyWordsTxt.Focus();
-
-                e.Handled = true;
-            }
-            else if (e.Command == MediaCommands.IncreaseVolume)
-            {
-                IncreaseVolume();
-
-                e.Handled = true;
-            }
-            else if (e.Command == MediaCommands.DecreaseVolume)
-            {
-                DecreaseVolume();
 
                 e.Handled = true;
             }

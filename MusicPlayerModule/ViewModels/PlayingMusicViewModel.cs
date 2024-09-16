@@ -13,7 +13,7 @@ namespace MusicPlayerModule.ViewModels
 
             this.TotalMills = music.TotalMills;
 
-            this.Name = music.Name;
+            this.MediaName = music.Name;
             this.FilePath = music.FilePath;
 
             this._lyricSetting = lyricSetting;
@@ -114,12 +114,13 @@ namespace MusicPlayerModule.ViewModels
                 return false;
             }
 
-            LoadLyricToMusicModel.LoadLyricAsync(_lyricSetting.Value, this.Music);
-
             var lyric = this.Music.Lyric;
 
             if (lyric == null)
             {
+                // 不要await不然会卡死界面
+                LoadLyricToMusicModel.TryLoadLyricAsync(_lyricSetting.Value, this.Music);
+
                 return false;
             }
 

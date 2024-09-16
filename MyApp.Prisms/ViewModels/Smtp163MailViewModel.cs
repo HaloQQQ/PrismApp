@@ -1,7 +1,8 @@
 ﻿using IceTea.Atom.Contracts;
-using IceTea.Atom.Mails;
+using IceTea.Core.Utils.Mails;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using Prism.Events;
+using System;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -9,13 +10,17 @@ namespace MyApp.Prisms.ViewModels
     {
         public Smtp163MailViewModel(IEventAggregator eventAggregator, IConfigManager configManager, ISettingManager settingManager) : base(eventAggregator, configManager, settingManager)
         {
+            this.TargetFolders = Enum.GetNames<Enum163MailOtherFolder>();
         }
 
         public override string MailSuffix => "@163.com";
 
-        protected override void InitEmailTransfer()
+        protected override void InitEmailManager()
         {
-            base._emailTransfer = new SmtpMail163Manager(null);
+            var manager = new SmtpIMAP163Manager();
+
+            base._emailManager = manager;
+            base._imapClient = manager;
         }
     }
 }

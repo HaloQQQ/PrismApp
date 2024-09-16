@@ -1,4 +1,5 @@
-﻿using MusicPlayerModule.MsgEvents;
+﻿using MusicPlayerModule.Contracts;
+using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.MsgEvents.Video;
 using MusicPlayerModule.MsgEvents.Video.Dtos;
 using MusicPlayerModule.ViewModels;
@@ -90,6 +91,21 @@ namespace MusicPlayerModule.Views
                 if (this._dto.Guid == guid)
                 {
                     this.ShowOperationAnimation();
+                }
+            });
+
+            this._eventAggregator.GetEvent<IncreaseVolumeEvent>().Subscribe(() =>
+            {
+                if (_videoPlayerViewModel.CurrentMedia != null)
+                {
+                    Commons.IncreaseVolume(mediaPlayer);
+                }
+            });
+            this._eventAggregator.GetEvent<DecreaseVolumeEvent>().Subscribe(() =>
+            {
+                if (_videoPlayerViewModel.CurrentMedia != null)
+                {
+                    Commons.DecreaseVolume(mediaPlayer);
                 }
             });
         }
@@ -263,33 +279,7 @@ namespace MusicPlayerModule.Views
 
         private void UserControl_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (e.Command == MediaCommands.IncreaseVolume)
-            {
-                var value = this.mediaPlayer.Volume + 0.05;
-
-                if (value > 1)
-                {
-                    value = 1;
-                }
-
-                this.mediaPlayer.Volume = value;
-
-                e.Handled = true;
-            }
-            else if (e.Command == MediaCommands.DecreaseVolume)
-            {
-                var value = this.mediaPlayer.Volume - 0.05;
-
-                if (value < 0)
-                {
-                    value = 0;
-                }
-
-                this.mediaPlayer.Volume = value;
-
-                e.Handled = true;
-            }
-            else if (e.Command == ApplicationCommands.Open)
+            if (e.Command == ApplicationCommands.Open)
             {
                 e.Handled = true;
 

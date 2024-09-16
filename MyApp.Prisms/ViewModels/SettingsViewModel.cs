@@ -16,8 +16,8 @@ using System;
 using IceTea.Atom.Utils.HotKey.Global.Contracts;
 using CustomControlsDemoModule.Views;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
-using MusicPlayerModule.Common;
 using MusicPlayerModule.Models;
+using MusicPlayerModule.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {

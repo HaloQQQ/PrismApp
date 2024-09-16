@@ -113,7 +113,7 @@
                 VerticalAlignment="Center"
                 Orientation="Vertical">
                 <Button
-                    Command="{Binding DelayCommand}"
+                    Command="{Binding RewindCommand}"
                     Content="&#xe68e;"
                     Style="{StaticResource IconButtonBase_Small_Scale}"
                     ToolTip="{Binding KeyGestureDic[快退].ToolTip}" />
@@ -167,7 +167,7 @@
                 </Button>
 
                 <Button
-                    Command="{Binding AheadCommand}"
+                    Command="{Binding FastForwardCommand}"
                     Content="&#xe690;"
                     Style="{StaticResource IconButtonBase_Small_Scale}"
                     ToolTip="{Binding KeyGestureDic[快进].ToolTip}" />
