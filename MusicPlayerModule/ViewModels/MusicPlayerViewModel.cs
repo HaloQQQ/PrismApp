@@ -16,7 +16,6 @@ using IceTea.Wpf.Atom.Contracts.MediaInfo;
 using MusicPlayerModule.ViewModels.Base;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using MusicPlayerModule.Contracts;
-using System.Diagnostics.Eventing.Reader;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -160,6 +159,11 @@ namespace MusicPlayerModule.ViewModels
             return item;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="aggregate">要添加到播放队列的数据</param>
+        /// <param name="replace">true:清空并填充 false:追加</param>
         private void AddAllToPlaying(BatchAddAndPlayModel aggregate, bool replace = true)
         {
             PlayingMusicViewModel result = null;
@@ -175,7 +179,7 @@ namespace MusicPlayerModule.ViewModels
 
                 foreach (var item in aggregate.Collection)
                 {
-                    if (this.Playing.FirstOrDefault(m => m.Music == item.Music) == null)
+                    if (!this.Playing.Any(m => m.Music == item.Music))
                     {
                         PlayingMusicViewModel temp = new PlayingMusicViewModel(item.Music, this.LyricSetting);
                         if (result == null)
@@ -248,7 +252,7 @@ namespace MusicPlayerModule.ViewModels
                 {
                     if (!this.FavoriteListFilteKeyWords.IsNullOrBlank())
                     {
-                        this.FavoriteListFilteKeyWords = null;
+                        this.FavoriteListFilteKeyWords = string.Empty;
                     }
                 }
             }
@@ -356,13 +360,17 @@ namespace MusicPlayerModule.ViewModels
                         this.LyricSetting.Value = lyricDir;
                     }
                 }
+                else
+                {
+                    PublishMessage($"选中文件中不存在新的mp3音乐文件");
+                }
             }
         }
 
         protected override async void AddMediaFromFolderDialog_CommandExecute()
         {
             var selectedPath = CommonCoreUtils.OpenFolderDialog(this.MusicSetting.Value);
-            if (!selectedPath.IsNullOrEmpty())
+            if (!selectedPath.IsNullOrBlank())
             {
                 var list = selectedPath.GetFiles(str => str.EndsWithIgnoreCase(".mp3"));
 
@@ -537,27 +545,6 @@ namespace MusicPlayerModule.ViewModels
 
             PlayingMusicViewModel.ToNextMusic += NextMedia_CommandExecute;
 
-            eventAggregator.GetEvent<ToggeleCurrentMusicEvent>().Subscribe(() =>
-            {
-                if (this.CurrentMedia != null)
-                {
-                    if (this.Running = !this.Running)
-                    {
-                        this.RaiseContinueMediaEvent();
-                    }
-                    else
-                    {
-                        this.RaisePauseMediaEvent();
-                    }
-                }
-            });
-
-            eventAggregator.GetEvent<PrevMusicEvent>().Subscribe(() => this.PrevMedia_CommandExecute(this.CurrentMedia));
-            eventAggregator.GetEvent<NextMusicEvent>().Subscribe(() => this.NextMedia_CommandExecute(this.CurrentMedia));
-
-            eventAggregator.GetEvent<FastForwardEvent>().Subscribe(() => this.CurrentMedia?.FastForward());
-            eventAggregator.GetEvent<RewindEvent>().Subscribe(() => this.CurrentMedia?.Rewind());
-
             eventAggregator.GetEvent<BatchAddToPlayingEvent>().Subscribe(coll => this.AddAllToPlaying(new BatchAddAndPlayModel(null, coll), false));
         }
 
@@ -655,7 +642,7 @@ namespace MusicPlayerModule.ViewModels
                 {
                     var items = DisplayFavorites.Where(item => item.IsDeleting).ToArray();
 
-                    for (int i = 0; i < items.Length; i++)
+                    for (int i = items.Length - 1; i >= 0; i--)
                     {
                         items[i].RemoveFromAll();
                     }
@@ -669,7 +656,7 @@ namespace MusicPlayerModule.ViewModels
                                                      .Where(m => m.IsDeleting).ToArray();
                     if (items != null)
                     {
-                        for (int i = 0; i < items.Length; i++)
+                        for (int i = items.Length - 1; i >= 0; i--)
                         {
                             items[i].RemoveFromAll();
                         }
@@ -683,7 +670,7 @@ namespace MusicPlayerModule.ViewModels
 
                     if (items != null)
                     {
-                        for (int i = 0; i < items.Length; i++)
+                        for (int i = items.Length - 1; i >= 0; i--)
                         {
                             items[i].RemoveFromAll();
                         }
@@ -697,7 +684,7 @@ namespace MusicPlayerModule.ViewModels
 
                     if (items != null)
                     {
-                        for (int i = 0; i < items.Length; i++)
+                        for (int i = items.Length - 1; i >= 0; i--)
                         {
                             items[i].RemoveFromAll();
                         }
@@ -738,32 +725,15 @@ namespace MusicPlayerModule.ViewModels
                     CanBatchSelect = false;
                 }
 
-                this.RaisePropertyChanged(nameof(SelectedCount));
+                if (music.IsDeleting)
+                {
+                    this.RaisePropertyChanged(nameof(SelectedCount));
+                }
             }, _ => this.DisplayFavorites.Count > 0)
                 .ObservesProperty<int>(() => this.DisplayFavorites.Count);
 
             this.SelectAllCommand = new DelegateCommand(() => { }, () => this.DisplayFavorites.Count > 0)
                 .ObservesProperty<int>(() => this.DisplayFavorites.Count);
-        }
-
-        protected override void RaiseContinueMediaEvent()
-        {
-            _eventAggregator.GetEvent<ContinueCurrentMusicEvent>().Publish();
-        }
-
-        protected override void RaisePauseMediaEvent()
-        {
-            _eventAggregator.GetEvent<PauseCurrentMusicEvent>().Publish();
-        }
-
-        protected override void RaiseResetMediaEvent(IEventAggregator eventAggregator)
-        {
-            eventAggregator.GetEvent<ResetMusicPlayerEvent>().Publish();
-        }
-
-        protected override void RaiseResetPlayerAndPlayMediaEvent(IEventAggregator eventAggregator)
-        {
-            eventAggregator.GetEvent<ResetPlayerAndPlayMusicEvent>().Publish();
         }
         #endregion
 

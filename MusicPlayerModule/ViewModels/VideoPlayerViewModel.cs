@@ -11,7 +11,6 @@ using IceTea.Wpf.Atom.Contracts.MediaInfo;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using IceTea.Wpf.Atom.Utils;
 using IceTea.Wpf.Core.Utils;
-using IceTea.Atom.Utils;
 using MusicPlayerModule.ViewModels.Base;
 using MusicPlayerModule.Contracts;
 
@@ -69,25 +68,18 @@ namespace MusicPlayerModule.ViewModels
 
         public Guid Identity { get; private set; } = Guid.NewGuid();
 
-        private void TryRefreshLastVideoDir(string dir)
-        {
-            AppUtils.AssertDataValidation(dir.IsDirectoryPath(), $"{dir}必须为存在的目录");
-
-            this.VideoSetting.Value = dir;
-        }
-
-        private void LoadVideo(IEnumerable<string> filePaths)
+        private bool TryLoadVideo(IEnumerable<string> filePaths)
         {
             if (filePaths.IsNullOrEmpty())
             {
-                return;
+                return false;
             }
 
             List<string> list = TryGetNewFiles(filePaths).ToList();
 
             if (list.Count == 0)
             {
-                return;
+                return false;
             }
 
             foreach (var filePath in list)
@@ -101,6 +93,8 @@ namespace MusicPlayerModule.ViewModels
             {
                 this.SetAndPlay(this.DisplayPlaying.FirstOrDefault());
             }
+
+            return true;
 
             IEnumerable<string> TryGetNewFiles(IEnumerable<string> filePaths)
             {
@@ -132,9 +126,9 @@ namespace MusicPlayerModule.ViewModels
 
             if (openFileDialog != null)
             {
-                this.LoadVideo(openFileDialog.FileNames);
+                this.TryLoadVideo(openFileDialog.FileNames);
 
-                this.TryRefreshLastVideoDir(openFileDialog.FileName.GetParentPath());
+                this.VideoSetting.Value = openFileDialog.FileName.GetParentPath();
             }
         }
 
@@ -143,13 +137,13 @@ namespace MusicPlayerModule.ViewModels
             var path = this.VideoSetting.Value;
 
             var selectedPath = CommonCoreUtils.OpenFolderDialog(path);
-            if (!selectedPath.IsNullOrEmpty())
+            if (!selectedPath.IsNullOrBlank())
             {
-                this.TryRefreshLastVideoDir(selectedPath);
-
                 var list = selectedPath.GetFiles(str => str.EndsWith(".mp4"));
 
-                this.LoadVideo(list);
+                this.TryLoadVideo(list);
+
+                this.VideoSetting.Value = selectedPath;
             }
         }
 
@@ -166,17 +160,17 @@ namespace MusicPlayerModule.ViewModels
             };
         }
 
-        protected override void LoadConfig(IConfigManager config)
+        protected override void LoadConfig(IConfigManager configManager)
         {
-            base.LoadConfig(config);
+            base.LoadConfig(configManager);
 
-            var stretch = config.ReadConfigNode(CustomStatics.VideoStretch_ConfigKey);
+            var stretch = configManager.ReadConfigNode(CustomStatics.VideoStretch_ConfigKey);
             if (Enum.TryParse<Stretch>(stretch, true, out Stretch result))
             {
                 this.Stretch = result;
             }
 
-            config.SetConfig += config =>
+            configManager.SetConfig += config =>
             {
                 config.WriteConfigNode(this.Stretch, CustomStatics.VideoStretch_ConfigKey);
             };
@@ -184,22 +178,22 @@ namespace MusicPlayerModule.ViewModels
 
         protected override void RaiseContinueMediaEvent()
         {
-            _eventAggregator.GetEvent<ContinueCurrentVideo>().Publish(this.Identity);
+            _eventAggregator.GetEvent<ContinueCurrentVideoEvent>().Publish(this.Identity);
         }
 
         protected override void RaisePauseMediaEvent()
         {
-            _eventAggregator.GetEvent<PauseCurrentVideo>().Publish(this.Identity);
+            _eventAggregator.GetEvent<PauseCurrentVideoEvent>().Publish(this.Identity);
         }
 
-        protected override void RaiseResetMediaEvent(IEventAggregator eventAggregator)
+        protected override void RaiseResetMediaEvent()
         {
-            eventAggregator.GetEvent<ResetVideoPlayerEvent>().Publish(this.Identity);
+            _eventAggregator.GetEvent<ResetVideoPlayerEvent>().Publish(this.Identity);
         }
 
-        protected override void RaiseResetPlayerAndPlayMediaEvent(IEventAggregator eventAggregator)
+        protected override void RaiseResetPlayerAndPlayMediaEvent()
         {
-            eventAggregator.GetEvent<ResetPlayerAndPlayVideoEvent>().Publish(this.Identity);
+            _eventAggregator.GetEvent<ResetPlayerAndPlayVideoEvent>().Publish(this.Identity);
         }
 
         protected override void PlayPlaying_CommandExecute(MediaBaseViewModel currentMedia)

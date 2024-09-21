@@ -1,6 +1,5 @@
 ﻿using IceTea.Atom.Utils;
 using MusicPlayerModule.Contracts;
-using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;

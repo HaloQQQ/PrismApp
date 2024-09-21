@@ -80,24 +80,24 @@ namespace MusicPlayerModule.ViewModels.Base
             {
                 foreach (var item in this.DisplayPlaying.Where(m => m.PointAMills != 0 || m.PointBMills != 0))
                 {
-                    ICollection<string> mediaNode = new List<string>(MediaABPoints_ConfigKey)
+                    IList<string> mediaNode = new List<string>(MediaABPoints_ConfigKey)
                     {
                         item.MediaName
                     };
 
-                    ICollection<string> pointANode = new List<string>(mediaNode)
+                    IList<string> pointANode = new List<string>(mediaNode)
                     {
                         nameof(MediaBaseViewModel.PointAMills)
                     };
 
-                    ICollection<string> pointBNode = new List<string>(mediaNode)
+                    IList<string> pointBNode = new List<string>(mediaNode)
                     {
                         nameof(MediaBaseViewModel.PointBMills)
                     };
 
-                    config.WriteConfigNode(item.MediaName, mediaNode.ToArray());
-                    config.WriteConfigNode(item.PointAMills, pointANode.ToArray());
-                    config.WriteConfigNode(item.PointBMills, pointBNode.ToArray());
+                    config.WriteConfigNode(item.MediaName, mediaNode);
+                    config.WriteConfigNode(item.PointAMills, pointANode);
+                    config.WriteConfigNode(item.PointBMills, pointBNode);
                 }
             };
         }
@@ -281,7 +281,7 @@ namespace MusicPlayerModule.ViewModels.Base
                             return;
 
                         case MediaPlayOrderModel.EnumOrderType.SingleCycle:
-                            this.RaiseResetPlayerAndPlayMediaEvent(this._eventAggregator);
+                            this.RaiseResetPlayerAndPlayMediaEvent();
                             return;
                         case MediaPlayOrderModel.EnumOrderType.Loop:
                             break;
@@ -331,17 +331,50 @@ namespace MusicPlayerModule.ViewModels.Base
         #endregion
 
         #region Methods
-        protected abstract void RaiseContinueMediaEvent();
+        protected virtual void RaiseContinueMediaEvent()
+        {
+            _eventAggregator.GetEvent<ContinueCurrentMediaEvent>().Publish();
+        }
 
-        protected abstract void RaisePauseMediaEvent();
+        protected virtual void RaisePauseMediaEvent()
+        {
+            _eventAggregator.GetEvent<PauseCurrentMediaEvent>().Publish();
+        }
 
-        protected abstract void RaiseResetMediaEvent(IEventAggregator eventAggregator);
+        protected virtual void RaiseResetMediaEvent()
+        {
+            _eventAggregator.GetEvent<ResetMediaPlayerEvent>().Publish();
+        }
 
-        protected abstract void RaiseResetPlayerAndPlayMediaEvent(IEventAggregator eventAggregator);
+        protected virtual void RaiseResetPlayerAndPlayMediaEvent()
+        {
+            _eventAggregator.GetEvent<ResetPlayerAndPlayMediaEvent>().Publish();
+        }
 
         protected virtual void SubscribeEvents(IEventAggregator eventAggregator)
         {
             eventAggregator.GetEvent<GoBackMediaPointAEvent>().Subscribe(() => this.CurrentMedia?.GoToPointA());
+
+            eventAggregator.GetEvent<FastForwardMediaEvent>().Subscribe(() => this.CurrentMedia?.FastForward());
+            eventAggregator.GetEvent<RewindMediaEvent>().Subscribe(() => this.CurrentMedia?.Rewind());
+
+            eventAggregator.GetEvent<PrevMediaEvent>().Subscribe(() => this.PrevMedia_CommandExecute(this.CurrentMedia));
+            eventAggregator.GetEvent<NextMediaEvent>().Subscribe(() => this.NextMedia_CommandExecute(this.CurrentMedia));
+
+            eventAggregator.GetEvent<ToggeleCurrentMediaEvent>().Subscribe(() =>
+            {
+                if (this.CurrentMedia != null)
+                {
+                    if (this.Running = !this.Running)
+                    {
+                        this.RaiseContinueMediaEvent();
+                    }
+                    else
+                    {
+                        this.RaisePauseMediaEvent();
+                    }
+                }
+            });
         }
 
         protected void SetAndPlay(MediaBaseViewModel? item)
@@ -352,11 +385,11 @@ namespace MusicPlayerModule.ViewModels.Base
             {
                 this.CurrentMedia.Reset();
 
-                this.RaiseResetPlayerAndPlayMediaEvent(this._eventAggregator);
+                this.RaiseResetPlayerAndPlayMediaEvent();
             }
             else
             {
-                this.RaiseResetMediaEvent(this._eventAggregator);
+                this.RaiseResetMediaEvent();
             }
         }
 

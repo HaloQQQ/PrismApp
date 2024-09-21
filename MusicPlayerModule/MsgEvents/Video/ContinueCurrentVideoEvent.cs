@@ -2,7 +2,7 @@
 
 namespace MusicPlayerModule.MsgEvents.Video
 {
-    internal class PauseCurrentVideo : PubSubEvent<Guid>
+    internal class ContinueCurrentVideoEvent : PubSubEvent<Guid>
     {
     }
 }

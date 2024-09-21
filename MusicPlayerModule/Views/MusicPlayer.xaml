@@ -95,6 +95,7 @@
             <KeyBinding
                 Key="{Binding KeyGestureDic[搜索].SelectedKey}"
                 Command="Find"
+                CommandParameter="Favorite"
                 Modifiers="{Binding KeyGestureDic[搜索].ModifierKey}" />
 
             <KeyBinding
@@ -127,7 +128,7 @@
                 Modifiers="{Binding KeyGestureDic[去A点].ModifierKey}" />
             <KeyBinding
                 Key="{Binding KeyGestureDic[全体返回A点].SelectedKey}"
-                Command="{Binding ToPointACommand}"
+                Command="{Binding AllToPointACommand}"
                 Modifiers="{Binding KeyGestureDic[全体返回A点].ModifierKey}" />
 
 
@@ -336,7 +337,7 @@
                                         <Setter Property="Visibility" Value="Collapsed" />
                                     </DataTrigger>
 
-                                    <DataTrigger Binding="{Binding DistributeMusicViewModel.MusicDirs.Count}" Value="0">
+                                    <DataTrigger Binding="{Binding DisplayFavorites.Count}" Value="0">
                                         <Setter Property="IsEnabled" Value="False" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -1664,7 +1665,6 @@
                             Width="400"
                             Height="490"
                             Closed="PlayingListPopup_Closed"
-                            CommandManager.Executed="PlayingList_Executed"
                             HorizontalOffset="-343"
                             IsOpen="{Binding IsChecked, ElementName=PlayingListButton}"
                             MouseLeftButtonDown="EmptyHandler"
@@ -1677,7 +1677,15 @@
                                 <KeyBinding
                                     Key="{Binding KeyGestureDic[搜索].SelectedKey}"
                                     Command="Find"
+                                    CommandParameter="Playing"
+                                    CommandTarget="{Binding PlacementTarget, RelativeSource={RelativeSource AncestorType=Popup}}"
                                     Modifiers="{Binding KeyGestureDic[搜索].ModifierKey}" />
+
+                                <KeyBinding
+                                    Key="Esc"
+                                    Command="Close"
+                                    CommandParameter="StopPlayingListFilte"
+                                    CommandTarget="{Binding PlacementTarget, RelativeSource={RelativeSource AncestorType=Popup}}" />
                             </Popup.InputBindings>
                             <Border Background="{StaticResource PopupBackground}" CornerRadius="10">
                                 <Grid>

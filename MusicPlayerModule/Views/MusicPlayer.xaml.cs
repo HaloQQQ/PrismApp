@@ -36,9 +36,9 @@ namespace MusicPlayerModule.Views
                 this.musicSlider.Value = this.mediaPlayer.Position.TotalMilliseconds;
 
             this._eventAggregator.GetEvent<MusicProgressTimerIsEnableUpdatedEvent>().Subscribe(isTimerEnable => this._lyricTime.IsEnabled = isTimerEnable);
-            this._eventAggregator.GetEvent<ResetPlayerAndPlayMusicEvent>().Subscribe(() =>
+            this._eventAggregator.GetEvent<ResetPlayerAndPlayMediaEvent>().Subscribe(() =>
             {
-                this.ResetMediaPlayer();
+                Commons.ResetMediaPlayer(this.musicSlider, this.mediaPlayer);
                 this.mediaPlayer.Play();
 
                 var mainWindow = Window.GetWindow(this);
@@ -54,10 +54,10 @@ namespace MusicPlayerModule.Views
                     mainWindow.Closing += (sender, e) => _verticalDesktopLyricWindow.Close();
                 }
             });
-            this._eventAggregator.GetEvent<ResetMusicPlayerEvent>().Subscribe(() => this.ResetMediaPlayer());
+            this._eventAggregator.GetEvent<ResetMediaPlayerEvent>().Subscribe(() => Commons.ResetMediaPlayer(this.musicSlider, this.mediaPlayer));
 
-            this._eventAggregator.GetEvent<ContinueCurrentMusicEvent>().Subscribe(() => this.mediaPlayer.Play());
-            this._eventAggregator.GetEvent<PauseCurrentMusicEvent>().Subscribe(() => this.mediaPlayer.Pause());
+            this._eventAggregator.GetEvent<ContinueCurrentMediaEvent>().Subscribe(() => this.mediaPlayer.Play());
+            this._eventAggregator.GetEvent<PauseCurrentMediaEvent>().Subscribe(() => this.mediaPlayer.Pause());
 
             this._eventAggregator.GetEvent<ToggleDesktopLyricEvent>().Subscribe(() =>
             {
@@ -82,13 +82,6 @@ namespace MusicPlayerModule.Views
 
         private Window _horizentalDesktopLyricWindow;
         private Window _verticalDesktopLyricWindow;
-
-        private void ResetMediaPlayer()
-        {
-            this.musicSlider.Value = 0;
-            this.mediaPlayer.Stop();
-            this.mediaPlayer.Position = TimeSpan.Zero;
-        }
 
         /// <summary>
         /// 添加所有到播放列表
@@ -177,7 +170,11 @@ namespace MusicPlayerModule.Views
             e.Handled = true;
         }
 
-        #region 歌词刷新
+        /// <summary>
+        /// 当前歌词行调整到垂直居中
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LyricList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             e.Handled = true;
@@ -200,7 +197,6 @@ namespace MusicPlayerModule.Views
                 scrollViewer.ScrollToVerticalOffset(value * scrollViewer.ExtentHeight / LyricList.Items.Count);
             }
         }
-        #endregion
 
         /// <summary>
         /// 设置歌曲位置为当前歌词开始
@@ -230,6 +226,7 @@ namespace MusicPlayerModule.Views
             }
         }
 
+        #region 音量调整
         private double _lastVolume;
         private void VolumeToggleButton_Click(object sender, RoutedEventArgs e)
         {
@@ -262,6 +259,7 @@ namespace MusicPlayerModule.Views
                 }
             }
         }
+        #endregion
 
         /// <summary>
         /// Popup打开时加载DataGrid滚动条
@@ -284,13 +282,23 @@ namespace MusicPlayerModule.Views
             this.QueryButton.IsChecked = false;
         }
 
-        
+
 
         private void UserControl_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Command == ApplicationCommands.Find)
             {
-                this.FavoritesKeyWordsTxt.Focus();
+                switch (e.Parameter?.ToString())
+                {
+                    case "Favorite":
+                        this.FavoritesKeyWordsTxt.Focus();
+                        break;
+                    case "Playing":
+                        this.QueryButton.IsChecked = true;
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
 
                 e.Handled = true;
             }
@@ -313,20 +321,16 @@ namespace MusicPlayerModule.Views
             {
                 e.Handled = true;
 
-                if (e.Parameter != null)
+                switch (e.Parameter?.ToString())
                 {
-                    switch (e.Parameter.ToString())
-                    {
-                        case "StopPlayingListFilte":
-                            // 播放队列筛选输入框消失
-                            this.PlayingKeyWordsTxt.Text = string.Empty;
-                            this.QueryButton.IsChecked = false;
+                    case "StopPlayingListFilte":
+                        // 播放队列筛选输入框消失
+                        this.PlayingKeyWordsTxt.Text = string.Empty;
+                        this.QueryButton.IsChecked = false;
 
-                            break;
-                        default:
-                            throw new IndexOutOfRangeException();
-                    }
-
+                        break;
+                    default:
+                        throw new IndexOutOfRangeException();
                 }
             }
             else if (e.Command == NavigationCommands.GoToPage)
@@ -426,6 +430,16 @@ namespace MusicPlayerModule.Views
         }
 
         /// <summary>
+        /// 拦截Popup的点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EmptyHandler(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        /// <summary>
         /// 播放列表搜索某个歌曲时搜索框获取焦点
         /// </summary>
         /// <param name="sender"></param>
@@ -438,26 +452,7 @@ namespace MusicPlayerModule.Views
             }
         }
 
-        /// <summary>
-        /// 拦截Popup的点击事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void EmptyHandler(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = true;
-        }
-
-        private void PlayingList_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (e.Command == ApplicationCommands.Find)
-            {
-                this.QueryButton.IsChecked = true;
-
-                e.Handled = true;
-            }
-        }
-
+        #region 歌词颜色调整
         private void DropIn_LinearGradientForegroundColor(object sender, DragEventArgs e)
         {
             var data = e.Data;
@@ -492,5 +487,6 @@ namespace MusicPlayerModule.Views
                 this.ForegroundColor.Background = color;
             }
         }
+        #endregion
     }
 }

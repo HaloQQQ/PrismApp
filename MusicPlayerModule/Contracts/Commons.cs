@@ -4,7 +4,7 @@ namespace MusicPlayerModule.Contracts
 {
     internal static class Commons
     {
-        public static void IncreaseVolume(MediaElement mediaPlayer)
+        internal static void IncreaseVolume(MediaElement mediaPlayer)
         {
             var value = mediaPlayer.Volume + 0.05;
 
@@ -16,7 +16,7 @@ namespace MusicPlayerModule.Contracts
             mediaPlayer.Volume = value;
         }
 
-        public static void DecreaseVolume(MediaElement mediaPlayer)
+        internal static void DecreaseVolume(MediaElement mediaPlayer)
         {
             var value = mediaPlayer.Volume - 0.05;
 
@@ -26,6 +26,13 @@ namespace MusicPlayerModule.Contracts
             }
 
             mediaPlayer.Volume = value;
+        }
+
+        internal static void ResetMediaPlayer(Slider slider, MediaElement mediaElement)
+        {
+            slider.Value = 0;
+            mediaElement.Stop();
+            mediaElement.Position = TimeSpan.Zero;
         }
     }
 }

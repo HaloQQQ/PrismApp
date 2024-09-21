@@ -12,9 +12,7 @@ using PrismAppBasicLib.MsgEvents;
 using IceTea.Atom.Contracts;
 using IceTea.Wpf.Core.Utils;
 using MusicPlayerModule.Contracts;
-using System.Linq;
 using System.Collections.Specialized;
-using System.Windows.Shapes;
 
 namespace MusicPlayerModule.ViewModels
 {

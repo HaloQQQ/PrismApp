@@ -64,7 +64,7 @@
                 Modifiers="{Binding KeyGestureDic[去A点].ModifierKey}" />
             <KeyBinding
                 Key="{Binding KeyGestureDic[全体返回A点].SelectedKey}"
-                Command="{Binding ToPointACommand}"
+                Command="{Binding AllToPointACommand}"
                 Modifiers="{Binding KeyGestureDic[全体返回A点].ModifierKey}" />
 
             <KeyBinding
@@ -533,7 +533,7 @@
 
                         <ToggleButton
                             x:Name="volumeToggleButton"
-                            Click="volumeToggleButton_Click"
+                            Click="VolumeToggleButton_Click"
                             DockPanel.Dock="Right"
                             IsChecked="{Binding IsMuted, ElementName=mediaPlayer, Mode=TwoWay}"
                             Style="{StaticResource VolumeIconToggleButton}" />

@@ -58,7 +58,7 @@ namespace MusicPlayerModule.Views
             {
                 if (this._videoPlayerViewModel.Identity == guid)
                 {
-                    this.ResetMediaPlayer();
+                    Commons.ResetMediaPlayer(this.videoSlider, this.mediaPlayer);
                     this.mediaPlayer.Play();
                 }
             });
@@ -66,11 +66,11 @@ namespace MusicPlayerModule.Views
             {
                 if (this._videoPlayerViewModel.Identity == guid)
                 {
-                    this.ResetMediaPlayer();
+                    Commons.ResetMediaPlayer(this.videoSlider, this.mediaPlayer);
                 }
             });
 
-            this._eventAggregator.GetEvent<ContinueCurrentVideo>().Subscribe(guid =>
+            this._eventAggregator.GetEvent<ContinueCurrentVideoEvent>().Subscribe(guid =>
             {
                 if (this._videoPlayerViewModel.Identity == guid)
                 {
@@ -78,7 +78,7 @@ namespace MusicPlayerModule.Views
                 }
             });
 
-            this._eventAggregator.GetEvent<PauseCurrentVideo>().Subscribe(guid =>
+            this._eventAggregator.GetEvent<PauseCurrentVideoEvent>().Subscribe(guid =>
             {
                 if (this._videoPlayerViewModel.Identity == guid)
                 {
@@ -132,13 +132,6 @@ namespace MusicPlayerModule.Views
             storyBoard.Children.Add(keyframes);
 
             storyBoard.Begin();
-        }
-
-        private void ResetMediaPlayer()
-        {
-            this.videoSlider.Value = 0;
-            this.mediaPlayer.Position = TimeSpan.Zero;
-            this.mediaPlayer.Stop();
         }
 
         private Point lastMousePosition;  // 上次鼠标位置
@@ -204,7 +197,7 @@ namespace MusicPlayerModule.Views
         }
 
         private double _lastVolume;
-        private void volumeToggleButton_Click(object sender, RoutedEventArgs e)
+        private void VolumeToggleButton_Click(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
 

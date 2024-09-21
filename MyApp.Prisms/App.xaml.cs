@@ -203,20 +203,20 @@ namespace MyApp.Prisms
                             switch (item.Name)
                             {
                                 case CustomConstants.GlobalHotKeysConst.Pause:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<ToggeleCurrentMusicEvent>().Publish();
+                                    this.Container.Resolve<IEventAggregator>().GetEvent<ToggeleCurrentMediaEvent>().Publish();
                                     break;
                                 case CustomConstants.GlobalHotKeysConst.Prev:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<PrevMusicEvent>().Publish();
+                                    this.Container.Resolve<IEventAggregator>().GetEvent<PrevMediaEvent>().Publish();
                                     break;
                                 case CustomConstants.GlobalHotKeysConst.Next:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<NextMusicEvent>().Publish();
+                                    this.Container.Resolve<IEventAggregator>().GetEvent<NextMediaEvent>().Publish();
                                     break;
 
                                 case CustomConstants.GlobalHotKeysConst.FastForward:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<FastForwardEvent>().Publish();
+                                    this.Container.Resolve<IEventAggregator>().GetEvent<FastForwardMediaEvent>().Publish();
                                     break;
                                 case CustomConstants.GlobalHotKeysConst.Rewind:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<RewindEvent>().Publish();
+                                    this.Container.Resolve<IEventAggregator>().GetEvent<RewindMediaEvent>().Publish();
                                     break;
 
                                 case CustomConstants.GlobalHotKeysConst.IncreaseVolume:
