@@ -149,7 +149,5 @@ namespace MusicPlayerModule.Utils
         }
 
         #endregion
-
-
     }
 }

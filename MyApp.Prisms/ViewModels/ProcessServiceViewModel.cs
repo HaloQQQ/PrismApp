@@ -8,13 +8,13 @@ using System.Windows.Input;
 using MyApp.Prisms.Models;
 using IceTea.Core.Utils.OS;
 using System.ServiceProcess;
-using Prism.Mvvm;
 using IceTea.Atom.Extensions;
 using IceTea.Wpf.Atom.Utils;
+using IceTea.Atom.BaseModels;
 
 namespace MyApp.Prisms.ViewModels
 {
-    internal class ProcessServiceViewModel : BindableBase, IDisposable
+    internal class ProcessServiceViewModel : BaseNotifyModel, IDisposable
     {
         public ObservableCollection<ProcessContext> ProcessList { get; private set; } = new ObservableCollection<ProcessContext>();
 

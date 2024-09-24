@@ -8,7 +8,7 @@
             Guid = guid;
         }
 
-        public bool Value { get; private set; }
-        public Guid Guid { get; private set; }
+        public bool Value { get; }
+        public Guid Guid { get; }
     }
 }

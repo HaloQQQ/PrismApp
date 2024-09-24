@@ -1,16 +1,16 @@
-﻿using IceTea.Atom.Contracts;
+﻿using IceTea.Atom.BaseModels;
+using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
 using IceTea.Wpf.Atom.Extensions;
 using MusicPlayerModule.Contracts;
 using Prism.Commands;
-using Prism.Mvvm;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace MusicPlayerModule.ViewModels
 {
-    internal class DesktopLyricViewModel : BindableBase
+    internal class DesktopLyricViewModel : BaseNotifyModel
     {
         public DesktopLyricViewModel(IConfigManager config)
         {
@@ -201,7 +201,7 @@ namespace MusicPlayerModule.ViewModels
         public string FamilyName { get; }
     }
 
-    internal class SelectableColorBrush : BindableBase
+    internal class SelectableColorBrush : BaseNotifyModel
     {
         public static SelectableColorBrush Default = new SelectableColorBrush(new SolidColorBrush(Color.FromRgb(0, 0, 0)));
 
@@ -227,7 +227,7 @@ namespace MusicPlayerModule.ViewModels
         }
     }
 
-    internal class ColorModel : BindableBase
+    internal class ColorModel : BaseNotifyModel
     {
         public ColorModel(IConfigManager config, string[] configKeys, byte r = 0, byte g = 0, byte b = 0)
         {
@@ -309,7 +309,7 @@ namespace MusicPlayerModule.ViewModels
         }
     }
 
-    internal class ThreePrimaryColorModel : BindableBase
+    internal class ThreePrimaryColorModel : BaseNotifyModel
     {
         public ThreePrimaryColorModel(string name, byte defaultValue)
         {

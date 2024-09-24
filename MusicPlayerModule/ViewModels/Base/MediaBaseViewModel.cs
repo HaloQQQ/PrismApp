@@ -1,22 +1,38 @@
-﻿using IceTea.Atom.Extensions;
-using Prism.Mvvm;
+﻿using IceTea.Atom.BaseModels;
+using IceTea.Atom.Extensions;
+using IceTea.Atom.Utils;
+using MusicPlayerModule.Models;
 
 namespace MusicPlayerModule.ViewModels.Base
 {
-    internal abstract class MediaBaseViewModel : BindableBase, IDisposable
+    internal abstract class MediaBaseViewModel : BaseNotifyModel, IDisposable
     {
         private int _index;
 
         public int Index
         {
             get { return _index; }
-            set { this._index = value; RaisePropertyChanged(nameof(IndexString)); }
+            set
+            {
+                if (SetProperty(ref _index, value))
+                {
+                    RaisePropertyChanged(nameof(IndexString));
+                }
+            }
         }
 
         public string IndexString => this._index.ToString("000");
 
-        public string MediaName { get; protected set; }
-        public string FilePath { get; protected set; }
+        public string MediaName { get; }
+        public string FilePath { get; }
+
+        protected MediaBaseViewModel(MediaBaseModel mediaBase)
+        {
+            mediaBase.AssertNotNull(nameof(MediaBaseModel));
+
+            MediaName = mediaBase.Name;
+            FilePath = mediaBase.FilePath;
+        }
 
         public virtual int MillsStep => 1000;
 
@@ -38,7 +54,7 @@ namespace MusicPlayerModule.ViewModels.Base
         }
 
         #region 当前时间更新
-        public virtual double ProgressPercent { get; }
+        public double ProgressPercent => this.TotalMills == 0 ? 0 : Math.Round((this.CurrentMills * 1.0) / this.TotalMills * 100, 1);
 
         protected int _currentMills;
 
@@ -102,11 +118,14 @@ namespace MusicPlayerModule.ViewModels.Base
 
         public void SetPointB(int mills)
         {
-            this.PointBMills = mills;
-
-            if (this._pointAMills > this._pointBMills)
+            if (mills > 0)
             {
-                this.PointAMills = 0;
+                this.PointBMills = mills;
+
+                if (this._pointAMills > this._pointBMills)
+                {
+                    this.PointAMills = 0;
+                }
             }
         }
 
@@ -117,7 +136,7 @@ namespace MusicPlayerModule.ViewModels.Base
         }
         #endregion
 
-        protected string GetFormatTime(int mills)
+        private string GetFormatTime(int mills)
         {
             TimeSpan time = TimeSpan.FromMilliseconds(mills);
             return time.FormatTimeSpan(this.TotalMills > 1000 * 60 * 60);

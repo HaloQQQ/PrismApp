@@ -2,7 +2,6 @@
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Prism.Mvvm;
 using TagLib;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
@@ -10,48 +9,36 @@ using System.Text.RegularExpressions;
 
 namespace MusicPlayerModule.Models;
 
-internal class MusicModel : BindableBase, IDisposable
+internal class MusicModel : MediaBaseModel, IDisposable
 {
-    public bool IsEnglishTitle { get; private set; }
-    public bool IsEnglishSinger { get; private set; }
+    public bool IsEnglishTitle { get; }
+    public bool IsEnglishSinger { get; }
 
-    public MusicModel(string filePath)
+    public MusicModel(string filePath) : base(filePath)
     {
-        this.FilePath = filePath;
-
-        var arr = filePath.GetFileNameWithoutExtension().Split(" - ");
-        if (arr.Length > 1)
-        {
-            this.Singer = arr[0];
-            this.Name = arr[1];
-        }
-
-        var size = new FileInfo(filePath).Length / 1024.0 / 1024;
-        this.Size = size.ToString("0.00");
-
         var file = TagLib.File.Create(filePath);   // 打开音频文件
 
-        if (this.Name == null || this.Singer == null)
+        if (Name == null || Singer == null)
         {
-            this.Singer = file.Tag.Performers.Length > 0 ? file.Tag.Performers[0] : null;   // 歌手名
-            this.Name = file.Tag.Title;             // 歌曲标题
+            Performer = file.Tag.Performers.Length > 0 ? file.Tag.Performers[0] : null;   // 歌手名
+            Name = file.Tag.Title;             // 歌曲标题
         }
 
-        this.IsEnglishTitle = Regex.IsMatch(Name, "[a-zA-Z]");
-        this.IsEnglishSinger = Regex.IsMatch(Singer, "[a-zA-Z]");
+        IsEnglishTitle = Regex.IsMatch(Name, "[a-zA-Z]");
+        IsEnglishSinger = Regex.IsMatch(Singer, "[a-zA-Z]");
 
-        this.Album = file.Tag.Album;             // 专辑名称
-        this.Year = (int)file.Tag.Year;             // 年份
-        this.TrackNum = (int)file.Tag.Track;        // 曲目号
-        this.Genre = file.Tag.Genres.Length > 0 ? file.Tag.Genres[0] : null;   // 流派
+        Album = file.Tag.Album;             // 专辑名称
+        Year = (int)file.Tag.Year;             // 年份
+        TrackNum = (int)file.Tag.Track;        // 曲目号
+        Genre = file.Tag.Genres.Length > 0 ? file.Tag.Genres[0] : null;   // 流派
 
         // 获取时长（单位为毫秒）
         int duration = (int)file.Properties.Duration.TotalMilliseconds;
         // 将毫秒数转换为TimeSpan类型
         TimeSpan time = TimeSpan.FromMilliseconds(duration);
-        this.TotalMills = (int)time.TotalMilliseconds;
+        TotalMills = (int)time.TotalMilliseconds;
         // 转换为分钟:秒数格式
-        this.Duration = time.FormatTimeSpan();
+        Duration = time.FormatTimeSpan();
 
         // 获取封面
         IPicture[] pictures = file.Tag.Pictures;
@@ -64,7 +51,23 @@ internal class MusicModel : BindableBase, IDisposable
             bi.CacheOption = BitmapCacheOption.OnLoad;
             bi.EndInit();
 
-            this.ImageSource = bi;
+            ImageSource = bi;
+        }
+    }
+
+    public bool IsLoadingLyric { get; internal set; }
+    public bool IsPureMusic { get; internal set; }
+
+    private string _filePath;
+    public override string FilePath
+    {
+        get => this._filePath;
+        protected set
+        {
+            if (SetProperty<string>(ref _filePath, value))
+            {
+                RaisePropertyChanged(nameof(FileDir));
+            }
         }
     }
 
@@ -87,19 +90,7 @@ internal class MusicModel : BindableBase, IDisposable
     /// </summary>
     public string Genre { get; }
 
-    public string Singer { get; }
-    public string Name { get; }
-    /// <summary>
-    /// MB
-    /// </summary>
-    public string Size { get; }
-
-    public string Duration { get; }
-
-    public int TotalMills { get; }
-
-    public bool IsLoadingLyric { get; internal set; }
-    public bool IsPureMusic { get; internal set; }
+    public string Singer => Performer;
 
     private volatile WeakReference<KRCLyrics> _krcLyrics;
 
@@ -107,7 +98,7 @@ internal class MusicModel : BindableBase, IDisposable
     {
         get
         {
-            if (this._krcLyrics != null && this._krcLyrics.TryGetTarget(out KRCLyrics kRCLyrics))
+            if (_krcLyrics != null && _krcLyrics.TryGetTarget(out KRCLyrics kRCLyrics))
             {
                 return kRCLyrics;
             }
@@ -132,25 +123,17 @@ internal class MusicModel : BindableBase, IDisposable
         }
     }
 
-    private string _filePath;
-    public string FilePath
-    {
-        get => this._filePath;
-        private set => SetProperty<string>(ref _filePath, value);
-    }
-    public string FileDir => this.FilePath.GetParentPath();
-
     public bool MoveTo(string targetDir)
     {
-        if (Directory.Exists(targetDir) && System.IO.File.Exists(this.FilePath))
+        if (Directory.Exists(targetDir) && System.IO.File.Exists(FilePath))
         {
             var file = FilePath.GetFileName();
 
             var targetPath = Path.Combine(targetDir, file);
 
-            System.IO.File.Move(this.FilePath, targetPath);
+            System.IO.File.Move(FilePath, targetPath);
 
-            this.FilePath = targetPath;
+            FilePath = targetPath;
 
             return true;
         }
@@ -160,6 +143,8 @@ internal class MusicModel : BindableBase, IDisposable
 
     public void Dispose()
     {
-        this.ImageSource = null;
+        base.Dispose();
+
+        ImageSource = null;
     }
 }

@@ -1,11 +1,11 @@
-﻿using Prism.Mvvm;
+﻿using IceTea.Atom.BaseModels;
 using System;
 using System.Diagnostics;
 using System.ServiceProcess;
 
 namespace MyApp.Prisms.Models
 {
-    public class ProcessContext : BindableBase
+    public class ProcessContext : BaseNotifyModel
     {
         private bool _isChecked;
 

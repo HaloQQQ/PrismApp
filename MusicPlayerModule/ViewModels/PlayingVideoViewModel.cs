@@ -9,12 +9,10 @@ namespace MusicPlayerModule.ViewModels
     {
         private VideoModelAndGuid _dto;
         public PlayingVideoViewModel(VideoModelAndGuid dto, VideoModel video)
+            :base(video)
         {
-            Video = video.AssertNotNull(nameof(VideoModelAndGuid));
-            _dto = dto.AssertNotNull(nameof(VideoModel));
-
-            this.MediaName = video.Name;
-            this.FilePath = video.FilePath;
+            Video = video.AssertNotNull(nameof(MediaBaseModel));
+            _dto = dto.AssertNotNull(nameof(VideoModelAndGuid));
         }
 
         public VideoModel Video { get; private set; }
@@ -27,8 +25,6 @@ namespace MusicPlayerModule.ViewModels
         }
 
         public override int MillsStep => 5000;
-
-        public override double ProgressPercent => this.TotalMills == 0 ? 0 : Math.Round((this.CurrentMills * 1.0) / this.TotalMills * 100, 1);
 
         public override int CurrentMills
         {

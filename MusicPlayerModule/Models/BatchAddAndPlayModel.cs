@@ -11,6 +11,6 @@ namespace MusicPlayerModule.Models
         }
 
         public FavoriteMusicViewModel TargetToPlay { get; set; }
-        public IEnumerable<FavoriteMusicViewModel> Collection { get; private set; }
+        public IEnumerable<FavoriteMusicViewModel> Collection { get; }
     }
 }

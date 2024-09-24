@@ -1,5 +1,4 @@
-﻿using Prism.Mvvm;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Prism.Commands;
 using System.Collections.ObjectModel;
 using Prism.Events;
@@ -13,12 +12,12 @@ using MusicPlayerModule.MsgEvents;
 using System.Diagnostics;
 using System.IO;
 using IceTea.Atom.Extensions;
-using PrismAppBasicLib.MsgEvents;
 using MusicPlayerModule.Contracts;
+using IceTea.Atom.BaseModels;
 
 namespace MusicPlayerModule.ViewModels.Base
 {
-    internal abstract class MediaPlayerViewModel : BindableBase, IDisposable
+    internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
     {
         protected readonly IEventAggregator _eventAggregator;
         protected readonly ISettingManager<SettingModel> _settingManager;
@@ -45,11 +44,6 @@ namespace MusicPlayerModule.ViewModels.Base
         }
 
         public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; protected set; }
-
-        protected void PublishMessage(string msg, int seconds = 3)
-        {
-            _eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(msg, seconds));
-        }
 
         protected void InitHotkeys(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
         {
@@ -171,7 +165,6 @@ namespace MusicPlayerModule.ViewModels.Base
                 new DelegateCommand(() =>
                     {
                         this.CurrentMedia = null;
-                        this.Running = false;
                     },
                     () => !this.Running && this.CurrentMedia != null)
                     .ObservesProperty(() => this.CurrentMedia)
@@ -211,7 +204,7 @@ namespace MusicPlayerModule.ViewModels.Base
                 .ObservesProperty(() => this.DisplayPlaying.Count);
 
             this.IncreaseVolumeCommand = new DelegateCommand(
-                () => _eventAggregator.GetEvent<IncreaseVolumeEvent>().Publish(), 
+                () => _eventAggregator.GetEvent<IncreaseVolumeEvent>().Publish(),
                 () => this.CurrentMedia != null)
                 .ObservesProperty(() => this.CurrentMedia);
 
@@ -226,7 +219,6 @@ namespace MusicPlayerModule.ViewModels.Base
         {
             this.DisplayPlaying.Clear();
             this.CurrentMedia = null;
-            this.Running = false;
         }
 
         protected virtual void Rewind_CommandExecute()
@@ -315,7 +307,6 @@ namespace MusicPlayerModule.ViewModels.Base
                 else
                 {
                     this.CurrentMedia = null;
-                    this.Running = false;
                 }
             }
 
@@ -498,8 +489,15 @@ namespace MusicPlayerModule.ViewModels.Base
             get { return _currentMedia; }
             set
             {
-                if (SetProperty(ref _currentMedia, value) && value != null)
+                if (SetProperty(ref _currentMedia, value))
                 {
+                    if (value == null)
+                    {
+                        this.Running = false;
+
+                        return;
+                    }
+
                     this.AllMediaModelNotPlaying();
 
                     _currentMedia.IsPlayingMedia = true;

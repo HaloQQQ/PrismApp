@@ -12,7 +12,7 @@ namespace MusicPlayerModule.Utils
         /// <summary>
         /// 字符
         /// </summary>
-        public string Word { get; private set; }
+        public string Word { get; }
 
         /// <summary>
         /// 字符KRC字符串

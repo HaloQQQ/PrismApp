@@ -1,6 +1,5 @@
 ﻿using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
@@ -24,10 +23,11 @@ using IceTea.Atom.Utils.HotKey.Contracts;
 using IceTea.General.Utils;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using IceTea.Wpf.Atom.Contracts.MyEvents;
+using IceTea.Atom.BaseModels;
 
 namespace MyApp.Prisms.ViewModels
 {
-    internal class SoftwareViewModel : BindableBase, IDisposable
+    internal class SoftwareViewModel : BaseNotifyModel, IDisposable
     {
         public SoftwareViewModel(
                 UserViewModel userContext,

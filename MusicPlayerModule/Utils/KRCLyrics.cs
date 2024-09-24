@@ -216,8 +216,7 @@ namespace MusicPlayerModule.Utils
         /// <returns></returns>
         public static KRCLyrics LoadFromString(string krcstring)
         {
-            var aa = new KRCLyrics(krcstring);
-            return aa;
+            return new KRCLyrics(krcstring);
         }
 
         public void Dispose()

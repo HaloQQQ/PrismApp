@@ -13,7 +13,7 @@ namespace MusicPlayerModule.Models
             DirName = dirPath.GetCurrentDirName();
         }
 
-        public string DirName { get; private set; }
-        public string DirPath { get; private set; }
+        public string DirName { get; }
+        public string DirPath { get; }
     }
 }

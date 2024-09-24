@@ -1,22 +1,21 @@
 ﻿using MusicPlayerModule.Models;
-using MusicPlayerModule.MsgEvents;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using IceTea.Atom.Extensions;
 using System.IO;
 using IceTea.Atom.Utils;
-using PrismAppBasicLib.MsgEvents;
 using IceTea.Atom.Contracts;
 using IceTea.Wpf.Core.Utils;
 using MusicPlayerModule.Contracts;
 using System.Collections.Specialized;
+using IceTea.Atom.BaseModels;
+using MusicPlayerModule.MsgEvents.Music;
 
 namespace MusicPlayerModule.ViewModels
 {
-    internal class DistributeMusicViewModel : BindableBase, IDisposable
+    internal class DistributeMusicViewModel : BaseNotifyModel, IDisposable
     {
         /// <summary>
         /// 按照专辑分类后的关键词筛选
@@ -35,7 +34,7 @@ namespace MusicPlayerModule.ViewModels
 
                     this.DisplayMusicAlbumFavorites.Clear();
 
-                    if (!_albumMusicFilteKeyWords.IsNullOrEmpty())
+                    if (!_albumMusicFilteKeyWords.IsNullOrBlank())
                     {
                         this.DisplayMusicAlbumFavorites.AddRange(this.MusicAlbumFavorites.Where(item =>
                             item.ClassifyKey.ContainsIgnoreCase(this._albumMusicFilteKeyWords)));
@@ -65,7 +64,7 @@ namespace MusicPlayerModule.ViewModels
 
                     this.DisplayMusicSingerFavorites.Clear();
 
-                    if (!_singerMusicFilteKeyWords.IsNullOrEmpty())
+                    if (!_singerMusicFilteKeyWords.IsNullOrBlank())
                     {
                         this.DisplayMusicSingerFavorites.AddRange(this.MusicSingerFavorites.Where(item =>
                             item.ClassifyKey.ContainsIgnoreCase(this._singerMusicFilteKeyWords)));
@@ -129,7 +128,7 @@ namespace MusicPlayerModule.ViewModels
             }
             else
             {
-                PublishMessage("目标目录已包含源目录所有内容，不允许重复");
+                Commons.PublishMessage(_eventAggregator, "目标目录已包含源目录所有内容，不允许重复");
 
                 return false;
             }
@@ -145,11 +144,11 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (originDir.DeleteIfEmptyOr())
                 {
-                    PublishMessage($"【{originDir}】删除成功");
+                    Commons.PublishMessage(_eventAggregator, $"【{originDir}】删除成功");
                 }
                 else
                 {
-                    PublishMessage("目录不为空，不允许删除");
+                    Commons.PublishMessage(_eventAggregator, "目录不为空，不允许删除");
                 }
             }
         }
@@ -258,7 +257,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (item == null || item.DisplayByClassifyKeyFavorites.IsNullOrEmpty())
                 {
-                    PublishMessage($"音乐集合为空或不存在{item?.ClassifyKey}分类");
+                    Commons.PublishMessage(_eventAggregator, $"音乐集合为空或不存在{item?.ClassifyKey}分类");
                     return;
                 }
 
@@ -267,9 +266,9 @@ namespace MusicPlayerModule.ViewModels
 
             this.BatchMoveMusicDirCommand = new DelegateCommand<string>(originDir =>
             {
-                if (originDir.IsNullOrEmpty())
+                if (originDir.IsNullOrBlank())
                 {
-                    PublishMessage("未传入源目录");
+                    Commons.PublishMessage(_eventAggregator, "未传入源目录");
                     return;
                 }
 
@@ -283,7 +282,7 @@ namespace MusicPlayerModule.ViewModels
 
                     if (this.MoveMusicsTo(MusicDirFavorites.First(item => item.ClassifyKey == originDir), selectedPath))
                     {
-                        PublishMessage($"移动成功");
+                        Commons.PublishMessage(_eventAggregator, $"移动成功");
                     }
                 }
             });
@@ -298,11 +297,11 @@ namespace MusicPlayerModule.ViewModels
                 {
                     if (this.TryAddNewDirItemFromPath(selectedPath))
                     {
-                        PublishMessage($"{selectedPath}分类创建成功");
+                        Commons.PublishMessage(_eventAggregator, $"{selectedPath}分类创建成功");
                     }
                     else
                     {
-                        PublishMessage($"{selectedPath}分类之前已存在");
+                        Commons.PublishMessage(_eventAggregator, $"{selectedPath}分类之前已存在");
                     }
                 }
             });
@@ -313,7 +312,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (item == null)
                 {
-                    PublishMessage($"未选中{item?.ClassifyKey}分类");
+                    Commons.PublishMessage(_eventAggregator, $"未选中{item?.ClassifyKey}分类");
                     return;
                 }
 
@@ -326,12 +325,12 @@ namespace MusicPlayerModule.ViewModels
                     {
                         if (this.MoveMusicsTo(item, selectedPath))
                         {
-                            PublishMessage($"目录重命名成功");
+                            Commons.PublishMessage(_eventAggregator, $"目录重命名成功");
                         }
                     }
                     else
                     {
-                        PublishMessage($"{item.ClassifyKey}分类之前已存在");
+                        Commons.PublishMessage(_eventAggregator, $"{item.ClassifyKey}分类之前已存在");
                     }
                 }
             });
@@ -410,7 +409,7 @@ namespace MusicPlayerModule.ViewModels
 
                 if (originDir.EqualsIgnoreCase(targetDir))
                 {
-                    PublishMessage($"源目录和目标目录不允许相同");
+                    Commons.PublishMessage(_eventAggregator, $"源目录和目标目录不允许相同");
                     return;
                 }
 
@@ -439,19 +438,14 @@ namespace MusicPlayerModule.ViewModels
 
                         item.AddTo(targetCollection);
 
-                        PublishMessage($"【{moveModel.Music.Name}】移动成功");
+                        Commons.PublishMessage(_eventAggregator, $"【{moveModel.Music.Name}】移动成功");
                     }
                     else
                     {
-                        PublishMessage($"源目录不存在【{moveModel.Music.Name}】");
+                        Commons.PublishMessage(_eventAggregator, $"源目录不存在【{moveModel.Music.Name}】");
                     }
                 }
             });
-        }
-
-        private void PublishMessage(string msg, int seconds = 3)
-        {
-            _eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(msg, seconds));
         }
 
         internal void AddNewMusic(FavoriteMusicViewModel musicModel)
@@ -568,7 +562,7 @@ namespace MusicPlayerModule.ViewModels
                 {
                     if (!this.AlbumMusicFilteKeyWords.IsNullOrBlank())
                     {
-                        this.AlbumMusicFilteKeyWords = null;
+                        this.AlbumMusicFilteKeyWords = string.Empty;
                     }
                 }
             }
@@ -597,7 +591,7 @@ namespace MusicPlayerModule.ViewModels
                 {
                     if (!this.SingerMusicFilteKeyWords.IsNullOrBlank())
                     {
-                        this.SingerMusicFilteKeyWords = null;
+                        this.SingerMusicFilteKeyWords = string.Empty;
                     }
                 }
             }

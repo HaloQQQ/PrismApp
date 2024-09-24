@@ -1,5 +1,4 @@
 ﻿using MusicPlayerModule.Models;
-using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.Utils;
 using Prism.Commands;
 using Prism.Events;
@@ -16,6 +15,7 @@ using IceTea.Wpf.Atom.Contracts.MediaInfo;
 using MusicPlayerModule.ViewModels.Base;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using MusicPlayerModule.Contracts;
+using MusicPlayerModule.MsgEvents.Music;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -362,7 +362,7 @@ namespace MusicPlayerModule.ViewModels
                 }
                 else
                 {
-                    PublishMessage($"选中文件中不存在新的mp3音乐文件");
+                    Commons.PublishMessage(_eventAggregator, $"选中文件中不存在新的mp3音乐文件");
                 }
             }
         }
@@ -386,7 +386,7 @@ namespace MusicPlayerModule.ViewModels
                 }
                 else
                 {
-                    PublishMessage($"【{selectedPath}】中找不到新的mp3音乐文件");
+                    Commons.PublishMessage(_eventAggregator, $"【{selectedPath}】中找不到新的mp3音乐文件");
                 }
             }
         }
@@ -561,7 +561,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (category == null || category.DisplayByClassifyKeyFavorites.IsNullOrEmpty())
                 {
-                    PublishMessage($"传入的分类{category?.ClassifyKey}为空");
+                    Commons.PublishMessage(_eventAggregator, $"传入的分类{category?.ClassifyKey}为空");
                     return;
                 }
 
@@ -574,7 +574,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (model == null || model.Collection.IsNullOrEmpty())
                 {
-                    PublishMessage($"传入的音乐集合为空");
+                    Commons.PublishMessage(_eventAggregator, $"传入的音乐集合为空");
                     return;
                 }
 
@@ -591,7 +591,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (music == null)
                 {
-                    PublishMessage("传入的音乐为空");
+                    Commons.PublishMessage(_eventAggregator, "传入的音乐为空");
                     return;
                 }
 
@@ -609,7 +609,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (music == null)
                 {
-                    PublishMessage("传入的下一首待播放音乐为空");
+                    Commons.PublishMessage(_eventAggregator, "传入的下一首待播放音乐为空");
                     return;
                 }
 
@@ -708,7 +708,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (music == null)
                 {
-                    PublishMessage("传入的列表中待删除音乐为空");
+                    Commons.PublishMessage(_eventAggregator, "传入的列表中待删除音乐为空");
                     return;
                 }
 
@@ -764,6 +764,7 @@ namespace MusicPlayerModule.ViewModels
             this.Playing = null;
 
             this.DistributeMusicViewModel.Dispose();
+            this.DistributeMusicViewModel = null;
 
             this.PlayAllCommand = null;
             this.PlayFavoriteCommand = null;

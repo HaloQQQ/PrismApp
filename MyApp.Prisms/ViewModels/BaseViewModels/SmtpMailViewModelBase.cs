@@ -1,6 +1,5 @@
 ﻿using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -12,10 +11,11 @@ using IceTea.Atom.Mails;
 using IceTea.Wpf.Atom.Utils;
 using IceTea.Core.Utils.Mails;
 using System;
+using IceTea.Atom.BaseModels;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {
-    internal abstract class SmtpMailViewModelBase : BindableBase
+    internal abstract class SmtpMailViewModelBase : BaseNotifyModel
     {
         protected IEmailManager _emailManager;
         protected IMAPEmailReceiver _imapClient;

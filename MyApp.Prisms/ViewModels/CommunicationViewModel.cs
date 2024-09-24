@@ -1,11 +1,11 @@
-﻿using Prism.Mvvm;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MyApp.Prisms.Views;
+using IceTea.Atom.BaseModels;
 
 namespace MyApp.Prisms.ViewModels
 {
-    internal class CommunicationViewModel : BindableBase
+    internal class CommunicationViewModel : BaseNotifyModel
     {
         public CommunicationViewModel(
                 UdpSocketViewModel udpContext,

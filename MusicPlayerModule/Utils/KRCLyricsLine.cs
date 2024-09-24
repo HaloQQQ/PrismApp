@@ -1,4 +1,4 @@
-﻿using Prism.Mvvm;
+﻿using IceTea.Atom.BaseModels;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
@@ -8,7 +8,7 @@ namespace MusicPlayerModule.Utils
     /// KRC文件行
     /// </summary>
     [DebuggerDisplay("{DebuggerDisplay}")]
-    public class KRCLyricsLine : BindableBase, IDisposable
+    public class KRCLyricsLine : BaseNotifyModel, IDisposable
     {
         private bool _isPlayingLine;
 

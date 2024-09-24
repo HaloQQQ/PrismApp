@@ -1,6 +1,5 @@
 ﻿using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using MyApp.Prisms.Helper;
@@ -18,10 +17,11 @@ using CustomControlsDemoModule.Views;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using MusicPlayerModule.Models;
 using MusicPlayerModule.Contracts;
+using IceTea.Atom.BaseModels;
 
 namespace MyApp.Prisms.ViewModels
 {
-    internal class SettingsViewModel : BindableBase
+    internal class SettingsViewModel : BaseNotifyModel
     {
         public SettingsViewModel(
                 IConfigManager configManager,
@@ -254,7 +254,7 @@ namespace MyApp.Prisms.ViewModels
         #endregion
     }
 
-    internal class Pair : BindableBase
+    internal class Pair : BaseNotifyModel
     {
         public Pair()
         {

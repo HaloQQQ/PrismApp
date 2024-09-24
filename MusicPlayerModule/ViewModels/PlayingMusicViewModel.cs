@@ -8,17 +8,13 @@ namespace MusicPlayerModule.ViewModels
     internal class PlayingMusicViewModel : MediaBaseViewModel
     {
         public PlayingMusicViewModel(MusicModel music, SettingModel lyricSetting)
+            : base(music)
         {
             Music = music.AssertNotNull(nameof(MusicModel));
+            this._lyricSetting = lyricSetting.AssertNotNull(nameof(lyricSetting));
 
             this.TotalMills = music.TotalMills;
-
-            this.MediaName = music.Name;
-            this.FilePath = music.FilePath;
-
-            this._lyricSetting = lyricSetting;
         }
-
 
         private SettingModel _lyricSetting;
         public MusicModel Music { get; private set; }
@@ -127,7 +123,7 @@ namespace MusicPlayerModule.ViewModels
             var lines = lyric.Lines;
 
             // 注意当前歌词的结束时间要与下一句歌词的开始时间比较
-            var currentIndex = this.GetCurrentLineIndex(lyric.Lines);
+            var currentIndex = GetCurrentLineIndex(lyric.Lines);
 
             if (currentIndex < 0)
             {
@@ -158,7 +154,7 @@ namespace MusicPlayerModule.ViewModels
 
             if (currentLine != this.OneLine && currentLine != this.AnotherLine)
             {
-                this.SetLine(currentLine, currentIndex);
+                SetLine(currentLine, currentIndex);
             }
 
             if (!currentLine.IsPlayingLine)
@@ -166,40 +162,40 @@ namespace MusicPlayerModule.ViewModels
                 var nextIndex = currentIndex + 1;
                 if (nextIndex < lines.Count)
                 {
-                    this.SetLine(lines[nextIndex], nextIndex);
+                    SetLine(lines[nextIndex], nextIndex);
                 }
 
                 currentLine.IsPlayingLine = true;
             }
 
             return true;
-        }
 
-        private int GetCurrentLineIndex(IList<KRCLyricsLine> lines)
-        {
-            int currentIndex = -1;
-
-            // 注意当前歌词的结束时间要与下一句歌词的开始时间比较
-            while (currentIndex < lines.Count - 1 &&
-                   this._currentMills >= lines[currentIndex + 1].LineStart.TotalMilliseconds)
+            void SetLine(KRCLyricsLine line, int index)
             {
-                // 更新当前歌词的索引
-                currentIndex++;
+                // 索引偶数
+                if ((index & 1) == 0)
+                {
+                    this.OneLine = line;
+                }
+                else // 奇数
+                {
+                    this.AnotherLine = line;
+                }
             }
 
-            return currentIndex;
-        }
+            int GetCurrentLineIndex(IList<KRCLyricsLine> lines)
+            {
+                int currentIndex = -1;
 
-        private void SetLine(KRCLyricsLine line, int index)
-        {
-            // 索引偶数
-            if ((index & 1) == 0)
-            {
-                this.OneLine = line;
-            }
-            else // 奇数
-            {
-                this.AnotherLine = line;
+                // 注意当前歌词的结束时间要与下一句歌词的开始时间比较
+                while (currentIndex < lines.Count - 1 &&
+                       this._currentMills >= lines[currentIndex + 1].LineStart.TotalMilliseconds)
+                {
+                    // 更新当前歌词的索引
+                    currentIndex++;
+                }
+
+                return currentIndex;
             }
         }
 

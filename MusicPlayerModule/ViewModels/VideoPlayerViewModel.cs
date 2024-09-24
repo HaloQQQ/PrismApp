@@ -1,5 +1,4 @@
 ﻿using MusicPlayerModule.Models;
-using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.MsgEvents.Video;
 using MusicPlayerModule.MsgEvents.Video.Dtos;
 using Prism.Events;
@@ -66,7 +65,7 @@ namespace MusicPlayerModule.ViewModels
             this._eventAggregator.GetEvent<MediaOperationUpdatedEvent>().Publish(this.Identity);
         }
 
-        public Guid Identity { get; private set; } = Guid.NewGuid();
+        public Guid Identity { get; } = Guid.NewGuid();
 
         private bool TryLoadVideo(IEnumerable<string> filePaths)
         {

@@ -13,6 +13,7 @@ using System.Windows.Threading;
 using IceTea.Wpf.Atom.Extensions;
 using IceTea.Atom.Contracts;
 using MusicPlayerModule.Contracts;
+using MusicPlayerModule.MsgEvents.Music;
 
 namespace MusicPlayerModule.Views
 {

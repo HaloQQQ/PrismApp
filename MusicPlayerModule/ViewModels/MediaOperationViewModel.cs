@@ -1,4 +1,4 @@
-﻿using Prism.Mvvm;
+﻿using IceTea.Atom.BaseModels;
 using System.ComponentModel;
 
 namespace MusicPlayerModule.ViewModels
@@ -13,7 +13,7 @@ namespace MusicPlayerModule.ViewModels
         Rewind
     }
 
-    internal class MediaOperationViewModel : BindableBase
+    internal class MediaOperationViewModel : BaseNotifyModel
     {
         private OperationType _operationType;
         public OperationType OperationType

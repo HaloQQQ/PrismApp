@@ -28,6 +28,7 @@ using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using MusicPlayerModule.Models;
 using IceTea.Atom.Extensions;
+using MusicPlayerModule.MsgEvents.Music;
 
 namespace MyApp.Prisms
 {
