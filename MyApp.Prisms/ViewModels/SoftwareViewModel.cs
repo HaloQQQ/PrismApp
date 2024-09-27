@@ -379,7 +379,7 @@ namespace MyApp.Prisms.ViewModels
                     }
                 }
 
-                if (this.DialogMessage != null && !this.DialogMessage.StopHide)
+                if (this.DialogMessage != null && this.DialogMessage.IsEnable)
                 {
                     this.DialogMessage.Decrease();
                 }

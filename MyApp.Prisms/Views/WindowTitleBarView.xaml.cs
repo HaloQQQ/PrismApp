@@ -79,7 +79,7 @@ namespace MyApp.Prisms.Views
 
             if (_softwareViewModel.DialogMessage != null)
             {
-                _softwareViewModel.DialogMessage.StopHide = false;
+                _softwareViewModel.DialogMessage.IsEnable = true;
             }
         }
 
@@ -89,7 +89,7 @@ namespace MyApp.Prisms.Views
 
             if (_softwareViewModel.DialogMessage != null)
             {
-                _softwareViewModel.DialogMessage.StopHide = true;
+                _softwareViewModel.DialogMessage.IsEnable = false;
             }
         }
 

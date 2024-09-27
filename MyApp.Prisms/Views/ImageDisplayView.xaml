@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:prism="http://prismlibrary.com/"
-    xmlns:selector="clr-namespace:MyApp.Prisms.DataTemplateSelector"
+    xmlns:selector="clr-namespace:MyApp.Prisms.DataTemplateSelectors"
     prism:ViewModelLocator.AutoWireViewModel="True"
     FocusVisualStyle="{x:Null}">
 

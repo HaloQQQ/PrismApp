@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:icetea="http://IceTea.Wpf.Core.com/"
     xmlns:prism="http://prismlibrary.com/"
-    xmlns:selector="clr-namespace:MyApp.Prisms.DataTemplateSelector"
+    xmlns:selector="clr-namespace:MyApp.Prisms.DataTemplateSelectors"
     Width="310"
     prism:ViewModelLocator.AutoWireViewModel="True"
     Background="#FFCCCCCC"

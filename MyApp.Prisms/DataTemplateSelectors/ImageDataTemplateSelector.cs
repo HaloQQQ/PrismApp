@@ -1,9 +1,10 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using MyApp.Prisms.ViewModels;
 
-namespace MyApp.Prisms.DataTemplateSelector
+namespace MyApp.Prisms.DataTemplateSelectors
 {
-    public class ListImageDataTemplateSelector : System.Windows.Controls.DataTemplateSelector
+    public class ListImageDataTemplateSelector : DataTemplateSelector
     {
         public DataTemplate List { get; set; } = null!;
         public DataTemplate Block { get; set; } = null!;
@@ -19,7 +20,7 @@ namespace MyApp.Prisms.DataTemplateSelector
         }
     }
 
-    public class BlockImageDataTemplateSelector : System.Windows.Controls.DataTemplateSelector
+    public class BlockImageDataTemplateSelector : DataTemplateSelector
     {
         public DataTemplate List { get; set; } = null!;
         public DataTemplate Block { get; set; } = null!;

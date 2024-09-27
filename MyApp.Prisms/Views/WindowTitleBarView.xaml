@@ -304,7 +304,7 @@
             </Popup>
 
             <Popup
-                IsOpen="{Binding DialogMessage.IsDisplayingDialogMessage, Mode=OneWay}"
+                IsOpen="{Binding DialogMessage.IsVisible, Mode=OneWay}"
                 Placement="Center"
                 PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
                 <Border

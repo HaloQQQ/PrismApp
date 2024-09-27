@@ -634,7 +634,7 @@ namespace MusicPlayerModule.ViewModels
             }, _ => this.DisplayFavorites.Count > 0)
                 .ObservesProperty<int>(() => this.DisplayFavorites.Count);
 
-            this.DownLoadCommand = new DelegateCommand<MusicModel>(music => { });
+            this.DownLoadCommand = new DelegateCommand<MusicModel>(music => { }, _ => false);
 
             this.BatchDeleteCommand = new DelegateCommand(() =>
             {

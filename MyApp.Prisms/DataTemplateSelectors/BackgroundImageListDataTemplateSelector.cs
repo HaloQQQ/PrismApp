@@ -1,21 +1,22 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using MyApp.Prisms.ViewModels;
 
-namespace MyApp.Prisms.DataTemplateSelector
+namespace MyApp.Prisms.DataTemplateSelectors
 {
-    public class BackgroundImageBlockDataTemplateSelector : System.Windows.Controls.DataTemplateSelector
+    public class BackgroundImageListDataTemplateSelector : DataTemplateSelector
     {
         public DataTemplate Empty { get; set; } = null!;
-        public DataTemplate BlockData { get; set; } = null!;
+        public DataTemplate ListData { get; set; } = null!;
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (item is MyImage image && image.Name is null)
+            if (item is MyImage { Name: null })
             {
                 return this.Empty;
             }
 
-            return this.BlockData;
+            return this.ListData;
         }
     }
 }
