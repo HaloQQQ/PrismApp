@@ -16,7 +16,7 @@ namespace MusicPlayerModule.Converters
                 }
             }
 
-            return Visibility.Collapsed;
+            return Visibility.Hidden;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

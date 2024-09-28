@@ -25,7 +25,7 @@ namespace MusicPlayerModule.Views
 
             this._configManager = configManager;
             var pointStr = configManager.ReadConfigNode(CustomStatics.Horizontal_DesktopLyric_WindowLeftTop_ConfigKey);
-            if (!pointStr.IsNullOrEmpty())
+            if (!pointStr.IsNullOrBlank())
             {
                 var arr = pointStr.Split(",");
                 this.Left = double.Parse(arr[0]);

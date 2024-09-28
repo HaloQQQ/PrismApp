@@ -619,6 +619,12 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
+                if (this.Playing.Any(p => p.Music == music.Music))
+                {
+                    Commons.PublishMessage(_eventAggregator, "同名歌曲已存在");
+                    return;
+                }
+
                 var temp = new PlayingMusicViewModel(music.Music, this.LyricSetting);
                 if (this.CurrentMedia.Index < this.Playing.Count)
                 {
