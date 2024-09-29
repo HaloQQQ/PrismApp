@@ -16,7 +16,7 @@ namespace MauiAppNet8.ViewModels.Socket
                 return false;
             }
 
-            this.Socket = this._tcpClient = new NewTcpClient(Encoding.UTF8, this.Ip ?? this.DefaultIp, this._port);
+            this.Socket = this._tcpClient = new NewTcpClient(Encoding.UTF8, this.TryReConnect, this.Ip ?? this.DefaultIp, this._port);
 
             this._tcpClient.ReConnectPeriodMilliseconds = 3000;
 
@@ -28,6 +28,23 @@ namespace MauiAppNet8.ViewModels.Socket
                 this.Message += exception.Message.AppendLineOr();
 
             return true;
+        }
+
+        private bool _tryReConnect;
+
+        public bool TryReConnect
+        {
+            get => this._tryReConnect;
+            set
+            {
+                if (SetProperty<bool>(ref _tryReConnect, value))
+                {
+                    if (this.Socket.IsNotNullAnd())
+                    {
+                        this._tcpClient.TryReConnect = value;
+                    }
+                }
+            }
         }
     }
 }

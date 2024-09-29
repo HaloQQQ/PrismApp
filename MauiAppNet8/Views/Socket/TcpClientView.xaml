@@ -51,7 +51,7 @@
             <VerticalStackLayout Grid.Column="2">
                 <Label Text="是否重连:" VerticalOptions="Center" />
                 <Switch
-                    IsToggled="{Binding Socket.TryReConnect}"
+                    IsToggled="{Binding TryReConnect}"
                     OnColor="Orange"
                     ThumbColor="MediumSpringGreen" />
             </VerticalStackLayout>

@@ -235,7 +235,7 @@ namespace MusicPlayerModule.ViewModels.Base
         {
             if (currentMedia != null && this.DisplayPlaying.Count > 0)
             {
-                if (this.CurrentPlayOrder != null && this.CurrentPlayOrder.OrderType == MediaPlayOrderModel.EnumOrderType.Random)
+                if (this.CurrentPlayOrder.IsNotNullAnd(order => order.OrderType == MediaPlayOrderModel.EnumOrderType.Random))
                 {
                     this.SetAndPlay(this.DisplayPlaying[this._random.Next(this.DisplayPlaying.Count)]);
                     return;

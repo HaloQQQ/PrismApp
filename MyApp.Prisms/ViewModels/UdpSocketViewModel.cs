@@ -33,9 +33,7 @@ namespace MyApp.Prisms.ViewModels
                 return false;
             }
 
-            this.Socket = this._udpSocket = new NewUdpSocket(Encoding.UTF8, false, this.Ip, this._port, this.RemoteIp, remotePort, this.Name);
-
-            this._udpSocket.UnreachableDisconnect = this.UnreachableDisConnect;
+            this.Socket = this._udpSocket = new NewUdpSocket(Encoding.UTF8, this.UnreachableDisConnect, this.Ip, this._port, this.RemoteIp, remotePort, this.Name);
 
             this.Socket.ReceivedMessage += (from, to, bytes) =>
             {

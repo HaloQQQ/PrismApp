@@ -1,4 +1,5 @@
-﻿using MusicPlayerModule.Models;
+﻿using IceTea.Atom.Extensions;
+using MusicPlayerModule.Models;
 using System.Globalization;
 using System.Windows.Data;
 
@@ -8,7 +9,7 @@ namespace MusicPlayerModule.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values != null && values.Length > 1)
+            if (values.IsNotNullAnd(arr => arr.Length > 1))
             {
                 var musicMove = new MusicMoveModel();
 

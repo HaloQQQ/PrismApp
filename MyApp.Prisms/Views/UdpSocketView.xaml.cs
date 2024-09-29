@@ -109,7 +109,7 @@ namespace MyApp.Prisms.Views
             }
             else if (e.Command == NavigationCommands.Refresh)
             {
-                e.CanExecute = this.rhTxt.Document.Blocks.Count > 0 || (this._udpSocketViewModel != null && !string.IsNullOrEmpty(this._udpSocketViewModel.SendMessage?.Trim()));
+                e.CanExecute = this.rhTxt.Document.Blocks.Count > 0 || (this._udpSocketViewModel.IsNotNullAnd(model => !string.IsNullOrEmpty(model.SendMessage?.Trim())));
             }
         }
     }

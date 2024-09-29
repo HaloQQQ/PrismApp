@@ -68,7 +68,7 @@ namespace MyApp.Prisms.ViewModels
 
             this.AddMailAccountCommand = new DelegateCommand(() =>
             {
-                if (!Regex.IsMatch(this.CurrentMailPair.Key, "^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"))
+                if (!Regex.IsMatch(this.CurrentMailPair.Key, RegexConstants.EmailPattern))
                 {
                     eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage("要添加的邮箱不符合邮箱规则"));
                     return;

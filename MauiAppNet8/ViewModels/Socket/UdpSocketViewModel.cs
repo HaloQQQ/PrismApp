@@ -18,9 +18,7 @@ namespace MauiAppNet8.ViewModels.Socket
                 return false;
             }
 
-            this.Socket = this._udpSocket = new NewUdpSocket(Encoding.UTF8, false, this.Ip ?? this.DefaultIp, this._port, this.RemoteIp ?? this.DefaultIp, remotePort);
-
-            this._udpSocket.UnreachableDisconnect = this.UnreachableDisConnect;
+            this.Socket = this._udpSocket = new NewUdpSocket(Encoding.UTF8, this.UnreachableDisConnect, this.Ip ?? this.DefaultIp, this._port, this.RemoteIp ?? this.DefaultIp, remotePort);
 
             Socket.Started += ip => this.Message += $"{ip}已启动".AppendLineOr();
             Socket.StartFailed += ip => this.Message += $"{ip}连接失败".AppendLineOr();
