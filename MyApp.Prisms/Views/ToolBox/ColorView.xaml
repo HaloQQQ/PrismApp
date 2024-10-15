@@ -96,7 +96,7 @@
             VirtualizingPanel.IsVirtualizing="True">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <VirtualizingWrapPanel
+                    <VerticalVirtualizingWrapPanel
                         ChildHeight="40"
                         ChildWidth="80"
                         ScrollOffset="40" />

@@ -16,7 +16,7 @@
                 <system:Double>5</system:Double>
             </x:Array>
 
-            <Style x:Key="VirtualWrapPanel" TargetType="VirtualizingWrapPanel">
+            <Style x:Key="VerticalVirtualizingWrapPanel" TargetType="VerticalVirtualizingWrapPanel">
                 <Setter Property="ChildHeight" Value="80" />
                 <Setter Property="ChildWidth" Value="80" />
 
@@ -216,7 +216,7 @@
 
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <VirtualizingWrapPanel Style="{StaticResource VirtualWrapPanel}" />
+                    <VerticalVirtualizingWrapPanel Style="{StaticResource VerticalVirtualizingWrapPanel}" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ListBox>

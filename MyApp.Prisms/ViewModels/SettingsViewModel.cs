@@ -129,6 +129,11 @@ namespace MyApp.Prisms.ViewModels
             {
                 new _2048Window().ShowDialog();
             });
+
+            this.FiveChessCommand = new DelegateCommand(() =>
+            {
+                new FiveCircleWindow().ShowDialog();
+            });
         }
 
         #region Emails
@@ -159,6 +164,8 @@ namespace MyApp.Prisms.ViewModels
         #region Commands
 
         public ICommand _2048Command { get; private set; }
+        public ICommand FiveChessCommand { get; private set; }
+
 
         public ICommand CleanConfigWhenExitAppCommand { get; private set; }
 

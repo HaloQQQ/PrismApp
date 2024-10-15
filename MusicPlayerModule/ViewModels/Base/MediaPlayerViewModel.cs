@@ -45,7 +45,7 @@ namespace MusicPlayerModule.ViewModels.Base
 
         public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; protected set; }
 
-        protected void InitHotkeys(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
+        private void InitHotkeys(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
         {
             var groupName = this.MediaType;
             appConfigFileHotKeyManager.TryAdd(groupName, this.MediaHotKey_ConfigKey);

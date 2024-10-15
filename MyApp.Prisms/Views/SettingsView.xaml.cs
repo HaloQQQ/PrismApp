@@ -3,7 +3,7 @@ using IceTea.Atom.Utils.HotKey.Global.Contracts;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using IceTea.Wpf.Atom.Utils;
+using IceTea.Wpf.Atom.Utils.HotKey;
 
 namespace MyApp.Prisms.Views
 {

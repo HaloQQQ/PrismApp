@@ -52,7 +52,7 @@ namespace MyApp.Prisms.ViewModels
             eventAggregator.GetEvent<DialogMessageEvent>().Subscribe(item => this.DialogMessage = item);
 
             this.LoadConfig(config);
-            this.InitHotkeys(config, appConfigFileHotKeyManager);
+            this.InitHotkeys(appConfigFileHotKeyManager);
 
             this.SubscribeCustomCommandEvent();
 
@@ -268,10 +268,11 @@ namespace MyApp.Prisms.ViewModels
         #region 窗口标题栏快捷键
         public Dictionary<string, IHotKey<Key, ModifierKeys>> WindowKeyBindingMap { get; private set; }
 
-        private void InitHotkeys(IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
+        private void InitHotkeys(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
         {
             var groupName = "窗口";
             appConfigFileHotKeyManager.TryAdd(groupName, PreDefinedHotKeys.ConfigWindowAppHotKeys);
+
             foreach (var item in PreDefinedHotKeys.WindowAppHotKeys)
             {
                 appConfigFileHotKeyManager.TryRegisterItem(groupName, item);

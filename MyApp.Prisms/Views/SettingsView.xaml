@@ -293,7 +293,20 @@
             <TabItem Header="应用快捷键">
                 <ListBox ItemContainerStyle="{StaticResource ListBoxItem_General}" ItemsSource="{Binding DataContext.AppConfigFileHotKeyManager, RelativeSource={RelativeSource AncestorType=TabControl}}" />
             </TabItem>
-            <TabItem Header="常用">
+            <TabItem Header="小游戏">
+                <WrapPanel>
+                    <Button
+                        Command="{Binding DataContext._2048Command, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        Content="2048"
+                        Style="{StaticResource TransparentButtonBase}" />
+
+                    <Button
+                        Command="{Binding DataContext.FiveChessCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        Content="五子棋"
+                        Style="{StaticResource TransparentButtonBase}" />
+                </WrapPanel>
+            </TabItem>
+            <TabItem Header="设置">
                 <StackPanel>
                     <WrapPanel>
                         <TextBlock Style="{StaticResource ThemeBlk}" Text="窗口圆角:" />
@@ -306,11 +319,6 @@
                             TickFrequency="5"
                             Value="{Binding DataContext.CornerRadius, Converter={StaticResource CornerRadiusToDigitConverter}, RelativeSource={RelativeSource AncestorType=TabControl}}" />
                     </WrapPanel>
-
-                    <Button
-                        Command="{Binding DataContext._2048Command, RelativeSource={RelativeSource AncestorType=TabControl}}"
-                        Content="2048"
-                        Style="{StaticResource TransparentButtonBase}" />
 
                     <Button
                         Command="{Binding DataContext.CleanConfigWhenExitAppCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"

@@ -9,8 +9,7 @@
     MinWidth="1200"
     MinHeight="640"
     Style="{StaticResource WithoutTitleBar}"
-    WindowStartupLocation="CenterScreen"
-    mc:Ignorable="d">
+    WindowStartupLocation="CenterScreen">
     <DockPanel>
         <WindowTitleBar DockPanel.Dock="Top" />
 

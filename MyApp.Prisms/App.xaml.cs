@@ -24,6 +24,7 @@ using System.Linq;
 using IceTea.Atom.Utils.HotKey.Global.Contracts;
 using CustomControlsDemoModule;
 using IceTea.Wpf.Atom.Utils;
+using IceTea.Wpf.Atom.Utils.HotKey;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using MusicPlayerModule.Models;

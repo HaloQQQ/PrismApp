@@ -19,34 +19,34 @@ namespace CustomControlsDemoModule.ViewModels
     {
         public _2048ViewModel(IAppConfigFileHotKeyManager appHotKeyManager, IEventAggregator eventAggregator, IConfigManager configManager)
         {
-            this.Data = new ObservableCollection<Model>();
+            Data = new ObservableCollection<Model>();
 
-            this.InitData(configManager);
+            InitData(configManager);
 
-            this.InitHotKeys(appHotKeyManager);
+            InitHotKeys(appHotKeyManager);
 
-            this.StartPauseCommand = new DelegateCommand(() =>
+            StartPauseCommand = new DelegateCommand(() =>
             {
-                this.IsUsable = !this.IsUsable;
-            }, () => !this.IsGameOver).ObservesProperty(() => this.IsGameOver);
+                IsUsable = !IsUsable;
+            }, () => !IsGameOver).ObservesProperty(() => IsGameOver);
 
-            this.RePlayCommand = new DelegateCommand(() => this.InitData(configManager));
+            RePlayCommand = new DelegateCommand(() => InitData(configManager));
 
-            this.LeftCommand = new DelegateCommand(() =>
+            LeftCommand = new DelegateCommand(() =>
             {
                 bool changed = false;
 
                 for (int i = 0; i < 4; i++)
                 {
-                    var arr = this.Move(this.Data[i * 4], this.Data[i * 4 + 1], this.Data[i * 4 + 2], this.Data[i * 4 + 3]);
+                    var arr = Move(Data[i * 4], Data[i * 4 + 1], Data[i * 4 + 2], Data[i * 4 + 3]);
 
                     for (int j = 0; j < arr.Length; j++)
                     {
-                        if (this.Data[i * 4 + j] != arr[j])
+                        if (Data[i * 4 + j] != arr[j])
                         {
                             changed = true;
 
-                            this.Data[i * 4 + j].Value = arr[j];
+                            Data[i * 4 + j].Value = arr[j];
                         }
 
                     }
@@ -54,29 +54,29 @@ namespace CustomControlsDemoModule.ViewModels
 
                 if (changed)
                 {
-                    this.SetRandomValue();
+                    SetRandomValue();
                 }
                 else
                 {
                     CheckGameOver();
                 }
-            }).ObservesCanExecute(() => this.IsUsable);
+            }).ObservesCanExecute(() => IsUsable);
 
-            this.RightCommand = new DelegateCommand(() =>
+            RightCommand = new DelegateCommand(() =>
             {
                 bool changed = false;
 
                 for (int i = 0; i < 4; i++)
                 {
-                    var arr = this.Move(this.Data[i * 4 + 3], this.Data[i * 4 + 2], this.Data[i * 4 + 1], this.Data[i * 4]);
+                    var arr = Move(Data[i * 4 + 3], Data[i * 4 + 2], Data[i * 4 + 1], Data[i * 4]);
 
                     for (int j = 0; j < arr.Length; j++)
                     {
-                        if (this.Data[i * 4 + 3 - j] != arr[j])
+                        if (Data[i * 4 + 3 - j] != arr[j])
                         {
                             changed = true;
 
-                            this.Data[i * 4 + 3 - j].Value = arr[j];
+                            Data[i * 4 + 3 - j].Value = arr[j];
                         }
 
                     }
@@ -84,73 +84,73 @@ namespace CustomControlsDemoModule.ViewModels
 
                 if (changed)
                 {
-                    this.SetRandomValue();
+                    SetRandomValue();
                 }
                 else
                 {
                     CheckGameOver();
                 }
-            }).ObservesCanExecute(() => this.IsUsable);
+            }).ObservesCanExecute(() => IsUsable);
 
-            this.UpCommand = new DelegateCommand(() =>
+            UpCommand = new DelegateCommand(() =>
             {
                 bool changed = false;
 
                 for (int i = 0; i < 4; i++)
                 {
-                    var arr = this.Move(this.Data[i], this.Data[i + 4], this.Data[i + 8], this.Data[i + 12]);
+                    var arr = Move(Data[i], Data[i + 4], Data[i + 8], Data[i + 12]);
 
                     for (int j = 0; j < arr.Length; j++)
                     {
-                        if (this.Data[i + j * 4] != arr[j])
+                        if (Data[i + j * 4] != arr[j])
                         {
                             changed = true;
 
-                            this.Data[i + j * 4].Value = arr[j];
+                            Data[i + j * 4].Value = arr[j];
                         }
                     }
                 }
 
                 if (changed)
                 {
-                    this.SetRandomValue();
+                    SetRandomValue();
                 }
                 else
                 {
                     CheckGameOver();
                 }
-            }).ObservesCanExecute(() => this.IsUsable);
+            }).ObservesCanExecute(() => IsUsable);
 
-            this.DownCommand = new DelegateCommand(() =>
+            DownCommand = new DelegateCommand(() =>
             {
                 bool changed = false;
 
                 for (int i = 0; i < 4; i++)
                 {
-                    var arr = this.Move(this.Data[i + 12], this.Data[i + 8], this.Data[i + 4], this.Data[i]);
+                    var arr = Move(Data[i + 12], Data[i + 8], Data[i + 4], Data[i]);
 
                     for (int j = 0; j < arr.Length; j++)
                     {
-                        if (this.Data[i + (3 - j) * 4] != arr[j])
+                        if (Data[i + (3 - j) * 4] != arr[j])
                         {
                             changed = true;
 
-                            this.Data[i + (3 - j) * 4].Value = arr[j];
+                            Data[i + (3 - j) * 4].Value = arr[j];
                         }
                     }
                 }
 
                 if (changed)
                 {
-                    this.SetRandomValue();
+                    SetRandomValue();
                 }
                 else
                 {
                     CheckGameOver();
                 }
-            }).ObservesCanExecute(() => this.IsUsable);
+            }).ObservesCanExecute(() => IsUsable);
 
-            this._eventAggregator = eventAggregator;
+            _eventAggregator = eventAggregator;
         }
 
         #region Props
@@ -194,7 +194,7 @@ namespace CustomControlsDemoModule.ViewModels
             appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("重玩", Key.R, ModifierKeys.Alt));
             appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("播放/暂停", Key.Space, ModifierKeys.None));
 
-            this.KeyGestureDic = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
+            KeyGestureDic = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
         }
 
         private Random _random = new Random();
@@ -203,16 +203,16 @@ namespace CustomControlsDemoModule.ViewModels
         {
             var index = _random.Next(16);
 
-            if (this.Data[index] == 0)
+            if (Data[index] == 0)
             {
-                this.Data[index].Value = (index & 1) == 0 ? 2 : 4;
+                Data[index].Value = (index & 1) == 0 ? 2 : 4;
 
-                if (this.Data[index].IsCreating)
+                if (Data[index].IsCreating)
                 {
-                    this.Data[index].IsCreating = false;
+                    Data[index].IsCreating = false;
                 }
 
-                this.Data[index].IsCreating = true;
+                Data[index].IsCreating = true;
             }
             else
             {
@@ -221,19 +221,19 @@ namespace CustomControlsDemoModule.ViewModels
                     return;
                 }
 
-                this.SetRandomValue();
+                SetRandomValue();
             }
         }
 
         private readonly IEventAggregator _eventAggregator;
         private bool CheckGameOver()
         {
-            if (!this.Data.Any(x => x == 0))
+            if (!Data.Any(x => x == 0))
             {
-                this.IsGameOver = true;
-                this.IsUsable = false;
+                IsGameOver = true;
+                IsUsable = false;
 
-                this.MaxScore = Math.Max(this.MaxScore, this.Score);
+                MaxScore = Math.Max(MaxScore, Score);
 
                 _eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage("游戏结束"));
 
@@ -245,31 +245,31 @@ namespace CustomControlsDemoModule.ViewModels
 
         private void InitData(IConfigManager configManager)
         {
-            this.Data.Clear();
+            Data.Clear();
 
-            this.Data.AddRange(Enumerable.Repeat(0, 16).Select(v => new Model(v)));
+            Data.AddRange(Enumerable.Repeat(0, 16).Select(v => new Model(v)));
 
-            if (this.MaxScore == 0)
+            if (MaxScore == 0)
             {
                 var configNodes = new string[] { "Games", "2048", nameof(MaxScore) };
                 var maxScoreString = configManager.ReadConfigNode(configNodes);
 
                 if (!maxScoreString.IsNullOrBlank() && int.TryParse(maxScoreString, out int maxScore))
                 {
-                    this.MaxScore = maxScore;
+                    MaxScore = maxScore;
                 }
 
-                configManager.SetConfig += config => config.WriteConfigNode(this.MaxScore, configNodes);
+                configManager.SetConfig += config => config.WriteConfigNode(MaxScore, configNodes);
             }
 
-            this.MaxScore = Math.Max(this.MaxScore, this.Score);
-            this.Score = 0;
+            MaxScore = Math.Max(MaxScore, Score);
+            Score = 0;
 
-            this.IsGameOver = false;
-            this.IsUsable = true;
+            IsGameOver = false;
+            IsUsable = true;
 
-            this.SetRandomValue();
-            this.SetRandomValue();
+            SetRandomValue();
+            SetRandomValue();
         }
 
         private int[] Move(Model a, Model b, Model c, Model d)
@@ -307,7 +307,7 @@ namespace CustomControlsDemoModule.ViewModels
                     {
                         list.Add((temp[i] * 2, true));
 
-                        this.Score += (temp[i] * 2);
+                        Score += temp[i] * 2;
 
                         temp[i + 1] = 0;
                     }
@@ -346,7 +346,7 @@ namespace CustomControlsDemoModule.ViewModels
                                     list.Add((newV, true));
                                 }
 
-                                this.Score += newV;
+                                Score += newV;
 
                                 current = last;
                             }
@@ -421,11 +421,6 @@ namespace CustomControlsDemoModule.ViewModels
             {
                 return first.Value != second.Value;
             }
-
-            //public static implicit operator Model(int value)
-            //{
-            //    return new Model(value);
-            //}
 
             public static implicit operator int(Model first)
             {
