@@ -304,6 +304,11 @@
                         Command="{Binding DataContext.FiveChessCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         Content="五子棋"
                         Style="{StaticResource TransparentButtonBase}" />
+
+                    <Button
+                        Command="{Binding DataContext.ChineseChessCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        Content="象棋"
+                        Style="{StaticResource TransparentButtonBase}" />
                 </WrapPanel>
             </TabItem>
             <TabItem Header="设置">

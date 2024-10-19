@@ -1,11 +1,10 @@
-﻿using IceTea.Atom.Contracts;
+﻿using CustomControlsDemoModule.Models;
+using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
-using IceTea.Atom.Utils.HotKey.Contracts;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 using PrismAppBasicLib.MsgEvents;
 using System;
 using System.Collections.Generic;
@@ -15,38 +14,26 @@ using System.Windows.Input;
 
 namespace CustomControlsDemoModule.ViewModels
 {
-    internal class _2048ViewModel : BindableBase
+    internal class _2048ViewModel : GameBaseViewModel<_2048Model>
     {
-        public _2048ViewModel(IAppConfigFileHotKeyManager appHotKeyManager, IEventAggregator eventAggregator, IConfigManager configManager)
+        public _2048ViewModel(IAppConfigFileHotKeyManager appConfigFileHotKeyManager, IConfigManager configManager, IEventAggregator eventAggregator)
+            : base(appConfigFileHotKeyManager, configManager, eventAggregator)
         {
-            Data = new ObservableCollection<Model>();
-
-            InitData(configManager);
-
-            InitHotKeys(appHotKeyManager);
-
-            StartPauseCommand = new DelegateCommand(() =>
-            {
-                IsUsable = !IsUsable;
-            }, () => !IsGameOver).ObservesProperty(() => IsGameOver);
-
-            RePlayCommand = new DelegateCommand(() => InitData(configManager));
-
             LeftCommand = new DelegateCommand(() =>
             {
                 bool changed = false;
 
                 for (int i = 0; i < 4; i++)
                 {
-                    var arr = Move(Data[i * 4], Data[i * 4 + 1], Data[i * 4 + 2], Data[i * 4 + 3]);
+                    var arr = Move(Datas[i * 4], Datas[i * 4 + 1], Datas[i * 4 + 2], Datas[i * 4 + 3]);
 
                     for (int j = 0; j < arr.Length; j++)
                     {
-                        if (Data[i * 4 + j] != arr[j])
+                        if (Datas[i * 4 + j] != arr[j])
                         {
                             changed = true;
 
-                            Data[i * 4 + j].Value = arr[j];
+                            Datas[i * 4 + j].Value = arr[j];
                         }
 
                     }
@@ -68,15 +55,15 @@ namespace CustomControlsDemoModule.ViewModels
 
                 for (int i = 0; i < 4; i++)
                 {
-                    var arr = Move(Data[i * 4 + 3], Data[i * 4 + 2], Data[i * 4 + 1], Data[i * 4]);
+                    var arr = Move(Datas[i * 4 + 3], Datas[i * 4 + 2], Datas[i * 4 + 1], Datas[i * 4]);
 
                     for (int j = 0; j < arr.Length; j++)
                     {
-                        if (Data[i * 4 + 3 - j] != arr[j])
+                        if (Datas[i * 4 + 3 - j] != arr[j])
                         {
                             changed = true;
 
-                            Data[i * 4 + 3 - j].Value = arr[j];
+                            Datas[i * 4 + 3 - j].Value = arr[j];
                         }
 
                     }
@@ -98,15 +85,15 @@ namespace CustomControlsDemoModule.ViewModels
 
                 for (int i = 0; i < 4; i++)
                 {
-                    var arr = Move(Data[i], Data[i + 4], Data[i + 8], Data[i + 12]);
+                    var arr = Move(Datas[i], Datas[i + 4], Datas[i + 8], Datas[i + 12]);
 
                     for (int j = 0; j < arr.Length; j++)
                     {
-                        if (Data[i + j * 4] != arr[j])
+                        if (Datas[i + j * 4] != arr[j])
                         {
                             changed = true;
 
-                            Data[i + j * 4].Value = arr[j];
+                            Datas[i + j * 4].Value = arr[j];
                         }
                     }
                 }
@@ -127,15 +114,15 @@ namespace CustomControlsDemoModule.ViewModels
 
                 for (int i = 0; i < 4; i++)
                 {
-                    var arr = Move(Data[i + 12], Data[i + 8], Data[i + 4], Data[i]);
+                    var arr = Move(Datas[i + 12], Datas[i + 8], Datas[i + 4], Datas[i]);
 
                     for (int j = 0; j < arr.Length; j++)
                     {
-                        if (Data[i + (3 - j) * 4] != arr[j])
+                        if (Datas[i + (3 - j) * 4] != arr[j])
                         {
                             changed = true;
 
-                            Data[i + (3 - j) * 4].Value = arr[j];
+                            Datas[i + (3 - j) * 4].Value = arr[j];
                         }
                     }
                 }
@@ -149,8 +136,6 @@ namespace CustomControlsDemoModule.ViewModels
                     CheckGameOver();
                 }
             }).ObservesCanExecute(() => IsUsable);
-
-            _eventAggregator = eventAggregator;
         }
 
         #region Props
@@ -167,87 +152,12 @@ namespace CustomControlsDemoModule.ViewModels
             get => _maxScore;
             set { SetProperty(ref _maxScore, value); }
         }
-
-        private bool _isUsable = true;
-        public bool IsUsable
-        {
-            get => _isUsable;
-            set { SetProperty(ref _isUsable, value); }
-        }
-
-        private bool _isGameOver;
-        public bool IsGameOver
-        {
-            get => _isGameOver;
-            set { SetProperty(ref _isGameOver, value); }
-        }
         #endregion
 
-        #region Logical
-        public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; private set; }
-
-        private void InitHotKeys(IAppConfigFileHotKeyManager appHotKeyManager)
+        #region overrides
+        protected override void LoadConfig(IConfigManager configManager)
         {
-            var groupName = "2048";
-            appHotKeyManager.TryAdd(groupName, new[] { "HotKeys", "App", groupName }, "2048的快捷键");
-
-            appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("重玩", Key.R, ModifierKeys.Alt));
-            appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("播放/暂停", Key.Space, ModifierKeys.None));
-
-            KeyGestureDic = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
-        }
-
-        private Random _random = new Random();
-
-        private void SetRandomValue()
-        {
-            var index = _random.Next(16);
-
-            if (Data[index] == 0)
-            {
-                Data[index].Value = (index & 1) == 0 ? 2 : 4;
-
-                if (Data[index].IsCreating)
-                {
-                    Data[index].IsCreating = false;
-                }
-
-                Data[index].IsCreating = true;
-            }
-            else
-            {
-                if (CheckGameOver())
-                {
-                    return;
-                }
-
-                SetRandomValue();
-            }
-        }
-
-        private readonly IEventAggregator _eventAggregator;
-        private bool CheckGameOver()
-        {
-            if (!Data.Any(x => x == 0))
-            {
-                IsGameOver = true;
-                IsUsable = false;
-
-                MaxScore = Math.Max(MaxScore, Score);
-
-                _eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage("游戏结束"));
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private void InitData(IConfigManager configManager)
-        {
-            Data.Clear();
-
-            Data.AddRange(Enumerable.Repeat(0, 16).Select(v => new Model(v)));
+            base.LoadConfig(configManager);
 
             if (MaxScore == 0)
             {
@@ -261,21 +171,89 @@ namespace CustomControlsDemoModule.ViewModels
 
                 configManager.SetConfig += config => config.WriteConfigNode(MaxScore, configNodes);
             }
+        }
+
+        protected override void RePlay_CommandExecute()
+        {
+            base.RePlay_CommandExecute();
+
+            this.InitDatas();
+
+            Score = 0;
+        }
+
+        protected override void InitDatas()
+        {
+            Datas.Clear();
+
+            Datas.AddRange(Enumerable.Repeat(0, 16).Select(v => new _2048Model(v)));
 
             MaxScore = Math.Max(MaxScore, Score);
-            Score = 0;
-
-            IsGameOver = false;
-            IsUsable = true;
-
             SetRandomValue();
             SetRandomValue();
         }
 
-        private int[] Move(Model a, Model b, Model c, Model d)
+        protected override void InitHotKeys(IAppConfigFileHotKeyManager appHotKeyManager)
+        {
+            var groupName = "2048";
+            appHotKeyManager.TryAdd(groupName, new[] { "HotKeys", "App", groupName }, "2048的快捷键");
+
+            appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("重玩", Key.R, ModifierKeys.Alt));
+            appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("播放/暂停", Key.Space, ModifierKeys.None));
+
+            KeyGestureDic = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
+        }
+        #endregion
+
+        #region Logicals
+        private Random _random = new Random();
+
+        private void SetRandomValue()
+        {
+            var index = _random.Next(16);
+
+            if (Datas[index] == 0)
+            {
+                Datas[index].Value = (index & 1) == 0 ? 2 : 4;
+
+                if (Datas[index].IsCreating)
+                {
+                    Datas[index].IsCreating = false;
+                }
+
+                Datas[index].IsCreating = true;
+            }
+            else
+            {
+                if (CheckGameOver())
+                {
+                    return;
+                }
+
+                SetRandomValue();
+            }
+        }
+
+        private bool CheckGameOver()
+        {
+            if (!Datas.Any(x => x == 0))
+            {
+                IsGameOver = true;
+
+                MaxScore = Math.Max(MaxScore, Score);
+
+                _eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage("游戏结束"));
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private int[] Move(_2048Model a, _2048Model b, _2048Model c, _2048Model d)
         {
             int[] values = { a, b, c, d };
-            Model[] arr = { a, b, c, d };
+            _2048Model[] arr = { a, b, c, d };
             a.IsUpdating = false;
             b.IsUpdating = false;
             c.IsUpdating = false;
@@ -373,60 +351,10 @@ namespace CustomControlsDemoModule.ViewModels
         #endregion
 
         #region 公共
-        public ObservableCollection<Model> Data { get; private set; }
-
-        public ICommand RePlayCommand { get; }
-        public ICommand StartPauseCommand { get; }
-
         public ICommand LeftCommand { get; }
         public ICommand RightCommand { get; }
         public ICommand UpCommand { get; }
         public ICommand DownCommand { get; }
         #endregion
-
-        internal class Model : BindableBase
-        {
-            public Model(int value)
-            {
-                Value = value;
-            }
-
-            private int _value;
-            public int Value
-            {
-                get => _value;
-                set { SetProperty(ref _value, value); }
-            }
-
-            private bool _isCreating;
-            public bool IsCreating
-            {
-                get => _isCreating;
-                set { SetProperty(ref _isCreating, value); }
-            }
-
-            private bool _isUpdating;
-            public bool IsUpdating
-            {
-                get => _isUpdating;
-                set { SetProperty(ref _isUpdating, value); }
-            }
-
-            public static bool operator ==(Model first, Model second)
-            {
-                return first.Value == second.Value;
-            }
-
-            public static bool operator !=(Model first, Model second)
-            {
-                return first.Value != second.Value;
-            }
-
-            public static implicit operator int(Model first)
-            {
-                return first.Value;
-            }
-
-        }
     }
 }

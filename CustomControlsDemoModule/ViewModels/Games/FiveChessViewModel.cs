@@ -1,6 +1,5 @@
 ﻿using CustomControlsDemoModule.Models;
-using IceTea.Atom.BaseModels;
-using IceTea.Atom.Utils.HotKey.Contracts;
+using IceTea.Atom.Contracts;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
@@ -12,51 +11,22 @@ using System.Windows.Input;
 
 namespace CustomControlsDemoModule.ViewModels
 {
-    internal class FiveCircleViewModel : BaseNotifyModel
+    internal class FiveChessViewModel : GameBaseViewModel<ChessModel>
     {
-        public FiveCircleViewModel(IAppConfigFileHotKeyManager appHotKeyManager, IEventAggregator eventAggregator)
+        public FiveChessViewModel(IAppConfigFileHotKeyManager appConfigFileHotKeyManager, IConfigManager configManager, IEventAggregator eventAggregator)
+            : base(appConfigFileHotKeyManager, configManager, eventAggregator)
         {
-            InitHotKeys(appHotKeyManager);
-
-            this.Datas = new List<ChessModel>();
-
-            chessModels = new ChessModel[15][];
-            for (int i = 0; i < chessModels.Length; i++)
-            {
-                chessModels[i] = new ChessModel[15];
-                for (int j = 0; j < chessModels[i].Length; j++)
+            CancelLastCommand = new DelegateCommand(() =>
                 {
-                    chessModels[i][j] = new ChessModel(i, j);
-                    this.Datas.Add(chessModels[i][j]);
-                }
-            }
-
-            CancelLastCommand = new DelegateCommand(
-                    () => { LastModel?.Reset(); IsWhiteTurn = !IsWhiteTurn; },
-                    () => !IsGameOver && IsUsable && LastModel != null
+                    LastModel?.Reset();
+                    LastModel = null;
+                    IsWhiteTurn = !IsWhiteTurn;
+                },
+                () => !IsGameOver && IsUsable && LastModel != null
                 )
                 .ObservesProperty(() => this.LastModel)
                 .ObservesProperty(() => this.IsUsable)
                 .ObservesProperty(() => this.IsGameOver);
-
-            StartPauseCommand = new DelegateCommand(() =>
-            {
-                IsUsable = !IsUsable;
-            }, () => !IsGameOver).ObservesProperty(() => IsGameOver);
-
-            RePlayCommand = new DelegateCommand(() =>
-            {
-                IsGameOver = false;
-                IsUsable = true;
-
-                LastModel = null;
-                IsWhiteTurn = false;
-
-                foreach (var item in this.Datas)
-                {
-                    item.Reset();
-                }
-            });
 
             ChessModel.SwitchEvent += model =>
             {
@@ -65,7 +35,6 @@ namespace CustomControlsDemoModule.ViewModels
                 if (this.CheckSuccess(model))
                 {
                     IsGameOver = true;
-                    IsUsable = false;
 
                     var msg = (bool)model.IsWhite ? "白方" : "黑方";
                     eventAggregator.GetEvent<DialogMessageEvent>().Publish(new IceTea.Atom.Contracts.DialogMessage($"{msg}获胜"));
@@ -76,6 +45,47 @@ namespace CustomControlsDemoModule.ViewModels
                 IsWhiteTurn = !IsWhiteTurn;
             };
         }
+
+        #region overrides
+        protected override void RePlay_CommandExecute()
+        {
+            base.RePlay_CommandExecute();
+
+            LastModel = null;
+            IsWhiteTurn = false;
+
+            foreach (var item in this.Datas)
+            {
+                item.Reset();
+            }
+        }
+
+        protected override void InitDatas()
+        {
+            chessModels = new ChessModel[15][];
+            for (int i = 0; i < chessModels.Length; i++)
+            {
+                chessModels[i] = new ChessModel[15];
+                for (int j = 0; j < chessModels[i].Length; j++)
+                {
+                    chessModels[i][j] = new ChessModel(i, j);
+                    this.Datas.Add(chessModels[i][j]);
+                }
+            }
+        }
+
+        protected override void InitHotKeys(IAppConfigFileHotKeyManager appHotKeyManager)
+        {
+            var groupName = "五子棋";
+            appHotKeyManager.TryAdd(groupName, new[] { "HotKeys", "App", groupName });
+
+            appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("重玩", Key.R, ModifierKeys.Alt));
+            appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("播放/暂停", Key.Space, ModifierKeys.None));
+            appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("悔棋", Key.Z, ModifierKeys.Control));
+
+            KeyGestureDic = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
+        }
+        #endregion
 
         private bool CheckSuccess(ChessModel chessModel)
         {
@@ -183,35 +193,7 @@ namespace CustomControlsDemoModule.ViewModels
             }
         }
 
-        public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; private set; }
-
-        private void InitHotKeys(IAppConfigFileHotKeyManager appHotKeyManager)
-        {
-            var groupName = "五子棋";
-            appHotKeyManager.TryAdd(groupName, new[] { "HotKeys", "App", groupName });
-
-            appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("重玩", Key.R, ModifierKeys.Alt));
-            appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("播放/暂停", Key.Space, ModifierKeys.None));
-            appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("悔棋", Key.Z, ModifierKeys.Control));
-
-            KeyGestureDic = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
-        }
-
         #region Props
-        private bool _isUsable = true;
-        public bool IsUsable
-        {
-            get => _isUsable;
-            set { SetProperty(ref _isUsable, value); }
-        }
-
-        private bool _isGameOver;
-        public bool IsGameOver
-        {
-            get => _isGameOver;
-            set { SetProperty(ref _isGameOver, value); }
-        }
-
         private bool _isWhiteTurn;
         public bool IsWhiteTurn
         {
@@ -229,11 +211,8 @@ namespace CustomControlsDemoModule.ViewModels
 
         #region Commands
         public ICommand CancelLastCommand { get; }
-        public ICommand RePlayCommand { get; }
-        public ICommand StartPauseCommand { get; }
         #endregion
 
         private ChessModel[][] chessModels;
-        public IList<ChessModel> Datas { get; }
     }
 }

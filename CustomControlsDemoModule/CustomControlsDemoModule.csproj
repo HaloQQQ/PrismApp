@@ -4,16 +4,11 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Resources\Images\默认头像.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\PrismAppBasicLib\PrismAppBasicLib.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\默认头像.png" />
+    <Resource Include="Resources\Images\*" />
+    <Resource Include="Resources\pictures\*" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Views\TextBoxesView.xaml.cs">

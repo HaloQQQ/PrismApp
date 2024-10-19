@@ -132,7 +132,12 @@ namespace MyApp.Prisms.ViewModels
 
             this.FiveChessCommand = new DelegateCommand(() =>
             {
-                new FiveCircleWindow().ShowDialog();
+                new FiveChessWindow().ShowDialog();
+            });
+
+            this.ChineseChessCommand = new DelegateCommand(() =>
+            {
+                new ChineseChessWindow().ShowDialog();
             });
         }
 
@@ -165,6 +170,8 @@ namespace MyApp.Prisms.ViewModels
 
         public ICommand _2048Command { get; private set; }
         public ICommand FiveChessCommand { get; private set; }
+        public ICommand ChineseChessCommand { get; private set; }
+
 
 
         public ICommand CleanConfigWhenExitAppCommand { get; private set; }
