@@ -15,7 +15,7 @@ namespace CustomControlsDemoModule.Models
         兵
     }
 
-    [DebuggerDisplay("IsRetd={Data.IsRead}, Type={Data.Type}")]
+    [DebuggerDisplay("IsRed={Data.IsRed}, Type={Data.Type}")]
     internal class ChineseChessModel : BaseNotifyModel
     {
         public ChineseChessModel(int row, int column)
@@ -53,8 +53,8 @@ namespace CustomControlsDemoModule.Models
             }
         }
 
-        private InnerChineseChessModel _data;
-        public InnerChineseChessModel Data
+        private IChineseChess _data;
+        public IChineseChess Data
         {
             get => _data;
             internal set => SetProperty(ref _data, value);

@@ -5,40 +5,52 @@ using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using PrismAppBasicLib.MsgEvents;
-using System.Linq;
 using System.Windows.Input;
 
 namespace CustomControlsDemoModule.ViewModels
 {
     internal class ChineseChessViewModel : GameBaseViewModel<ChineseChessModel>
     {
+        protected override string GameName => "象棋";
+
         public ChineseChessViewModel(IAppConfigFileHotKeyManager appConfigFileHotKeyManager, IConfigManager configManager, IEventAggregator eventAggregator)
             : base(appConfigFileHotKeyManager, configManager, eventAggregator)
         {
+            this.CancelLastCommand = new DelegateCommand(() =>
+            {
+                LastModel.Data.GoBack(this.Datas);
+                LastModel = null;
+                IsRedTurn = !IsRedTurn;
+            },
+            () => !IsGameOver && IsUsable && LastModel != null
+            )
+            .ObservesProperty(() => this.LastModel)
+            .ObservesProperty(() => this.IsUsable)
+            .ObservesProperty(() => this.IsGameOver);
+
             this.SelectOrPutCommand = new DelegateCommand<ChineseChessModel>(model =>
             {
-                var isJiangjun = model.Data.Type == ChessType.帥;
+                var isJiangJun = model.Data.Type == ChessType.帥;
 
-                if (this.CurrentChess != null)
+                // 移动棋子到这里
+                if (this.CurrentChess != null && this.CurrentChess.Data.TryPutTo(Datas, model.Data))
                 {
-                    // 移动棋子到这里
-                    if (this.CurrentChess.Data.TryPutTo(Datas, model.Data))
+                    this.LastModel = this.CurrentChess;
+
+                    this.CurrentChess = null;
+
+                    if (isJiangJun)
                     {
-                        this.CurrentChess = null;
+                        IsGameOver = true;
+                        var actor = IsRedTurn ? "红方" : "黑方";
 
-                        if (isJiangjun)
-                        {
-                            IsGameOver = true;
-                            var actor = IsRedTurn ? "红方" : "黑方";
-
-                            eventAggregator.GetEvent<DialogMessageEvent>().Publish(new IceTea.Atom.Contracts.DialogMessage($"{actor}获胜"));
-                            return;
-                        }
-
-                        this.IsRedTurn = !IsRedTurn;
-
+                        eventAggregator.GetEvent<DialogMessageEvent>().Publish(new IceTea.Atom.Contracts.DialogMessage($"{actor}获胜"));
                         return;
                     }
+
+                    this.IsRedTurn = !IsRedTurn;
+
+                    return;
                 }
 
                 if (!model.Data.IsEmpty && model.Data.IsRed == IsRedTurn)
@@ -60,12 +72,13 @@ namespace CustomControlsDemoModule.ViewModels
         {
             base.RePlay_CommandExecute();
 
+            this.InitDatas();
+
             CurrentChess = null;
+            LastModel = null;
             IsRedTurn = true;
 
             Angle = 0;
-
-            this.InitDatas();
         }
 
         protected override void InitDatas()
@@ -169,16 +182,10 @@ namespace CustomControlsDemoModule.ViewModels
             }
         }
 
-        protected override void InitHotKeys(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
+        protected override void InitHotKeysCore(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
         {
-            var groupName = "象棋";
-            appConfigFileHotKeyManager.TryAdd(groupName, new[] { "HotKeys", "App", groupName });
-
-            appConfigFileHotKeyManager.TryRegisterItem(groupName, new AppHotKey("重玩", Key.R, ModifierKeys.Alt));
-            appConfigFileHotKeyManager.TryRegisterItem(groupName, new AppHotKey("播放/暂停", Key.Space, ModifierKeys.None));
-            appConfigFileHotKeyManager.TryRegisterItem(groupName, new AppHotKey("棋盘换向", Key.D, ModifierKeys.Alt));
-
-            KeyGestureDic = appConfigFileHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
+            appConfigFileHotKeyManager.TryRegisterItem(GameName, new AppHotKey("悔棋", Key.Z, ModifierKeys.Control));
+            appConfigFileHotKeyManager.TryRegisterItem(GameName, new AppHotKey("棋盘换向", Key.D, ModifierKeys.Alt));
         }
         #endregion
 
@@ -203,10 +210,19 @@ namespace CustomControlsDemoModule.ViewModels
             get => _currentChess;
             private set => SetProperty(ref _currentChess, value);
         }
+
+        private ChineseChessModel _lastModel;
+        private ChineseChessModel LastModel
+        {
+            get => _lastModel;
+            set => SetProperty(ref _lastModel, value);
+        }
         #endregion
 
         #region Commands
         public ICommand SelectOrPutCommand { get; }
+
+        public ICommand CancelLastCommand { get; }
 
         public ICommand SwitchDirectionCommand { get; }
         #endregion

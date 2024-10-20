@@ -6,27 +6,28 @@ using Prism.Commands;
 using Prism.Events;
 using PrismAppBasicLib.MsgEvents;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Input;
 
 namespace CustomControlsDemoModule.ViewModels
 {
     internal class FiveChessViewModel : GameBaseViewModel<ChessModel>
     {
+        protected override string GameName => "五子棋";
+
         public FiveChessViewModel(IAppConfigFileHotKeyManager appConfigFileHotKeyManager, IConfigManager configManager, IEventAggregator eventAggregator)
             : base(appConfigFileHotKeyManager, configManager, eventAggregator)
         {
             CancelLastCommand = new DelegateCommand(() =>
-                {
-                    LastModel?.Reset();
-                    LastModel = null;
-                    IsWhiteTurn = !IsWhiteTurn;
-                },
-                () => !IsGameOver && IsUsable && LastModel != null
-                )
-                .ObservesProperty(() => this.LastModel)
-                .ObservesProperty(() => this.IsUsable)
-                .ObservesProperty(() => this.IsGameOver);
+            {
+                LastModel?.Reset();
+                LastModel = null;
+                IsWhiteTurn = !IsWhiteTurn;
+            },
+            () => !IsGameOver && IsUsable && LastModel != null
+            )
+            .ObservesProperty(() => this.LastModel)
+            .ObservesProperty(() => this.IsUsable)
+            .ObservesProperty(() => this.IsGameOver);
 
             ChessModel.SwitchEvent += model =>
             {
@@ -74,16 +75,9 @@ namespace CustomControlsDemoModule.ViewModels
             }
         }
 
-        protected override void InitHotKeys(IAppConfigFileHotKeyManager appHotKeyManager)
+        protected override void InitHotKeysCore(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
         {
-            var groupName = "五子棋";
-            appHotKeyManager.TryAdd(groupName, new[] { "HotKeys", "App", groupName });
-
-            appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("重玩", Key.R, ModifierKeys.Alt));
-            appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("播放/暂停", Key.Space, ModifierKeys.None));
-            appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("悔棋", Key.Z, ModifierKeys.Control));
-
-            KeyGestureDic = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
+            appConfigFileHotKeyManager.TryRegisterItem(GameName, new AppHotKey("悔棋", Key.Z, ModifierKeys.Control));
         }
         #endregion
 
@@ -93,6 +87,11 @@ namespace CustomControlsDemoModule.ViewModels
             var column = chessModel.Column;
 
             var isWhite = chessModel.IsWhite;
+
+            if (isWhite == null)
+            {
+                return false;
+            }
 
             var list = new List<ChessModel>();
             // 水平

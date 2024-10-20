@@ -28,8 +28,8 @@
 
                 <Button.Style>
                     <Style BasedOn="{StaticResource {x:Type ButtonBase}}" TargetType="Button">
-                        <Setter Property="Width" Value="70" />
-                        <Setter Property="Height" Value="70" />
+                        <Setter Property="Width" Value="75" />
+                        <Setter Property="Height" Value="75" />
 
                         <Setter Property="MyAttachProperty.CornerRadius" Value="{Binding Width, RelativeSource={RelativeSource Self}, Converter={StaticResource DigitToCornerRadiusConverter}}" />
 
@@ -160,6 +160,8 @@
             x:Key="RePlayButton"
             BasedOn="{StaticResource FunctionButton}"
             TargetType="Button">
+            <Setter Property="FontSize" Value="30" />
+
             <Setter Property="Command" Value="{Binding RePlayCommand}" />
             <Setter Property="Content" Value="&#xe63e;" />
 
@@ -175,6 +177,18 @@
 
             <Setter Property="ToolTip" Value="{Binding KeyGestureDic[棋盘换向].ToolTip}" />
         </Style>
+
+        <Style
+            x:Key="CancelLastButton"
+            BasedOn="{StaticResource FunctionButton}"
+            TargetType="Button">
+            <Setter Property="FontSize" Value="30" />
+
+            <Setter Property="Command" Value="{Binding CancelLastCommand}" />
+            <Setter Property="Content" Value="&#xe651;" />
+
+            <Setter Property="ToolTip" Value="{Binding KeyGestureDic[悔棋].ToolTip}" />
+        </Style>
     </UserControl.Resources>
 
     <UserControl.InputBindings>
@@ -187,6 +201,11 @@
             Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"
             Command="{Binding StartPauseCommand}"
             Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" />
+
+        <KeyBinding
+            Key="{Binding KeyGestureDic[悔棋].SelectedKey}"
+            Command="{Binding CancelLastCommand}"
+            Modifiers="{Binding KeyGestureDic[悔棋].ModifierKey}" />
 
         <KeyBinding
             Key="{Binding KeyGestureDic[棋盘换向].SelectedKey}"
@@ -251,13 +270,15 @@
                         VerticalAlignment="Center"
                         DockPanel.Dock="Left">
                         <Button Style="{StaticResource StartPauseButton}" />
-                        <Button FontSize="30" Style="{StaticResource RePlayButton}" />
+                        <Button Style="{StaticResource RePlayButton}" />
+
+                        <Button Style="{StaticResource CancelLastButton}" />
 
                         <Button Style="{StaticResource SwitchDirectionButton}" />
                     </WrapPanel>
                 </DockPanel>
 
-                <Grid Margin="0,5">
+                <Grid Margin="0,5,0,10">
                     <Image>
                         <Image.Style>
                             <Style TargetType="Image">
@@ -273,7 +294,7 @@
                     </Image>
 
                     <ListBox
-                        Padding="3,2"
+                        Padding="20,12"
                         ItemContainerStyle="{StaticResource ListBoxItem_General}"
                         ItemTemplate="{StaticResource Chess}"
                         ItemsSource="{Binding Datas}">

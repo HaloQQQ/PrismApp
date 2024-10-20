@@ -12,109 +12,93 @@ namespace CustomControlsDemoModule.Models
         {
         }
 
-        protected override bool TryPutToCore(IList<ChineseChessModel> datas, InnerChineseChessModel targetData)
+        protected override bool TryPutToCore(IList<ChineseChessModel> datas, IChineseChess targetData)
         {
             int fromRow = this.Row, fromColumn = this.Column;
             int toRow = targetData.Row, toColumn = targetData.Column;
 
             // 左上 - -
-            if (fromColumn - 1 == targetData.Column && fromRow - 2 == targetData.Row)
+            if (fromColumn - 1 == toColumn && fromRow - 2 == toRow)
             {
                 if (datas[GetIndex(fromRow - 1, fromColumn)].Data.IsEmpty)
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+
+                return false;
             }
 
-            if (fromColumn - 2 == targetData.Column && fromRow - 1 == targetData.Row)
+            if (fromColumn - 2 == toColumn && fromRow - 1 == toRow)
             {
                 if (datas[GetIndex(fromRow, fromColumn - 1)].Data.IsEmpty)
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+
+                return false;
             }
 
             // 左下 - +
-            if (fromColumn - 1 == targetData.Column && fromRow + 2 == targetData.Row)
+            if (fromColumn - 1 == toColumn && fromRow + 2 == toRow)
             {
                 if (datas[GetIndex(fromRow + 1, fromColumn)].Data.IsEmpty)
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+
+                return false;
             }
 
-            if (fromColumn - 2 == targetData.Column && fromRow + 1 == targetData.Row)
+            if (fromColumn - 2 == toColumn && fromRow + 1 == toRow)
             {
                 if (datas[GetIndex(fromRow, fromColumn - 1)].Data.IsEmpty)
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+
+                return false;
             }
 
             // 右上 + -
-            if (fromColumn + 1 == targetData.Column && fromRow - 2 == targetData.Row)
+            if (fromColumn + 1 == toColumn && fromRow - 2 == toRow)
             {
                 if (datas[GetIndex(fromRow - 1, fromColumn)].Data.IsEmpty)
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+
+                return false;
             }
 
-            if (fromColumn + 2 == targetData.Column && fromRow - 1 == targetData.Row)
+            if (fromColumn + 2 == toColumn && fromRow - 1 == toRow)
             {
                 if (datas[GetIndex(fromRow, fromColumn + 1)].Data.IsEmpty)
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+
+                return false;
             }
 
             // 右下 + +
-            if (fromColumn + 1 == targetData.Column && fromRow + 2 == targetData.Row)
+            if (fromColumn + 1 == toColumn && fromRow + 2 == toRow)
             {
                 if (datas[GetIndex(fromRow + 1, fromColumn)].Data.IsEmpty)
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+
+                return false;
             }
 
-            if (fromColumn + 2 == targetData.Column && fromRow + 1 == targetData.Row)
+            if (fromColumn + 2 == toColumn && fromRow + 1 == toRow)
             {
                 if (datas[GetIndex(fromRow, fromColumn + 1)].Data.IsEmpty)
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+
+                return false;
             }
 
             return false;

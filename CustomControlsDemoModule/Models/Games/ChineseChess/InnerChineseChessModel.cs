@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 
 namespace CustomControlsDemoModule.Models
 {
-    [DebuggerDisplay("IsRetd={IsRead}, Type={Type}")]
+    [DebuggerDisplay("IsRed={IsRed}, Type={Type}")]
     internal class InnerChineseChessModel : IChineseChess
     {
         public InnerChineseChessModel(int row, int column)
@@ -108,6 +108,7 @@ namespace CustomControlsDemoModule.Models
 
         public int GetIndex(int row, int column) => row * 9 + column;
 
+        #region Current
         public bool? IsRed { get; private set; }
 
         public ChessType? Type { get; private set; }
@@ -116,27 +117,86 @@ namespace CustomControlsDemoModule.Models
 
         public int Row { get; private set; }
         public int Column { get; private set; }
+        #endregion
 
-        public InnerChineseChessModel Move(int row, int column)
+        #region Last
+        public bool? LastIsRed { get; private set; }
+
+        public ChessType? LastType { get; private set; }
+
+        public ImageSource LastBackSource { get; private set; }
+
+        public int LastRow { get; private set; }
+        public int LastColumn { get; private set; }
+        #endregion
+
+        public void Backup()
         {
+            this.LastRow = this.Row;
+            this.LastColumn = this.Column;
+
+            this.LastIsRed = this.IsRed;
+            this.LastType = this.Type;
+            this.LastBackSource = this.BackSource;
+        }
+
+        public void Restore()
+        {
+            this.Row = this.LastRow;
+            this.Column = this.LastColumn;
+
+            this.IsRed = this.LastIsRed;
+            this.Type = this.LastType;
+            this.BackSource = this.LastBackSource;
+        }
+
+        public bool GoBack(IList<ChineseChessModel> datas)
+        {
+            datas.AssertNotEmpty(nameof(IList<ChineseChessModel>));
+
+            int fromRow = this.LastRow, fromColumn = this.LastColumn;
+            int toRow = this.Row, toColumn = this.Column;
+
+            var fromModel = datas[GetIndex(fromRow, fromColumn)];
+            var toModel = datas[GetIndex(toRow, toColumn)];
+
+            fromModel.Data.Restore();
+            toModel.Data.Restore();
+
+            var temp = fromModel.Data;
+
+            fromModel.Data = toModel.Data;
+            toModel.Data = temp;
+
+            return true;
+        }
+
+        public IChineseChess MoveTo(IList<ChineseChessModel> datas, int row, int column)
+        {
+            datas.AssertNotEmpty(nameof(IList<ChineseChessModel>));
+
             this.Row = row;
             this.Column = column;
+
+            datas[GetIndex(row, column)].Data = this;
 
             return this;
         }
 
-        public InnerChineseChessModel Reset(int row, int column)
+        public IChineseChess ResetAndMoveTo(IList<ChineseChessModel> datas, int row, int column)
         {
+            datas.AssertNotEmpty(nameof(IList<ChineseChessModel>));
+
             this.IsRed = null;
             this.Type = null;
 
             this.BackSource = null;
 
-            return this.Move(row, column);
+            return this.MoveTo(datas, row, column);
         }
 
         #region TryPut
-        protected virtual bool TryPutToCore(IList<ChineseChessModel> datas, InnerChineseChessModel targetData)
+        protected virtual bool TryPutToCore(IList<ChineseChessModel> datas, IChineseChess targetData)
         {
             return false;
         }
@@ -150,11 +210,13 @@ namespace CustomControlsDemoModule.Models
         /// <param name="datas"></param>
         /// <param name="target"></param>
         /// <returns></returns>
-        public bool TryPutTo(IList<ChineseChessModel> datas, InnerChineseChessModel targetData)
+        public bool TryPutTo(IList<ChineseChessModel> datas, IChineseChess targetData)
         {
-            targetData.AssertNotNull(nameof(InnerChineseChessModel));
+            datas.AssertNotEmpty(nameof(IList<ChineseChessModel>));
 
-            if (this.IsEmpty || this.IsRed == targetData.IsRed || this == targetData)
+            targetData.AssertNotNull(nameof(IChineseChess));
+
+            if (this.IsEmpty || this.IsRed == targetData.IsRed)
             {
                 return false;
             }
@@ -164,10 +226,14 @@ namespace CustomControlsDemoModule.Models
                 int fromRow = this.Row, fromColumn = this.Column;
                 int toRow = targetData.Row, toColumn = targetData.Column;
 
-                // 交换空白棋子和车 OR  车 吃
-                datas[GetIndex(toRow, toColumn)].Data = this.Move(toRow, toColumn);
+                this.Backup();
 
-                datas[GetIndex(fromRow, fromColumn)].Data = targetData.Reset(fromRow, fromColumn);
+                // 交换空白棋子和车 OR  车 吃
+                this.MoveTo(datas, toRow, toColumn);
+
+                targetData.Backup();
+
+                targetData.ResetAndMoveTo(datas, fromRow, fromColumn);
 
                 return true;
             }

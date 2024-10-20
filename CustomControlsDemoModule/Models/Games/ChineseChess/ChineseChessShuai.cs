@@ -10,7 +10,7 @@ namespace CustomControlsDemoModule.Models
         {
         }
 
-        protected override bool TryPutToCore(IList<ChineseChessModel> datas, InnerChineseChessModel targetData)
+        protected override bool TryPutToCore(IList<ChineseChessModel> datas, IChineseChess targetData)
         {
             int fromRow = this.Row, fromColumn = this.Column;
             int toRow = targetData.Row, toColumn = targetData.Column;

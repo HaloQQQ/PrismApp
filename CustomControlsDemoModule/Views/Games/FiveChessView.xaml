@@ -198,7 +198,7 @@
                 TargetType="Button">
                 <Setter Property="Margin" Value="10,0" />
 
-                <Setter Property="FontSize" Value="30" />
+                <Setter Property="FontSize" Value="40" />
 
                 <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             </Style>
@@ -224,6 +224,8 @@
                 x:Key="RePlayButton"
                 BasedOn="{StaticResource FunctionButton}"
                 TargetType="Button">
+                <Setter Property="FontSize" Value="30" />
+
                 <Setter Property="Command" Value="{Binding RePlayCommand}" />
                 <Setter Property="Content" Value="&#xe63e;" />
 
@@ -234,6 +236,8 @@
                 x:Key="CancelLastButton"
                 BasedOn="{StaticResource FunctionButton}"
                 TargetType="Button">
+                <Setter Property="FontSize" Value="30" />
+
                 <Setter Property="Command" Value="{Binding CancelLastCommand}" />
                 <Setter Property="Content" Value="&#xe651;" />
 

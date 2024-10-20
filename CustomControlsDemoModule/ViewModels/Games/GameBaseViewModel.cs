@@ -1,17 +1,21 @@
 ﻿using IceTea.Atom.BaseModels;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.HotKey.Contracts;
+using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 
 namespace CustomControlsDemoModule.ViewModels
 {
     internal abstract class GameBaseViewModel<T> : BaseNotifyModel where T : BaseNotifyModel
     {
+        protected virtual string GameName { get; }
+
         public GameBaseViewModel(IAppConfigFileHotKeyManager appConfigFileHotKeyManager, IConfigManager configManager, IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
@@ -32,7 +36,27 @@ namespace CustomControlsDemoModule.ViewModels
         }
 
         #region Logicals
-        protected abstract void InitHotKeys(IAppConfigFileHotKeyManager appHotKeyManager);
+        protected void InitHotKeys(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
+        {
+            var groupName = GameName;
+
+            appConfigFileHotKeyManager.TryAdd(groupName, new[] { "HotKeys", "App", groupName });
+
+            appConfigFileHotKeyManager.TryRegisterItem(groupName, new AppHotKey("重玩", Key.R, ModifierKeys.Alt));
+            appConfigFileHotKeyManager.TryRegisterItem(groupName, new AppHotKey("播放/暂停", Key.Space, ModifierKeys.None));
+
+            this.InitHotKeysCore(appConfigFileHotKeyManager);
+
+            KeyGestureDic = appConfigFileHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
+        }
+
+        /// <summary>
+        /// 注册快捷键
+        /// </summary>
+        /// <param name="appConfigFileHotKeyManager"></param>
+        protected virtual void InitHotKeysCore(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
+        {
+        }
 
         protected abstract void InitDatas();
 
@@ -49,7 +73,7 @@ namespace CustomControlsDemoModule.ViewModels
         #endregion
 
         #region Props
-        public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; protected set; }
+        public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; private set; }
 
         public IList<T> Datas { get; private set; }
 

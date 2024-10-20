@@ -12,14 +12,14 @@ namespace CustomControlsDemoModule.Models
         {
         }
 
-        protected override bool TryPutToCore(IList<ChineseChessModel> datas, InnerChineseChessModel targetData)
+        protected override bool TryPutToCore(IList<ChineseChessModel> datas, IChineseChess targetData)
         {
             int fromRow = this.Row, fromColumn = this.Column;
             int toRow = targetData.Row, toColumn = targetData.Column;
 
             // 移动
-            var isSameRow = Row == toRow;
-            var isSameColumn = Column == toColumn;
+            var isSameRow = fromRow == toRow;
+            var isSameColumn = fromColumn == toColumn;
 
             if (!isSameRow && !isSameColumn)
             {
@@ -41,7 +41,7 @@ namespace CustomControlsDemoModule.Models
 
                 while (currentColumn != toColumn)
                 {
-                    if (!datas[GetIndex(Row, currentColumn)].Data.IsEmpty)
+                    if (!datas[GetIndex(fromRow, currentColumn)].Data.IsEmpty)
                     {
                         // 移动
                         if (targetData.IsEmpty)
@@ -55,6 +55,7 @@ namespace CustomControlsDemoModule.Models
                     currentColumn = currentColumn + step;
                 }
 
+                // 开炮
                 if (!targetData.IsEmpty && mountainsCount != 1)
                 {
                     return false;
@@ -67,7 +68,7 @@ namespace CustomControlsDemoModule.Models
 
                 while (currentRow != toRow)
                 {
-                    if (!datas[GetIndex(currentRow, Column)].Data.IsEmpty)
+                    if (!datas[GetIndex(currentRow, fromColumn)].Data.IsEmpty)
                     {
                         // 移动
                         if (targetData.IsEmpty)

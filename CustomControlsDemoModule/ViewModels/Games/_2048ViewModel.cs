@@ -1,7 +1,6 @@
 ﻿using CustomControlsDemoModule.Models;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
-using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -16,6 +15,8 @@ namespace CustomControlsDemoModule.ViewModels
 {
     internal class _2048ViewModel : GameBaseViewModel<_2048Model>
     {
+        protected override string GameName => "2048";
+
         public _2048ViewModel(IAppConfigFileHotKeyManager appConfigFileHotKeyManager, IConfigManager configManager, IEventAggregator eventAggregator)
             : base(appConfigFileHotKeyManager, configManager, eventAggregator)
         {
@@ -189,19 +190,9 @@ namespace CustomControlsDemoModule.ViewModels
             Datas.AddRange(Enumerable.Repeat(0, 16).Select(v => new _2048Model(v)));
 
             MaxScore = Math.Max(MaxScore, Score);
+
             SetRandomValue();
             SetRandomValue();
-        }
-
-        protected override void InitHotKeys(IAppConfigFileHotKeyManager appHotKeyManager)
-        {
-            var groupName = "2048";
-            appHotKeyManager.TryAdd(groupName, new[] { "HotKeys", "App", groupName }, "2048的快捷键");
-
-            appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("重玩", Key.R, ModifierKeys.Alt));
-            appHotKeyManager.TryRegisterItem(groupName, new AppHotKey("播放/暂停", Key.Space, ModifierKeys.None));
-
-            KeyGestureDic = appHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
         }
         #endregion
 
