@@ -49,6 +49,15 @@
                                 </DataTrigger.Binding>
 
                                 <Setter Property="BorderBrush" Value="Red" />
+
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect
+                                            BlurRadius="10"
+                                            Opacity="0.6"
+                                            ShadowDepth="20" />
+                                    </Setter.Value>
+                                </Setter>
                             </DataTrigger>
 
                             <Trigger Property="IsMouseOver" Value="True">

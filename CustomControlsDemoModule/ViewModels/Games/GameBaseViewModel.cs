@@ -36,6 +36,8 @@ namespace CustomControlsDemoModule.ViewModels
         }
 
         #region Logicals
+        protected abstract bool CheckGameOver();
+
         protected void InitHotKeys(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
         {
             var groupName = GameName;

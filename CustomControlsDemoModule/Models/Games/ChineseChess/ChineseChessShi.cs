@@ -35,12 +35,7 @@ namespace CustomControlsDemoModule.Models
                 }
             }
 
-            if (Math.Abs(toRow - fromRow) == 1 && Math.Abs(toColumn - fromColumn) == 1)
-            {
-                return true;
-            }
-
-            return false;
+            return Math.Abs(toRow - fromRow) == 1 && Math.Abs(toColumn - fromColumn) == 1;
         }
     }
 }

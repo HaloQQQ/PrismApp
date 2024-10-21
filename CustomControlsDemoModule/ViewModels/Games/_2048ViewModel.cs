@@ -156,6 +156,22 @@ namespace CustomControlsDemoModule.ViewModels
         #endregion
 
         #region overrides
+        protected override bool CheckGameOver()
+        {
+            if (!Datas.Any(x => x == 0))
+            {
+                IsGameOver = true;
+
+                MaxScore = Math.Max(MaxScore, Score);
+
+                _eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage("游戏结束"));
+
+                return true;
+            }
+
+            return false;
+        }
+
         protected override void LoadConfig(IConfigManager configManager)
         {
             base.LoadConfig(configManager);
@@ -223,22 +239,6 @@ namespace CustomControlsDemoModule.ViewModels
 
                 SetRandomValue();
             }
-        }
-
-        private bool CheckGameOver()
-        {
-            if (!Datas.Any(x => x == 0))
-            {
-                IsGameOver = true;
-
-                MaxScore = Math.Max(MaxScore, Score);
-
-                _eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage("游戏结束"));
-
-                return true;
-            }
-
-            return false;
         }
 
         private int[] Move(_2048Model a, _2048Model b, _2048Model c, _2048Model d)

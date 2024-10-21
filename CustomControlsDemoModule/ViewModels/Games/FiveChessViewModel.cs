@@ -33,7 +33,7 @@ namespace CustomControlsDemoModule.ViewModels
             {
                 LastModel = model;
 
-                if (this.CheckSuccess(model))
+                if (this.CheckGameOver())
                 {
                     IsGameOver = true;
 
@@ -48,45 +48,12 @@ namespace CustomControlsDemoModule.ViewModels
         }
 
         #region overrides
-        protected override void RePlay_CommandExecute()
+        protected override bool CheckGameOver()
         {
-            base.RePlay_CommandExecute();
+            var row = LastModel.Row;
+            var column = LastModel.Column;
 
-            LastModel = null;
-            IsWhiteTurn = false;
-
-            foreach (var item in this.Datas)
-            {
-                item.Reset();
-            }
-        }
-
-        protected override void InitDatas()
-        {
-            chessModels = new ChessModel[15][];
-            for (int i = 0; i < chessModels.Length; i++)
-            {
-                chessModels[i] = new ChessModel[15];
-                for (int j = 0; j < chessModels[i].Length; j++)
-                {
-                    chessModels[i][j] = new ChessModel(i, j);
-                    this.Datas.Add(chessModels[i][j]);
-                }
-            }
-        }
-
-        protected override void InitHotKeysCore(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
-        {
-            appConfigFileHotKeyManager.TryRegisterItem(GameName, new AppHotKey("悔棋", Key.Z, ModifierKeys.Control));
-        }
-        #endregion
-
-        private bool CheckSuccess(ChessModel chessModel)
-        {
-            var row = chessModel.Row;
-            var column = chessModel.Column;
-
-            var isWhite = chessModel.IsWhite;
+            var isWhite = LastModel.IsWhite;
 
             if (isWhite == null)
             {
@@ -191,6 +158,39 @@ namespace CustomControlsDemoModule.ViewModels
                 return false;
             }
         }
+
+        protected override void RePlay_CommandExecute()
+        {
+            base.RePlay_CommandExecute();
+
+            LastModel = null;
+            IsWhiteTurn = false;
+
+            foreach (var item in this.Datas)
+            {
+                item.Reset();
+            }
+        }
+
+        protected override void InitDatas()
+        {
+            chessModels = new ChessModel[15][];
+            for (int i = 0; i < chessModels.Length; i++)
+            {
+                chessModels[i] = new ChessModel[15];
+                for (int j = 0; j < chessModels[i].Length; j++)
+                {
+                    chessModels[i][j] = new ChessModel(i, j);
+                    this.Datas.Add(chessModels[i][j]);
+                }
+            }
+        }
+
+        protected override void InitHotKeysCore(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
+        {
+            appConfigFileHotKeyManager.TryRegisterItem(GameName, new AppHotKey("悔棋", Key.Z, ModifierKeys.Control));
+        }
+        #endregion
 
         #region Props
         private bool _isWhiteTurn;

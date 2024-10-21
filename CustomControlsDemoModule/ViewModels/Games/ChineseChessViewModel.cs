@@ -5,6 +5,7 @@ using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using PrismAppBasicLib.MsgEvents;
+using System.Linq;
 using System.Windows.Input;
 
 namespace CustomControlsDemoModule.ViewModels
@@ -39,10 +40,15 @@ namespace CustomControlsDemoModule.ViewModels
 
                     this.CurrentChess = null;
 
-                    if (isJiangJun)
+                    if (isJiangJun || this.CheckGameOver())
                     {
                         IsGameOver = true;
                         var actor = IsRedTurn ? "红方" : "黑方";
+
+                        if (!isJiangJun)
+                        {
+                            actor = IsRedTurn ? "黑方" : "红方";
+                        }
 
                         eventAggregator.GetEvent<DialogMessageEvent>().Publish(new IceTea.Atom.Contracts.DialogMessage($"{actor}获胜"));
                         return;
@@ -57,7 +63,8 @@ namespace CustomControlsDemoModule.ViewModels
                 {
                     CurrentChess = model;
                 }
-            }, model => model != null && !IsGameOver && IsUsable)
+            }, model => model != null && CurrentChess != model && !IsGameOver && IsUsable)
+            .ObservesProperty(() => this.CurrentChess)
             .ObservesProperty(() => this.IsUsable)
             .ObservesProperty(() => this.IsGameOver);
 
@@ -68,6 +75,45 @@ namespace CustomControlsDemoModule.ViewModels
         }
 
         #region overrides
+        protected override bool CheckGameOver()
+        {
+            bool faceToFace = false;
+
+            var black = Datas.First(c => c.Data.Type == ChessType.帥 && !(bool)c.Data.IsRed).Data;
+            var red = Datas.First(c => c.Data.Type == ChessType.帥 && (bool)c.Data.IsRed).Data;
+
+            if (black.Column != red.Column)
+            {
+                return faceToFace;
+            }
+
+            // 将帅同列并相对
+            var column = black.Column;
+            var row = black.Row;
+
+            var currentRow = row + 1;
+
+            while (currentRow <= 9)
+            {
+                var currentData = Datas[GetIndex(currentRow, column)].Data;
+                if (!currentData.IsEmpty)
+                {
+                    if (currentData.Type == ChessType.帥)
+                    {
+                        faceToFace = true;
+                    }
+
+                    break;
+                }
+
+                currentRow = currentRow + 1;
+
+                int GetIndex(int row, int column) => row * 9 + column;
+            }
+
+            return faceToFace;
+        }
+
         protected override void RePlay_CommandExecute()
         {
             base.RePlay_CommandExecute();
