@@ -20,8 +20,8 @@ internal class MusicModel : MediaBaseModel, IDisposable
 
         if (Name == null || Singer == null)
         {
-            Performer = file.Tag.Performers.Length > 0 ? file.Tag.Performers[0] : null;   // 歌手名
-            Name = file.Tag.Title;             // 歌曲标题
+            Performer = file.Tag.Performers.Length > 0 ? file.Tag.Performers[0] : "佚名";   // 歌手名
+            Name = file.Tag.Title ?? filePath.GetFileNameWithoutExtension();             // 歌曲标题
         }
 
         IsEnglishTitle = Regex.IsMatch(Name, "[a-zA-Z]");
