@@ -43,5 +43,62 @@ namespace CustomControlsDemoModule.Models
 
             return false;
         }
+
+        protected override bool TryMoveCore(IList<ChineseChessModel> datas)
+        {
+            bool hasChoice = false;
+
+            int fromRow = this.Row, fromColumn = this.Column;
+
+            // 左上 --
+            if (fromRow > 0 && fromColumn > 0)
+            {
+                var upLeft = datas[GetIndex(fromRow - 2, fromColumn - 2)];
+                if (this.CheckPut(datas, upLeft.Data))
+                {
+                    upLeft.IsReadyToPut = true;
+
+                    hasChoice = true;
+                }
+            }
+
+            // 右上 -+
+            if (fromRow > 0 && fromColumn < 8)
+            {
+                var upRight = datas[GetIndex(fromRow - 2, fromColumn + 2)];
+                if (this.CheckPut(datas, upRight.Data))
+                {
+                    upRight.IsReadyToPut = true;
+
+                    hasChoice = true;
+                }
+            }
+
+            // 左下 +-
+            if (fromRow < 9 && fromColumn > 0)
+            {
+                var downLeft = datas[GetIndex(fromRow + 2, fromColumn - 2)];
+                if (this.CheckPut(datas, downLeft.Data))
+                {
+                    downLeft.IsReadyToPut = true;
+
+                    hasChoice = true;
+                }
+            }
+
+            // 右下 ++
+            if (fromRow < 9 && fromColumn < 8)
+            {
+                var downRight = datas[GetIndex(fromRow + 2, fromColumn + 2)];
+                if (this.CheckPut(datas, downRight.Data))
+                {
+                    downRight.IsReadyToPut = true;
+
+                    hasChoice = true;
+                }
+            }
+
+            return hasChoice;
+        }
     }
 }

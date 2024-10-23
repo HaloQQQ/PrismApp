@@ -19,13 +19,21 @@ namespace CustomControlsDemoModule.ViewModels
         {
             this.CancelLastCommand = new DelegateCommand(() =>
             {
-                LastModel.Data.GoBack(this.Datas);
-                LastModel = null;
+                From.Data.GoBack(this.Datas);
+                From = null;
+                To = null;
+
+                if (CurrentChess != null)
+                {
+                    CurrentChess.Data.ClearReady(Datas);
+                    CurrentChess = null;
+                }
+
                 IsRedTurn = !IsRedTurn;
             },
-            () => !IsGameOver && IsUsable && LastModel != null
+            () => !IsGameOver && IsUsable && From != null
             )
-            .ObservesProperty(() => this.LastModel)
+            .ObservesProperty(() => this.From)
             .ObservesProperty(() => this.IsUsable)
             .ObservesProperty(() => this.IsGameOver);
 
@@ -36,7 +44,11 @@ namespace CustomControlsDemoModule.ViewModels
                 // 移动棋子到这里
                 if (this.CurrentChess != null && this.CurrentChess.Data.TryPutTo(Datas, model.Data))
                 {
-                    this.LastModel = this.CurrentChess;
+                    model.Data.ClearReady(Datas);
+
+                    this.From = this.CurrentChess;
+
+                    this.To = model;
 
                     this.CurrentChess = null;
 
@@ -62,6 +74,8 @@ namespace CustomControlsDemoModule.ViewModels
                 if (!model.Data.IsEmpty && model.Data.IsRed == IsRedTurn)
                 {
                     CurrentChess = model;
+
+                    CurrentChess.Data.PreMove(Datas);
                 }
             }, model => model != null && CurrentChess != model && !IsGameOver && IsUsable)
             .ObservesProperty(() => this.CurrentChess)
@@ -121,7 +135,8 @@ namespace CustomControlsDemoModule.ViewModels
             this.InitDatas();
 
             CurrentChess = null;
-            LastModel = null;
+            From = null;
+            To = null;
             IsRedTurn = true;
 
             Angle = 0;
@@ -257,11 +272,18 @@ namespace CustomControlsDemoModule.ViewModels
             private set => SetProperty(ref _currentChess, value);
         }
 
-        private ChineseChessModel _lastModel;
-        private ChineseChessModel LastModel
+        private ChineseChessModel _from;
+        public ChineseChessModel From
         {
-            get => _lastModel;
-            set => SetProperty(ref _lastModel, value);
+            get => _from;
+            private set => SetProperty(ref _from, value);
+        }
+
+        private ChineseChessModel _to;
+        public ChineseChessModel To
+        {
+            get => _to;
+            private set => SetProperty(ref _to, value);
         }
         #endregion
 

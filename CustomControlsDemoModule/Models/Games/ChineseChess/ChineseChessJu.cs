@@ -63,5 +63,95 @@ namespace CustomControlsDemoModule.Models
 
             return true;
         }
+
+        protected override bool TryMoveCore(IList<ChineseChessModel> datas)
+        {
+            bool hasChoice = false;
+
+            int fromRow = this.Row, fromColumn = this.Column;
+
+            if (fromRow > 0)
+            {
+                var currentRow = fromRow - 1;
+                var up = datas[GetIndex(currentRow, fromColumn)];
+
+                while (this.CheckPut(datas, up.Data))
+                {
+                    up.IsReadyToPut = true;
+
+                    hasChoice = true;
+
+                    if (--currentRow < 0)
+                    {
+                        break;
+                    }
+
+                    up = datas[GetIndex(currentRow, fromColumn)];
+                }
+            }
+
+            if (fromRow < 9)
+            {
+                var currentRow = fromRow + 1;
+                var down = datas[GetIndex(currentRow, fromColumn)];
+
+                while (this.CheckPut(datas, down.Data))
+                {
+                    down.IsReadyToPut = true;
+
+                    hasChoice = true;
+
+                    if (++currentRow > 9)
+                    {
+                        break;
+                    }
+
+                    down = datas[GetIndex(currentRow, fromColumn)];
+                }
+            }
+
+            if (fromColumn > 0)
+            {
+                var currentColumn = fromColumn - 1;
+                var left = datas[GetIndex(fromRow, currentColumn)];
+
+                while (this.CheckPut(datas, left.Data))
+                {
+                    left.IsReadyToPut = true;
+
+                    hasChoice = true;
+
+                    if (--currentColumn < 0)
+                    {
+                        break;
+                    }
+
+                    left = datas[GetIndex(fromRow, currentColumn)];
+                }
+            }
+
+            if (fromColumn < 8)
+            {
+                var currentColumn = fromColumn + 1;
+                var right = datas[GetIndex(fromRow, currentColumn)];
+
+                while (this.CheckPut(datas, right.Data))
+                {
+                    right.IsReadyToPut = true;
+
+                    hasChoice = true;
+
+                    if (++currentColumn > 8)
+                    {
+                        break;
+                    }
+
+                    right = datas[GetIndex(fromRow, currentColumn)];
+                }
+            }
+
+            return hasChoice;
+        }
+
     }
 }

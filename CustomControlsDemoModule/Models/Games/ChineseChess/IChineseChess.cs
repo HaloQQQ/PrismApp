@@ -27,6 +27,20 @@ namespace CustomControlsDemoModule.Models
         /// </summary>
         void Restore();
 
+        /// <summary>
+        /// 检查是否可放置
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <param name="targetData"></param>
+        /// <returns></returns>
+        bool CheckPut(IList<ChineseChessModel> datas, IChineseChess targetData);
+
+        /// <summary>
+        /// 尝试放置
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <param name="targetData"></param>
+        /// <returns></returns>
         bool TryPutTo(IList<ChineseChessModel> datas, IChineseChess targetData);
 
         /// <summary>
@@ -45,5 +59,19 @@ namespace CustomControlsDemoModule.Models
         /// <param name="datas"></param>
         /// <returns></returns>
         bool GoBack(IList<ChineseChessModel> datas);
+
+        /// <summary>
+        /// 清除上次选中棋子时的准备状态
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
+        bool ClearReady(IList<ChineseChessModel> datas);
+
+        /// <summary>
+        /// 选中棋子时
+        /// </summary>
+        /// <param name="datas"></param>
+        /// <returns></returns>
+        bool PreMove(IList<ChineseChessModel> datas);
     }
 }

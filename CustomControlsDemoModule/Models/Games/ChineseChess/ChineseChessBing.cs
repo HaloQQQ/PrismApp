@@ -1,5 +1,7 @@
 ﻿
+using DryIoc;
 using System.Collections.Generic;
+using System.Data.Common;
 
 namespace CustomControlsDemoModule.Models
 {
@@ -55,6 +57,63 @@ namespace CustomControlsDemoModule.Models
             }
 
             return false;
+        }
+
+        protected override bool TryMoveCore(IList<ChineseChessModel> datas)
+        {
+            bool hasChoice = false;
+
+            int fromRow = this.Row, fromColumn = this.Column;
+
+            if (fromRow > 0)
+            {
+                var up = datas[GetIndex(fromRow - 1, fromColumn)];
+
+                if (this.CheckPut(datas, up.Data))
+                {
+                    up.IsReadyToPut = true;
+
+                    hasChoice = true;
+                }
+            }
+
+            if (fromRow < 9)
+            {
+                var down = datas[GetIndex(fromRow + 1, fromColumn)];
+
+                if (this.CheckPut(datas, down.Data))
+                {
+                    down.IsReadyToPut = true;
+
+                    hasChoice = true;
+                }
+            }
+
+            if (fromColumn > 0)
+            {
+                var left = datas[GetIndex(fromRow, fromColumn - 1)];
+
+                if (this.CheckPut(datas, left.Data))
+                {
+                    left.IsReadyToPut = true;
+
+                    hasChoice = true;
+                }
+            }
+
+            if (fromColumn < 8)
+            {
+                var right = datas[GetIndex(fromRow, fromColumn + 1)];
+
+                if (this.CheckPut(datas, right.Data))
+                {
+                    right.IsReadyToPut = true;
+
+                    hasChoice = true;
+                }
+            }
+
+            return hasChoice;
         }
     }
 }

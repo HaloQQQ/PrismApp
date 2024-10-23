@@ -17,19 +17,21 @@
         <DigitMultiConverter x:Key="DigitMultiConverter" />
 
         <DataTemplate x:Key="Chess" DataType="models:ChineseChessModel">
-            <Button Command="{Binding DataContext.SelectOrPutCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding}">
-                <Button.Background>
-                    <ImageBrush ImageSource="{Binding Data.BackSource}" />
-                </Button.Background>
-
+            <Button
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Command="{Binding DataContext.SelectOrPutCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                CommandParameter="{Binding}">
                 <Button.RenderTransform>
-                    <RotateTransform Angle="{Binding DataContext.Angle, RelativeSource={RelativeSource AncestorType=ListBox}}" />
+                    <TransformGroup>
+                        <RotateTransform Angle="{Binding DataContext.Angle, RelativeSource={RelativeSource AncestorType=ListBox}}" />
+                        <ScaleTransform />
+                    </TransformGroup>
                 </Button.RenderTransform>
-
                 <Button.Style>
                     <Style BasedOn="{StaticResource {x:Type ButtonBase}}" TargetType="Button">
-                        <Setter Property="Width" Value="75" />
-                        <Setter Property="Height" Value="75" />
+                        <Setter Property="Width" Value="72" />
+                        <Setter Property="Height" Value="72" />
 
                         <Setter Property="MyAttachProperty.CornerRadius" Value="{Binding Width, RelativeSource={RelativeSource Self}, Converter={StaticResource DigitToCornerRadiusConverter}}" />
 
@@ -38,6 +40,69 @@
                         <Setter Property="BorderThickness" Value="1" />
 
                         <Style.Triggers>
+                            <DataTrigger Binding="{Binding Data.IsEmpty}" Value="False">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <ImageBrush ImageSource="{Binding Data.BackSource}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding IsReadyToPut}" Value="True">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <Ellipse
+                                            Width="10"
+                                            Height="10"
+                                            Fill="#217c20" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+
+                            <DataTrigger Value="True">
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource MultiConverter_IsObjectEquals}">
+                                        <MultiBinding.Bindings>
+                                            <Binding Path="" />
+                                            <Binding Path="DataContext.From" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                        </MultiBinding.Bindings>
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
+
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <Grid>
+                                            <Path Stroke="White">
+                                                <Path.Data>
+                                                    <EllipseGeometry
+                                                        Center="20,20"
+                                                        RadiusX="20"
+                                                        RadiusY="20" />
+                                                </Path.Data>
+                                            </Path>
+
+                                            <Ellipse
+                                                Width="20"
+                                                Height="20"
+                                                Fill="White" />
+                                        </Grid>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+
+                            <DataTrigger Value="True">
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource MultiConverter_IsObjectEquals}">
+                                        <MultiBinding.Bindings>
+                                            <Binding Path="" />
+                                            <Binding Path="DataContext.To" RelativeSource="{RelativeSource AncestorType=UserControl}" />
+                                        </MultiBinding.Bindings>
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
+
+                                <Setter Property="BorderBrush" Value="White" />
+                            </DataTrigger>
+
                             <DataTrigger Value="True">
                                 <DataTrigger.Binding>
                                     <MultiBinding Converter="{StaticResource MultiConverter_IsObjectEquals}">
@@ -48,7 +113,7 @@
                                     </MultiBinding>
                                 </DataTrigger.Binding>
 
-                                <Setter Property="BorderBrush" Value="Red" />
+                                <Setter Property="BorderBrush" Value="White" />
 
                                 <Setter Property="Effect">
                                     <Setter.Value>
@@ -65,12 +130,12 @@
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <DoubleAnimation
-                                                Storyboard.TargetProperty="(ButtonBase.RenderTransform).(ScaleTransform.ScaleX)"
+                                                Storyboard.TargetProperty="(ButtonBase.RenderTransform).Children[1].(ScaleTransform.ScaleX)"
                                                 To="1.1"
                                                 Duration="0:0:0.3" />
 
                                             <DoubleAnimation
-                                                Storyboard.TargetProperty="(ButtonBase.RenderTransform).(ScaleTransform.ScaleY)"
+                                                Storyboard.TargetProperty="(ButtonBase.RenderTransform).Children[1].(ScaleTransform.ScaleY)"
                                                 To="1.1"
                                                 Duration="0:0:0.3" />
                                         </Storyboard>
@@ -80,9 +145,9 @@
                                 <Trigger.ExitActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetProperty="(ButtonBase.RenderTransform).(ScaleTransform.ScaleX)" Duration="0:0:0.2" />
+                                            <DoubleAnimation Storyboard.TargetProperty="(ButtonBase.RenderTransform).Children[1].(ScaleTransform.ScaleX)" Duration="0:0:0.2" />
 
-                                            <DoubleAnimation Storyboard.TargetProperty="(ButtonBase.RenderTransform).(ScaleTransform.ScaleY)" Duration="0:0:0.2" />
+                                            <DoubleAnimation Storyboard.TargetProperty="(ButtonBase.RenderTransform).Children[1].(ScaleTransform.ScaleY)" Duration="0:0:0.2" />
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </Trigger.ExitActions>
@@ -93,12 +158,12 @@
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <DoubleAnimation
-                                                Storyboard.TargetProperty="(ButtonBase.RenderTransform).(ScaleTransform.ScaleX)"
+                                                Storyboard.TargetProperty="(ButtonBase.RenderTransform).Children[1].(ScaleTransform.ScaleX)"
                                                 To="0.97"
                                                 Duration="0:0:0.3" />
 
                                             <DoubleAnimation
-                                                Storyboard.TargetProperty="(ButtonBase.RenderTransform).(ScaleTransform.ScaleY)"
+                                                Storyboard.TargetProperty="(ButtonBase.RenderTransform).Children[1].(ScaleTransform.ScaleY)"
                                                 To="0.97"
                                                 Duration="0:0:0.3" />
                                         </Storyboard>
@@ -303,17 +368,18 @@
                     </Image>
 
                     <ListBox
-                        Padding="20,12"
+                        Padding="11"
                         ItemContainerStyle="{StaticResource ListBoxItem_General}"
                         ItemTemplate="{StaticResource Chess}"
-                        ItemsSource="{Binding Datas}">
+                        ItemsSource="{Binding Datas}"
+                        RenderTransformOrigin="0.5,0.5">
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <UniformGrid Columns="9" Rows="10" />
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
                         <ListBox.RenderTransform>
-                            <RotateTransform Angle="{Binding DataContext.Angle, RelativeSource={RelativeSource AncestorType=ListBox}}" CenterX="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=0.5}" CenterY="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=0.5}" />
+                            <RotateTransform Angle="{Binding DataContext.Angle, RelativeSource={RelativeSource AncestorType=ListBox}}" />
                         </ListBox.RenderTransform>
                     </ListBox>
 

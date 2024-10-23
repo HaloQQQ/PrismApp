@@ -1,4 +1,5 @@
 ﻿using IceTea.Atom.BaseModels;
+using IceTea.Atom.Utils;
 using System;
 using System.Diagnostics;
 
@@ -57,7 +58,14 @@ namespace CustomControlsDemoModule.Models
         public IChineseChess Data
         {
             get => _data;
-            internal set => SetProperty(ref _data, value);
+            internal set => SetProperty(ref _data, value.AssertArgumentNotNull(nameof(Data)));
+        }
+
+        private bool _isReadyToPut;
+        public bool IsReadyToPut
+        {
+            get => _isReadyToPut;
+            set => SetProperty(ref _isReadyToPut, value);
         }
     }
 }

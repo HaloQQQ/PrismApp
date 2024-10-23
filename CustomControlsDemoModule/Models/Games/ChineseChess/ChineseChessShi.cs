@@ -37,5 +37,54 @@ namespace CustomControlsDemoModule.Models
 
             return Math.Abs(toRow - fromRow) == 1 && Math.Abs(toColumn - fromColumn) == 1;
         }
+
+        protected override bool TryMoveCore(IList<ChineseChessModel> datas)
+        {
+            bool hasChoice = false;
+
+            int fromRow = this.Row, fromColumn = this.Column;
+
+            // 上
+            if(fromRow > 0)
+            {
+                var upLeft = datas[GetIndex(fromRow - 1, fromColumn - 1)];
+                if (this.CheckPut(datas, upLeft.Data))
+                {
+                    upLeft.IsReadyToPut = true;
+
+                    hasChoice = true;
+                }
+
+                var upRight = datas[GetIndex(fromRow - 1, fromColumn + 1)];
+                if (this.CheckPut(datas, upRight.Data))
+                {
+                    upRight.IsReadyToPut = true;
+
+                    hasChoice = true;
+                }
+            }
+
+            // 下
+            if (fromRow < 9)
+            {
+                var downLeft = datas[GetIndex(fromRow + 1, fromColumn - 1)];
+                if (this.CheckPut(datas, downLeft.Data))
+                {
+                    downLeft.IsReadyToPut = true;
+
+                    hasChoice = true;
+                }
+
+                var downRight = datas[GetIndex(fromRow + 1, fromColumn + 1)];
+                if (this.CheckPut(datas, downRight.Data))
+                {
+                    downRight.IsReadyToPut = true;
+
+                    hasChoice = true;
+                }
+            }
+
+            return hasChoice;
+        }
     }
 }
