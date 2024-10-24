@@ -13,6 +13,7 @@ using System.Threading;
 using IceTea.Wpf.Atom.Utils;
 using MyApp.Prisms.Helper;
 using MusicPlayerModule.Models;
+using IceTea.Atom.Utils;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -32,6 +33,9 @@ namespace MyApp.Prisms.ViewModels
         public string URI { get; set; } = null!;
         public string FileType { get; set; } = null!;
         public string Name { get; set; } = null!;
+        /// <summary>
+        /// KB
+        /// </summary>
         public string Size { get; set; }
 
         internal MyImage()
@@ -40,10 +44,12 @@ namespace MyApp.Prisms.ViewModels
 
         public MyImage(string path)
         {
-            URI = path?.GetFullPath();
+            path.AssertNotNull(nameof(path));
+
+            URI = path.GetFullPath();
             FileType = path.GetFileType();
             Name = path.GetFileNameWithoutExtension();
-            Size = ((double)new FileInfo(path).Length / 1024).ToString("0.00");
+            Size = ((double)new FileInfo(path).Length / 1024d).ToString("0.00");
         }
     }
 

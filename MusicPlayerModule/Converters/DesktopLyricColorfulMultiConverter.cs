@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Controls;
+using IceTea.Atom.Utils;
 
 namespace MusicPlayerModule.Converters
 {
@@ -24,15 +25,15 @@ namespace MusicPlayerModule.Converters
             }
 
             var text = values[3] as TextBlock;
-                FormattedText formattedText = new FormattedText(
-                    text.Text,
-                    CultureInfo.InvariantCulture,
-                    FlowDirection.LeftToRight,
-                    new Typeface(text.FontFamily.ToString()),
-                          text.FontSize,
-                          Brushes.Black,
-                          VisualTreeHelper.GetDpi(text).PixelsPerDip
-                        );
+            FormattedText formattedText = new FormattedText(
+                text.Text,
+                CultureInfo.InvariantCulture,
+                FlowDirection.LeftToRight,
+                new Typeface(text.FontFamily.ToString()),
+                      text.FontSize,
+                      Brushes.Black,
+                      VisualTreeHelper.GetDpi(text).PixelsPerDip
+                    );
 
             var lineWidth = formattedText.WidthIncludingTrailingWhitespace;
 

@@ -35,14 +35,14 @@ namespace MyApp.Prisms.Models
 
     public class ServiceContext : IDisposable
     {
-        public string ServiceName { get; set; }
-        public string DisplayName { get; set; }
-        public string ServiceControllerStatus { get; set; }
-        public string ServiceType { get; set; }
+        public string ServiceName { get;  }
+        public string DisplayName { get; }
+        public string ServiceControllerStatus { get;  }
+        public string ServiceType { get; }
 
-        public string ServiceStartMode { get; set; }
+        public string ServiceStartMode { get; }
 
-        public ServiceController ServiceController { get; set; }
+        public ServiceController ServiceController { get; private set; }
 
         public ServiceContext(ServiceController service)
         {
@@ -57,6 +57,7 @@ namespace MyApp.Prisms.Models
 
         public void Dispose()
         {
+            this.ServiceController.Dispose();
             this.ServiceController = null;
         }
     }

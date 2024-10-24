@@ -48,17 +48,6 @@
                                 </Setter>
                             </DataTrigger>
 
-                            <DataTrigger Binding="{Binding IsReadyToPut}" Value="True">
-                                <Setter Property="Content">
-                                    <Setter.Value>
-                                        <Ellipse
-                                            Width="10"
-                                            Height="10"
-                                            Fill="#217c20" />
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
-
                             <DataTrigger Value="True">
                                 <DataTrigger.Binding>
                                     <MultiBinding Converter="{StaticResource MultiConverter_IsObjectEquals}">
@@ -86,6 +75,17 @@
                                                 Height="20"
                                                 Fill="White" />
                                         </Grid>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding IsReadyToPut}" Value="True">
+                                <Setter Property="Content">
+                                    <Setter.Value>
+                                        <Ellipse
+                                            Width="15"
+                                            Height="15"
+                                            Fill="#217c20" />
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>

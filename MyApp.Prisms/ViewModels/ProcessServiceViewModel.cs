@@ -42,7 +42,7 @@ namespace MyApp.Prisms.ViewModels
                         await Task.Delay(50);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             });
@@ -87,6 +87,7 @@ namespace MyApp.Prisms.ViewModels
 
             ProcessList.Clear();
             ProcessList = null;
+
             foreach (var item in this.ServiceList)
             {
                 item.Dispose();

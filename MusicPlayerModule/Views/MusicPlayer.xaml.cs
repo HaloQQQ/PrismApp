@@ -313,7 +313,7 @@ namespace MusicPlayerModule.Views
 
                 this.PlayingListButton.IsChecked = !this.PlayingListButton.IsChecked;
 
-                if ((bool)this.PlayingListButton.IsChecked)
+                if (this.PlayingListButton.IsChecked.HasValue && this.PlayingListButton.IsChecked.Value)
                 {
                     this.AdaptPlayingListPanelSize();
                 }
