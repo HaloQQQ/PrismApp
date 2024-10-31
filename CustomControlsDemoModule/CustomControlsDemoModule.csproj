@@ -11,10 +11,24 @@
     <Resource Include="Resources\pictures\*" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Views\TextBoxesView.xaml.cs">
+    <Content Include="Resources\medias\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\Controls\Selectors.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\ToggleButtonsView.xaml.cs">
+    <Compile Update="Views\Controls\TabControls.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Controls\TextBoxes\PasswordBox.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Controls\TextBoxes\RichTextBox.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Controls\Buttons\ToggleButtonsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

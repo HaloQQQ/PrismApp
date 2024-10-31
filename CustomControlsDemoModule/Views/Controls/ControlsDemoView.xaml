@@ -1,0 +1,41 @@
+﻿<UserControl
+    x:Class="CustomControlsDemoModule.Views.Controls.ControlsDemoView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:j="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:models="clr-namespace:CustomControlsDemoModule.Models"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:views="clr-namespace:CustomControlsDemoModule.Views"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="7*" />
+        </Grid.ColumnDefinitions>
+
+        <TreeView ItemsSource="{Binding Controls}">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type models:ControlNode}" ItemsSource="{Binding Items}">
+                    <ContentPresenter Content="{Binding Name}" />
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+
+            <j:Interaction.Triggers>
+                <j:EventTrigger EventName="SelectedItemChanged">
+                    <prism:InvokeCommandAction Command="{Binding NavigateToCommand}" TriggerParameterPath="NewValue" />
+                </j:EventTrigger>
+            </j:Interaction.Triggers>
+
+            <TreeView.ItemContainerStyle>
+                <Style BasedOn="{StaticResource {x:Type TreeViewItem}}" TargetType="TreeViewItem">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+
+                    <Setter Property="ItemsSource" Value="{Binding Items}" />
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
+
+        <ContentControl Grid.Column="1" prism:RegionManager.RegionName="ContentRegion" />
+    </Grid>
+</UserControl>

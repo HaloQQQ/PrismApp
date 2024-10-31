@@ -296,17 +296,20 @@
             <TabItem Header="小游戏">
                 <WrapPanel>
                     <Button
-                        Command="{Binding DataContext._2048Command, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        Command="{Binding DataContext.SmallGameCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        CommandParameter="_2048"
                         Content="2048"
                         Style="{StaticResource TransparentButtonBase}" />
 
                     <Button
-                        Command="{Binding DataContext.FiveChessCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        Command="{Binding DataContext.SmallGameCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        CommandParameter="五子棋"
                         Content="五子棋"
                         Style="{StaticResource TransparentButtonBase}" />
 
                     <Button
-                        Command="{Binding DataContext.ChineseChessCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        Command="{Binding DataContext.SmallGameCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        CommandParameter="象棋"
                         Content="象棋"
                         Style="{StaticResource TransparentButtonBase}" />
                 </WrapPanel>

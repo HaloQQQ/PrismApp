@@ -1,4 +1,7 @@
-﻿using CustomControlsDemoModule.Views;
+﻿using CustomControlsDemoModule.ViewModels;
+using CustomControlsDemoModule.Views;
+using CustomControlsDemoModule.Views.Controls;
+using CustomControlsDemoModule.Views.Controls.TextBoxes;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -13,6 +16,7 @@ namespace CustomControlsDemoModule
         {
              this._regionManager = regionManager;
         }
+
         public void OnInitialized(IContainerProvider containerProvider)
         {
         }
@@ -21,7 +25,35 @@ namespace CustomControlsDemoModule
         {
             _regionManager.RegisterViewWithRegion<ControlsDemoView>("ControlsDemoRegion");
 
-            _regionManager.RegisterViewWithRegion<_2048>("Game2048Region");
+            this.RegisterNavigation(containerRegistry);
+
+            containerRegistry.RegisterDialog<_2048>();
+            containerRegistry.RegisterSingleton<_2048ViewModel>();
+
+            containerRegistry.RegisterDialog<FiveChessView>("五子棋");
+            containerRegistry.RegisterSingleton<FiveChessViewModel>();
+            
+            containerRegistry.RegisterDialog<ChineseChessView>("象棋");
+            containerRegistry.RegisterSingleton<ChineseChessViewModel>(); 
+        }
+
+        private void RegisterNavigation(IContainerRegistry containerRegistry)
+        {
+            containerRegistry.RegisterForNavigation<ButtonsView>();
+            containerRegistry.RegisterForNavigation<ToggleButtonsView>();
+
+            containerRegistry.RegisterForNavigation<PasswordBox>();
+            containerRegistry.RegisterForNavigation<RichTextBox>();
+            containerRegistry.RegisterForNavigation<TextBox>();
+
+            containerRegistry.RegisterForNavigation<Panels>();
+            
+            containerRegistry.RegisterForNavigation<Selectors>();
+            containerRegistry.RegisterForNavigation<TabControls>();
+
+            containerRegistry.RegisterForNavigation<ItemsControls>();
+
+            containerRegistry.RegisterForNavigation<VirtualizingPanels>();
         }
     }
 }

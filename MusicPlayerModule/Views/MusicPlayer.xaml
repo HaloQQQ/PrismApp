@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:contracts="clr-namespace:MusicPlayerModule.Contracts"
-    xmlns:icetea="http://IceTea.Wpf.Core.com/"
     xmlns:personalConverter="clr-namespace:MusicPlayerModule.Converters"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewmodels="clr-namespace:MusicPlayerModule.ViewModels"
@@ -372,11 +371,11 @@
                 VerticalAlignment="Stretch">
                 <FrameworkElement x:Name="dummyElement" Visibility="Collapsed" />
 
-                <icetea:NeedleWaitLoad
+                <NeedleWaitLoad
                     Width="80"
                     Height="80"
                     Foreground="DodgerBlue">
-                    <icetea:NeedleWaitLoad.Style>
+                    <NeedleWaitLoad.Style>
                         <Style TargetType="UserControl">
                             <Setter Property="Visibility" Value="Collapsed" />
 
@@ -391,8 +390,8 @@
                                 </MultiDataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </icetea:NeedleWaitLoad.Style>
-                </icetea:NeedleWaitLoad>
+                    </NeedleWaitLoad.Style>
+                </NeedleWaitLoad>
 
                 <Viewbox
                     Grid.Row="0"
@@ -1373,12 +1372,12 @@
                                     Margin="5,3"
                                     FontSize="14"
                                     Style="{StaticResource ThemeBlk}"
-                                    Text="{Binding CurrentMedia.Music.Singer}" />
+                                    Text="{Binding CurrentMedia.Music.Name}" />
                                 <TextBlock
                                     Margin="5,3"
                                     FontSize="14"
                                     Style="{StaticResource ThemeBlk}"
-                                    Text="{Binding CurrentMedia.Music.Name}" />
+                                    Text="{Binding CurrentMedia.Music.Singer}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <ToggleButton Style="{StaticResource Love}" />

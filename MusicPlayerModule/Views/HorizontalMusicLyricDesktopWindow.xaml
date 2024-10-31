@@ -2,7 +2,6 @@
     x:Class="MusicPlayerModule.Views.HorizontalMusicLyricDesktopWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:icetea="http://IceTea.Wpf.Core.com/"
     xmlns:prism="http://prismlibrary.com/"
     Title="HorizontalMusicLyricDesktopWindow"
     MinWidth="900"
@@ -22,7 +21,7 @@
                 <ResourceDictionary Source="/MusicPlayerModule;component/Resources/Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <icetea:BoolToHiddenVisibleConverter x:Key="BoolToHiddenVisibleConverter" />
+            <BoolToHiddenVisibleConverter x:Key="BoolToHiddenVisibleConverter" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -47,8 +46,8 @@
                         Margin="20,0"
                         FontSize="18"
                         Foreground="#EBEBEB"
-                        Text="{Binding CurrentMedia.Music.Name}" />
-                    <TextBlock Foreground="#EBEBEB" Text="{Binding CurrentMedia.Music.Singer}" />
+                        Text="{Binding CurrentMedia.Music.Name, FallbackValue=Title}" />
+                    <TextBlock Foreground="#EBEBEB" Text="{Binding CurrentMedia.Music.Singer, FallbackValue=Singer}" />
                 </StackPanel>
 
                 <StackPanel

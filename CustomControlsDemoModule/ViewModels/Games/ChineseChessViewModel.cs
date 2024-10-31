@@ -39,11 +39,33 @@ namespace CustomControlsDemoModule.ViewModels
 
             this.SelectOrPutCommand = new DelegateCommand<ChineseChessModel>(model =>
             {
-                var isJiangJun = model.Data.Type == ChessType.帥;
+                // 选中
+                if (!model.Data.IsEmpty && model.Data.IsRed == IsRedTurn)
+                {
+                    this.PlayMedia("select.mp3");
+
+                    CurrentChess = model;
+
+                    CurrentChess.Data.PreMove(Datas);
+
+                    return;
+                }
+
+                var isShuai = model.Data.Type == ChessType.帥;
+                var isEmpty = model.Data.IsEmpty;
 
                 // 移动棋子到这里
                 if (this.CurrentChess != null && this.CurrentChess.Data.TryPutTo(Datas, model.Data))
                 {
+                    if (isEmpty)
+                    {
+                        this.PlayMedia("go.mp3");
+                    }
+                    else
+                    {
+                        this.PlayMedia("eat.mp3");
+                    }
+
                     model.Data.ClearReady(Datas);
 
                     this.From = this.CurrentChess;
@@ -52,12 +74,12 @@ namespace CustomControlsDemoModule.ViewModels
 
                     this.CurrentChess = null;
 
-                    if (isJiangJun || this.CheckGameOver())
+                    if (isShuai || this.CheckGameOver())
                     {
                         IsGameOver = true;
                         var actor = IsRedTurn ? "红方" : "黑方";
 
-                        if (!isJiangJun)
+                        if (!isShuai)
                         {
                             actor = IsRedTurn ? "黑方" : "红方";
                         }
@@ -69,13 +91,6 @@ namespace CustomControlsDemoModule.ViewModels
                     this.IsRedTurn = !IsRedTurn;
 
                     return;
-                }
-
-                if (!model.Data.IsEmpty && model.Data.IsRed == IsRedTurn)
-                {
-                    CurrentChess = model;
-
-                    CurrentChess.Data.PreMove(Datas);
                 }
             }, model => model != null && CurrentChess != model && !IsGameOver && IsUsable)
             .ObservesProperty(() => this.CurrentChess)

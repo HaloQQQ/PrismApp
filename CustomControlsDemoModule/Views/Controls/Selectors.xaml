@@ -1,0 +1,47 @@
+﻿<UserControl
+    x:Class="CustomControlsDemoModule.Views.Controls.TextBoxes.Selectors"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:system="clr-namespace:System;assembly=netstandard">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <x:Array x:Key="Data" Type="system:Double">
+                <system:Double>1</system:Double>
+                <system:Double>2</system:Double>
+                <system:Double>3</system:Double>
+                <system:Double>4</system:Double>
+                <system:Double>5</system:Double>
+                <system:Double>6</system:Double>
+                <system:Double>7</system:Double>
+                <system:Double>8</system:Double>
+                <system:Double>9</system:Double>
+                <system:Double>10</system:Double>
+            </x:Array>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <UniformGrid Rows="3">
+        <WrapPanel>
+            <ComboBox ItemsSource="{StaticResource Data}" />
+
+            <ComboBox IsReadOnly="True" ItemsSource="{StaticResource Data}" />
+
+            <ComboBox IsEnabled="False" ItemsSource="{StaticResource Data}" />
+        </WrapPanel>
+
+        <DataGrid BorderBrush="Red" BorderThickness="1">
+            <DataGrid.Columns>
+                <DataGridCheckBoxColumn MinWidth="90" Header="选中" />
+                <DataGridComboBoxColumn MinWidth="90" Header="选项" />
+                <DataGridTextColumn MinWidth="90" Header="名称" />
+                <DataGridTemplateColumn MinWidth="90" Header="模板" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <ListBox
+            HorizontalContentAlignment="Center"
+            FontSize="25"
+            ItemContainerStyle="{StaticResource ListBoxItem_SelectedBackground}"
+            ItemsSource="{StaticResource Data}" />
+    </UniformGrid>
+</UserControl>

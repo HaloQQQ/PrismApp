@@ -5,14 +5,18 @@ using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Services.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace CustomControlsDemoModule.ViewModels
 {
-    internal abstract class GameBaseViewModel<T> : BaseNotifyModel where T : BaseNotifyModel
+    internal abstract class GameBaseViewModel<T> : BaseNotifyModel, IDialogAware where T : BaseNotifyModel
     {
         protected virtual string GameName { get; }
 
@@ -70,6 +74,28 @@ namespace CustomControlsDemoModule.ViewModels
         }
         #endregion
 
+        #region Commons
+        private MediaPlayer _player = new MediaPlayer();
+        protected void PlayMedia(string mediaName)
+        {
+            _player.Open(new Uri(Path.Combine(AppStatics.ExeDirectory, "Resources/medias" , mediaName), UriKind.RelativeOrAbsolute));
+            _player.Play();
+        }
+
+        public bool CanCloseDialog()
+        {             
+            return true;
+        }
+
+        public void OnDialogClosed()
+        {
+        }
+
+        public void OnDialogOpened(IDialogParameters parameters)
+        {
+        }
+        #endregion
+
         #region Fields
         protected readonly IEventAggregator _eventAggregator;
         #endregion
@@ -87,6 +113,9 @@ namespace CustomControlsDemoModule.ViewModels
         }
 
         private bool _isGameOver;
+
+        public event Action<IDialogResult> RequestClose;
+
         public bool IsGameOver
         {
             get => _isGameOver;
@@ -96,6 +125,8 @@ namespace CustomControlsDemoModule.ViewModels
                 IsUsable = !_isGameOver;
             }
         }
+
+        public string Title => this.GameName;
         #endregion
 
         #region Commands

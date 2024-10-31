@@ -13,11 +13,11 @@ using PrismAppBasicLib.MsgEvents;
 using System.Windows;
 using System;
 using IceTea.Atom.Utils.HotKey.Global.Contracts;
-using CustomControlsDemoModule.Views;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using MusicPlayerModule.Models;
 using MusicPlayerModule.Contracts;
 using IceTea.Atom.BaseModels;
+using Prism.Services.Dialogs;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -28,7 +28,8 @@ namespace MyApp.Prisms.ViewModels
                 ISettingManager settingManager,
                 ISettingManager<SettingModel> settingModels,
                 IAppConfigFileHotKeyManager appConfigFileHotKeyManager,
-                IEventAggregator eventAggregator
+                IEventAggregator eventAggregator,
+                IDialogService dialogService
             )
         {
             this.AppConfigFileHotKeyManager = appConfigFileHotKeyManager.AssertNotNull(nameof(IAppConfigFileHotKeyManager));
@@ -39,7 +40,7 @@ namespace MyApp.Prisms.ViewModels
 
             this.LoadMailAccounts(configManager, settingManager);
 
-            this.InitCommands(eventAggregator, settingManager, configManager);
+            this.InitCommands(eventAggregator, settingManager, configManager, dialogService);
         }
 
         public ISettingManager<SettingModel> SettingModels { get; }
@@ -53,7 +54,7 @@ namespace MyApp.Prisms.ViewModels
             internal set => SetProperty(ref _globalConfigFileHotKeyManager, value);
         }
 
-        private void InitCommands(IEventAggregator eventAggregator, ISettingManager settingManager, IConfigManager configManager)
+        private void InitCommands(IEventAggregator eventAggregator, ISettingManager settingManager, IConfigManager configManager, IDialogService dialogService)
         {
             this.CleanConfigWhenExitAppCommand = new DelegateCommand(() =>
             {
@@ -125,19 +126,9 @@ namespace MyApp.Prisms.ViewModels
                 eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(message, 4));
             });
 
-            this._2048Command = new DelegateCommand(() =>
+            this.SmallGameCommand = new DelegateCommand<string>(gameName =>
             {
-                new _2048Window().ShowDialog();
-            });
-
-            this.FiveChessCommand = new DelegateCommand(() =>
-            {
-                new FiveChessWindow().ShowDialog();
-            });
-
-            this.ChineseChessCommand = new DelegateCommand(() =>
-            {
-                new ChineseChessWindow().ShowDialog();
+                dialogService.ShowDialog(gameName);
             });
         }
 
@@ -167,12 +158,7 @@ namespace MyApp.Prisms.ViewModels
         #endregion
 
         #region Commands
-
-        public ICommand _2048Command { get; private set; }
-        public ICommand FiveChessCommand { get; private set; }
-        public ICommand ChineseChessCommand { get; private set; }
-
-
+        public ICommand SmallGameCommand { get; private set; }
 
         public ICommand CleanConfigWhenExitAppCommand { get; private set; }
 

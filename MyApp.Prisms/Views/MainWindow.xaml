@@ -6,20 +6,14 @@
     xmlns:prism="http://prismlibrary.com/"
     xmlns:regions="http://prismlibrary.com/"
     xmlns:views="clr-namespace:MyApp.Prisms.Views"
-    Title="{Binding Title, Mode=OneWay, FallbackValue=标题}"
     MinWidth="1200"
     MinHeight="640"
     prism:ViewModelLocator.AutoWireViewModel="True"
-    MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius, Mode=OneWay}"
+    MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius}"
     MyAttachProperty.IsMinimalScreen="True"
-    Style="{StaticResource NoTitleWithAnimation}"
-    WindowStartupLocation="CenterScreen">
+    Style="{StaticResource NoTitleWithAnimation}">
     <Window.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/IceTea.Wpf.Core;component/Resources/TabControl.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-
             <converters:StringToTabItemHeaderConverter x:Key="StringToTabItemHeaderConverter" />
         </ResourceDictionary>
     </Window.Resources>

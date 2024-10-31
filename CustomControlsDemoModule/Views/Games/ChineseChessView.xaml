@@ -10,6 +10,14 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     FocusVisualStyle="{x:Null}"
     MyAttachProperty.IsElementFocused="True">
+
+    <prism:Dialog.WindowStyle>
+        <Style BasedOn="{StaticResource WithoutTitleBar}" TargetType="Window">
+            <Setter Property="MinWidth" Value="1200" />
+            <Setter Property="MinHeight" Value="640" />
+        </Style>
+    </prism:Dialog.WindowStyle>
+
     <UserControl.Resources>
         <DigitToCornerRadiusConverter x:Key="DigitToCornerRadiusConverter" />
         <MultiConverter_IsObjectEquals x:Key="MultiConverter_IsObjectEquals" />
@@ -44,6 +52,15 @@
                                 <Setter Property="Background">
                                     <Setter.Value>
                                         <ImageBrush ImageSource="{Binding Data.BackSource}" />
+                                    </Setter.Value>
+                                </Setter>
+
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect
+                                            BlurRadius="3"
+                                            Opacity="0.6"
+                                            ShadowDepth="6" />
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>
@@ -288,116 +305,120 @@
     </UserControl.InputBindings>
 
     <Grid>
-        <Viewbox Stretch="Uniform">
-            <StackPanel>
-                <DockPanel Height="80" Background="Red">
-                    <StackPanel
-                        Background="#2874A6"
-                        DockPanel.Dock="Left"
-                        Orientation="Horizontal">
+        <DockPanel>
+            <WindowTitleBar DockPanel.Dock="Top" />
 
-                        <Image Margin="5" Source="../../Resources/Images/默认头像.png" />
+            <Viewbox DockPanel.Dock="Bottom" Stretch="Uniform">
+                <StackPanel>
+                    <DockPanel Height="80" Background="Red">
+                        <StackPanel
+                            Background="#2874A6"
+                            DockPanel.Dock="Left"
+                            Orientation="Horizontal">
 
-                        <Ellipse
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            HorizontalAlignment="Left">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="../../Resources/pictures/黑将.png" />
-                            </Ellipse.Fill>
-                            <Ellipse.Style>
-                                <Style BasedOn="{StaticResource Singal}" TargetType="Ellipse">
+                            <Image Margin="5" Source="../../Resources/Images/默认头像.png" />
+
+                            <Ellipse
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                HorizontalAlignment="Left">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="../../Resources/pictures/黑将.png" />
+                                </Ellipse.Fill>
+                                <Ellipse.Style>
+                                    <Style BasedOn="{StaticResource Singal}" TargetType="Ellipse">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsRedTurn}" Value="True">
+                                                <Setter Property="Stroke" Value="Transparent" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+                        </StackPanel>
+
+                        <StackPanel
+                            Background="#DC7633"
+                            DockPanel.Dock="Right"
+                            Orientation="Horizontal">
+                            <Ellipse Grid.Row="1" Grid.Column="0">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="../../Resources/pictures/红帅.png" />
+                                </Ellipse.Fill>
+                                <Ellipse.Style>
+                                    <Style BasedOn="{StaticResource Singal}" TargetType="Ellipse">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsRedTurn}" Value="False">
+                                                <Setter Property="Stroke" Value="Transparent" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Ellipse.Style>
+                            </Ellipse>
+
+                            <Image Margin="5" Source="../../Resources/Images/默认头像.png" />
+                        </StackPanel>
+
+                        <WrapPanel
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            DockPanel.Dock="Left">
+                            <Button Style="{StaticResource StartPauseButton}" />
+                            <Button Style="{StaticResource RePlayButton}" />
+
+                            <Button Style="{StaticResource CancelLastButton}" />
+
+                            <Button Style="{StaticResource SwitchDirectionButton}" />
+                        </WrapPanel>
+                    </DockPanel>
+
+                    <Grid Margin="0,5,0,10">
+                        <Image>
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source" Value="../../Resources/pictures/棋盘（黑上）.png" />
+
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsRedTurn}" Value="True">
-                                            <Setter Property="Stroke" Value="Transparent" />
+                                        <DataTrigger Binding="{Binding Angle}" Value="180">
+                                            <Setter Property="Source" Value="../../Resources/pictures/棋盘（红上）.png" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </Ellipse.Style>
-                        </Ellipse>
-                    </StackPanel>
+                            </Image.Style>
+                        </Image>
 
-                    <StackPanel
-                        Background="#DC7633"
-                        DockPanel.Dock="Right"
-                        Orientation="Horizontal">
-                        <Ellipse Grid.Row="1" Grid.Column="0">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="../../Resources/pictures/红帅.png" />
-                            </Ellipse.Fill>
-                            <Ellipse.Style>
-                                <Style BasedOn="{StaticResource Singal}" TargetType="Ellipse">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsRedTurn}" Value="False">
-                                            <Setter Property="Stroke" Value="Transparent" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Ellipse.Style>
-                        </Ellipse>
+                        <ListBox
+                            Padding="11"
+                            ItemContainerStyle="{StaticResource ListBoxItem_General}"
+                            ItemTemplate="{StaticResource Chess}"
+                            ItemsSource="{Binding Datas}"
+                            RenderTransformOrigin="0.5,0.5">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="9" Rows="10" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.RenderTransform>
+                                <RotateTransform Angle="{Binding DataContext.Angle, RelativeSource={RelativeSource AncestorType=ListBox}}" />
+                            </ListBox.RenderTransform>
+                        </ListBox>
 
-                        <Image Margin="5" Source="../../Resources/Images/默认头像.png" />
-                    </StackPanel>
+                        <Grid Background="#AA999999" Visibility="{Binding IsUsable, Converter={StaticResource BoolToCollapsedVisibleConverter}}">
+                            <Button
+                                FontSize="60"
+                                Foreground="Gray"
+                                Style="{StaticResource StartPauseButton}"
+                                Visibility="{Binding IsGameOver, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
-                    <WrapPanel
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        DockPanel.Dock="Left">
-                        <Button Style="{StaticResource StartPauseButton}" />
-                        <Button Style="{StaticResource RePlayButton}" />
-
-                        <Button Style="{StaticResource CancelLastButton}" />
-
-                        <Button Style="{StaticResource SwitchDirectionButton}" />
-                    </WrapPanel>
-                </DockPanel>
-
-                <Grid Margin="0,5,0,10">
-                    <Image>
-                        <Image.Style>
-                            <Style TargetType="Image">
-                                <Setter Property="Source" Value="../../Resources/pictures/棋盘（黑上）.png" />
-
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Angle}" Value="180">
-                                        <Setter Property="Source" Value="../../Resources/pictures/棋盘（红上）.png" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Image.Style>
-                    </Image>
-
-                    <ListBox
-                        Padding="11"
-                        ItemContainerStyle="{StaticResource ListBoxItem_General}"
-                        ItemTemplate="{StaticResource Chess}"
-                        ItemsSource="{Binding Datas}"
-                        RenderTransformOrigin="0.5,0.5">
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <UniformGrid Columns="9" Rows="10" />
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                        <ListBox.RenderTransform>
-                            <RotateTransform Angle="{Binding DataContext.Angle, RelativeSource={RelativeSource AncestorType=ListBox}}" />
-                        </ListBox.RenderTransform>
-                    </ListBox>
-
-                    <Grid Background="#AA999999" Visibility="{Binding IsUsable, Converter={StaticResource BoolToCollapsedVisibleConverter}}">
-                        <Button
-                            FontSize="60"
-                            Foreground="Gray"
-                            Style="{StaticResource StartPauseButton}"
-                            Visibility="{Binding IsGameOver, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
-
-                        <Button
-                            FontSize="60"
-                            Foreground="Gray"
-                            Style="{StaticResource RePlayButton}"
-                            Visibility="{Binding IsGameOver, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
+                            <Button
+                                FontSize="60"
+                                Foreground="Gray"
+                                Style="{StaticResource RePlayButton}"
+                                Visibility="{Binding IsGameOver, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
+                        </Grid>
                     </Grid>
-                </Grid>
-            </StackPanel>
-        </Viewbox>
+                </StackPanel>
+            </Viewbox>
+        </DockPanel>
     </Grid>
 </UserControl>

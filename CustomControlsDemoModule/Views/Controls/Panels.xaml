@@ -1,0 +1,49 @@
+﻿<UserControl
+    x:Class="CustomControlsDemoModule.Views.Controls.Panels"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="clr-namespace:System;assembly=netstandard">
+    <UniformGrid Columns="3" Rows="3">
+        <Grid Background="Purple">
+            <TextBlock Text="Grid" />
+        </Grid>
+
+        <UniformGrid
+            Background="DarkBlue"
+            Columns="1"
+            Rows="2">
+            <TextBlock Text="UniformGrid" />
+        </UniformGrid>
+
+        <StackPanel Background="Red">
+            <TextBlock Text="StackPanel" />
+        </StackPanel>
+
+        <WrapPanel Background="Blue">
+            <TextBlock Text="WrapPanel" />
+        </WrapPanel>
+
+        <DockPanel Background="Green">
+            <TextBlock DockPanel.Dock="Top" Text="DockPanel" />
+        </DockPanel>
+
+        <Canvas
+            MinWidth="80"
+            MinHeight="80"
+            Background="Coral">
+            <TextBlock Text="Canvas" />
+        </Canvas>
+
+        <Border Background="Brown" CornerRadius="10">
+            <TextBlock Margin="20,0" Text="Border" />
+        </Border>
+
+        <ScrollViewer Background="Chocolate">
+            <Border Height="300">
+                <TextBlock Text="ScrollViewer" />
+            </Border>
+        </ScrollViewer>
+    </UniformGrid>
+</UserControl>

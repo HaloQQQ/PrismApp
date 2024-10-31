@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace CustomControlsDemoModule.Views
+namespace CustomControlsDemoModule.Views.Controls
 {
     /// <summary>
     /// ButtonsView.xaml 的交互逻辑

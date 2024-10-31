@@ -10,8 +10,7 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius}"
     MyAttachProperty.IsMinimalScreen="True"
-    Style="{StaticResource NoTitleWithAnimation}"
-    WindowStartupLocation="CenterScreen">
+    Style="{StaticResource NoTitleWithAnimation}">
 
     <Window.Resources>
         <Style TargetType="ContentControl">

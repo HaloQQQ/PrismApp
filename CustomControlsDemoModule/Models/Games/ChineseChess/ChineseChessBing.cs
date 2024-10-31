@@ -1,7 +1,4 @@
-﻿
-using DryIoc;
-using System.Collections.Generic;
-using System.Data.Common;
+﻿using System.Collections.Generic;
 
 namespace CustomControlsDemoModule.Models
 {

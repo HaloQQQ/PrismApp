@@ -8,6 +8,13 @@
     Background="Transparent"
     FocusVisualStyle="{x:Null}"
     MyAttachProperty.IsElementFocused="True">
+    <prism:Dialog.WindowStyle>
+        <Style BasedOn="{StaticResource WithoutTitleBar}" TargetType="Window">
+            <Setter Property="MinWidth" Value="1200" />
+            <Setter Property="MinHeight" Value="640" />
+        </Style>
+    </prism:Dialog.WindowStyle>
+
     <UserControl.Resources>
         <ResourceDictionary>
             <Style
@@ -67,6 +74,8 @@
     </UserControl.InputBindings>
 
     <DockPanel>
+        <WindowTitleBar DockPanel.Dock="Top" />
+
         <DockPanel DockPanel.Dock="Top" LastChildFill="False">
             <StackPanel Margin="20,10" DockPanel.Dock="Right">
                 <TextBlock HorizontalAlignment="Center" Text="最高分" />

@@ -10,8 +10,7 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius}"
     MyAttachProperty.IsMinimalScreen="True"
-    Style="{StaticResource NoTitleWithAnimation}"
-    WindowStartupLocation="CenterScreen">
+    Style="{StaticResource NoTitleWithAnimation}">
     <Grid ClipToBounds="True">
         <Grid.Background>
             <ImageBrush ImageSource="{Binding CurrentBkGrd}" Stretch="UniformToFill" />

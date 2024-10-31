@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace CustomControlsDemoModule.Views
+namespace CustomControlsDemoModule.Views.Controls
 {
     /// <summary>
     /// Interaction logic for ControlsDemoView

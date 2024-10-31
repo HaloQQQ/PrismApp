@@ -1,0 +1,47 @@
+﻿<UserControl
+    x:Class="CustomControlsDemoModule.Views.Controls.TextBoxes.TabControls"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <UniformGrid Columns="2">
+        <TabControl>
+            <TabItem Header="选项1">
+                <Grid Background="Red" />
+            </TabItem>
+            <TabItem Header="选项2">
+                <Grid Background="Green" />
+            </TabItem>
+            <TabItem Header="选项3">
+                <Grid Background="Blue" />
+            </TabItem>
+        </TabControl>
+
+        <TabControl>
+            <TabControl.Style>
+                <Style BasedOn="{StaticResource TabControl_ScrollContent}" TargetType="TabControl">
+                    <Setter Property="Height" Value="100" />
+
+                    <Setter Property="ItemContainerStyle" Value="{StaticResource TabItem_Transparent}" />
+                </Style>
+            </TabControl.Style>
+
+            <TabItem Header="选项1">
+                <Grid
+                    Width="100"
+                    Height="50"
+                    Background="Red" />
+            </TabItem>
+            <TabItem Header="选项2">
+                <Grid
+                    Width="100"
+                    Height="50"
+                    Background="Green" />
+            </TabItem>
+            <TabItem Header="选项3">
+                <Grid
+                    Width="100"
+                    Height="50"
+                    Background="Blue" />
+            </TabItem>
+        </TabControl>
+    </UniformGrid>
+</UserControl>
