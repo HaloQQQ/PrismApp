@@ -2,19 +2,34 @@
     x:Class="CustomControlsDemoModule.Views.Controls.TextBox"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <WrapPanel>
-        <TextBox MyAttachProperty.PlaceHolder="TextBox" />
-        <TextBox IsReadOnly="True" MyAttachProperty.PlaceHolder="TextBox" />
-        <TextBox IsEnabled="False" MyAttachProperty.PlaceHolder="TextBox" />
+    <StackPanel>
+        <TextBox MyAttachProperty.PlaceHolder="Normal" />
+        <TextBox
+            HorizontalContentAlignment="Center"
+            IsReadOnly="True"
+            MyAttachProperty.PlaceHolder="TextBox" />
+        <TextBox
+            HorizontalContentAlignment="Right"
+            IsEnabled="False"
+            MyAttachProperty.PlaceHolder="TextBox" />
 
-        <TextBox MyAttachProperty.PlaceHolder="TextBox_DisplayInfo" Style="{StaticResource TextBox_DisplayInfo}" />
+        <TextBox
+            HorizontalContentAlignment="Center"
+            MyAttachProperty.PlaceHolder="TextBox_DisplayInfo"
+            Style="{StaticResource TextBox_DisplayInfo}" />
         <TextBox MyAttachProperty.PlaceHolder="TransparentTextBox" Style="{StaticResource TransparentTextBox}" />
-        <TextBox MyAttachProperty.PlaceHolder="TextBox_FilteList" Style="{StaticResource TextBox_FilteList}" />
+        <TextBox
+            HorizontalContentAlignment="Center"
+            MyAttachProperty.PlaceHolder="TextBox_FilteList"
+            Style="{StaticResource TextBox_FilteList}" />
         <TextBox MyAttachProperty.PlaceHolder="TextBox_QueryTxt" Style="{StaticResource TextBox_QueryTxt}" />
-        <TextBox MyAttachProperty.PlaceHolder="CopyAsTextBlock" Style="{StaticResource CopyAsTextBlock}" />
+        <TextBox
+            HorizontalContentAlignment="Center"
+            MyAttachProperty.PlaceHolder="CopyAsTextBlock"
+            Style="{StaticResource CopyAsTextBlock}" />
         <TextBox
             FontSize="25"
             MyAttachProperty.PlaceHolder="TextBox_PlaceHolderAsLable"
             Style="{StaticResource TextBox_PlaceHolderAsLable}" />
-    </WrapPanel>
+    </StackPanel>
 </UserControl>
