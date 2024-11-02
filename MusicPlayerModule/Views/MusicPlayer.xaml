@@ -71,7 +71,7 @@
 
             <Style
                 x:Key="CategoryRadioButton"
-                BasedOn="{StaticResource {x:Type RadioButton}}"
+                BasedOn="{StaticResource {x:Type ToggleButton}}"
                 TargetType="RadioButton">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding DisplayFavorites.Count}" Value="0">
