@@ -12,6 +12,7 @@
     Cursor="SizeAll"
     MyAttachProperty.CornerRadius="10"
     MyAttachProperty.UseWindowCommand="False"
+    MyAttachProperty.WindowStartupLocation="Manual"
     ResizeMode="NoResize"
     ShowInTaskbar="False"
     SizeToContent="WidthAndHeight"
