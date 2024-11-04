@@ -325,7 +325,7 @@
                             Minimum="0"
                             Style="{StaticResource Slider_ObviousThumb}"
                             TickFrequency="5"
-                            Value="{Binding DataContext.CornerRadius, Converter={StaticResource CornerRadiusToDigitConverter}, RelativeSource={RelativeSource AncestorType=TabControl}}" />
+                            Value="{Binding DataContext.CornerRadius, Converter={StaticResource CornerRadiusToDigitConverter}, ConverterParameter=1, RelativeSource={RelativeSource AncestorType=TabControl}}" />
                     </WrapPanel>
 
                     <Button
