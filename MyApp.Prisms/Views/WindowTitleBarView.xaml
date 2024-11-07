@@ -17,7 +17,6 @@
         <converters:BitmapToImageSourceConverter x:Key="BitmapToImageSourceConverter" />
 
         <converter:MultiConverter_DigitToThickness x:Key="MultiConverter_DigitToThickness" />
-
     </UserControl.Resources>
 
     <UserControl.Tag>

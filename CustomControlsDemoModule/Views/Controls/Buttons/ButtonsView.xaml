@@ -59,13 +59,23 @@
 
         <Slider
             x:Name="slider"
-            Width="200"
-            Height="10" />
+            Width="250"
+            Height="10"
+            BorderBrush="Red"
+            BorderThickness="2"
+            MyAttachProperty.CornerRadius="15,5,15,10"
+            MyAttachProperty.UseCornerRadius="False"
+            Orientation="Horizontal" />
 
         <ProgressBar
-            Width="200"
-            Height="30"
+            Width="30"
+            Height="200"
+            BorderBrush="Red"
+            BorderThickness="2"
+            MyAttachProperty.CornerRadius="10,15,5,10"
             MyAttachProperty.PlaceHolder="当前进度"
+            MyAttachProperty.UseCornerRadius="True"
+            Orientation="Vertical"
             Value="{Binding Value, Source={x:Reference slider}}" />
 
         <ProgressBar

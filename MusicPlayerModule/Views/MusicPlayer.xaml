@@ -273,14 +273,21 @@
                         VerticalAlignment="Center"
                         BorderBrush="{StaticResource TransparentButtonBackground}"
                         BorderThickness="1"
-                        CornerRadius="15"
+                        CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource DigitToCornerRadiusConverter}}"
                         DockPanel.Dock="Right"
                         Visibility="{Binding CanBatchSelect, Converter={StaticResource BoolToCollapsedVisibleConverter}}">
                         <Border.Clip>
-                            <RectangleGeometry
-                                RadiusX="15"
-                                RadiusY="15"
-                                Rect="0,0,150,28" />
+                            <MultiBinding Converter="{StaticResource MultiConverter_CornerRadiusAndSizeToClip}">
+                                <MultiBinding.Bindings>
+                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
+                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
+
+                                    <Binding
+                                        Converter="{StaticResource DigitToCornerRadiusConverter}"
+                                        Path="ActualHeight"
+                                        RelativeSource="{RelativeSource Self}" />
+                                </MultiBinding.Bindings>
+                            </MultiBinding>
                         </Border.Clip>
                         <WrapPanel VerticalAlignment="Center">
                             <RadioButton
@@ -1297,7 +1304,7 @@
                                             <Condition Binding="{Binding CurrentMedia.PointBMills}" Value="0" />
                                         </MultiDataTrigger.Conditions>
 
-                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Setter Property="Visibility" Value="Hidden" />
                                     </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -1323,7 +1330,7 @@
                             <Style BasedOn="{StaticResource Music_PointABTextBlock}" TargetType="TextBlock">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding CurrentMedia.PointBMills}" Value="0">
-                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Setter Property="Visibility" Value="Hidden" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

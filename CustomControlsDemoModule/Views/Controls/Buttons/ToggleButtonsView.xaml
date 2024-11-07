@@ -48,7 +48,18 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
-            <RadioButton HorizontalContentAlignment="Left" Content="Radio Button" />
+            <RadioButton
+                HorizontalContentAlignment="Left"
+                Content="Radio Button1"
+                GroupName="Test" />
+            <RadioButton
+                HorizontalContentAlignment="Right"
+                Content="Radio Button2"
+                GroupName="Test" />
+            <RadioButton
+                HorizontalContentAlignment="Left"
+                Content="Radio Button3"
+                GroupName="Test" />
         </StackPanel>
     </StackPanel>
 </UserControl>
