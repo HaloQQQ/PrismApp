@@ -1,11 +1,10 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="http://IceTea.Wpf.Core.com/"
     xmlns:myConverter="clr-namespace:MusicPlayerModule.Converters">
 
     <myConverter:MusicDistributeMultiConverter x:Key="MusicDistributeMultiConverter" />
-    <converters:MultiConverter_IsStringEquals x:Key="MultiConverter_IsStringEquals" />
+    <MultiConverter_IsStringEquals x:Key="MultiConverter_IsStringEquals" />
 
     <Style
         x:Key="IconTextNoForegroundChanged"

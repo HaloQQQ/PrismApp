@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:appHotKey="http://IceTea.Wpf.Atom.AppHotKey.com/"
-    xmlns:converters="http://IceTea.Wpf.Core.com/"
     xmlns:globalHotKey="clr-namespace:IceTea.Atom.Utils.HotKey.Global;assembly=IceTea.Atom"
     xmlns:globalHotKeyContracts="clr-namespace:IceTea.Atom.Utils.HotKey.Global.Contracts;assembly=IceTea.Atom"
     xmlns:models="clr-namespace:MusicPlayerModule.Models;assembly=MusicPlayerModule"
@@ -13,8 +12,8 @@
     MaxHeight="500"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
-        <converters:Key2StringConverter x:Key="Key2StringConverter" />
-        <converters:CornerRadiusToDigitConverter x:Key="CornerRadiusToDigitConverter" />
+        <Key2StringConverter x:Key="Key2StringConverter" />
+        <CornerRadiusToDigitConverter x:Key="CornerRadiusToDigitConverter" />
 
         <ObjectDataProvider
             x:Key="CustomKeys"

@@ -2,7 +2,6 @@
     x:Class="MyApp.Prisms.Views.SwitchBackgroundView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:icetea="http://IceTea.Wpf.Core.com/"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:selector="clr-namespace:MyApp.Prisms.DataTemplateSelectors"
     Width="310"
@@ -72,7 +71,7 @@
                 ToolTip="刷新数据" />
         </DockPanel>
 
-        <icetea:NeedleWaitLoad
+        <NeedleWaitLoad
             Grid.Row="1"
             Width="80"
             Foreground="DodgerBlue"

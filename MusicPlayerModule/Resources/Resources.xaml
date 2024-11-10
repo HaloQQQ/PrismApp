@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converter="http://IceTea.Wpf.Core.com/"
     xmlns:myconverter="clr-namespace:MusicPlayerModule.Converters"
     xmlns:utils="clr-namespace:MusicPlayerModule.Utils">
 
@@ -48,18 +47,18 @@
         <PathGeometry Figures="M130,90 L140,100 L150,90 Z" />
     </GeometryGroup>
 
-    <converter:MultiConverter_MultiplicationDivision x:Key="MultiConverter_MultiplicationDivision" />
+    <MultiConverter_MultiplicationDivision x:Key="MultiConverter_MultiplicationDivision" />
     <myconverter:NoEnglishDesktopLyricColorfulMultiConverter x:Key="NoEnglishDesktopLyricColorfulMultiConverter" />
 
     <myconverter:LyricWidth_MultiConverter x:Key="LyricWidth_MultiConverter" />
 
     <myconverter:DesktopLyricColorfulMultiConverter x:Key="DesktopLyricColorfulMultiConverter" />
 
-    <converter:WindowMinToBoolConverter x:Key="WindowMinToBoolConverter" />
+    <WindowMinToBoolConverter x:Key="WindowMinToBoolConverter" />
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
-    <converter:DigitMultiConverter x:Key="DigitMultiConverter" />
+    <DigitMultiConverter x:Key="DigitMultiConverter" />
 
     <DataTemplate x:Key="HorizentalDesktopLyric">
         <Grid Margin="20,5" HorizontalAlignment="Center">

@@ -2,12 +2,10 @@
     x:Class="MyApp.Prisms.Views.WindowTitleBarView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converter="http://IceTea.Wpf.Core.com/"
     xmlns:converters="clr-namespace:MyApp.Prisms.Converters"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:regions="http://prismlibrary.com/"
     xmlns:system="clr-namespace:System;assembly=System.Runtime"
-    xmlns:waitLoads="http://IceTea.Wpf.Core.com/"
     Panel.ZIndex="100"
     prism:ViewModelLocator.AutoWireViewModel="True"
     Background="Transparent"
@@ -16,7 +14,7 @@
     <UserControl.Resources>
         <converters:BitmapToImageSourceConverter x:Key="BitmapToImageSourceConverter" />
 
-        <converter:MultiConverter_DigitToThickness x:Key="MultiConverter_DigitToThickness" />
+        <MultiConverter_DigitToThickness x:Key="MultiConverter_DigitToThickness" />
     </UserControl.Resources>
 
     <UserControl.Tag>
@@ -210,11 +208,11 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <waitLoads:NeedleWaitLoad Grid.Column="0" Foreground="DodgerBlue" />
-                            <waitLoads:PointHorizonLineWaitLoad Grid.Column="1" Foreground="DodgerBlue" />
-                            <waitLoads:PointWaitLoad Grid.Column="2" Foreground="DodgerBlue" />
-                            <waitLoads:SquareFlipWaitLoad Grid.Column="3" Foreground="DodgerBlue" />
-                            <waitLoads:VerticalLineWaitLoad Grid.Column="4" Foreground="DodgerBlue" />
+                            <NeedleWaitLoad Grid.Column="0" Foreground="DodgerBlue" />
+                            <PointHorizonLineWaitLoad Grid.Column="1" Foreground="DodgerBlue" />
+                            <PointWaitLoad Grid.Column="2" Foreground="DodgerBlue" />
+                            <SquareFlipWaitLoad Grid.Column="3" Foreground="DodgerBlue" />
+                            <VerticalLineWaitLoad Grid.Column="4" Foreground="DodgerBlue" />
                         </Grid>
                         <Image Grid.Row="1" Source="{Binding BitmapImage, Converter={StaticResource BitmapToImageSourceConverter}}" />
                         <StackPanel
