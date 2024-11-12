@@ -5,6 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>True</EnableWindowsTargeting>
     <ApplicationIcon>Resources\Penguin.ico</ApplicationIcon>
     <Version></Version>
     <AssemblyVersion>1.0.1.5</AssemblyVersion>
