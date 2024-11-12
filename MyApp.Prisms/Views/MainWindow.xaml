@@ -3,8 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:MyApp.Prisms.Converters"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:prism="http://prismlibrary.com/"
-    xmlns:regions="http://prismlibrary.com/"
+    xmlns:system="clr-namespace:System;assembly=netstandard"
     xmlns:views="clr-namespace:MyApp.Prisms.Views"
     MinWidth="1200"
     MinHeight="640"
@@ -39,36 +40,48 @@
                     VerticalAlignment="Top"
                     DockPanel.Dock="Top" />
 
-                <TabControl
-                    DockPanel.Dock="Bottom"
-                    ItemContainerStyle="{StaticResource TabItem_Transparent}"
-                    MyAttachProperty.IsCollapsed="{Binding IsTitleBarHidden}"
-                    SelectedItem="{Binding Title, Mode=OneWayToSource, Converter={StaticResource StringToTabItemHeaderConverter}}">
-                    <TabItem Header="通讯工具">
-                        <views:CommunicationView />
-                    </TabItem>
-                    <TabItem Header="进程服务">
-                        <views:ProcessServiceView />
-                    </TabItem>
-                    <TabItem Header="邮件客户端">
-                        <views:MailManager />
-                    </TabItem>
-                    <TabItem Header="Sql创建器">
-                        <ContentControl regions:RegionManager.RegionName="CreateModelRegion" Focusable="False" />
-                    </TabItem>
-                    <TabItem Header="颜色转换">
-                        <ContentControl regions:RegionManager.RegionName="ColorRegion" Focusable="False" />
-                    </TabItem>
-                    <TabItem Header="控件样例">
-                        <ContentControl regions:RegionManager.RegionName="ControlsDemoRegion" />
-                    </TabItem>
-                    <TabItem Header="音乐播放器">
-                        <ContentControl regions:RegionManager.RegionName="MusicPlayerRegion" Focusable="False" />
-                    </TabItem>
-                    <TabItem Header="视频播放器">
-                        <ContentControl regions:RegionManager.RegionName="VideoPlayerRegion" Focusable="False" />
-                    </TabItem>
-                </TabControl>
+                <Grid DockPanel.Dock="Bottom">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TreeView
+                        Grid.Column="0"
+                        HorizontalContentAlignment="Center"
+                        FontSize="20"
+                        MyAttachProperty.IsCollapsed="True">
+                        <TreeView.ItemContainerStyle>
+                            <Style BasedOn="{StaticResource {x:Type TreeViewItem}}" TargetType="TreeViewItem">
+                                <Setter Property="MyAttachProperty.CornerRadius" Value="10" />
+
+                                <Setter Property="Padding" Value="10,5" />
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+
+                        <TreeView.ItemsSource>
+                            <x:Array Type="system:String">
+                                <system:String>通讯工具</system:String>
+                                <system:String>进程服务</system:String>
+                                <system:String>邮件客户端</system:String>
+
+                                <system:String>Sql创建器</system:String>
+                                <system:String>颜色转换</system:String>
+
+                                <system:String>控件样例</system:String>
+                                <system:String>音乐播放器</system:String>
+                                <system:String>视频播放器</system:String>
+                            </x:Array>
+                        </TreeView.ItemsSource>
+
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectedItemChanged">
+                                <prism:InvokeCommandAction Command="{Binding NavigateToCommand}" TriggerParameterPath="NewValue" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </TreeView>
+
+                    <ContentControl Grid.Column="1" prism:RegionManager.RegionName="MainContentRegion" />
+                </Grid>
             </DockPanel>
         </Grid>
 

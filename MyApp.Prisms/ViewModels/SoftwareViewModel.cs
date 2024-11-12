@@ -24,6 +24,12 @@ using IceTea.General.Utils;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using IceTea.Wpf.Atom.Contracts.MyEvents;
 using IceTea.Atom.BaseModels;
+using Prism.Regions;
+using MyApp.Prisms.Views;
+using SqlCreatorModule.Views;
+using CustomControlsDemoModule.Views;
+using CustomControlsDemoModule.Views.Controls;
+using MusicPlayerModule.Views;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -35,7 +41,8 @@ namespace MyApp.Prisms.ViewModels
                 SettingsViewModel settings,
                 IConfigManager config,
                 IAppConfigFileHotKeyManager appConfigFileHotKeyManager,
-                IEventAggregator eventAggregator
+                IEventAggregator eventAggregator,
+                IRegionManager regionManager
             )
         {
             this.UserContext = userContext;
@@ -49,6 +56,52 @@ namespace MyApp.Prisms.ViewModels
 
             this.SwitchThemeCommand = new DelegateCommand(() => this.RefreshTheme());
 
+            this.NavigateToCommand = new DelegateCommand<string>(target =>
+            {
+                var uri = target;
+
+                this.Title = uri;
+
+                switch (uri)
+                {
+                    case "通讯工具":
+                        uri = nameof(CommunicationView);
+                        break;
+                    case "进程服务":
+                        uri = nameof(ProcessServiceView);
+                        break;
+                    case "邮件客户端":
+                        uri = nameof(MailManager);
+                        break;
+
+                    case "Sql创建器":
+                        uri = nameof(CreateModelView);
+                        break;
+                    case "颜色转换":
+                        uri = nameof(ColorView);
+                        break;
+
+                    case "控件样例":
+                        uri = nameof(ControlsDemoView);
+                        break;
+
+                    case "音乐播放器":
+                        uri = nameof(MusicPlayer);
+                        break;
+
+                    case "视频播放器":
+                        uri = nameof(VideoPlayerView);
+                        break;
+                    default:
+                        break;
+                }
+
+                regionManager.RequestNavigate("MainContentRegion", uri, nr => { }, new NavigationParameters()
+                    {
+                        { "Key", "Value" }
+                    });
+            });
+
             eventAggregator.GetEvent<DialogMessageEvent>().Subscribe(item => this.DialogMessage = item);
 
             this.LoadConfig(config);
@@ -60,6 +113,8 @@ namespace MyApp.Prisms.ViewModels
 
             this.InitBackgroundSwitch(eventAggregator);
         }
+
+        public ICommand NavigateToCommand { get; }
 
         public IAppConfigFileHotKeyManager AppConfigFileHotKeyManager { get; }
 

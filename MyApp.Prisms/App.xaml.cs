@@ -14,7 +14,6 @@ using MyApp.Prisms.Views;
 using IceTea.Atom.Utils;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.Setting;
-using MyApp.Prisms.Views.ToolBox;
 using PrismAppBasicLib.MsgEvents;
 using Prism.Regions;
 using MusicPlayerModule.MsgEvents;
@@ -113,6 +112,7 @@ namespace MyApp.Prisms
             Helper.Helper.Log(CustomConstants.Software_Log_Dir, $"进程{processName}启动成功!");
 
             containerRegistry.RegisterSingleton<IAppConfigFileHotKeyManager, AppConfigFileHotKeyManager>();
+
             containerRegistry.RegisterSingleton<ISettingManager, SettingManager>();
             containerRegistry.RegisterSingleton<ISettingManager<SettingModel>, SettingManager<SettingModel>>();
 
@@ -129,17 +129,28 @@ namespace MyApp.Prisms
             ViewModelLocationProvider.Register<SwitchBackgroundView, ImageDisplayViewModel>();
 
             this.RegisterRegion();
+
+            this.RegisterNavigation(containerRegistry);
+        }
+
+        private void RegisterNavigation(IContainerRegistry containerRegistry)
+        {                              
+            containerRegistry.RegisterForNavigation<CommunicationView>();
+
+            containerRegistry.RegisterForNavigation<ProcessServiceView>();
+
+            containerRegistry.RegisterForNavigation<MailManager>();
         }
 
         private void RegisterRegion()
         {
             var regionManager = this.Container.Resolve<IRegionManager>();
-            regionManager.RegisterViewWithRegion("SettingRegion", () => new SettingsView());
+            regionManager.RegisterViewWithRegion("MainContentRegion", typeof(CommunicationView));
 
-            regionManager.RegisterViewWithRegion("Smtp163MailRegion", () => new Smtp163MailView());
-            regionManager.RegisterViewWithRegion("SmtpQQMailRegion", () => new SmtpQQMailView());
+            regionManager.RegisterViewWithRegion("SettingRegion", typeof(SettingsView));
 
-            regionManager.RegisterViewWithRegion("ColorRegion", () => new ColorView());
+            regionManager.RegisterViewWithRegion("Smtp163MailRegion", typeof(Smtp163MailView));
+            regionManager.RegisterViewWithRegion("SmtpQQMailRegion", typeof(SmtpQQMailView));
 
             regionManager.RegisterViewWithRegion<VideoPlayerView>("Video1PlayerRegion");
             regionManager.RegisterViewWithRegion<VideoPlayerView>("Video2PlayerRegion");

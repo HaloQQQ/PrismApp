@@ -23,7 +23,9 @@ namespace CustomControlsDemoModule
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            _regionManager.RegisterViewWithRegion<ControlsDemoView>("ControlsDemoRegion");
+            //_regionManager.RegisterViewWithRegion<ControlsDemoView>("ControlsDemoRegion");
+
+            //_regionManager.RegisterViewWithRegion<ColorView>("ColorRegion");
 
             this.RegisterNavigation(containerRegistry);
 
@@ -39,6 +41,10 @@ namespace CustomControlsDemoModule
 
         private void RegisterNavigation(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterForNavigation<ColorView>();
+            containerRegistry.RegisterForNavigation<ControlsDemoView>();
+
+
             containerRegistry.RegisterForNavigation<ButtonsView>();
             containerRegistry.RegisterForNavigation<ToggleButtonsView>();
 

@@ -113,7 +113,7 @@ namespace MyApp.Prisms.ViewModels
                         var image = new MyImage(item);
 
                         // A.跨线程同步
-                        //_synchronizationContext.Post(_ => Data.Add(image), null);
+                        //SynchronizationContext.Current.Post(_ => Data.Add(image), null);
 
                         // B.跨线程同步
                         CommonAtomUtils.BeginInvoke(() =>

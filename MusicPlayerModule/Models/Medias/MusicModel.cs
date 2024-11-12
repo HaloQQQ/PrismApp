@@ -6,6 +6,7 @@ using TagLib;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
 using System.Text.RegularExpressions;
+using IceTea.Atom.Contracts;
 
 namespace MusicPlayerModule.Models;
 
@@ -24,8 +25,8 @@ internal class MusicModel : MediaBaseModel, IDisposable
             Name = file.Tag.Title ?? filePath.GetFileNameWithoutExtension();             // 歌曲标题
         }
 
-        IsEnglishTitle = Regex.IsMatch(Name, "[a-zA-Z]");
-        IsEnglishSinger = Regex.IsMatch(Singer, "[a-zA-Z]");
+        IsEnglishTitle = Regex.IsMatch(Name, RegexConstants.ContainsEnglishPattern);
+        IsEnglishSinger = Regex.IsMatch(Singer, RegexConstants.ContainsEnglishPattern);
 
         Album = file.Tag.Album;             // 专辑名称
         Year = (int)file.Tag.Year;             // 年份

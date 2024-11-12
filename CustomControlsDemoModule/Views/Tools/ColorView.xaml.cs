@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace MyApp.Prisms.Views.ToolBox
+namespace CustomControlsDemoModule.Views
 {
     /// <summary>
     /// ColorView.xaml 的交互逻辑

@@ -95,9 +95,9 @@ namespace CustomControlsDemoModule.ViewModels.Controls
                     }
 
                     regionManager.RequestNavigate("ContentRegion", uri, nr => { }, new NavigationParameters()
-                {
-                    { "Key", "Value" }
-                });
+                    {
+                        { "Key", "Value" }
+                    });
                 }
             });
         }

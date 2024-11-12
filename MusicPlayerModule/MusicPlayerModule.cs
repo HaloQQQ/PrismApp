@@ -17,6 +17,10 @@ namespace MusicPlayerModule
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterForNavigation<MusicPlayer>();
+            containerRegistry.RegisterForNavigation<VideoPlayerView>();
+
+
             containerRegistry.RegisterSingleton<MusicPlayerViewModel>();
             Prism.Mvvm.ViewModelLocationProvider.Register<HorizontalMusicLyricDesktopWindow, MusicPlayerViewModel>();
             Prism.Mvvm.ViewModelLocationProvider.Register<VerticalMusicLyricDesktopWindow, MusicPlayerViewModel>();
@@ -24,8 +28,8 @@ namespace MusicPlayerModule
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            _regionManager.RegisterViewWithRegion<MusicPlayer>("MusicPlayerRegion");
-            _regionManager.RegisterViewWithRegion<VideoPlayerView>("VideoPlayerRegion");
+            //_regionManager.RegisterViewWithRegion<MusicPlayer>("MusicPlayerRegion");
+            //_regionManager.RegisterViewWithRegion<VideoPlayerView>("VideoPlayerRegion");
         }
     }
 }

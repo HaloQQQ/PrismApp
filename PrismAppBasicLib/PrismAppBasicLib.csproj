@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="IceTea.Core" Version="1.0.45" />
     <PackageReference Include="IceTea.General" Version="1.0.26" />
-    <PackageReference Include="IceTea.Wpf.Core" Version="1.1.6" />
+    <PackageReference Include="IceTea.Wpf.Core" Version="1.1.7" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
   </ItemGroup>
 
