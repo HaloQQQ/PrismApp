@@ -22,11 +22,11 @@ namespace MusicPlayerModule.ViewModels
     internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
     {
         protected override string MediaType => "音乐";
-        protected override string[] MediaHotKey_ConfigKey => ["HotKeys", "App", "Music"];
+        protected override string[] MediaHotKey_ConfigKey => new string[] { "HotKeys", "App", "Music" };
 
-        protected override string[] MediaPlayOrder_ConfigKey => [CustomStatics.EnumSettings.Music.ToString(), "MusicPlayOrder"];
+        protected override string[] MediaPlayOrder_ConfigKey => new string[] { CustomStatics.EnumSettings.Music.ToString(), "MusicPlayOrder" };
 
-        protected override string[] MediaABPoints_ConfigKey => [CustomStatics.EnumSettings.Music.ToString(), "MusicABPoints"];
+        protected override string[] MediaABPoints_ConfigKey => new string[] { CustomStatics.EnumSettings.Music.ToString(), "MusicABPoints" };
 
         private SettingModel MusicSetting => this._settingManager[CustomStatics.MUSIC];
         private SettingModel LyricSetting => this._settingManager[CustomStatics.LYRIC];
@@ -329,14 +329,15 @@ namespace MusicPlayerModule.ViewModels
         }
 
         protected override IEnumerable<AppHotKey> MediaHotKeys => base.MediaHotKeys.Concat(
-        [
-            new AppHotKey("播放所有音乐", Key.P, ModifierKeys.Alt),
+            new AppHotKey[]
+            {
+                new AppHotKey("播放所有音乐", Key.P, ModifierKeys.Alt),
 
-            new AppHotKey("桌面歌词", Key.C, ModifierKeys.Alt),
-            new AppHotKey("歌词封面", Key.Escape, ModifierKeys.None),
+                new AppHotKey("桌面歌词", Key.C, ModifierKeys.Alt),
+                new AppHotKey("歌词封面", Key.Escape, ModifierKeys.None),
 
-            new AppHotKey("搜索", Key.F, ModifierKeys.Control)
-        ]);
+                new AppHotKey("搜索", Key.F, ModifierKeys.Control)
+            });
 
         #region CommandExecute
         #region MusicFile

@@ -38,7 +38,7 @@ namespace MyApp.Prisms.Helper
 
         internal const string IMAGE = "Image";
 
-        internal static string[] LastImageDir_ConfigKey = ["LastImageDir"];
+        internal static string[] LastImageDir_ConfigKey = new string[] { "LastImageDir" };
 
 
         internal const string Software_Log_Dir = "软件启停记录";

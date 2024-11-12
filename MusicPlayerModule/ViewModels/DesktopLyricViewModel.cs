@@ -136,14 +136,14 @@ namespace MusicPlayerModule.ViewModels
 
         #region 歌词字体
         public IEnumerable<FontModel> Fonts { get; } =
-        [
-          new FontModel("微软雅黑", "Microsoft YaHei"),
-          new FontModel("宋体", "SimSun"),
-          new FontModel("黑体", "SimHei"),
-          new FontModel("微软正黑", "Microsoft JhengHei"),
-          new FontModel("楷体", "KaiTi"),
-          new FontModel("细明体", "MingLiU")
-        ];
+            new FontModel[]{
+              new FontModel("微软雅黑", "Microsoft YaHei"),
+              new FontModel("宋体", "SimSun"),
+              new FontModel("黑体", "SimHei"),
+              new FontModel("微软正黑", "Microsoft JhengHei"),
+              new FontModel("楷体", "KaiTi"),
+              new FontModel("细明体", "MingLiU")
+            };
 
         private FontModel _fontModel;
         public FontModel CurrentFontModel

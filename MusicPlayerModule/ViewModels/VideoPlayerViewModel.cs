@@ -18,11 +18,11 @@ namespace MusicPlayerModule.ViewModels
     internal class VideoPlayerViewModel : MediaPlayerViewModel
     {
         protected override string MediaType => "视频";
-        protected override string[] MediaHotKey_ConfigKey => ["HotKeys", "App", "Video"];
+        protected override string[] MediaHotKey_ConfigKey => new string[] { "HotKeys", "App", "Video" };
 
-        protected override string[] MediaPlayOrder_ConfigKey => [CustomStatics.EnumSettings.Video.ToString(), "VideoPlayOrder"];
+        protected override string[] MediaPlayOrder_ConfigKey => new string[] { CustomStatics.EnumSettings.Video.ToString(), "VideoPlayOrder" };
 
-        protected override string[] MediaABPoints_ConfigKey => [CustomStatics.EnumSettings.Video.ToString(), "VideoABPoints"];
+        protected override string[] MediaABPoints_ConfigKey => new string[] { CustomStatics.EnumSettings.Video.ToString(), "VideoABPoints" };
 
         private SettingModel VideoSetting => this._settingManager[CustomStatics.VIDEO];
 

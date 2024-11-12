@@ -440,31 +440,32 @@ namespace MusicPlayerModule.ViewModels.Base
         }
 
         protected virtual IEnumerable<AppHotKey> MediaHotKeys =>
-        [
-            new AppHotKey(MediaHotKeyConsts.ResetPointAB, Key.Delete, ModifierKeys.Control),
-            new AppHotKey(MediaHotKeyConsts.SetPointA, Key.D1, ModifierKeys.Control),
-            new AppHotKey(MediaHotKeyConsts.SetPointB, Key.D2, ModifierKeys.Control),
-            new AppHotKey(MediaHotKeyConsts.ToPointA, Key.D3, ModifierKeys.Alt),
-            new AppHotKey(MediaHotKeyConsts.AllToPointA, Key.D1, ModifierKeys.Alt),
+            new AppHotKey[]
+            {
+                new AppHotKey(MediaHotKeyConsts.ResetPointAB, Key.Delete, ModifierKeys.Control),
+                new AppHotKey(MediaHotKeyConsts.SetPointA, Key.D1, ModifierKeys.Control),
+                new AppHotKey(MediaHotKeyConsts.SetPointB, Key.D2, ModifierKeys.Control),
+                new AppHotKey(MediaHotKeyConsts.ToPointA, Key.D3, ModifierKeys.Alt),
+                new AppHotKey(MediaHotKeyConsts.AllToPointA, Key.D1, ModifierKeys.Alt),
 
-            new AppHotKey(MediaHotKeyConsts.MoveToHome, Key.Home, ModifierKeys.None),
-            new AppHotKey(MediaHotKeyConsts.MoveToEnd, Key.End, ModifierKeys.None),
-            new AppHotKey(MediaHotKeyConsts.Rewind, Key.Left, ModifierKeys.None),
-            new AppHotKey(MediaHotKeyConsts.FastForward, Key.Right, ModifierKeys.None),
-            new AppHotKey(MediaHotKeyConsts.Prev, Key.PageUp, ModifierKeys.None),
-            new AppHotKey(MediaHotKeyConsts.Next, Key.PageDown, ModifierKeys.None),
+                new AppHotKey(MediaHotKeyConsts.MoveToHome, Key.Home, ModifierKeys.None),
+                new AppHotKey(MediaHotKeyConsts.MoveToEnd, Key.End, ModifierKeys.None),
+                new AppHotKey(MediaHotKeyConsts.Rewind, Key.Left, ModifierKeys.None),
+                new AppHotKey(MediaHotKeyConsts.FastForward, Key.Right, ModifierKeys.None),
+                new AppHotKey(MediaHotKeyConsts.Prev, Key.PageUp, ModifierKeys.None),
+                new AppHotKey(MediaHotKeyConsts.Next, Key.PageDown, ModifierKeys.None),
 
-            new AppHotKey(MediaHotKeyConsts.DecreaseVolume, Key.Down, ModifierKeys.Control),
-            new AppHotKey(MediaHotKeyConsts.IncreaseVolume, Key.Up, ModifierKeys.Control),
+                new AppHotKey(MediaHotKeyConsts.DecreaseVolume, Key.Down, ModifierKeys.Control),
+                new AppHotKey(MediaHotKeyConsts.IncreaseVolume, Key.Up, ModifierKeys.Control),
 
-            new AppHotKey(MediaHotKeyConsts.OpenFolder, Key.O, ModifierKeys.Control),
+                new AppHotKey(MediaHotKeyConsts.OpenFolder, Key.O, ModifierKeys.Control),
 
-            new AppHotKey(MediaHotKeyConsts.PlayPlaying, Key.Space, ModifierKeys.None),
-            new AppHotKey(MediaHotKeyConsts.CleanPlaying, Key.D, ModifierKeys.Alt),
-            new AppHotKey(MediaHotKeyConsts.StopPlayMedia, Key.W, ModifierKeys.Alt),
+                new AppHotKey(MediaHotKeyConsts.PlayPlaying, Key.Space, ModifierKeys.None),
+                new AppHotKey(MediaHotKeyConsts.CleanPlaying, Key.D, ModifierKeys.Alt),
+                new AppHotKey(MediaHotKeyConsts.StopPlayMedia, Key.W, ModifierKeys.Alt),
 
-            new AppHotKey(MediaHotKeyConsts.PlayingListPanel, Key.X, ModifierKeys.Alt)
-        ];
+                new AppHotKey(MediaHotKeyConsts.PlayingListPanel, Key.X, ModifierKeys.Alt)
+            };
         #endregion
 
         public bool IsLoading
