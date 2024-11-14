@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Prisms", "MyApp.Prism
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrismAppBasicLib", "PrismAppBasicLib\PrismAppBasicLib.csproj", "{BEDDDFA9-AF08-460A-BC05-75D2BCA1FAA7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiAppNet", "MauiAppNet\MauiAppNet.csproj", "{3F09DD25-9E45-40AF-B9DB-F6658319E828}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
