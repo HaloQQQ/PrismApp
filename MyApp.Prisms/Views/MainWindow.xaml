@@ -47,12 +47,14 @@
                     </Grid.ColumnDefinitions>
                     <TreeView
                         Grid.Column="0"
-                        HorizontalContentAlignment="Center"
+                        HorizontalContentAlignment="Left"
                         FontSize="20"
                         MyAttachProperty.IsCollapsed="True">
                         <TreeView.ItemContainerStyle>
                             <Style BasedOn="{StaticResource {x:Type TreeViewItem}}" TargetType="TreeViewItem">
                                 <Setter Property="MyAttachProperty.CornerRadius" Value="10" />
+
+                                <Setter Property="MyAttachProperty.IconFontText" Value="&#xebdf;" />
 
                                 <Setter Property="Padding" Value="10,5" />
                             </Style>

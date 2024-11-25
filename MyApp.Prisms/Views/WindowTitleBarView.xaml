@@ -272,7 +272,6 @@
                         Width="180"
                         Height="4"
                         Margin="15,0,12,0"
-                        MyAttachProperty.IsSliderThumbObvious="True"
                         Style="{StaticResource Slider_ObviousThumb}"
                         TickFrequency="5"
                         Value="{Binding CurrentBright}" />

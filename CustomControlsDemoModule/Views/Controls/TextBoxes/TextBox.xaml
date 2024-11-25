@@ -31,5 +31,13 @@
             FontSize="25"
             MyAttachProperty.PlaceHolder="TextBox_PlaceHolderAsLable"
             Style="{StaticResource TextBox_PlaceHolderAsLable}" />
+
+        <NumericUpDown
+            FontSize="25"
+            Maximum="10"
+            Minimum="1"
+            MyAttachProperty.DoubleValue="20"
+            Step="1"
+            ValueFormat="F2" />
     </StackPanel>
 </UserControl>

@@ -8,14 +8,6 @@
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/IceTea.Wpf.Core;component/Resources/ProgressBar.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <WrapPanel>
         <Button Content="普通按钮" />
         <Button Content="普通按钮" IsEnabled="False" />
@@ -79,10 +71,23 @@
             Value="{Binding Value, Source={x:Reference slider}}" />
 
         <ProgressBar
-            Width="150"
+            Width="300"
+            Background="Transparent"
+            BorderBrush="Red"
             BorderThickness="20"
+            FontSize="20"
             Maximum="100"
+            MyAttachProperty.PlaceHolder="当前进度"
             Style="{StaticResource PieProgressBar}"
+            Value="{Binding Value, Source={x:Reference slider}}" />
+
+        <ProgressBar
+            Width="300"
+            Margin="10"
+            BorderBrush="Red"
+            BorderThickness="1"
+            MyAttachProperty.PlaceHolder="当前进度"
+            Style="{StaticResource WaveProgressBar}"
             Value="{Binding Value, Source={x:Reference slider}}" />
 
         <Calendar />
