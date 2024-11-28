@@ -38,6 +38,10 @@ namespace CustomControlsDemoModule.ViewModels.Controls
                     {
                         uri = nameof(ItemsControls);
                     }
+                    else if ("选中控件".EqualsIgnoreCase(node.ParentName))
+                    {
+                        uri = nameof(Pickers);
+                    }
                     else if ("虚拟化面板".EqualsIgnoreCase(node.ParentName))
                     {
                         uri = nameof(VirtualizingPanels);
@@ -156,6 +160,9 @@ namespace CustomControlsDemoModule.ViewModels.Controls
                 new ControlNode("选择器控件").Add(new("选项卡")).Add(new("下拉框")).Add(new("表格")).Add(new("列表")),
 
                 new ControlNode("集合控件").Add(new("菜单")).Add(new("上下文菜单")).Add(new("树形列表")),
+
+                new ControlNode("选中控件").Add(new("颜色选择器")).Add(new("日期选择器")),
+
             };
 
             Controls = list;

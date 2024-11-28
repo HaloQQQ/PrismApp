@@ -72,13 +72,7 @@ namespace CustomControlsDemoModule.ViewModels
                 SetProperty<string>(ref _colorCode, code);
                 RaisePropertyChanged(nameof(Background));
 
-                string result = string.Empty;
-                for (int i = 1; i < code.Length; i += 2)
-                {
-                    result += (255 - Convert.ToByte(code.Substring(i, 2), 16)).ToString("X2");
-                }
-
-                this.ContrastColorCode = result.EnsureStartsWith("#");
+                this.ContrastColorCode = data.GetContrastColor();
             }
         }
 
