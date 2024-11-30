@@ -60,6 +60,8 @@ namespace CustomControlsDemoModule
             containerRegistry.RegisterForNavigation<ItemsControls>();
 
             containerRegistry.RegisterForNavigation<VirtualizingPanels>();
+
+            containerRegistry.RegisterForNavigation<Pickers>();
         }
     }
 }
