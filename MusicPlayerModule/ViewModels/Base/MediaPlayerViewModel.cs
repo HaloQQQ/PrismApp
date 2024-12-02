@@ -7,13 +7,13 @@ using IceTea.Atom.Contracts;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using IceTea.Atom.Utils.HotKey.Contracts;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
-using MusicPlayerModule.Models;
 using MusicPlayerModule.MsgEvents;
 using System.Diagnostics;
 using System.IO;
 using IceTea.Atom.Extensions;
 using MusicPlayerModule.Contracts;
 using IceTea.Atom.BaseModels;
+using PrismAppBasicLib.Models;
 
 namespace MusicPlayerModule.ViewModels.Base
 {
@@ -30,9 +30,9 @@ namespace MusicPlayerModule.ViewModels.Base
             this._configManager = configManager.AssertArgumentNotNull(nameof(IConfigManager));
             this._settingManager = settingManager;
 
-            this._settingManager.TryAdd(CustomStatics.MUSIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode(CustomStatics.LastMusicDir_ConfigKey), () => { }));
-            this._settingManager.TryAdd(CustomStatics.LYRIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode(CustomStatics.LastLyricDir_ConfigKey), () => { }));
-            this._settingManager.TryAdd(CustomStatics.VIDEO, () => new SettingModel(string.Empty, configManager.ReadConfigNode(CustomStatics.LastVideoDir_ConfigKey), () => { }));
+            this._settingManager.TryAdd(CustomStatics.MUSIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode(CustomStatics.LastMusicDir_ConfigKey), null));
+            this._settingManager.TryAdd(CustomStatics.LYRIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode(CustomStatics.LastLyricDir_ConfigKey), null));
+            this._settingManager.TryAdd(CustomStatics.VIDEO, () => new SettingModel(string.Empty, configManager.ReadConfigNode(CustomStatics.LastVideoDir_ConfigKey), null));
 
             this.LoadConfig(configManager);
 

@@ -63,12 +63,18 @@
                 DockPanel.Dock="Left"
                 IsChecked="{Binding ShowInList}"
                 Style="{StaticResource BlockLayoutToggleButton}" />
+
             <Button
                 Command="{Binding RefreshCommand}"
                 Content="&#xe63e;"
                 DockPanel.Dock="Right"
                 Style="{StaticResource IconButtonBase_Small_Scale}"
                 ToolTip="刷新数据" />
+
+            <TextBlock
+                DockPanel.Dock="Right"
+                Style="{StaticResource ThemeBlk}"
+                Text="{Binding ImagesCount}" />
         </DockPanel>
 
         <NeedleWaitLoad
@@ -90,7 +96,7 @@
                     <Setter Property="BorderThickness" Value="1" />
 
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding URI}" Value="{x:Null}">
+                        <DataTrigger Binding="{Binding IsEmpty}" Value="True">
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Selected}" Value="True">
@@ -99,6 +105,7 @@
                     </Style.Triggers>
                 </Style>
             </ListBox.ItemContainerStyle>
+
             <ListBox.Style>
                 <Style BasedOn="{StaticResource VerticalScrollVirtualItemsControl}" TargetType="ListBox">
                     <Setter Property="ItemsPanel">

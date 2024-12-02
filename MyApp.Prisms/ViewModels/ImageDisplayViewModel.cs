@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.BaseModels;
 using IceTea.Atom.Contracts;
 using System.Windows.Input;
 using Prism.Commands;
-using System.Threading;
 using IceTea.Wpf.Atom.Utils;
 using MyApp.Prisms.Helper;
-using MusicPlayerModule.Models;
 using IceTea.Atom.Utils;
+using System.Windows.Media.Imaging;
+using Prism.Events;
+using PrismAppBasicLib.Models;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -29,6 +29,14 @@ namespace MyApp.Prisms.ViewModels
             internal set => SetProperty<bool>(ref _selected, value);
         }
 
+        private BitmapSource? _source;
+        public BitmapSource? Source
+        {
+            get => _source;
+            private set => SetProperty(ref _source, value);
+        }
+
+        public bool IsEmpty { get; }
 
         public string URI { get; set; } = null!;
         public string FileType { get; set; } = null!;
@@ -40,6 +48,7 @@ namespace MyApp.Prisms.ViewModels
 
         internal MyImage()
         {
+            this.IsEmpty = true;
         }
 
         public MyImage(string path)
@@ -49,7 +58,22 @@ namespace MyApp.Prisms.ViewModels
             URI = path.GetFullPath();
             FileType = path.GetFileType();
             Name = path.GetFileNameWithoutExtension();
-            Size = ((double)new FileInfo(path).Length / 1024d).ToString("0.00");
+            Size = (new FileInfo(path).Length / 1024d).ToString("0.00");
+
+            this.LoadCover();
+        }
+
+        private async void LoadCover()
+        {
+            await Task.Delay(1000);
+
+            CommonAtomUtils.BeginInvoke(() =>
+            {
+                using (var stream = File.OpenRead(this.URI))
+                {
+                    this.Source = BitmapFrame.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+                }
+            });
         }
     }
 
@@ -57,7 +81,12 @@ namespace MyApp.Prisms.ViewModels
     {
         public ObservableCollection<MyImage> Data { get; private set; } = new ObservableCollection<MyImage>();
 
-        public IEnumerable<MyImage> ActualData => Data.SkipWhile(item => item.Name == null);
+        public int ImagesCount => Math.Max(this.Data.Count - 1, 0);
+
+        public void RaisePropertyChangedEvent(string propName)
+        {
+            this.RaisePropertyChanged(propName);
+        }
 
         private bool _showInList;
 
@@ -67,24 +96,13 @@ namespace MyApp.Prisms.ViewModels
             set => SetProperty<bool>(ref _showInList, value);
         }
 
-        private IEnumerable<string> GetImageUris(string imageDir)
+        public ImageDisplayViewModel(IConfigManager config, ISettingManager<SettingModel> settingManager, IEventAggregator eventAggregator)
         {
-            IList<string> list = imageDir.GetFiles(file =>
-            {
-                System.Drawing.Image img = System.Drawing.Image.FromFile(file);
-                return img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Jpeg) || img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Png);
-            });
-
-            return list;
-        }
-
-        public ImageDisplayViewModel(IConfigManager config, ISettingManager<SettingModel> settingManager)
-        {
-            settingManager.TryAdd(CustomConstants.IMAGE, () => new SettingModel(string.Empty, config.ReadConfigNode(CustomConstants.LastImageDir_ConfigKey), () => { }));
+            settingManager.TryAdd(CustomConstants.IMAGE, () => new SettingModel(string.Empty, config.ReadConfigNode(CustomConstants.LastImageDir_ConfigKey), null));
 
             RefreshData(config);
 
-            this.RefreshCommand = new DelegateCommand(() => RefreshData(config));
+            this.RefreshCommand = new DelegateCommand(() => RefreshData(config), () => !this.IsLoading).ObservesProperty(() => this.IsLoading);
 
             void RefreshData(IConfigManager config)
             {
@@ -93,11 +111,11 @@ namespace MyApp.Prisms.ViewModels
                 this.Data.Clear();
                 this.Data.Add(new MyImage());
 
-                Task.Run(() =>
+                Task.Run(async () =>
                 {
                     var dir = settingManager[CustomConstants.IMAGE].Value;
 
-                    if (!Directory.Exists(dir))
+                    if (!dir.IsDirectoryExists())
                     {
                         return;
                     }
@@ -121,9 +139,21 @@ namespace MyApp.Prisms.ViewModels
                             Data.Add(image);
                         });
 
-                        Thread.Sleep(20);
+                        await Task.Delay(20);
                     }
-                }).ContinueWith(task => RaisePropertyChanged(nameof(this.ActualData))).ContinueWith(task => this.IsLoading = false);
+
+                    IEnumerable<string> GetImageUris(string imageDir)
+                    {
+                        IList<string> list = imageDir.GetFiles(file =>
+                        {
+                            System.Drawing.Image img = System.Drawing.Image.FromFile(file);
+                            return img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Jpeg) || img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Png);
+                        });
+
+                        return list;
+                    }
+                }).ContinueWith(task => this.IsLoading = false)
+                .ContinueWith(task => this.RaisePropertyChanged(nameof(this.ImagesCount)));
             }
         }
 
@@ -134,7 +164,7 @@ namespace MyApp.Prisms.ViewModels
         public bool IsLoading
         {
             get => this._isLoading;
-            set => SetProperty<bool>(ref _isLoading, value);
+            private set => SetProperty<bool>(ref _isLoading, value);
         }
 
         private bool _disposed;
@@ -142,6 +172,7 @@ namespace MyApp.Prisms.ViewModels
         public void Dispose()
         {
             _disposed = true;
+
             Data.Clear();
             Data = null;
         }

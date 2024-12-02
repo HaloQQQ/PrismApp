@@ -2,6 +2,7 @@
 using MusicPlayerModule.Models;
 using MusicPlayerModule.Utils;
 using MusicPlayerModule.ViewModels.Base;
+using PrismAppBasicLib.Models;
 
 namespace MusicPlayerModule.ViewModels
 {

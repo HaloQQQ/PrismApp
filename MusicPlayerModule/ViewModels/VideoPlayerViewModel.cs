@@ -12,6 +12,7 @@ using IceTea.Wpf.Atom.Utils;
 using IceTea.Wpf.Core.Utils;
 using MusicPlayerModule.ViewModels.Base;
 using MusicPlayerModule.Contracts;
+using PrismAppBasicLib.Models;
 
 namespace MusicPlayerModule.ViewModels
 {

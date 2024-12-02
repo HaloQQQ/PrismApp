@@ -156,10 +156,10 @@ namespace MyApp.Prisms.ViewModels
                 this.CurrentBkGrd = url;
             }
 
-            if (!this.CurrentBkGrd.IsNullOrEmpty())
+            if (!this.CurrentBkGrd.IsNullOrBlank())
             {
                 // TrySelectedImage
-                foreach (var item in this._imageDisplayViewModel.ActualData)
+                foreach (var item in this._imageDisplayViewModel.Data)
                 {
                     item.Selected = item.URI == this.CurrentBkGrd;
                 }

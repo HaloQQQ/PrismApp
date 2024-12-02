@@ -16,6 +16,7 @@ using MusicPlayerModule.ViewModels.Base;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using MusicPlayerModule.Contracts;
 using MusicPlayerModule.MsgEvents.Music;
+using PrismAppBasicLib.Models;
 
 namespace MusicPlayerModule.ViewModels
 {

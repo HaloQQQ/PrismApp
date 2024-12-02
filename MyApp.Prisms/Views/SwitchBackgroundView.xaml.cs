@@ -12,6 +12,8 @@ using IceTea.Atom.Extensions;
 using IceTea.Wpf.Atom.Contracts.MediaInfo;
 using IceTea.Wpf.Atom.Utils;
 using MyApp.Prisms.Helper;
+using IceTea.Atom.Contracts;
+using PrismAppBasicLib.Models;
 
 namespace MyApp.Prisms.Views
 {
@@ -97,9 +99,9 @@ namespace MyApp.Prisms.Views
 
         private void OpenFileDialog()
         {
-            var setting = ContainerLocator.Current.Resolve<SettingsViewModel>();
+            var settingManager = ContainerLocator.Current.Resolve<ISettingManager<SettingModel>>();
 
-            var openFileDialog = CommonAtomUtils.OpenFileDialog(setting.SettingModels[CustomConstants.IMAGE].Value, new PictureMedia());
+            var openFileDialog = CommonAtomUtils.OpenFileDialog(settingManager[CustomConstants.IMAGE].Value, new PictureMedia());
 
             if (openFileDialog != null)
             {
@@ -107,11 +109,14 @@ namespace MyApp.Prisms.Views
 
                 var data = this._imagesContext.Data;
 
-                data.AddIfNotAnyWhile(item => file.EqualsIgnoreCase(item.URI), () => new MyImage(file));
+                if (data.AddIfNotAnyWhile(item => file.EqualsIgnoreCase(item.URI), () => new MyImage(file)))
+                {
+                    SetBackgroundImage(file);
 
-                SetBackgroundImage(file);
+                    settingManager[CustomConstants.IMAGE].Value = file.GetParentPath();
 
-                setting.SettingModels[CustomConstants.IMAGE].Value = file.GetParentPath();
+                    this._imagesContext.RaisePropertyChangedEvent(nameof(ImageDisplayViewModel.ImagesCount));
+                }
             }
         }
 
@@ -128,11 +133,11 @@ namespace MyApp.Prisms.Views
             {
                 if (element.DataContext is MyImage image)
                 {
-                    if (e.RoutedEvent == MouseDoubleClickEvent && image.URI != null)
+                    if (e.RoutedEvent == MouseDoubleClickEvent && !image.IsEmpty)
                     {
                         SetBackgroundImage(image.URI);
                     }
-                    else if (e.RoutedEvent == MouseLeftButtonUpEvent && image.URI == null)
+                    else if (e.RoutedEvent == MouseLeftButtonUpEvent && image.IsEmpty)
                     {
                         OpenFileDialog();
                     }

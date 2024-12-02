@@ -14,10 +14,10 @@ using System.Windows;
 using System;
 using IceTea.Atom.Utils.HotKey.Global.Contracts;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
-using MusicPlayerModule.Models;
 using MusicPlayerModule.Contracts;
 using IceTea.Atom.BaseModels;
 using Prism.Services.Dialogs;
+using PrismAppBasicLib.Models;
 
 namespace MyApp.Prisms.ViewModels
 {

@@ -5,7 +5,7 @@
     xmlns:appHotKey="http://IceTea.Wpf.Atom.AppHotKey.com/"
     xmlns:globalHotKey="clr-namespace:IceTea.Atom.Utils.HotKey.Global;assembly=IceTea.Atom"
     xmlns:globalHotKeyContracts="clr-namespace:IceTea.Atom.Utils.HotKey.Global.Contracts;assembly=IceTea.Atom"
-    xmlns:models="clr-namespace:MusicPlayerModule.Models;assembly=MusicPlayerModule"
+    xmlns:models="clr-namespace:PrismAppBasicLib.Models;assembly=PrismAppBasicLib"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:MyApp.Prisms.ViewModels"
     MinWidth="800"

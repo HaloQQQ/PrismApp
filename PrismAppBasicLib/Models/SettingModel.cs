@@ -3,8 +3,9 @@ using System.Windows.Input;
 using Prism.Commands;
 using IceTea.Wpf.Core.Utils;
 using IceTea.Atom.Extensions;
+using System;
 
-namespace MusicPlayerModule.Models
+namespace PrismAppBasicLib.Models
 {
     public class SettingModel : BaseNotifyModel
     {
@@ -22,7 +23,7 @@ namespace MusicPlayerModule.Models
                     this.Value = folder;
                 }
 
-                action();
+                action?.Invoke();
             });
         }
 
