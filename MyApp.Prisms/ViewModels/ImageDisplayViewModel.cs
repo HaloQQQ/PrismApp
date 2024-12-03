@@ -81,11 +81,26 @@ namespace MyApp.Prisms.ViewModels
     {
         public ObservableCollection<MyImage> Data { get; private set; } = new ObservableCollection<MyImage>();
 
+        private Random _random = new Random();
+
         public int ImagesCount => Math.Max(this.Data.Count - 1, 0);
 
         public void RaisePropertyChangedEvent(string propName)
         {
             this.RaisePropertyChanged(propName);
+        }
+
+        internal string GetRandomImage()
+        {
+            return this.Data[_random.Next(0, ImagesCount)].URI;
+        }
+
+        internal void SelectImage(string selectedImage)
+        {
+            foreach (var item in this.Data)
+            {
+                item.Selected = item.URI == selectedImage;
+            }
         }
 
         private bool _showInList;

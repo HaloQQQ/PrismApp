@@ -11,6 +11,7 @@ using System.ServiceProcess;
 using IceTea.Atom.Extensions;
 using IceTea.Wpf.Atom.Utils;
 using IceTea.Atom.BaseModels;
+using MyApp.Prisms.Helper;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -69,13 +70,14 @@ namespace MyApp.Prisms.ViewModels
                         }
 
                         ServiceContext serviceContext = new ServiceContext(service.Value);
-                        CommonAtomUtils.BeginInvoke(() => { ServiceList.Add(serviceContext); });
+                        CommonAtomUtils.BeginInvoke(() => ServiceList.Add(serviceContext));
 
                         await Task.Delay(50);
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Helper.Helper.Log(CustomConstants.LogType.Exception_Log_Dir, $"{nameof(ProcessServiceViewModel)}.Service loading error!{ex.Message}");
                 }
             });
         }

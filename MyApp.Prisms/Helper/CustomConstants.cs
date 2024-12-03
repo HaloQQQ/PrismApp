@@ -7,22 +7,15 @@ namespace MyApp.Prisms.Helper
 {
     internal static class CustomConstants
     {
-        internal const string SEND_MSG = "SendMsg";
+        internal static class LogType
+        {
+            internal const string DomainException_Log_Dir = "Domain异常日志";
+            internal const string Exception_Log_Dir = "App异常日志";
 
-        internal const string LOG = "Log";
+            internal const string Software_Log_Dir = "软件启停记录";
+        }
 
         internal const string NOTE_PAD = "notepad";
-
-        internal const string NOTE_PAD_EXE = "notepad.exe";
-
-        internal const string TaskBar_Resource_Key = "Taskbar";
-
-        internal const string Container_Background = "Container.Background";
-
-        internal const string MAX = "Max";
-        internal const string NORMAL = "Normal";
-        internal const string MIN = "Min";
-        internal const string CLOSE = "Close";
 
         internal const string ONLY_ONE_PROCESS = "OnlyOneProcess";
         internal const string AUTO_START = "AutoStart";
@@ -34,14 +27,10 @@ namespace MyApp.Prisms.Helper
         internal const string DefaultThemeURI = "DefaultThemeURI";
         internal const string BkgrdUri = "BkgrdUri";
 
-        //internal static string LastImageDir;
-
         internal const string IMAGE = "Image";
 
         internal static string[] LastImageDir_ConfigKey = new string[] { "LastImageDir" };
 
-
-        internal const string Software_Log_Dir = "软件启停记录";
 
         internal static readonly Brush SendBrush = Brushes.LightSkyBlue;
         internal static readonly Brush RecvBrush = Brushes.LightGreen;

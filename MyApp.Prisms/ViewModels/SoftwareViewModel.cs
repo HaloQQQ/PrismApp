@@ -20,7 +20,7 @@ using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.Events;
 using PrismAppBasicLib.MsgEvents;
 using IceTea.Atom.Utils.HotKey.Contracts;
-using IceTea.General.Utils;
+using IceTea.Desktop.Utils;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using IceTea.Wpf.Atom.Contracts.MyEvents;
 using IceTea.Atom.BaseModels;
@@ -30,6 +30,8 @@ using SqlCreatorModule.Views;
 using CustomControlsDemoModule.Views;
 using CustomControlsDemoModule.Views.Controls;
 using MusicPlayerModule.Views;
+using System.Windows.Media.Imaging;
+using IceTea.Desktop.Extensions;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -50,11 +52,9 @@ namespace MyApp.Prisms.ViewModels
             this._imageDisplayViewModel = imageDisplayViewModel;
             this.AppConfigFileHotKeyManager = appConfigFileHotKeyManager;
 
-            var bitmap = new QRCoderCreator().GenerateQRCodeImage(new QRModel("Hello3Q", Color.GreenYellow, Color.White, 20));
+            this.InitQRCodeImage();
 
-            this.BitmapImage = bitmap;
-
-            this.SwitchThemeCommand = new DelegateCommand(() => this.RefreshTheme());
+            this.SwitchThemeCommand = new DelegateCommand(this.RefreshTheme);
 
             this.NavigateToCommand = new DelegateCommand<string>(target =>
             {
@@ -102,7 +102,7 @@ namespace MyApp.Prisms.ViewModels
                     });
             });
 
-            eventAggregator.GetEvent<DialogMessageEvent>().Subscribe(item => this.DialogMessage = item);
+            this.SubscribeDialogMessage(eventAggregator);
 
             this.LoadConfig(config);
             this.InitHotkeys(appConfigFileHotKeyManager);
@@ -116,9 +116,10 @@ namespace MyApp.Prisms.ViewModels
 
         public ICommand NavigateToCommand { get; }
 
+        public ICommand SwitchThemeCommand { get; }
+
         public IAppConfigFileHotKeyManager AppConfigFileHotKeyManager { get; }
 
-        public ICommand SwitchThemeCommand { get; private set; }
 
         private void LoadConfig(IConfigManager config)
         {
@@ -151,18 +152,9 @@ namespace MyApp.Prisms.ViewModels
 
         private void SetBackgroundImage(string url)
         {
-            if (!url.IsNullOrEmpty())
-            {
-                this.CurrentBkGrd = url;
-            }
-
-            if (!this.CurrentBkGrd.IsNullOrBlank())
-            {
-                // TrySelectedImage
-                foreach (var item in this._imageDisplayViewModel.Data)
-                {
-                    item.Selected = item.URI == this.CurrentBkGrd;
-                }
+            if (!url.IsNullOrBlank())
+            {                                             
+                this._imageDisplayViewModel.SelectImage(this.CurrentBkGrd = url);
             }
         }
 
@@ -218,7 +210,7 @@ namespace MyApp.Prisms.ViewModels
         public string CurrentBkGrd
         {
             get => this._currentBkGrd;
-            set => SetProperty<string>(ref _currentBkGrd, value);
+            private set => SetProperty<string>(ref _currentBkGrd, value);
         }
         #endregion
 
@@ -242,14 +234,14 @@ namespace MyApp.Prisms.ViewModels
         }
 
         private string _title = string.Empty;
-        public string Title { get => this._title; set => SetProperty<string>(ref this._title, value); }
+        public string Title { get => this._title; private set => SetProperty<string>(ref this._title, value); }
 
-        private string _currentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        private string _currentTime = DateTime.Now.FormatTime();
 
         public string CurrentTime
         {
             get => this._currentTime;
-            set => SetProperty<string>(ref this._currentTime, value);
+            private set => SetProperty<string>(ref this._currentTime, value);
         }
 
         private string _week;
@@ -257,13 +249,19 @@ namespace MyApp.Prisms.ViewModels
         public string Week
         {
             get => this._week;
-            set => SetProperty<string>(ref this._week, value);
+            private set => SetProperty<string>(ref this._week, value);
         }
 
         /// <summary>
         /// QRCode
         /// </summary>
-        public Bitmap BitmapImage { get; set; }
+        public BitmapImage ImageSource { get; private set; }
+        private void InitQRCodeImage()
+        {
+            var bitmap = new QRCoderCreator().GenerateQRCodeImage(new QRModel("Hello3Q", Color.GreenYellow, Color.White, 20));
+
+            this.ImageSource = bitmap.GetImageSource();
+        }
 
         public UserViewModel UserContext { get; }
         #endregion
@@ -345,6 +343,11 @@ namespace MyApp.Prisms.ViewModels
             set => SetProperty<DialogMessage>(ref _dialogMessage, value);
         }
 
+        private void SubscribeDialogMessage(IEventAggregator eventAggregator)
+        {
+            eventAggregator.GetEvent<DialogMessageEvent>().Subscribe(item => this.DialogMessage = item);
+        }
+
         public SettingsViewModel Settings { get; }
 
         #region 辅助功能
@@ -405,7 +408,6 @@ namespace MyApp.Prisms.ViewModels
         }
         #endregion
 
-        private Random random = new Random();
         private DispatcherTimer _timer = null;
         private readonly ImageDisplayViewModel _imageDisplayViewModel;
 
@@ -424,13 +426,11 @@ namespace MyApp.Prisms.ViewModels
 
                 if (this.BackgroundSwitch)
                 {
-                    if (_imageDisplayViewModel.Data.Count > 0)
+                    if (_imageDisplayViewModel.ImagesCount > 0)
                     {
                         if (seconds == 0 || seconds == 30)
                         {
-                            var totalCount = _imageDisplayViewModel.Data.Count;
-
-                            this.SetBackgroundImage(_imageDisplayViewModel.Data[this.random.Next(0, totalCount)].URI);
+                            this.SetBackgroundImage(_imageDisplayViewModel.GetRandomImage());
                         }
                     }
                 }
@@ -456,7 +456,7 @@ namespace MyApp.Prisms.ViewModels
                     }
                     catch (Exception ex)
                     {
-                        Helper.Helper.Log("App异常日志", ex.Message);
+                        Helper.Helper.Log(CustomConstants.LogType.Exception_Log_Dir, ex.Message);
                     }
                 }
             });
@@ -471,7 +471,7 @@ namespace MyApp.Prisms.ViewModels
 
         public void Dispose()
         {
-            this._timer.Stop();
+            this._timer?.Stop();
             this._timer = null;
         }
     }

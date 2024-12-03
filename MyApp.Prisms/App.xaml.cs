@@ -41,7 +41,7 @@ namespace MyApp.Prisms
         {
             base.OnExit(e);
 
-            Helper.Helper.Log(CustomConstants.Software_Log_Dir, $"退出成功!");
+            Helper.Helper.Log(CustomConstants.LogType.Software_Log_Dir, $"退出成功!");
         }
 
         private IEnumerable<string> GetMessageList(Exception exception)
@@ -69,7 +69,7 @@ namespace MyApp.Prisms
             var list = this.GetMessageList(e.ExceptionObject as Exception);
 
             var message = "Domain出现异常:\r\n" + string.Join("\r\n", list);
-            Helper.Helper.Log("Domain异常日志", message);
+            Helper.Helper.Log(CustomConstants.LogType.DomainException_Log_Dir, message);
             MessageBox.Show(message);
         }
 
@@ -79,7 +79,7 @@ namespace MyApp.Prisms
             var list = this.GetMessageList(e.Exception);
 
             var message = "App出现异常:\r\n" + string.Join("\r\n", list);
-            Helper.Helper.Log("App异常日志", message);
+            Helper.Helper.Log(CustomConstants.LogType.Exception_Log_Dir, message);
             MessageBox.Show(message);
         }
 
@@ -102,14 +102,14 @@ namespace MyApp.Prisms
                     {
                         AppUtils.ShowWindowAsync(process.MainWindowHandle);
 
-                        Helper.Helper.Log(CustomConstants.Software_Log_Dir, "当前已有软件运行，启动失败!");
+                        Helper.Helper.Log(CustomConstants.LogType.Software_Log_Dir, "当前已有软件运行，启动失败!");
 
                         Environment.Exit(1);
                     }
                 }
             }
 
-            Helper.Helper.Log(CustomConstants.Software_Log_Dir, $"进程{processName}启动成功!");
+            Helper.Helper.Log(CustomConstants.LogType.Software_Log_Dir, $"进程{processName}启动成功!");
 
             containerRegistry.RegisterSingleton<IAppConfigFileHotKeyManager, AppConfigFileHotKeyManager>();
 

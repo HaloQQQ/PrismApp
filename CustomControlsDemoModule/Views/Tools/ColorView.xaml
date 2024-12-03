@@ -11,6 +11,13 @@
             <Setter Property="Margin" Value="0" />
             <Setter Property="BorderThickness" Value="0,0,0,1" />
         </Style>
+
+        <Style BasedOn="{StaticResource {x:Type NumericUpDown}}" TargetType="NumericUpDown">
+            <Setter Property="MinWidth" Value="50" />
+            <Setter Property="IsShowUpDownButton" Value="False" />
+            <Setter Property="Margin" Value="0" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+        </Style>
     </UserControl.Resources>
 
     <DockPanel HorizontalAlignment="Center">
@@ -34,12 +41,13 @@
                     Width="130"
                     Margin="10,0"
                     VerticalAlignment="Center"
+                    Style="{StaticResource ThemeBlk}"
                     Text="十六进制颜色码:"
                     TextAlignment="Right" />
                 <TextBox
                     Width="200"
                     MaxLength="9"
-                    Text="{Binding ColorCode, UpdateSourceTrigger=PropertyChanged}" />
+                    Text="{Binding ColorCode, UpdateSourceTrigger=PropertyChanged, Delay=200}" />
             </StackPanel>
 
             <StackPanel
@@ -50,28 +58,13 @@
                     Width="130"
                     Margin="10,0"
                     VerticalAlignment="Center"
+                    Style="{StaticResource ThemeBlk}"
                     Text="ARGB数值:"
                     TextAlignment="Right" />
-                <TextBox
-                    Width="50"
-                    InputScope="Digits"
-                    MaxLength="3"
-                    Text="{Binding AInt, UpdateSourceTrigger=PropertyChanged}" />
-                <TextBox
-                    Width="50"
-                    InputScope="Digits"
-                    MaxLength="3"
-                    Text="{Binding RInt, UpdateSourceTrigger=PropertyChanged}" />
-                <TextBox
-                    Width="50"
-                    InputScope="Digits"
-                    MaxLength="3"
-                    Text="{Binding GInt, UpdateSourceTrigger=PropertyChanged}" />
-                <TextBox
-                    Width="50"
-                    InputScope="Digits"
-                    MaxLength="3"
-                    Text="{Binding BInt, UpdateSourceTrigger=PropertyChanged}" />
+                <NumericUpDown Value="{Binding AInt}" />
+                <NumericUpDown Value="{Binding RInt}" />
+                <NumericUpDown Value="{Binding GInt}" />
+                <NumericUpDown Value="{Binding BInt}" />
             </StackPanel>
 
             <Border

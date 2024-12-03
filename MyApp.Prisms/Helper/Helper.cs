@@ -45,7 +45,7 @@ namespace MyApp.Prisms.Helper
                 Directory.CreateDirectory(dir);
             }
 
-            var filePath = Path.Combine(dir, DateTime.Now.ToString("yyyy-MM-dd") + typeName + ".log");
+            var filePath = Path.Combine(dir, DateTime.Now.FormatTime("yyyy-MM-dd") + typeName + ".log");
 
             var wrapMsg = GetWrapMsg(message);
             try
