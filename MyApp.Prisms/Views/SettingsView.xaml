@@ -311,6 +311,11 @@
                         CommandParameter="象棋"
                         Content="象棋"
                         Style="{StaticResource TransparentButtonBase}" />
+
+                    <Button
+                        Command="{Binding DataContext.ColorPickerCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        Content="颜色选择器"
+                        Style="{StaticResource TransparentButtonBase}" />
                 </WrapPanel>
             </TabItem>
             <TabItem Header="设置">

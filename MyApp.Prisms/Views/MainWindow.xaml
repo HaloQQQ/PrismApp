@@ -19,16 +19,6 @@
         </Grid.Background>
         <Grid Background="#33000000">
             <DockPanel>
-                <DockPanel.Style>
-                    <Style TargetType="DockPanel">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" Value="Maximized">
-                                <Setter Property="Margin" Value="7" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </DockPanel.Style>
-
                 <views:WindowTitleBarView
                     x:Name="TitleBarSlider"
                     VerticalAlignment="Top"

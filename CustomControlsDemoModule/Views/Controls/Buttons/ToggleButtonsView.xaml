@@ -35,10 +35,14 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
-            <CheckBox Height="30" Content="普通CheckBox" />
+            <CheckBox
+                Height="30"
+                HorizontalContentAlignment="Right"
+                Content="普通CheckBox" />
             <CheckBox
                 Height="20"
                 HorizontalContentAlignment="Right"
+                BorderThickness="3"
                 Content="Switch CheckBox"
                 Style="{StaticResource SlideCheckBox}" />
             <CheckBox

@@ -68,6 +68,8 @@ namespace MyApp.Prisms.Helper
             internal const string DownScreenBright = "降低屏幕亮度";
 
             internal const string MusicLyricDesktop = "歌词桌面栏";
+
+            internal const string ColorPicker = "颜色提取";
         }
 
         internal class GlobalHotKeyInfo

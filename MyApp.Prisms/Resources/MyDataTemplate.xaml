@@ -30,7 +30,7 @@
                 Width="80"
                 Height="70"
                 Margin="0"
-                Source="{Binding Source}" />
+                Source="{Binding URI}" />
 
             <TextBlock
                 Padding="0"

@@ -59,21 +59,6 @@ namespace MyApp.Prisms.ViewModels
             FileType = path.GetFileType();
             Name = path.GetFileNameWithoutExtension();
             Size = (new FileInfo(path).Length / 1024d).ToString("0.00");
-
-            this.LoadCover();
-        }
-
-        private async void LoadCover()
-        {
-            await Task.Delay(1000);
-
-            CommonAtomUtils.BeginInvoke(() =>
-            {
-                using (var stream = File.OpenRead(this.URI))
-                {
-                    this.Source = BitmapFrame.Create(stream, BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
-                }
-            });
         }
     }
 

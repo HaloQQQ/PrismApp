@@ -18,6 +18,8 @@ using MusicPlayerModule.Contracts;
 using IceTea.Atom.BaseModels;
 using Prism.Services.Dialogs;
 using PrismAppBasicLib.Models;
+using CustomControlsDemoModule.Views;
+using CustomControlsDemoModule.Events;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -130,6 +132,20 @@ namespace MyApp.Prisms.ViewModels
             {
                 dialogService.ShowDialog(gameName);
             });
+
+            eventAggregator.GetEvent<ColorPickerEvent>().Subscribe(ToggleColorPicker);
+
+            this.ColorPickerCommand = new DelegateCommand(ToggleColorPicker, () => !IsColorPicker).ObservesProperty(() => IsColorPicker);
+
+            void ToggleColorPicker()
+            {
+                this.IsColorPicker = !IsColorPicker;
+
+                if (IsColorPicker)
+                {
+                    dialogService.Show(nameof(FetchBackColorView), null, null, nameof(FetchBackColor));
+                }
+            }
         }
 
         #region Emails
@@ -159,6 +175,8 @@ namespace MyApp.Prisms.ViewModels
 
         #region Commands
         public ICommand SmallGameCommand { get; private set; }
+
+        public ICommand ColorPickerCommand { get; private set; }
 
         public ICommand CleanConfigWhenExitAppCommand { get; private set; }
 
@@ -224,6 +242,13 @@ namespace MyApp.Prisms.ViewModels
         #endregion
 
         #region Props
+        private bool _isColorPicker;
+        public bool IsColorPicker
+        {
+            get => _isColorPicker;
+            private set => SetProperty(ref _isColorPicker, value);
+        }
+
         /// <summary>
         /// 窗口圆角
         /// </summary>

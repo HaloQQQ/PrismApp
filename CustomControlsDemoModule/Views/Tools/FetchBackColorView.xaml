@@ -1,0 +1,62 @@
+﻿<UserControl
+    x:Class="CustomControlsDemoModule.Views.FetchBackColorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    FontSize="16">
+    <StackPanel Margin="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0">
+                <TextBlock Text="大小：(" />
+                <TextBlock Text="{Binding Width}" />
+                <TextBlock Text="," />
+                <TextBlock Text="{Binding Height}" />
+                <TextBlock Text=")" />
+            </TextBlock>
+
+            <TextBlock Grid.Row="1" Grid.Column="0">
+                <TextBlock Text="位置：(" />
+                <TextBlock Text="{Binding X}" />
+                <TextBlock Text="," />
+                <TextBlock Text="{Binding Y}" />
+                <TextBlock Text=")" />
+            </TextBlock>
+
+            <Rectangle
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                Width="40"
+                Height="40"
+                Margin="10,5"
+                Fill="{Binding Color}"
+                RadiusX="5"
+                RadiusY="5" />
+        </Grid>
+
+        <TextBlock
+            FontSize="20"
+            FontWeight="Bold"
+            Text="{Binding Color}" />
+
+        <TextBlock>
+            <TextBlock Text="(" />
+            <TextBlock Text="{Binding R}" />
+            <TextBlock Text="," />
+            <TextBlock Text="{Binding G}" />
+            <TextBlock Text="," />
+            <TextBlock Text="{Binding B}" />
+            <TextBlock Text=")" />
+        </TextBlock>
+    </StackPanel>
+</UserControl>

@@ -29,6 +29,7 @@ using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using IceTea.Atom.Extensions;
 using MusicPlayerModule.MsgEvents.Music;
 using PrismAppBasicLib.Models;
+using CustomControlsDemoModule.Events;
 
 namespace MyApp.Prisms
 {
@@ -134,7 +135,7 @@ namespace MyApp.Prisms
         }
 
         private void RegisterNavigation(IContainerRegistry containerRegistry)
-        {                              
+        {
             containerRegistry.RegisterForNavigation<CommunicationView>();
 
             containerRegistry.RegisterForNavigation<ProcessServiceView>();
@@ -248,6 +249,10 @@ namespace MyApp.Prisms
                                 case CustomConstants.GlobalHotKeysConst.MusicLyricDesktop:
                                     this.Container.Resolve<IEventAggregator>().GetEvent<ToggleDesktopLyricEvent>().Publish();
                                     break;
+
+                                case CustomConstants.GlobalHotKeysConst.ColorPicker:
+                                    this.Container.Resolve<IEventAggregator>().GetEvent<ColorPickerEvent>().Publish();
+                                    break;
                             }
                         }
                     }
@@ -265,6 +270,8 @@ namespace MyApp.Prisms
             {
                 globalConfigFileHotKeyManager.TryRegisterItem(systemGroupName, item.Name, item.CustomKeys, item.CustomModifierKeys, item.IsUsable);
             }
+
+            globalConfigFileHotKeyManager.TryRegisterItem(systemGroupName, CustomConstants.GlobalHotKeysConst.ColorPicker, CustomKeys.C, CustomModifierKeys.Alt | CustomModifierKeys.Shift, true);
 
             var failedKeys = globalConfigFileHotKeyManager.First(g => g.GroupName == systemGroupName).Where(i => i.HasChanged).Select(i => i.ToString());
 

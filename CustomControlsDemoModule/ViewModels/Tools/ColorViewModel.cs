@@ -39,27 +39,18 @@ namespace CustomControlsDemoModule.ViewModels
             get => this._colorCode;
             set
             {
-                this._colorCode = value;
-                if (value.IsNullOrBlank())
-                {
-                    return;
-                }
+                var code = value;
 
-                var code = value.EnsureStartsWith("#");
+                _colorCode = code;
 
-                if (code.Length != 7 && code.Length != 9)
+                if (!code.IsHexColorString())
                 {
                     return;
                 }
 
                 var data = code.Substring(1);
 
-                if (!data.IsHexString())
-                {
-                    return;
-                }
-
-                if (code.Length == 7)
+                if (data.Length == 6)
                 {
                     data = "FF" + data;
                 }
@@ -68,6 +59,8 @@ namespace CustomControlsDemoModule.ViewModels
                 this.RInt = byte.Parse(data.Substring(2, 2), System.Globalization.NumberStyles.HexNumber).ToString();
                 this.GInt = byte.Parse(data.Substring(4, 2), System.Globalization.NumberStyles.HexNumber).ToString();
                 this.BInt = byte.Parse(data.Substring(6, 2), System.Globalization.NumberStyles.HexNumber).ToString();
+
+                code = data.EnsureStartsWith("#");
 
                 SetProperty<string>(ref _colorCode, code);
                 RaisePropertyChanged(nameof(Background));
@@ -89,8 +82,7 @@ namespace CustomControlsDemoModule.ViewModels
             return v;
         }
 
-        private string ArgbHex
-            => "#" + this._aInt.ToString("X2") + this._rInt.ToString("X2") + this._gInt.ToString("X2") + this._bInt.ToString("X2");
+        private string ArgbHex => $"#{_aInt:X2}{_rInt:X2}{_gInt:X2}{_bInt:X2}";
 
         private byte _aInt;
 
