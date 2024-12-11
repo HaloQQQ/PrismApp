@@ -9,10 +9,12 @@
     <StackPanel Margin="10">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="70" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
@@ -36,27 +38,54 @@
                 Grid.Row="0"
                 Grid.RowSpan="2"
                 Grid.Column="1"
-                Width="40"
-                Height="40"
-                Margin="10,5"
+                Width="60"
+                Height="60"
+                Margin="5"
                 Fill="{Binding Color}"
                 RadiusX="5"
                 RadiusY="5" />
+
+            <TextBlock
+                Grid.Row="2"
+                FontSize="20"
+                FontWeight="Bold"
+                Text="{Binding Color}" />
+
+            <TextBlock Grid.Row="3">
+                <TextBlock Text="(" />
+                <TextBlock Text="{Binding R}" />
+                <TextBlock Text="," />
+                <TextBlock Text="{Binding G}" />
+                <TextBlock Text="," />
+                <TextBlock Text="{Binding B}" />
+                <TextBlock Text=")" />
+            </TextBlock>
+
+            <Grid
+                Grid.Row="2"
+                Grid.RowSpan="2"
+                Grid.Column="1"
+                Width="60"
+                Height="60"
+                Margin="5">
+                <Image
+                    Width="60"
+                    Height="60"
+                    Source="{Binding ImageSource}" />
+
+                <Line
+                    Stroke="#FF5D3C36"
+                    X1="0"
+                    X2="60"
+                    Y1="30"
+                    Y2="30" />
+                <Line
+                    Stroke="#FF5D3C36"
+                    X1="30"
+                    X2="30"
+                    Y1="0"
+                    Y2="60" />
+            </Grid>
         </Grid>
-
-        <TextBlock
-            FontSize="20"
-            FontWeight="Bold"
-            Text="{Binding Color}" />
-
-        <TextBlock>
-            <TextBlock Text="(" />
-            <TextBlock Text="{Binding R}" />
-            <TextBlock Text="," />
-            <TextBlock Text="{Binding G}" />
-            <TextBlock Text="," />
-            <TextBlock Text="{Binding B}" />
-            <TextBlock Text=")" />
-        </TextBlock>
     </StackPanel>
 </UserControl>

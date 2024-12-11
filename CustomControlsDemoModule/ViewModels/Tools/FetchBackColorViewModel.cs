@@ -7,7 +7,6 @@ using IceTea.Wpf.Atom.Extensions;
 using Prism.Events;
 using Prism.Services.Dialogs;
 using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -48,10 +47,6 @@ namespace CustomControlsDemoModule.ViewModels
             Width = SystemParameters.WorkArea.Width;
             Height = SystemParameters.WorkArea.Height;
 
-            Bitmap memoryImage = IceTea.Core.Extensions.ImageExtensions.CaptureScreen(new Rectangle(0, 0, (int)Width, (int)Height));
-
-            this.BackgroundImage = memoryImage.GetImageSource();
-
             eventAggregator.GetEvent<ColorPickerEvent>().Subscribe(() => RequestClose?.Invoke(null));
         }
 
@@ -71,6 +66,32 @@ namespace CustomControlsDemoModule.ViewModels
                 this.R = color.R;
                 this.G = color.G;
                 this.B = color.B;
+
+                var radius = 10;
+
+                var x = point.X - radius;
+                if (x < 0)
+                {
+                    x = 0;
+                }
+                else if (x > this.Width - 2 * radius)
+                {
+                    x = (int)this.Width - 2 * radius;
+                }
+
+                var y = point.Y - radius;
+                if (y < radius)
+                {
+                    y = 0;
+                }
+                else if (y > this.Height - 2 * radius)
+                {
+                    y = (int)this.Height - 2 * radius;
+                }
+
+                var bitmap = IceTea.Core.Extensions.ImageExtensions.CaptureScreen(new Rectangle(x, y, 20, 20));
+
+                this.ImageSource = bitmap.GetImageSource();
             }
         }
 
@@ -78,11 +99,11 @@ namespace CustomControlsDemoModule.ViewModels
         public double Width { get; }
         public double Height { get; }
 
-        private BitmapImage _backgroundImage;
-        public BitmapImage BackgroundImage
+        private BitmapImage _imageSource;
+        public BitmapImage ImageSource
         {
-            get => _backgroundImage;
-            private set => SetProperty(ref _backgroundImage, value);
+            get => _imageSource;
+            private set => SetProperty(ref _imageSource, value);
         }
 
         private double _x;
