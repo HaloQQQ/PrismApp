@@ -5,9 +5,8 @@
     xmlns:prism="http://prismlibrary.com/">
     <Application.Resources>
         <ResourceDictionary>
-            <FontFamily x:Key="Iconfont">/Resources/#iconfont</FontFamily>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/IceTea.Wpf.Core;component/Resources/GenericDictionary.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/IceTea.Wpf.Core;component/Resources/All.xaml" />
 
                 <ResourceDictionary Source="Resources/MyDataTemplate.xaml" />
                 <ResourceDictionary Source="Resources/MyDictionary.xaml" />

@@ -17,10 +17,7 @@
         </Grid.Background>
         <Grid Background="#33000000">
             <DockPanel>
-                <views:WindowTitleBarView
-                    x:Name="TitleBarSlider"
-                    VerticalAlignment="Top"
-                    DockPanel.Dock="Top" />
+                <views:WindowTitleBarView VerticalAlignment="Top" DockPanel.Dock="Top" />
 
                 <ContentControl prism:RegionManager.RegionName="MusicPlayerRegion" />
             </DockPanel>

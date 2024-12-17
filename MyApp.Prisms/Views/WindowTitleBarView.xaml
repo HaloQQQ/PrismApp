@@ -11,7 +11,13 @@
     Cursor="SizeAll">
 
     <UserControl.Resources>
-        <MultiConverter_DigitToThickness x:Key="MultiConverter_DigitToThickness" />
+        <Style x:Key="ImgTitle" TargetType="Image">
+            <Setter Property="Width" Value="30" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Margin" Value="10,3" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
     </UserControl.Resources>
 
     <UserControl.Tag>

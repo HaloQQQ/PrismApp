@@ -80,7 +80,7 @@ namespace MyApp.Prisms.Views
         }
 
         protected string GetMessage(EndPoint from, EndPoint to, string coreMessage) =>
-            $"{DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")} {Thread.CurrentThread.ManagedThreadId} {Thread.CurrentThread.IsThreadPoolThread} {from}=>{to} {coreMessage}";
+            $"{DateTime.Now.FormatTime("yyyy/MM/dd HH:mm:ss")} {Thread.CurrentThread.ManagedThreadId} {Thread.CurrentThread.IsThreadPoolThread} {from}=>{to} {coreMessage}";
 
         private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
