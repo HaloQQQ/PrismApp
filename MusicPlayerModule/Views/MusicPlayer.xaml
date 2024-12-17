@@ -330,8 +330,6 @@
                         <TextBox.Style>
                             <Style BasedOn="{StaticResource TextBox_FilteList}" TargetType="TextBox">
 
-                                <Setter Property="IsEnabled" Value="{Binding IsLoading, Converter={StaticResource OppositeBoolConverter}}" />
-
                                 <Setter Property="Text" Value="{Binding FavoriteListFilteKeyWords, UpdateSourceTrigger=PropertyChanged, Delay=100}" />
 
                                 <Style.Triggers>
@@ -343,7 +341,25 @@
                                         <Setter Property="Visibility" Value="Collapsed" />
                                     </DataTrigger>
 
-                                    <DataTrigger Binding="{Binding DisplayFavorites.Count}" Value="0">
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding FavoriteListFilteKeyWords}" Value="{x:Null}" />
+                                            <Condition Binding="{Binding DisplayFavorites.Count}" Value="0" />
+                                        </MultiDataTrigger.Conditions>
+
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </MultiDataTrigger>
+
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding FavoriteListFilteKeyWords.Length}" Value="0" />
+                                            <Condition Binding="{Binding DisplayFavorites.Count}" Value="0" />
+                                        </MultiDataTrigger.Conditions>
+
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </MultiDataTrigger>
+
+                                    <DataTrigger Binding="{Binding IsLoading}" Value="True">
                                         <Setter Property="IsEnabled" Value="False" />
                                     </DataTrigger>
                                 </Style.Triggers>
