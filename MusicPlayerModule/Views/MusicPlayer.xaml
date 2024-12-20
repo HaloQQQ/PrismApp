@@ -226,7 +226,7 @@
                         Style="{StaticResource PlayAllButton}"
                         ToolTip="{Binding KeyGestureDic[播放所有音乐].ToolTip}" />
 
-                    <ToggleButton x:Name="ToggleBatch" IsChecked="{Binding CanBatchSelect, Mode=TwoWay}">
+                    <ToggleButton IsChecked="{Binding CanBatchSelect, Mode=TwoWay}">
                         <ToggleButton.Style>
                             <Style BasedOn="{StaticResource BatchOperateToggleButton}" TargetType="ToggleButton">
                                 <Style.Triggers>
@@ -590,7 +590,6 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel>
-                                        <!--<Image DockPanel.Dock="Left" Style="{StaticResource MyImage}"/>-->
                                         <TextBlock
                                             DockPanel.Dock="Left"
                                             Style="{StaticResource DefaultSingerBack}"
@@ -723,7 +722,6 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel>
-                                        <!--<Image DockPanel.Dock="Left" Style="{StaticResource MyImage}"/>-->
                                         <TextBlock DockPanel.Dock="Left" Style="{StaticResource DefaultSingerBack}" />
 
                                         <StackPanel Margin="10" VerticalAlignment="Center">
@@ -1766,7 +1764,8 @@
                                                 Command="Close"
                                                 CommandParameter="StopPlayingListFilte"
                                                 Content="消失"
-                                                Style="{StaticResource ClosePlayingListFilter}" />
+                                                Foreground="{StaticResource LightWhite}"
+                                                Style="{StaticResource IconButtonBase_Small}" />
                                         </StackPanel>
                                     </DockPanel>
 

@@ -50,7 +50,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
         {
             this.InitEmailManager();
 
-            _emailManager.ExceptionOccured += ex => PublishMessage(ex.Message);
+            _emailManager.ExceptionOccured += (sender, ex) => PublishMessage(ex.Message);
             _emailManager.SendCompletedEventHandler += (sender, e) =>
             {
                 PublishMessage("发送完成");

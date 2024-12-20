@@ -47,18 +47,13 @@
         <PathGeometry Figures="M130,90 L140,100 L150,90 Z" />
     </GeometryGroup>
 
-    <MultiConverter_MultiplicationDivision x:Key="MultiConverter_MultiplicationDivision" />
     <myconverter:NoEnglishDesktopLyricColorfulMultiConverter x:Key="NoEnglishDesktopLyricColorfulMultiConverter" />
 
     <myconverter:LyricWidth_MultiConverter x:Key="LyricWidth_MultiConverter" />
 
     <myconverter:DesktopLyricColorfulMultiConverter x:Key="DesktopLyricColorfulMultiConverter" />
 
-    <WindowMinToBoolConverter x:Key="WindowMinToBoolConverter" />
-
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-
-    <DigitMultiConverter x:Key="DigitMultiConverter" />
 
     <DataTemplate x:Key="HorizentalDesktopLyric">
         <Grid Margin="20,5" HorizontalAlignment="Center">
@@ -296,9 +291,6 @@
         <Style.Triggers>
             <Trigger Property="IsChecked" Value="True">
                 <Setter Property="Visibility" Value="Collapsed" />
-
-                <!--<Setter Property="DockPanel.Dock" Value="Right" />
-                <Setter Property="Content" Value="退出批量操作" />-->
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -318,7 +310,7 @@
 
         <Setter Property="Visibility" Value="Collapsed" />
         <Style.Triggers>
-            <DataTrigger Binding="{Binding IsChecked, ElementName=ToggleBatch, Mode=OneWay}" Value="True">
+            <DataTrigger Binding="{Binding CanBatchSelect, Mode=OneWay}" Value="True">
                 <Setter Property="Visibility" Value="Visible" />
             </DataTrigger>
         </Style.Triggers>
@@ -469,29 +461,6 @@
                 <Setter Property="IsEnabled" Value="False" />
             </DataTrigger>
         </Style.Triggers>
-    </Style>
-
-    <Style
-        x:Key="ClosePlayingListFilter"
-        BasedOn="{StaticResource IconButtonBase_Small}"
-        TargetType="Button">
-        <Setter Property="Foreground" Value="{StaticResource LightWhite}" />
-    </Style>
-
-    <Style x:Key="MyImage" TargetType="Image">
-        <Setter Property="Width" Value="60" />
-        <Setter Property="Height" Value="60" />
-
-        <Setter Property="Source" Value="/MusicPlayerModule;component/Resources/网络.png" />
-
-        <Setter Property="Clip">
-            <Setter.Value>
-                <EllipseGeometry
-                    Center="30,30"
-                    RadiusX="30"
-                    RadiusY="30" />
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <Style
