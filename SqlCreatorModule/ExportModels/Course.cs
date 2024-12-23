@@ -12,13 +12,12 @@ namespace SqlCreatorModule.ExportModels
         [Column("CourseNo")]
         public Int32 CourseNo { get; set; }
         [Column("CourseName")]
-        public String CourseName { get; set; }
+        public String? CourseName { get; set; }
         [Column("CourseScore")]
         public Decimal CourseScore { get; set; }
         [Column("CourseMakerName")]
-        public String CourseMakerName { get; set; }
+        public String? CourseMakerName { get; set; }
         public virtual string GetSelectCmdText() { return "SELECT * FROM Course;"; }
-        public object Clone() { return base.MemberwiseClone(); }
         public override string ToString()
         {
             return $"Course: [CourseNo={this.CourseNo}, CourseName={this.CourseName}, CourseScore={this.CourseScore}, CourseMakerName={this.CourseMakerName}]";

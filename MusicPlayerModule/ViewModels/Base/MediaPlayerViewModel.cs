@@ -5,7 +5,6 @@ using Prism.Events;
 using IceTea.Atom.Utils;
 using IceTea.Atom.Contracts;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
-using IceTea.Atom.Utils.HotKey.Contracts;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using MusicPlayerModule.MsgEvents;
 using System.Diagnostics;
@@ -17,6 +16,11 @@ using PrismAppBasicLib.Models;
 
 namespace MusicPlayerModule.ViewModels.Base
 {
+#pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
+#pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
+#pragma warning disable CS8601 // 引用类型赋值可能为 null。
+#pragma warning disable CS8602 // 解引用可能出现空引用。
+#pragma warning disable CS8604 // 引用类型参数可能为 null。
     internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
     {
         protected readonly IEventAggregator _eventAggregator;

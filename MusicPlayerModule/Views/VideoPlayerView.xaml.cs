@@ -12,6 +12,10 @@ using System.Windows.Threading;
 
 namespace MusicPlayerModule.Views
 {
+#pragma warning disable CS8600 // 将 null 字面量或可能为 null 的值转换为非 null 类型。
+#pragma warning disable CS8601 // 引用类型赋值可能为 null。
+#pragma warning disable CS8602 // 解引用可能出现空引用。
+#pragma warning disable CS8629 // 可为 null 的值类型可为 null。
     /// <summary>
     /// VideoPlayerView.xaml 的交互逻辑
     /// </summary>

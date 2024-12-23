@@ -2,6 +2,8 @@
 
 namespace CustomControlsDemoModule.Models
 {
+#pragma warning disable CS0660 // 类型定义运算符 == 或运算符 !=，但不重写 Object.Equals(object o)
+#pragma warning disable CS0661 // 类型定义运算符 == 或运算符 !=，但不重写 Object.GetHashCode()
     internal class _2048Model : BaseNotifyModel
     {
         public _2048Model(int value)
@@ -44,6 +46,5 @@ namespace CustomControlsDemoModule.Models
         {
             return first.Value;
         }
-
     }
 }

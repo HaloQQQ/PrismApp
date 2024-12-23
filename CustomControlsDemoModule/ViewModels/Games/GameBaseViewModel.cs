@@ -114,6 +114,7 @@ namespace CustomControlsDemoModule.ViewModels
 
         private bool _isGameOver;
 
+#pragma warning disable CS0067 
         public event Action<IDialogResult> RequestClose;
 
         public bool IsGameOver

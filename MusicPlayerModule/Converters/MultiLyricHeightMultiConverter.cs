@@ -3,6 +3,7 @@ using System.Windows.Data;
 
 namespace MusicPlayerModule.Converters
 {
+#pragma warning disable CS8602 // 解引用可能出现空引用。
     /// <summary>
     /// 歌词可见部分高度
     /// </summary>

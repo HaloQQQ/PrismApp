@@ -9,7 +9,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.MsgEvents;
-using System.Reflection;
 using IceTea.Atom.Utils;
 using IceTea.Atom.Extensions;
 using IceTea.Core.Utils.OS;
@@ -19,7 +18,6 @@ using System.Collections.Generic;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.Events;
 using PrismAppBasicLib.MsgEvents;
-using IceTea.Atom.Utils.HotKey.Contracts;
 using IceTea.Desktop.Utils;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using IceTea.Wpf.Atom.Contracts.MyEvents;
@@ -32,9 +30,12 @@ using CustomControlsDemoModule.Views.Controls;
 using MusicPlayerModule.Views;
 using System.Windows.Media.Imaging;
 using IceTea.Desktop.Extensions;
+using System.Reflection;
 
 namespace MyApp.Prisms.ViewModels
 {
+#pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
+#pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
     internal class SoftwareViewModel : BaseNotifyModel, IDisposable
     {
         public SoftwareViewModel(
@@ -215,14 +216,14 @@ namespace MyApp.Prisms.ViewModels
         #endregion
 
         #region 周边信息
-        public string Version { get; } = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public string Version => AppStatics.AssemblyVersion;
 
         private double _cpuRate;
 
         public double CpuRate
         {
             get => this._cpuRate;
-            set => SetProperty<double>(ref _cpuRate, value);
+            private set => SetProperty<double>(ref _cpuRate, value);
         }
 
         private double _ramRate;
@@ -230,7 +231,7 @@ namespace MyApp.Prisms.ViewModels
         public double RamRate
         {
             get => this._ramRate;
-            set => SetProperty<double>(ref _ramRate, value);
+            private set => SetProperty<double>(ref _ramRate, value);
         }
 
         private string _title = string.Empty;

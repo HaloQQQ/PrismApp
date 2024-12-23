@@ -287,6 +287,7 @@ namespace CustomControlsDemoModule.ViewModels
                 }
             }
 
+#pragma warning disable CS8321 // 已声明本地函数，但从未使用过
             void ExecuteDeep()
             {
                 foreach (var item in arr)
@@ -323,6 +324,7 @@ namespace CustomControlsDemoModule.ViewModels
                     }
                 }
             }
+#pragma warning restore CS8321 // 已声明本地函数，但从未使用过
 
             for (int i = 0; i < arr.Length; i++)
             {

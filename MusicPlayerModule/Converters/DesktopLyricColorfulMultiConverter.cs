@@ -6,6 +6,8 @@ using System.Windows.Controls;
 
 namespace MusicPlayerModule.Converters
 {
+#pragma warning disable CS8602 // 解引用可能出现空引用。
+#pragma warning disable CS8604 // 引用类型参数可能为 null。
     /// <summary>
     /// 桌面歌词
     /// </summary>

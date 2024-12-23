@@ -64,12 +64,14 @@ namespace MusicPlayerModule.ViewModels
             }
         }
 
+#pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
         internal static event Action<VideoModelAndGuid> ToNextVideo;
 
         public override void Dispose()
         {
             this.Video.Dispose();
 
+#pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
             this.Video = null;
         }
     }

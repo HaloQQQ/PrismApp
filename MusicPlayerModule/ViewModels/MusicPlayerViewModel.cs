@@ -20,6 +20,8 @@ using PrismAppBasicLib.Models;
 
 namespace MusicPlayerModule.ViewModels
 {
+#pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
+#pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
     internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
     {
         protected override string MediaType => "音乐";
@@ -138,7 +140,7 @@ namespace MusicPlayerModule.ViewModels
         ///  默认播放列表第一个
         /// </summary>
         /// <param name="favoriteMusicViewModel"></param>
-        private void BatchAddToPlay(BatchAddAndPlayModel aggregate = null)
+        private void BatchAddToPlay(BatchAddAndPlayModel? aggregate = null)
         {
             if (aggregate == null)
             {
@@ -167,7 +169,7 @@ namespace MusicPlayerModule.ViewModels
         /// <param name="replace">true:清空并填充 false:追加</param>
         private void AddAllToPlaying(BatchAddAndPlayModel aggregate, bool replace = true)
         {
-            PlayingMusicViewModel result = null;
+            PlayingMusicViewModel? result = null;
 
             if (this.DisplayFavorites.Count > 0)
             {
@@ -493,6 +495,7 @@ namespace MusicPlayerModule.ViewModels
         {
             base.DeletePlaying_CommandExecute(media);
 
+#pragma warning disable CS8604 // 引用类型参数可能为 null。
             this.Playing.Remove(media as PlayingMusicViewModel);
         }
 
@@ -745,7 +748,7 @@ namespace MusicPlayerModule.ViewModels
         }
         #endregion
 
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             foreach (var item in this.Favorites)
             {

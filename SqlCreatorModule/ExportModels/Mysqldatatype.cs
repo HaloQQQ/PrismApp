@@ -18,11 +18,11 @@ namespace SqlCreatorModule.ExportModels
         [Column("BIGINT UNSIGNED")]
         public UInt64 BIGINTUNSIGNED { get; set; }
         [Column("BINARY")]
-        public Byte[] BINARY { get; set; }
+        public Byte[]? BINARY { get; set; }
         [Column("BLOB")]
-        public Byte[] BLOB { get; set; }
+        public Byte[]? BLOB { get; set; }
         [Column("CHAR")]
-        public String CHAR { get; set; }
+        public String? CHAR { get; set; }
         [Column("DATE")]
         public DateTime DATE { get; set; }
         [Column("DATETIME")]
@@ -46,21 +46,21 @@ namespace SqlCreatorModule.ExportModels
         [Column("INTEGER UNSIGNED")]
         public UInt32 INTEGERUNSIGNED { get; set; }
         [Column("LONG VARBINARY")]
-        public Byte[] LONGVARBINARY { get; set; }
+        public Byte[]? LONGVARBINARY { get; set; }
         [Column("LONG VARCHAR")]
-        public String LONGVARCHAR { get; set; }
+        public String? LONGVARCHAR { get; set; }
         [Column("LONGBLOB")]
-        public Byte[] LONGBLOB { get; set; }
+        public Byte[]? LONGBLOB { get; set; }
         [Column("LONGTEXT")]
-        public String LONGTEXT { get; set; }
+        public String? LONGTEXT { get; set; }
         [Column("MEDIUMBLOB")]
-        public Byte[] MEDIUMBLOB { get; set; }
+        public Byte[]? MEDIUMBLOB { get; set; }
         [Column("MEDIUMINT")]
         public Int32 MEDIUMINT { get; set; }
         [Column("MEDIUMINT UNSIGNED")]
         public UInt32 MEDIUMINTUNSIGNED { get; set; }
         [Column("MEDIUMTEXT")]
-        public String MEDIUMTEXT { get; set; }
+        public String? MEDIUMTEXT { get; set; }
         [Column("NUMERIC")]
         public Decimal NUMERIC { get; set; }
         [Column("REAL")]
@@ -72,29 +72,28 @@ namespace SqlCreatorModule.ExportModels
         [Column("SMALLINT UNSIGNED")]
         public UInt16 SMALLINTUNSIGNED { get; set; }
         [Column("TEXT")]
-        public String TEXT { get; set; }
+        public String? TEXT { get; set; }
         [Column("TIME")]
         public TimeSpan TIME { get; set; }
         [Column("TIMESTAMP")]
         public DateTime TIMESTAMP { get; set; }
         [Column("TINYBLOB")]
-        public Byte[] TINYBLOB { get; set; }
+        public Byte[]? TINYBLOB { get; set; }
         [Column("TINYINT")]
         public SByte TINYINT { get; set; }
         [Column("TINYINT UNSIGNED")]
         public Byte TINYINTUNSIGNED { get; set; }
         [Column("TINYTEXT")]
-        public String TINYTEXT { get; set; }
+        public String? TINYTEXT { get; set; }
         [Column("VARBINARY")]
-        public Byte[] VARBINARY { get; set; }
+        public Byte[]? VARBINARY { get; set; }
         [Column("VARCHAR")]
-        public String VARCHAR { get; set; }
+        public String? VARCHAR { get; set; }
         [Column("YEAR")]
         public Int16 YEAR { get; set; }
         [Column("json")]
-        public String Json { get; set; }
+        public String? Json { get; set; }
         public virtual string GetSelectCmdText() { return "SELECT * FROM mysqldatatype;"; }
-        public object Clone() { return base.MemberwiseClone(); }
         public override string ToString()
         {
             return $"Mysqldatatype: [Bit={this.Bit}, Bool={this.Bool}, BIGINT={this.BIGINT}, BIGINTUNSIGNED={this.BIGINTUNSIGNED}, BINARY={this.BINARY}, BLOB={this.BLOB}, CHAR={this.CHAR}, DATE={this.DATE}, DATETIME={this.DATETIME}, DECIMAL={this.DECIMAL}, DOUBLE={this.DOUBLE}, DOUBLEPRECISION={this.DOUBLEPRECISION}, ENUM={this.ENUM}, FLOAT={this.FLOAT}, INT={this.INT}, INTUNSIGNED={this.INTUNSIGNED}, INTEGER={this.INTEGER}, INTEGERUNSIGNED={this.INTEGERUNSIGNED}, LONGVARBINARY={this.LONGVARBINARY}, LONGVARCHAR={this.LONGVARCHAR}, LONGBLOB={this.LONGBLOB}, LONGTEXT={this.LONGTEXT}, MEDIUMBLOB={this.MEDIUMBLOB}, MEDIUMINT={this.MEDIUMINT}, MEDIUMINTUNSIGNED={this.MEDIUMINTUNSIGNED}, MEDIUMTEXT={this.MEDIUMTEXT}, NUMERIC={this.NUMERIC}, REAL={this.REAL}, SET={this.SET}, SMALLINT={this.SMALLINT}, SMALLINTUNSIGNED={this.SMALLINTUNSIGNED}, TEXT={this.TEXT}, TIME={this.TIME}, TIMESTAMP={this.TIMESTAMP}, TINYBLOB={this.TINYBLOB}, TINYINT={this.TINYINT}, TINYINTUNSIGNED={this.TINYINTUNSIGNED}, TINYTEXT={this.TINYTEXT}, VARBINARY={this.VARBINARY}, VARCHAR={this.VARCHAR}, YEAR={this.YEAR}, Json={this.Json}]";

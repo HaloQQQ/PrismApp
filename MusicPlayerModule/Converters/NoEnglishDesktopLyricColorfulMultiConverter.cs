@@ -3,6 +3,7 @@ using System.Windows.Data;
 
 namespace MusicPlayerModule.Converters
 {
+#pragma warning disable CS8604 // 引用类型参数可能为 null。
     /// <summary>
     /// 非英文垂直桌面歌词
     /// </summary>

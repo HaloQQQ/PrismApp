@@ -41,6 +41,7 @@ namespace MusicPlayerModule.Utils
 
             if (!(music.IsPureMusic = lyricFilePath == null))
             {
+#pragma warning disable CS8604 // 引用类型参数可能为 null。
                 music.Lyric = KRCLyrics.LoadFromFile(lyricFilePath);
             }
 

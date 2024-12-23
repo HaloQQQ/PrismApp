@@ -11,6 +11,8 @@ using IceTea.SocketStandard.Udp.Contracts;
 
 namespace MyApp.Prisms.Views
 {
+#pragma warning disable CS8601 // 引用类型赋值可能为 null。
+#pragma warning disable CS8602 // 解引用可能出现空引用。
     public partial class UdpSocketView : UserControl
     {
         private UdpSocketViewModel _udpSocketViewModel;

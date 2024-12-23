@@ -5,6 +5,7 @@ using System.Text;
 
 namespace MusicPlayerModule.Utils
 {
+#pragma warning disable CS8600 // 将 null 字面量或可能为 null 的值转换为非 null 类型。
     public static class KRCFile
     {
         /// <summary>

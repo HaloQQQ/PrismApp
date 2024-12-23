@@ -26,6 +26,7 @@ namespace MusicPlayerModule.Converters
                 return musicMove;
             }
 
+#pragma warning disable CS8603 // 可能返回 null 引用。
             return null;
         }
 

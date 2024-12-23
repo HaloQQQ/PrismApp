@@ -10,6 +10,8 @@ using System.Windows.Input;
 
 namespace MyApp.Prisms.Views.BaseViews
 {
+#pragma warning disable CS8601 // 引用类型赋值可能为 null。
+#pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
     /// <summary>
     /// SmtpMailViewModelBase.xaml 的交互逻辑
     /// </summary>
@@ -67,6 +69,7 @@ namespace MyApp.Prisms.Views.BaseViews
                     switch (listBox.Name)
                     {
                         case "lstBxTos":
+#pragma warning disable CS8604 // 引用类型参数可能为 null。
                             this._viewModel.Tos.Remove(value);
                             break;
                         case "lstBxCcs":

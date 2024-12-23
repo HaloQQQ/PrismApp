@@ -130,7 +130,7 @@
                                     </MultiBinding>
                                 </DataTrigger.Binding>
 
-                                <Setter Property="BorderBrush" Value="White" />
+                                <Setter Property="BorderBrush" Value="LightBlue" />
 
                                 <Setter Property="Effect">
                                     <Setter.Value>

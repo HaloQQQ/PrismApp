@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SqlCreatorModule.ExportModels
 {
+#pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
     /// <summary>
     /// 数据表导出abpauditlogs
     /// </summary>
@@ -58,7 +59,6 @@ namespace SqlCreatorModule.ExportModels
         [Column("ConcurrencyStamp")]
         public String ConcurrencyStamp { get; set; }
         public virtual string GetSelectCmdText() { return "SELECT * FROM abpauditlogs;"; }
-        public object Clone() { return base.MemberwiseClone(); }
         public override string ToString()
         {
             return $"Abpauditlogs: [Id={this.Id}, ApplicationName={this.ApplicationName}, UserId={this.UserId}, UserName={this.UserName}, TenantId={this.TenantId}, TenantName={this.TenantName}, ImpersonatorUserId={this.ImpersonatorUserId}, ImpersonatorUserName={this.ImpersonatorUserName}, ImpersonatorTenantId={this.ImpersonatorTenantId}, ImpersonatorTenantName={this.ImpersonatorTenantName}, ExecutionTime={this.ExecutionTime}, ExecutionDuration={this.ExecutionDuration}, ClientIpAddress={this.ClientIpAddress}, ClientName={this.ClientName}, ClientId={this.ClientId}, CorrelationId={this.CorrelationId}, BrowserInfo={this.BrowserInfo}, HttpMethod={this.HttpMethod}, Url={this.Url}, Exceptions={this.Exceptions}, Comments={this.Comments}, HttpStatusCode={this.HttpStatusCode}, ExtraProperties={this.ExtraProperties}, ConcurrencyStamp={this.ConcurrencyStamp}]";

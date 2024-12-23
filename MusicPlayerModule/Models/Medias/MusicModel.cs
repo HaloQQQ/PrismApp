@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using IceTea.Atom.Contracts;
 
 namespace MusicPlayerModule.Models;
+#pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
 
 internal class MusicModel : MediaBaseModel, IDisposable
 {
@@ -26,12 +27,12 @@ internal class MusicModel : MediaBaseModel, IDisposable
         }
 
         IsEnglishTitle = Regex.IsMatch(Name, RegexConstants.ContainsEnglishPattern);
-        IsEnglishSinger = Regex.IsMatch(Singer, RegexConstants.ContainsEnglishPattern);
+        IsEnglishSinger = Regex.IsMatch(Performer, RegexConstants.ContainsEnglishPattern);
 
         Album = file.Tag.Album;             // 专辑名称
         Year = (int)file.Tag.Year;             // 年份
         TrackNum = (int)file.Tag.Track;        // 曲目号
-        Genre = file.Tag.Genres.Length > 0 ? file.Tag.Genres[0] : null;   // 流派
+        Genre = file.Tag.Genres.Length > 0 ? file.Tag.Genres[0] : string.Empty;   // 流派
 
         // 获取时长（单位为毫秒）
         int duration = (int)file.Properties.Duration.TotalMilliseconds;
@@ -72,7 +73,7 @@ internal class MusicModel : MediaBaseModel, IDisposable
         }
     }
 
-    public ImageSource ImageSource { get; private set; }
+    public ImageSource? ImageSource { get; private set; }
 
     /// <summary>
     /// 曲目号
@@ -97,15 +98,7 @@ internal class MusicModel : MediaBaseModel, IDisposable
 
     public KRCLyrics? Lyric
     {
-        get
-        {
-            if (_krcLyrics != null && _krcLyrics.TryGetTarget(out KRCLyrics kRCLyrics))
-            {
-                return kRCLyrics;
-            }
-
-            return null;
-        }
+        get => _krcLyrics != null && _krcLyrics.TryGetTarget(out var kRCLyrics) ? kRCLyrics : null;
 
         internal set
         {
@@ -113,6 +106,7 @@ internal class MusicModel : MediaBaseModel, IDisposable
 
             if (_krcLyrics == null)
             {
+#pragma warning disable CS8604 // 引用类型参数可能为 null。
                 _krcLyrics = new WeakReference<KRCLyrics>(value);
             }
             else
@@ -142,7 +136,7 @@ internal class MusicModel : MediaBaseModel, IDisposable
         return false;
     }
 
-    public void Dispose()
+    void IDisposable.Dispose()
     {
         base.Dispose();
 
