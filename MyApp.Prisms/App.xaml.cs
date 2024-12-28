@@ -97,7 +97,7 @@ namespace MyApp.Prisms
 
             string processName = Process.GetCurrentProcess().ProcessName;
 
-            if (config.IsTrue(new string[] { CustomConstants.ONLY_ONE_PROCESS }))
+            if (config.IsTrue(CustomConstants.ONLY_ONE_PROCESS.FillToArray()))
             {
                 foreach (var process in Process.GetProcessesByName(processName))
                 {
@@ -178,14 +178,14 @@ namespace MyApp.Prisms
         {
             var config = Container.Resolve<IConfigManager>();
 
-            if (config.IsTrue(new[] { CustomConstants.IsMusicPlayer }))
+            if (config.IsTrue(CustomConstants.IsMusicPlayer.FillToArray()))
             {
                 ViewModelLocationProvider.Register<MusicWindow, SoftwareViewModel>();
 
                 return Container.Resolve<MusicWindow>();
             }
 
-            if (config.IsTrue(new[] { CustomConstants.IsVideoPlayer }))
+            if (config.IsTrue(CustomConstants.IsVideoPlayer.FillToArray()))
             {
                 ViewModelLocationProvider.Register<VideoWindow, SoftwareViewModel>();
 
@@ -281,7 +281,7 @@ namespace MyApp.Prisms
 
             if (failedKeys.Any())
             {
-                this.Container.Resolve<IEventAggregator>().GetEvent<DialogMessageEvent>().Publish(new DialogMessage($"{string.Join(Environment.NewLine, failedKeys)}{Environment.NewLine}注册失败", 4));
+                this.Container.Resolve<IEventAggregator>().GetEvent<DialogMessageEvent>().Publish(new DialogMessage($"{AppStatics.NewLineChars.Join(failedKeys)}{AppStatics.NewLineChars}注册失败", 4));
             }
         }
     }

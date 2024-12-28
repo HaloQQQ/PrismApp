@@ -149,7 +149,7 @@ namespace SqlCreatorModule.ViewModels
 
                     this.TableColumnsStructure.AssertNotEmpty(nameof(TableColumnsStructure));
 
-                    ModelHelper.BuildTheModelClassFromColumns(TableColumnsStructure.Select(column=>new ModelHelper.ColumnProperty(column.ColumnName, column.DataType)),
+                    ModelHelper.BuildTheModelClassFromColumns(TableColumnsStructure.Select(column => new ModelHelper.ColumnProperty(CurrentTableName.ToPascal(), column.ColumnName, column.DataType)),
                         this.CurrentTableName, $"{CurrentDbType}.{CurrentDbName}导出数据表{CurrentTableName}", ModelExportDir, "SqlCreatorModule.ExportModels");
 
                     this.PublishMsg(eventAggregator, "导出成功");
@@ -236,6 +236,7 @@ namespace SqlCreatorModule.ViewModels
         public ICommand ShowTableStructureCommand { get; private set; }
         public ICommand GetTablesCommand { get; private set; }
         public ICommand ConnectCommand { get; private set; }
+
 
         private string _modelExportDir;
 

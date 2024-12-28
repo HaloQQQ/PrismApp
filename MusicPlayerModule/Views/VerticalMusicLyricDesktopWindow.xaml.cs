@@ -38,7 +38,7 @@ namespace MusicPlayerModule.Views
         {
             base.OnClosed(e);
 
-            _configManager.WriteConfigNode(string.Join(",", new double[] { this.Left, this.Top }), CustomStatics.Vertical_DesktopLyric_WindowLeftTop_ConfigKey);
+            _configManager.WriteConfigNode(",".Join(new double[] { this.Left, this.Top }), CustomStatics.Vertical_DesktopLyric_WindowLeftTop_ConfigKey);
         }
 
         private void DesktopLyricPanel_Visible(object sender, MouseEventArgs e)

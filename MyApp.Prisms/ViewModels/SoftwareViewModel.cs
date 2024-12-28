@@ -30,7 +30,6 @@ using CustomControlsDemoModule.Views.Controls;
 using MusicPlayerModule.Views;
 using System.Windows.Media.Imaging;
 using IceTea.Desktop.Extensions;
-using System.Reflection;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -48,10 +47,10 @@ namespace MyApp.Prisms.ViewModels
                 IRegionManager regionManager
             )
         {
-            this.UserContext = userContext;
-            this.Settings = settings;
-            this._imageDisplayViewModel = imageDisplayViewModel;
-            this.AppConfigFileHotKeyManager = appConfigFileHotKeyManager;
+            this.UserContext = userContext.AssertNotNull(nameof(UserContext));
+            this.Settings = settings.AssertNotNull(nameof(SettingsViewModel));
+            this._imageDisplayViewModel = imageDisplayViewModel.AssertNotNull(nameof(ImageDisplayViewModel));
+            this.AppConfigFileHotKeyManager = appConfigFileHotKeyManager.AssertNotNull(nameof(IAppConfigFileHotKeyManager));
 
             this.InitQRCodeImage();
 
@@ -124,28 +123,28 @@ namespace MyApp.Prisms.ViewModels
 
         private void LoadConfig(IConfigManager config)
         {
-            this.OnlyOneProcess = config.IsTrue(new string[] { CustomConstants.ONLY_ONE_PROCESS });
-            this.AutoStart = config.IsTrue(new string[] { CustomConstants.AUTO_START });
-            this.BackgroundSwitch = config.IsTrue(new string[] { CustomConstants.BACKGROUND_SWITCH });
+            this.OnlyOneProcess = config.IsTrue(CustomConstants.ONLY_ONE_PROCESS.FillToArray());
+            this.AutoStart = config.IsTrue(CustomConstants.AUTO_START.FillToArray());
+            this.BackgroundSwitch = config.IsTrue(CustomConstants.BACKGROUND_SWITCH.FillToArray());
 
-            this.DefaultThemeURI = config.ReadConfigNode(new string[] { CustomConstants.DefaultThemeURI });
+            this.DefaultThemeURI = config.ReadConfigNode(CustomConstants.DefaultThemeURI.FillToArray());
             this.LoadDefaultTheme();
 
-            this.SetBackgroundImage(config.ReadConfigNode(new string[] { CustomConstants.BkgrdUri }));
-            this.IsMusicPlayer = config.IsTrue(new string[] { CustomConstants.IsMusicPlayer });
-            this.IsVideoPlayer = config.IsTrue(new string[] { CustomConstants.IsVideoPlayer });
+            this.SetBackgroundImage(config.ReadConfigNode(CustomConstants.BkgrdUri.FillToArray()));
+            this.IsMusicPlayer = config.IsTrue(CustomConstants.IsMusicPlayer.FillToArray());
+            this.IsVideoPlayer = config.IsTrue(CustomConstants.IsVideoPlayer.FillToArray());
 
             config.SetConfig += config =>
             {
-                config.WriteConfigNode<bool>(this.OnlyOneProcess, new string[] { CustomConstants.ONLY_ONE_PROCESS });
-                config.WriteConfigNode<bool>(this.AutoStart, new string[] { CustomConstants.AUTO_START });
-                config.WriteConfigNode<bool>(this.BackgroundSwitch, new string[] { CustomConstants.BACKGROUND_SWITCH });
+                config.WriteConfigNode<bool>(this.OnlyOneProcess, CustomConstants.ONLY_ONE_PROCESS.FillToArray());
+                config.WriteConfigNode<bool>(this.AutoStart, CustomConstants.AUTO_START.FillToArray());
+                config.WriteConfigNode<bool>(this.BackgroundSwitch, CustomConstants.BACKGROUND_SWITCH.FillToArray());
 
-                config.WriteConfigNode(this.DefaultThemeURI, new string[] { CustomConstants.DefaultThemeURI });
-                config.WriteConfigNode(this.CurrentBkGrd, new string[] { CustomConstants.BkgrdUri });
+                config.WriteConfigNode(this.DefaultThemeURI, CustomConstants.DefaultThemeURI.FillToArray());
+                config.WriteConfigNode(this.CurrentBkGrd, CustomConstants.BkgrdUri.FillToArray());
 
-                config.WriteConfigNode(this.IsMusicPlayer, new string[] { CustomConstants.IsMusicPlayer });
-                config.WriteConfigNode(this.IsVideoPlayer, new string[] { CustomConstants.IsVideoPlayer });
+                config.WriteConfigNode(this.IsMusicPlayer, CustomConstants.IsMusicPlayer.FillToArray());
+                config.WriteConfigNode(this.IsVideoPlayer, CustomConstants.IsVideoPlayer.FillToArray());
 
                 AppUtils.AutoStartWithDirectory(this.AutoStart);
             };
@@ -162,7 +161,7 @@ namespace MyApp.Prisms.ViewModels
         private void LoadDefaultTheme()
         {
             var defaultThemeUri = this.DefaultThemeURI;
-            if (defaultThemeUri.IsNullOrEmpty())
+            if (defaultThemeUri.IsNullOrBlank())
             {
                 this.RefreshTheme();
             }

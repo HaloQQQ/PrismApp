@@ -80,6 +80,9 @@
                     <DataTrigger Binding="{Binding IsLoading}" Value="True">
                         <Setter Property="IsEnabled" Value="False" />
                     </DataTrigger>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter Property="Foreground" Value="{StaticResource ShallowBlue}" />
+                    </Trigger>
                 </Style.Triggers>
             </Style>
         </ResourceDictionary>

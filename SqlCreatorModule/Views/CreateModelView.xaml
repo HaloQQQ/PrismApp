@@ -110,6 +110,7 @@
             MyAttachProperty.DataGridCellHorizontalAlignment="Center"
             ItemsSource="{Binding TableColumnsStructure}"
             MinColumnWidth="0"
+            HorizontalScrollBarVisibility="Auto"
             Style="{StaticResource DataGrid_Transparent}">
             <DataGrid.Columns>
                 <DataGridTextColumn

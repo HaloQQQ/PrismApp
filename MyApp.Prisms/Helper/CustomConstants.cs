@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Media;
 using IceTea.Atom.Utils.HotKey.Global.Contracts;
+using IceTea.Atom.Extensions;
 
 namespace MyApp.Prisms.Helper
 {
@@ -29,7 +30,7 @@ namespace MyApp.Prisms.Helper
 
         internal const string IMAGE = "Image";
 
-        internal static string[] LastImageDir_ConfigKey = new string[] { "LastImageDir" };
+        internal static string[] LastImageDir_ConfigKey = "LastImageDir".FillToArray();
 
 
         internal static readonly Brush SendBrush = Brushes.LightSkyBlue;
@@ -45,9 +46,9 @@ namespace MyApp.Prisms.Helper
             Source = new Uri("pack://application:,,,/IceTea.Wpf.Core;component/Resources/DarkTheme.xaml", UriKind.RelativeOrAbsolute)
         };
 
-        internal static readonly string[] WindowCornerRadius = new string[] { "WindowCornerRadius" };
+        internal static readonly string[] WindowCornerRadius = "WindowCornerRadius".FillToArray();
 
-        internal static readonly string[] MailAccounts = new string[] { "MailAccounts" };
+        internal static readonly string[] MailAccounts = "MailAccounts".FillToArray();
 
         internal static readonly string[] ConfigGlobalHotkeys = new string[] { "HotKeys", "Global" };
 

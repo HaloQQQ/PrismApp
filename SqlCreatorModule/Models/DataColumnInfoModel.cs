@@ -24,8 +24,14 @@ namespace SqlCreatorModule.Models
             this.DateTimeMode = column.DateTimeMode;
             this.MaxLength = column.MaxLength;
             this.Namespace = column.Namespace;
-            //this.ExtendedProperties = column.ExtendedProperties;
+            this.ExtendedProperties = column.ExtendedProperties;
+
+            this.Caption = column.Caption;
         }
+
+        public PropertyCollection ExtendedProperties { get; }
+
+        public string Caption { get; }
 
         public string ColumnName { get; }
         public string DefaultValue { get; }

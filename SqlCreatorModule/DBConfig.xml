@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ConnectionStrings>
-  <ConnectionString key="Sqlite" type="Sqlite" uri="data.db" allowTransaction="true"/>
-  <ConnectionString key="MySql" type="MySql" server="localhost" port="3306" dataBase="student" uid="root" pwd="root" allowTransaction="true"/>
-  <ConnectionString key="SqlServer" type="SqlServer" server="localhost" dataBase="BookDB" uid="sa" pwd="123456" allowTransaction="true"/>
-  <ConnectionString key="Oracle" type="Oracle" server="localhost" port="3307" dataBase="BookDB" uid="sa" pwd="123456" allowTransaction="true"/>
+  <ConnectionString key="Sqlite" type="Sqlite" uri="E:/JetBrains Code/data.db" allowTransaction="true"/>
+  <ConnectionString key="MySql" type="MySql" server="localhost" port="3306" dataBase="MyDb" uid="root" pwd="root" allowTransaction="true"/>
+  <ConnectionString key="SqlServer" type="SqlServer" server="localhost" port="1433" dataBase="MyDb" uid="sa" pwd="123456" allowTransaction="true"/>
+  <ConnectionString key="Oracle" type="Oracle" server="localhost" port="1521" dataBase="MyDb" uid="sa" pwd="123456" allowTransaction="true"/>
   <ConnectionString key="PostgreSql" type="PostgreSql" server="localhost" port="5432" dataBase="postgres" uid="postgres" pwd="123456" allowTransaction="true"/>
 </ConnectionStrings>

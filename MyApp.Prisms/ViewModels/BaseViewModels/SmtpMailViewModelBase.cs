@@ -110,7 +110,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
             SendMailCommand = new DelegateCommand(async () =>
             {
-                var dto = new MailInDto(new string[] { this.FromMail }, this.Tos, this.Subject, Password, this.Body, string.Empty);
+                var dto = new MailInDto(this.FromMail.FillToArray(), this.Tos, this.Subject, Password, this.Body, string.Empty);
 
                 this.Ccs.ForEach(c => dto.TryAddCC(c));
                 this.Bccs.ForEach(bc => dto.TryAddBCC(bc));
