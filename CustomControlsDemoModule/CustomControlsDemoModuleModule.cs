@@ -10,23 +10,12 @@ namespace CustomControlsDemoModule
 {
     public class CustomControlsDemoModuleModule : IModule
     {
-        private IRegionManager _regionManager;
-
-        public CustomControlsDemoModuleModule(IRegionManager regionManager)
-        {
-             this._regionManager = regionManager;
-        }
-
         public void OnInitialized(IContainerProvider containerProvider)
         {
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            //_regionManager.RegisterViewWithRegion<ControlsDemoView>("ControlsDemoRegion");
-
-            //_regionManager.RegisterViewWithRegion<ColorView>("ColorRegion");
-
             this.RegisterNavigation(containerRegistry);
 
             containerRegistry.RegisterDialog<_2048>();
@@ -48,6 +37,8 @@ namespace CustomControlsDemoModule
         {
             containerRegistry.RegisterForNavigation<ColorView>();
             containerRegistry.RegisterForNavigation<ControlsDemoView>();
+
+            containerRegistry.RegisterForNavigation<ToolsView>();
 
 
             containerRegistry.RegisterForNavigation<ButtonsView>();

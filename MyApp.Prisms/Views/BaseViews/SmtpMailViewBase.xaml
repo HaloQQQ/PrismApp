@@ -54,7 +54,7 @@
                                     Command="Close"
                                     Content="&#xe612;"
                                     DockPanel.Dock="Right"
-                                    Style="{StaticResource IconButtonBase_Small_Expand}"
+                                    Style="{StaticResource ButtonBase_Icon_ScaleUp_Small}"
                                     Visibility="Hidden" />
 
                                 <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
@@ -154,19 +154,19 @@
                         Command="{x:Static ApplicationCommands.Open}"
                         Content="&#xe704;"
                         FontSize="20"
-                        Style="{StaticResource IconButtonBase_Small_Scale}" />
+                        Style="{StaticResource ButtonBase_Icon_ScaleDown_Small}" />
                     <ListBox x:Name="lstBxAttachments" ItemsSource="{Binding Attachments}" />
                 </WrapPanel>
                 <StackPanel Orientation="Horizontal">
                     <Button
                         Command="{Binding SendMailCommand}"
                         Content="发送"
-                        Style="{StaticResource TransparentButtonBase}" />
+                        Style="{StaticResource ButtonBase_Transparent}" />
 
                     <Button
                         Command="{Binding DeleteDeletionCommand}"
                         Content="清空删除"
-                        Style="{StaticResource TransparentButtonBase}" />
+                        Style="{StaticResource ButtonBase_Transparent}" />
                 </StackPanel>
                 <Border
                     BorderBrush="{StaticResource LightWhite}"
@@ -185,7 +185,7 @@
                         <Button
                             Command="{Binding QueryMailCommand}"
                             Content="查询"
-                            Style="{StaticResource TransparentButtonBase}" />
+                            Style="{StaticResource ButtonBase_Transparent}" />
                     </WrapPanel>
                 </Border>
             </StackPanel>
@@ -346,13 +346,13 @@
                     <DataGridCheckBoxColumn
                         MinWidth="50"
                         Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
-                        ElementStyle="{StaticResource CheckMarkCheckBox}">
+                        ElementStyle="{StaticResource CheckBox_CheckMark}">
                         <DataGridCheckBoxColumn.HeaderTemplate>
                             <DataTemplate>
                                 <CheckBox
                                     Command="{Binding DataContext.SelectAllCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                     IsChecked="{Binding DataContext.IsMailsSelectedAll, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                    Style="{StaticResource CheckMarkCheckBox}" />
+                                    Style="{StaticResource CheckBox_CheckMark}" />
                             </DataTemplate>
                         </DataGridCheckBoxColumn.HeaderTemplate>
                     </DataGridCheckBoxColumn>

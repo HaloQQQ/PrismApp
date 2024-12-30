@@ -6,7 +6,7 @@
     xmlns:tools="clr-namespace:CustomControlsDemoModule.ViewModels"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
-        <Style BasedOn="{StaticResource TextBox_DisplayInfo}" TargetType="TextBox">
+        <Style BasedOn="{StaticResource TextBox_HideButton}" TargetType="TextBox">
             <Setter Property="MinWidth" Value="50" />
             <Setter Property="Margin" Value="0" />
             <Setter Property="BorderThickness" Value="0,0,0,1" />
@@ -41,7 +41,7 @@
                     Width="130"
                     Margin="10,0"
                     VerticalAlignment="Center"
-                    Style="{StaticResource ThemeBlk}"
+                    Style="{StaticResource TextBlock_Theme}"
                     Text="十六进制颜色码:"
                     TextAlignment="Right" />
                 <TextBox
@@ -58,7 +58,7 @@
                     Width="130"
                     Margin="10,0"
                     VerticalAlignment="Center"
-                    Style="{StaticResource ThemeBlk}"
+                    Style="{StaticResource TextBlock_Theme}"
                     Text="ARGB数值:"
                     TextAlignment="Right" />
                 <NumericUpDown Value="{Binding AInt}" />
@@ -77,7 +77,7 @@
                 CornerRadius="3">
                 <TextBox
                     Foreground="{Binding ContrastColor}"
-                    Style="{StaticResource CopyAsTextBlock}"
+                    Style="{StaticResource TextBox_CopyAsTextBlock}"
                     Text="{Binding ContrastColorCode, Mode=OneWay}" />
             </Border>
 
@@ -113,7 +113,7 @@
                         </Border.ToolTip>
                         <TextBox
                             Foreground="{Binding Foreground}"
-                            Style="{StaticResource CopyAsTextBlock}"
+                            Style="{StaticResource TextBox_CopyAsTextBlock}"
                             Text="{Binding ColorCode, Mode=OneTime}" />
                     </Border>
                 </DataTemplate>

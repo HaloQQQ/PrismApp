@@ -73,7 +73,7 @@
                     IsChecked="{Binding IsTcp}"
                     Style="{StaticResource CheckBoxEnableStyle}">
                     <TextBlock>
-                        <TextBlock Style="{StaticResource IconText}" Text="&#xec6f;" />
+                        <TextBlock Style="{StaticResource TextBlock_Icon}" Text="&#xec6f;" />
                         <TextBlock Text="Tcp：" />
                     </TextBlock>
                 </CheckBox>
@@ -86,7 +86,7 @@
                         <TextBlock>
                             <TextBlock
                                 FontSize="18"
-                                Style="{StaticResource IconText}"
+                                Style="{StaticResource TextBlock_Icon}"
                                 Text="&#xe98e;" />
                             <TextBlock Text="服务器：" />
                         </TextBlock>
@@ -94,8 +94,8 @@
 
                     <StackPanel Orientation="Horizontal" Visibility="{Binding IsTcpServer, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
                         <TextBlock>
-                            <TextBlock Style="{StaticResource IconText}" Text="&#xe653;" />
-                            <TextBlock Style="{StaticResource ThemeBlk}" Text="服务端最大连接数：" />
+                            <TextBlock Style="{StaticResource TextBlock_Icon}" Text="&#xe653;" />
+                            <TextBlock Style="{StaticResource TextBlock_Theme}" Text="服务端最大连接数：" />
                         </TextBlock>
                         <ComboBox
                             FontSize="20"
@@ -117,10 +117,10 @@
                 <CheckBox
                     DockPanel.Dock="Left"
                     IsChecked="{Binding IsHex}"
-                    Style="{StaticResource SlideCheckBox}">
+                    Style="{StaticResource CheckBox_Switch}">
                     <TextBlock>
-                        <TextBlock Style="{StaticResource IconText}" Text="&#xe653;" />
-                        <TextBlock Style="{StaticResource ThemeBlk}" Text="HEX：" />
+                        <TextBlock Style="{StaticResource TextBlock_Icon}" Text="&#xe653;" />
+                        <TextBlock Style="{StaticResource TextBlock_Theme}" Text="HEX：" />
                     </TextBlock>
                 </CheckBox>
             </DockPanel>

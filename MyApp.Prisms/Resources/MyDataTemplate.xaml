@@ -48,7 +48,7 @@
             FontSize="50"
             FontWeight="Bold"
             Foreground="{DynamicResource TextBlock.Foreground}"
-            Style="{StaticResource IconText}"
+            Style="{StaticResource TextBlock_Icon}"
             Text="&#xe622;" />
     </DataTemplate>
 

@@ -16,7 +16,7 @@
 
         <Style
             x:Key="Lable"
-            BasedOn="{StaticResource ThemeBlk}"
+            BasedOn="{StaticResource TextBlock_Theme}"
             TargetType="TextBlock">
             <Setter Property="FontSize" Value="14" />
             <Setter Property="Margin" Value="0" />
@@ -52,7 +52,7 @@
                     <TextBlock Style="{StaticResource Lable}" Text="本机本机端口：" />
                     <TextBox
                         IsEnabled="{Binding Socket.IsConnected, Converter={StaticResource OppositeBoolConverter}}"
-                        Style="{StaticResource TextBox_DisplayInfo}"
+                        Style="{StaticResource TextBox_HideButton}"
                         Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" />
 
                     <TextBlock Style="{StaticResource Lable}" Text="目标IP：" />
@@ -61,19 +61,19 @@
                     <TextBlock Style="{StaticResource Lable}" Text="目标端口：" />
                     <TextBox
                         IsEnabled="{Binding Socket.IsConnected, Converter={StaticResource OppositeBoolConverter}}"
-                        Style="{StaticResource TextBox_DisplayInfo}"
+                        Style="{StaticResource TextBox_HideButton}"
                         Text="{Binding RemotePort, UpdateSourceTrigger=PropertyChanged}" />
 
                     <CheckBox IsChecked="{Binding UnreachableDisConnect}">
                         <TextBlock FontSize="14">
-                            <TextBlock Style="{StaticResource IconText}" Text="&#xec6f;" />
+                            <TextBlock Style="{StaticResource TextBlock_Icon}" Text="&#xec6f;" />
                             <TextBlock Text="失败断开：" />
                         </TextBlock>
                     </CheckBox>
 
                     <Button Command="{Binding ConnectCommand}">
                         <Button.Style>
-                            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                            <Style BasedOn="{StaticResource ButtonBase_Transparent}" TargetType="Button">
                                 <Setter Property="Content">
                                     <Setter.Value>
                                         <TextBlock>
@@ -111,32 +111,12 @@
                 </RichTextBox.CommandBindings>
             </RichTextBox>
 
-            <Viewbox
+            <TextBox
                 Grid.Row="2"
-                HorizontalAlignment="Left"
-                Style="{StaticResource OnlyDownViewbox}">
-                <StackPanel Grid.Row="2" Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource ThemeBlk}" Text="发送：" />
-                    <TextBox
-                        MinWidth="200"
-                        MyAttachProperty.PlaceHolder="待发送消息"
-                        Text="{Binding SendMessage, UpdateSourceTrigger=PropertyChanged}">
-                        <TextBox.Style>
-                            <Style BasedOn="{StaticResource WidthAnimationWithoutPrefixTextBox}" TargetType="TextBox">
-                                <Setter Property="IsEnabled" Value="False" />
-
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Socket.IsConnected}" Value="True">
-                                        <Setter Property="IsEnabled" Value="True" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-
-                    <Button Command="{Binding SendCommand}" Content="发送" />
-                </StackPanel>
-            </Viewbox>
+                MinWidth="200"
+                MyAttachProperty.Command="{Binding SendCommand}"
+                Style="{StaticResource TextBox_PlaceHolderAsLable_PostMsg}"
+                Text="{Binding SendMessage, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
     </GroupBox>
 </UserControl>

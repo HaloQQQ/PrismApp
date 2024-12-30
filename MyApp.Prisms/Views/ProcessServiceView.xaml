@@ -39,7 +39,7 @@
                 <DataGridCheckBoxColumn MinWidth="60" Binding="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged}">
                     <DataGridCheckBoxColumn.HeaderTemplate>
                         <DataTemplate>
-                            <CheckBox IsChecked="{Binding DataContext.IsSelectedAllProcesses, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource CheckBoxSelectAll}" />
+                            <CheckBox IsChecked="{Binding DataContext.IsSelectedAllProcesses, RelativeSource={RelativeSource AncestorType=DataGrid}}" Style="{StaticResource CheckBox_SelectAll}" />
                         </DataTemplate>
                     </DataGridCheckBoxColumn.HeaderTemplate>
                     <DataGridCheckBoxColumn.ElementStyle>
@@ -51,7 +51,7 @@
                         <DataTemplate>
                             <TextBlock>
                                 <TextBlock Text="编号" />
-                                <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                <TextBlock Style="{StaticResource TextBlock_DataGridColumnHeader_SortIcon}" />
                             </TextBlock>
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>
@@ -72,7 +72,7 @@
                         <DataTemplate>
                             <TextBlock>
                                 <TextBlock Text="进程名" />
-                                <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                <TextBlock Style="{StaticResource TextBlock_DataGridColumnHeader_SortIcon}" />
                             </TextBlock>
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>
@@ -111,7 +111,7 @@
                         <DataTemplate>
                             <TextBlock>
                                 <TextBlock Text="名称" />
-                                <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                <TextBlock Style="{StaticResource TextBlock_DataGridColumnHeader_SortIcon}" />
                             </TextBlock>
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>
@@ -129,7 +129,7 @@
                         <DataTemplate>
                             <TextBlock>
                                 <TextBlock Text="服务名" />
-                                <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                <TextBlock Style="{StaticResource TextBlock_DataGridColumnHeader_SortIcon}" />
                             </TextBlock>
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>
@@ -147,7 +147,7 @@
                         <DataTemplate>
                             <TextBlock>
                                 <TextBlock Text="状态" />
-                                <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                <TextBlock Style="{StaticResource TextBlock_DataGridColumnHeader_SortIcon}" />
                             </TextBlock>
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>
@@ -165,7 +165,7 @@
                         <DataTemplate>
                             <TextBlock>
                                 <TextBlock Text="服务类型" />
-                                <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                <TextBlock Style="{StaticResource TextBlock_DataGridColumnHeader_SortIcon}" />
                             </TextBlock>
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>
@@ -187,7 +187,7 @@
                         <DataTemplate>
                             <TextBlock>
                                 <TextBlock Text="服务启动类型" />
-                                <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                <TextBlock Style="{StaticResource TextBlock_DataGridColumnHeader_SortIcon}" />
                             </TextBlock>
                         </DataTemplate>
                     </DataGridTemplateColumn.HeaderTemplate>

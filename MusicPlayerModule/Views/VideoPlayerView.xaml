@@ -264,7 +264,7 @@
                         <TextBlock
                             Margin="10,5"
                             DockPanel.Dock="Right"
-                            Style="{StaticResource NotImportantTxt_Black}">
+                            Style="{StaticResource TextBlock_NotImportant_Black}">
                             <TextBlock Text="{Binding CurrentMedia.CurrentTime, FallbackValue=00:00:00}" />
                             /
                             <TextBlock Text="{Binding CurrentMedia.Video.Duration, FallbackValue=00:00:00}" />
@@ -274,12 +274,12 @@
                             <TextBlock
                                 Margin="10,5"
                                 FontSize="18"
-                                Style="{StaticResource NotImportantTxt_Black}"
+                                Style="{StaticResource TextBlock_NotImportant_Black}"
                                 Text="{Binding CurrentMedia.Video.Actor}" />
                             <TextBlock
                                 Margin="10,5"
                                 FontSize="18"
-                                Style="{StaticResource NotImportantTxt_Black}"
+                                Style="{StaticResource TextBlock_NotImportant_Black}"
                                 Text="{Binding CurrentMedia.Video.Name}" />
                         </StackPanel>
                     </DockPanel>
@@ -291,34 +291,34 @@
                             Command="{Binding AddFilesCommand}"
                             Content="&#xea79;"
                             FontSize="20"
-                            Style="{StaticResource IconButtonBase_Big_Scale_SkyBlue}"
+                            Style="{StaticResource ButtonBase_Icon_ScaleDown_Big_SkyBlue}"
                             ToolTip="{Binding KeyGestureDic[打开文件夹].ToolTip}">
                             <Button.InputBindings>
                                 <MouseBinding Command="{Binding AddFolderCommand}" MouseAction="RightClick" />
                             </Button.InputBindings>
                         </Button>
 
-                        <Button Command="{Binding RewindCommand}" Style="{StaticResource Rewind5sIconButton}" />
+                        <Button Command="{Binding RewindCommand}" Style="{StaticResource Button_Icon_Rewind_5s}" />
 
                         <Button
                             Command="{Binding PrevCommand}"
                             CommandParameter="{Binding CurrentMedia}"
-                            Style="{StaticResource PrevOneIconButton}" />
+                            Style="{StaticResource Button_Icon_Prev}" />
 
                         <ToggleButton
                             Command="{Binding PlayPlayingCommand}"
                             CommandParameter="{Binding CurrentMedia}"
                             IsChecked="{Binding Running, Mode=OneWay}"
-                            Style="{StaticResource PlayIconToggleButton}" />
+                            Style="{StaticResource ToggleButton_Icon_Play}" />
 
                         <Button
                             Command="{Binding NextCommand}"
                             CommandParameter="{Binding CurrentMedia}"
-                            Style="{StaticResource NextOneIconButton}" />
+                            Style="{StaticResource Button_Icon_Next}" />
 
-                        <Button Command="{Binding FastForwardCommand}" Style="{StaticResource FastForward5sIconButton}" />
+                        <Button Command="{Binding FastForwardCommand}" Style="{StaticResource Button_Icon_FastForward_5s}" />
 
-                        <Button Command="{Binding StopPlayCommand}" Style="{StaticResource StopMediaIconButton}" />
+                        <Button Command="{Binding StopPlayCommand}" Style="{StaticResource Button_Icon_Stop}" />
                     </StackPanel>
                 </Viewbox>
 
@@ -336,7 +336,7 @@
                             DockPanel.Dock="Right"
                             ToolTip="{Binding KeyGestureDic[播放列表].ToolTip}">
                             <ToggleButton.Style>
-                                <Style BasedOn="{StaticResource IconButtonBase_Small}" TargetType="ToggleButton">
+                                <Style BasedOn="{StaticResource ButtonBase_Icon_Small}" TargetType="ToggleButton">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding DisplayPlaying.Count}" Value="0">
                                             <Setter Property="IsEnabled" Value="False" />
@@ -379,11 +379,11 @@
                                             </TextBlock>
 
                                             <TextBlock HorizontalAlignment="Right" DockPanel.Dock="Right">
-                                                <!--<ToggleButton x:Name="QueryButton" Content="&#xe632;" ToolTip="搜索" Style="{StaticResource IconButtonBase_Small}"/>-->
+                                                <!--<ToggleButton x:Name="QueryButton" Content="&#xe632;" ToolTip="搜索" Style="{StaticResource ButtonBase_Icon_Small}"/>-->
                                                 <Button
                                                     Command="{Binding CleanPlayingCommand}"
                                                     Content="&#xec7b;"
-                                                    Style="{StaticResource IconButtonBase_Small}"
+                                                    Style="{StaticResource ButtonBase_Icon_Small}"
                                                     ToolTip="{Binding KeyGestureDic[清空播放队列].ToolTip}" />
                                             </TextBlock>
                                         </DockPanel>
@@ -440,7 +440,7 @@
                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                 <Button Command="{Binding DataContext.PlayPlayingCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}">
                                                                     <Button.Style>
-                                                                        <Style BasedOn="{StaticResource IconButtonBase_Small}" TargetType="Button">
+                                                                        <Style BasedOn="{StaticResource ButtonBase_Icon_Small}" TargetType="Button">
                                                                             <Setter Property="Content" Value="&#xea6d;" />
                                                                             <Setter Property="ToolTip" Value="播放当前" />
                                                                             <Style.Triggers>
@@ -461,7 +461,7 @@
                                                                     Content="&#xe682;"
                                                                     ContextMenu="{StaticResource VideoContextMenu_Button}"
                                                                     MyAttachProperty.HasContextMenu="True"
-                                                                    Style="{StaticResource IconButtonBase_Small}"
+                                                                    Style="{StaticResource ButtonBase_Icon_Small}"
                                                                     Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                                                     ToolTip="更多" />
 
@@ -498,7 +498,7 @@
                             DockPanel.Dock="Right"
                             IsChecked="{Binding IsEditingStretch}">
                             <ToggleButton.Style>
-                                <Style BasedOn="{StaticResource IconButtonBase_Small}" TargetType="ToggleButton">
+                                <Style BasedOn="{StaticResource ButtonBase_Icon_Small}" TargetType="ToggleButton">
                                     <Setter Property="Margin" Value="2,0" />
 
                                     <Setter Property="Content" Value="画面适应" />
@@ -536,7 +536,7 @@
                             Click="VolumeToggleButton_Click"
                             DockPanel.Dock="Right"
                             IsChecked="{Binding IsMuted, ElementName=mediaPlayer, Mode=TwoWay}"
-                            Style="{StaticResource VolumeIconToggleButton}" />
+                            Style="{StaticResource ToggleButton_Icon_Volume}" />
                         <Popup
                             x:Name="VolumePopup"
                             Width="65"
@@ -557,7 +557,7 @@
                                     ValueChanged="Slider_ValueChanged"
                                     Value="{Binding Volume, ElementName=mediaPlayer, Converter={StaticResource DigitMultiConverter}, ConverterParameter=100}" />
 
-                                <TextBlock HorizontalAlignment="Center" Style="{StaticResource NotImportantTxt_White}">
+                                <TextBlock HorizontalAlignment="Center" Style="{StaticResource TextBlock_NotImportant_White}">
                                     <TextBlock Text="{Binding ElementName=mediaPlayer, Path=Volume, Converter={StaticResource DigitMultiConverter}, ConverterParameter=100, Mode=OneWay}" />
                                     %
                                 </TextBlock>
@@ -569,7 +569,7 @@
                             DockPanel.Dock="Right"
                             IsChecked="{Binding IsEditingPlayOrder}">
                             <ToggleButton.Style>
-                                <Style BasedOn="{StaticResource IconButtonBase_Small}" TargetType="ToggleButton">
+                                <Style BasedOn="{StaticResource ButtonBase_Icon_Small}" TargetType="ToggleButton">
                                     <Setter Property="Margin" Value="2,0" />
 
                                     <Setter Property="Content" Value="{Binding SelectedItem.IconString, ElementName=PlayOrderList, FallbackValue=播放顺序}" />
@@ -598,7 +598,7 @@
                                             <Setter Property="ContentTemplate">
                                                 <Setter.Value>
                                                     <DataTemplate DataType="contracts:MediaPlayOrderModel">
-                                                        <TextBlock Margin="30,10" Style="{StaticResource IconText}">
+                                                        <TextBlock Margin="30,10" Style="{StaticResource TextBlock_Icon}">
                                                             <TextBlock Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Text="{Binding IconString}" />
                                                             <TextBlock Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Text="{Binding Description}" />
                                                         </TextBlock>
@@ -626,7 +626,7 @@
                             x:Name="VideoSpeedRatioButton"
                             Content="&#xe60c;"
                             DockPanel.Dock="Right"
-                            Style="{StaticResource IconButtonBase_Small}"
+                            Style="{StaticResource ButtonBase_Icon_Small}"
                             ToolTip="倍速播放" />
                         <Popup
                             HorizontalOffset="-132"

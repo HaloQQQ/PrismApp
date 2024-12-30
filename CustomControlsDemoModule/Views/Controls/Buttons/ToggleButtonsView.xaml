@@ -6,7 +6,9 @@
         <StackPanel Orientation="Horizontal">
             <ToggleButton>
                 <ToggleButton.Style>
-                    <Style BasedOn="{StaticResource IconFillToggleButton}" TargetType="ToggleButton">
+                    <Style BasedOn="{StaticResource ToggleButton_Icon_Fill}" TargetType="ToggleButton">
+                        <Setter Property="MyAttachProperty.SelectedForeground" Value="{StaticResource OrangeRed}" />
+
                         <Setter Property="Content" Value="&#xe644;" />
                         <Setter Property="ToolTip" Value="收藏" />
 
@@ -23,15 +25,15 @@
                 Background="Red"
                 Content="ToggleButton"
                 MyAttachProperty.CornerRadius="10" />
-            <ToggleButton Style="{StaticResource BlockLayoutToggleButton}" />
-            <ToggleButton Style="{StaticResource MaxWindowIconToggleButton}" />
-            <ToggleButton Style="{StaticResource LoginIconToggleButton}" />
-            <ToggleButton Style="{StaticResource SlideIconToggleButton}" />
-            <ToggleButton Style="{StaticResource TopMostIconToggleButton}" />
-            <ToggleButton Style="{StaticResource BrightIconToggleButton}" />
-            <ToggleButton Style="{StaticResource VolumeIconToggleButton}" />
-            <ToggleButton Style="{StaticResource PlayIconToggleButton}" />
-            <ToggleButton Style="{StaticResource ColoredExpandIconToggleButton}" />
+            <ToggleButton Style="{StaticResource ToggleButton_Icon_Layout}" />
+            <ToggleButton Style="{StaticResource ToggleButton_Icon_MaxWindow}" />
+            <ToggleButton Style="{StaticResource ToggleButton_Icon_Login}" />
+            <ToggleButton Style="{StaticResource ToggleButton_Icon_Slide}" />
+            <ToggleButton Style="{StaticResource ToggleButton_Icon_TopMost}" />
+            <ToggleButton Style="{StaticResource ToggleButton_Icon_Brightness}" />
+            <ToggleButton Style="{StaticResource ToggleButton_Icon_Volume}" />
+            <ToggleButton Style="{StaticResource ToggleButton_Icon_Play}" />
+            <ToggleButton Style="{StaticResource ToggleButton_Icon_Fill}" />
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">
@@ -44,11 +46,11 @@
                 HorizontalContentAlignment="Right"
                 BorderThickness="3"
                 Content="Switch CheckBox"
-                Style="{StaticResource SlideCheckBox}" />
+                Style="{StaticResource CheckBox_Switch}" />
             <CheckBox
                 HorizontalContentAlignment="Left"
                 Content="CheckMark CheckBox"
-                Style="{StaticResource CheckMarkCheckBox}" />
+                Style="{StaticResource CheckBox_CheckMark}" />
         </StackPanel>
 
         <StackPanel Orientation="Horizontal">

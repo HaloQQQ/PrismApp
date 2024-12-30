@@ -6,13 +6,13 @@
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
-        <Style BasedOn="{StaticResource ThemeBlk}" TargetType="TextBlock" />
+        <Style BasedOn="{StaticResource TextBlock_Theme}" TargetType="TextBlock" />
 
         <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="ComboBox">
             <Setter Property="IsReadOnly" Value="True" />
         </Style>
 
-        <Style BasedOn="{StaticResource TransparentButtonBase}" TargetType="Button" />
+        <Style BasedOn="{StaticResource ButtonBase_Transparent}" TargetType="Button" />
 
         <ObjectDataProvider
             x:Key="EnumDataSetDateTime"
@@ -124,7 +124,7 @@
                                 MyAttachProperty.IsReadOnly="True"
                                 IsChecked="{Binding Unique, Mode=OneTime}"
                                 IsEnabled="False"
-                                Style="{StaticResource CheckMarkCheckBox}" />
+                                Style="{StaticResource CheckBox_CheckMark}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -135,7 +135,7 @@
                                 MyAttachProperty.IsReadOnly="True"
                                 IsChecked="{Binding AllowDBNull, Mode=OneTime}"
                                 IsEnabled="False"
-                                Style="{StaticResource CheckMarkCheckBox}" />
+                                Style="{StaticResource CheckBox_CheckMark}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -148,7 +148,7 @@
                                 MyAttachProperty.IsReadOnly="True"
                                 IsChecked="{Binding AutoIncrement, Mode=OneTime}"
                                 IsEnabled="False"
-                                Style="{StaticResource CheckMarkCheckBox}" />
+                                Style="{StaticResource CheckBox_CheckMark}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -161,7 +161,7 @@
                                 MyAttachProperty.IsReadOnly="True"
                                 IsChecked="{Binding ReadOnly, Mode=OneTime}"
                                 IsEnabled="False"
-                                Style="{StaticResource CheckMarkCheckBox}" />
+                                Style="{StaticResource CheckBox_CheckMark}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

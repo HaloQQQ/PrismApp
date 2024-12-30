@@ -1,0 +1,47 @@
+﻿<UserControl
+    x:Class="CustomControlsDemoModule.Views.ToolsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"
+    prism:ViewModelLocator.AutoWireViewModel="True">
+    <StackPanel Margin="10">
+        <DockPanel>
+            <TextBlock
+                HorizontalAlignment="Left"
+                DockPanel.Dock="Top"
+                FontSize="30"
+                FontWeight="Bold"
+                Style="{StaticResource TextBlock_Theme}"
+                Text="开机启动" />
+
+            <WrapPanel VerticalAlignment="Center" DockPanel.Dock="Right">
+                <CheckBox
+                    Content="开启："
+                    IsChecked="{Binding IsOn}"
+                    Style="{StaticResource CheckBox_Switch}" />
+                <CheckBox
+                    HorizontalContentAlignment="Left"
+                    Content="自己可用："
+                    IsChecked="{Binding IsOnlyForMe}"
+                    Style="{StaticResource CheckBox_CheckMark}" />
+
+                <Button
+                    Command="{Binding AutoStartCommand}"
+                    Content="执行"
+                    Style="{StaticResource ButtonBase_Transparent}" />
+            </WrapPanel>
+
+            <TextBox
+                IsReadOnly="True"
+                MyAttachProperty.Brush="#0956CC"
+                MyAttachProperty.Command="{Binding SelectFileCommand}"
+                MyAttachProperty.CornerRadius="10"
+                MyAttachProperty.DoubleValue="35"
+                MyAttachProperty.IconFontText="&#xebdf;"
+                MyAttachProperty.IsCollapsed="True"
+                MyAttachProperty.PlaceHolder="文件路径"
+                Style="{StaticResource TextBox_PlaceHolderAsLable_Execute}"
+                Text="{Binding FilePath}" />
+        </DockPanel>
+    </StackPanel>
+</UserControl>

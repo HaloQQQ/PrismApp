@@ -12,7 +12,7 @@
     MyAttachProperty.IsElementFocused="True">
 
     <prism:Dialog.WindowStyle>
-        <Style BasedOn="{StaticResource WithoutTitleBar}" TargetType="Window">
+        <Style BasedOn="{StaticResource Window_WithoutTitleBar}" TargetType="Window">
             <Setter Property="MinWidth" Value="1200" />
             <Setter Property="MinHeight" Value="640" />
         </Style>
@@ -221,7 +221,7 @@
 
         <Style
             x:Key="FunctionButton"
-            BasedOn="{StaticResource IconButtonBase_Big_Scale_SkyBlue}"
+            BasedOn="{StaticResource ButtonBase_Icon_ScaleDown_Big_SkyBlue}"
             TargetType="Button">
             <Setter Property="Margin" Value="10,0" />
 

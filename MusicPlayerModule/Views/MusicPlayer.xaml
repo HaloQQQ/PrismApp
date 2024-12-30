@@ -331,7 +331,7 @@
 
                     <TextBox x:Name="FavoritesKeyWordsTxt" DockPanel.Dock="Right">
                         <TextBox.Style>
-                            <Style BasedOn="{StaticResource TextBox_FilteList}" TargetType="TextBox">
+                            <Style BasedOn="{StaticResource TextBox_Filter}" TargetType="TextBox">
 
                                 <Setter Property="Text" Value="{Binding FavoriteListFilteKeyWords, UpdateSourceTrigger=PropertyChanged, Delay=100}" />
 
@@ -374,7 +374,7 @@
                         Content="退出批量操作"
                         DockPanel.Dock="Right"
                         IsChecked="{Binding CanBatchSelect, Converter={StaticResource OppositeBoolConverter}, Mode=TwoWay}"
-                        Style="{StaticResource TransparentButtonBase}"
+                        Style="{StaticResource ButtonBase_Transparent}"
                         Visibility="{Binding CanBatchSelect, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
                 </DockPanel>
             </Viewbox>
@@ -463,7 +463,7 @@
                                     <DataTemplate>
                                         <CheckBox Command="{Binding DataContext.SelectAllCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" IsChecked="{Binding DataContext.SelectFavoriteAll, RelativeSource={RelativeSource AncestorType=DataGrid}}">
                                             <CheckBox.Style>
-                                                <Style BasedOn="{StaticResource CheckBoxSelectAll}" TargetType="CheckBox">
+                                                <Style BasedOn="{StaticResource CheckBox_SelectAll}" TargetType="CheckBox">
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding Items.Count, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="0">
                                                             <Setter Property="IsEnabled" Value="False" />
@@ -487,7 +487,7 @@
                                     <DataTemplate>
                                         <TextBlock>
                                             <TextBlock Text="歌手" />
-                                            <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                            <TextBlock Style="{StaticResource TextBlock_DataGridColumnHeader_SortIcon}" />
                                         </TextBlock>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
@@ -502,7 +502,7 @@
                                     <DataTemplate>
                                         <TextBlock>
                                             <TextBlock Text="专辑" />
-                                            <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                            <TextBlock Style="{StaticResource TextBlock_DataGridColumnHeader_SortIcon}" />
                                         </TextBlock>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
@@ -517,7 +517,7 @@
                                     <DataTemplate>
                                         <TextBlock>
                                             <TextBlock Text="文件大小(MB)" />
-                                            <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                            <TextBlock Style="{StaticResource TextBlock_DataGridColumnHeader_SortIcon}" />
                                         </TextBlock>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
@@ -532,7 +532,7 @@
                                     <DataTemplate>
                                         <TextBlock>
                                             <TextBlock Text="时长" />
-                                            <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                            <TextBlock Style="{StaticResource TextBlock_DataGridColumnHeader_SortIcon}" />
                                         </TextBlock>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
@@ -550,7 +550,7 @@
                                     <DataTemplate>
                                         <TextBlock>
                                             <TextBlock Text="文件路径" />
-                                            <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                            <TextBlock Style="{StaticResource TextBlock_DataGridColumnHeader_SortIcon}" />
                                         </TextBlock>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.HeaderTemplate>
@@ -573,7 +573,7 @@
                         <TextBox
                             DockPanel.Dock="Top"
                             MyAttachProperty.PlaceHolder="搜索专辑"
-                            Style="{StaticResource TextBox_QueryTxt}"
+                            Style="{StaticResource TextBox_Query}"
                             Text="{Binding DistributeMusicViewModel.AlbumMusicFilteKeyWords, UpdateSourceTrigger=PropertyChanged, Delay=100}" />
 
                         <ListBox
@@ -653,7 +653,7 @@
                                         <DataTemplate>
                                             <CheckBox IsChecked="{Binding DataContext.DistributeMusicViewModel.SelectAlbumFavoriteAll, RelativeSource={RelativeSource AncestorType=DataGrid}, UpdateSourceTrigger=PropertyChanged}">
                                                 <CheckBox.Style>
-                                                    <Style BasedOn="{StaticResource CheckBoxSelectAll}" TargetType="CheckBox">
+                                                    <Style BasedOn="{StaticResource CheckBox_SelectAll}" TargetType="CheckBox">
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding Items.Count, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="0">
                                                                 <Setter Property="IsEnabled" Value="False" />
@@ -681,7 +681,7 @@
                                         <DataTemplate>
                                             <TextBlock>
                                                 <TextBlock Text="歌手" />
-                                                <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                                <TextBlock Style="{StaticResource TextBlock_DataGridColumnHeader_SortIcon}" />
                                             </TextBlock>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.HeaderTemplate>
@@ -706,7 +706,7 @@
                         <TextBox
                             DockPanel.Dock="Top"
                             MyAttachProperty.PlaceHolder="搜索歌手"
-                            Style="{StaticResource TextBox_QueryTxt}"
+                            Style="{StaticResource TextBox_Query}"
                             Text="{Binding DistributeMusicViewModel.SingerMusicFilteKeyWords, UpdateSourceTrigger=PropertyChanged, Delay=100}" />
 
                         <ListBox
@@ -782,7 +782,7 @@
                                         <DataTemplate>
                                             <CheckBox IsChecked="{Binding DataContext.DistributeMusicViewModel.SelectSingerFavoriteAll, RelativeSource={RelativeSource AncestorType=DataGrid}, UpdateSourceTrigger=PropertyChanged}">
                                                 <CheckBox.Style>
-                                                    <Style BasedOn="{StaticResource CheckBoxSelectAll}" TargetType="CheckBox">
+                                                    <Style BasedOn="{StaticResource CheckBox_SelectAll}" TargetType="CheckBox">
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding Items.Count, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="0">
                                                                 <Setter Property="IsEnabled" Value="False" />
@@ -810,7 +810,7 @@
                                         <DataTemplate>
                                             <TextBlock>
                                                 <TextBlock Text="专辑" />
-                                                <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                                <TextBlock Style="{StaticResource TextBlock_DataGridColumnHeader_SortIcon}" />
                                             </TextBlock>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.HeaderTemplate>
@@ -903,7 +903,7 @@
                                         <DataTemplate>
                                             <CheckBox IsChecked="{Binding DataContext.DistributeMusicViewModel.SelectDirFavoriteAll, RelativeSource={RelativeSource AncestorType=DataGrid}, UpdateSourceTrigger=PropertyChanged}">
                                                 <CheckBox.Style>
-                                                    <Style BasedOn="{StaticResource CheckBoxSelectAll}" TargetType="CheckBox">
+                                                    <Style BasedOn="{StaticResource CheckBox_SelectAll}" TargetType="CheckBox">
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding Items.Count, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="0">
                                                                 <Setter Property="IsEnabled" Value="False" />
@@ -931,7 +931,7 @@
                                         <DataTemplate>
                                             <TextBlock>
                                                 <TextBlock Text="歌手" />
-                                                <TextBlock Style="{StaticResource DataGridColumnHeaderSortIcon}" />
+                                                <TextBlock Style="{StaticResource TextBlock_DataGridColumnHeader_SortIcon}" />
                                             </TextBlock>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.HeaderTemplate>
@@ -966,14 +966,14 @@
                         Command="{x:Static NavigationCommands.GoToPage}"
                         Content="&#xe65e;"
                         DockPanel.Dock="Left"
-                        Style="{StaticResource IconButtonBase_Small}" />
+                        Style="{StaticResource ButtonBase_Icon_Small}" />
 
                     <ToggleButton
                         x:Name="LyricSettingButton"
                         Content="&#xe8b8;"
                         DockPanel.Dock="Right"
                         FontSize="20"
-                        Style="{StaticResource IconButtonBase_Big_Scale}" />
+                        Style="{StaticResource ButtonBase_Icon_ScaleDown_Big}" />
                     <Popup
                         IsOpen="{Binding IsChecked, ElementName=LyricSettingButton}"
                         MouseLeftButtonDown="EmptyHandler"
@@ -989,7 +989,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock
                                         FontSize="20"
-                                        Style="{StaticResource ThemeBlk}"
+                                        Style="{StaticResource TextBlock_Theme}"
                                         Text="大小:" />
                                     <StackPanel VerticalAlignment="Center">
                                         <Slider
@@ -1007,19 +1007,19 @@
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock
                                                 Margin="-2,0,0,0"
-                                                Style="{StaticResource ThemeBlk}"
+                                                Style="{StaticResource TextBlock_Theme}"
                                                 Text="15" />
                                             <TextBlock
                                                 Margin="46,0,0,0"
-                                                Style="{StaticResource ThemeBlk}"
+                                                Style="{StaticResource TextBlock_Theme}"
                                                 Text="20" />
                                             <TextBlock
                                                 Margin="48,0,0,0"
-                                                Style="{StaticResource ThemeBlk}"
+                                                Style="{StaticResource TextBlock_Theme}"
                                                 Text="25" />
                                             <TextBlock
                                                 Margin="46,0,0,0"
-                                                Style="{StaticResource ThemeBlk}"
+                                                Style="{StaticResource TextBlock_Theme}"
                                                 Text="30" />
                                         </StackPanel>
                                     </StackPanel>
@@ -1027,7 +1027,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock
                                         FontSize="20"
-                                        Style="{StaticResource ThemeBlk}"
+                                        Style="{StaticResource TextBlock_Theme}"
                                         Text="颜色:" />
 
                                     <StackPanel>
@@ -1109,7 +1109,7 @@
                                 <StackPanel Margin="0,10" Orientation="Horizontal">
                                     <TextBlock
                                         FontSize="20"
-                                        Style="{StaticResource ThemeBlk}"
+                                        Style="{StaticResource TextBlock_Theme}"
                                         Text="渐变:" />
 
                                     <ListBox
@@ -1134,13 +1134,13 @@
                                         Content="重置"
                                         FontSize="14"
                                         MyAttachProperty.CornerRadius="10"
-                                        Style="{StaticResource TransparentButtonBase}" />
+                                        Style="{StaticResource ButtonBase_Transparent}" />
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock
                                         FontSize="20"
-                                        Style="{StaticResource ThemeBlk}"
+                                        Style="{StaticResource TextBlock_Theme}"
                                         Text="字体:" />
                                     <ListBox
                                         Width="260"
@@ -1395,31 +1395,31 @@
                                 <TextBlock
                                     Margin="5,3"
                                     FontSize="14"
-                                    Style="{StaticResource ThemeBlk}"
+                                    Style="{StaticResource TextBlock_Theme}"
                                     Text="{Binding CurrentMedia.Music.Name}" />
                                 <TextBlock
                                     Margin="5,3"
                                     FontSize="14"
-                                    Style="{StaticResource ThemeBlk}"
+                                    Style="{StaticResource TextBlock_Theme}"
                                     Text="{Binding CurrentMedia.Music.Singer}" />
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <ToggleButton Style="{StaticResource Love}" />
                                 <Button
                                     Content="&#xe63b;"
-                                    Style="{StaticResource IconButtonBase_Small}"
+                                    Style="{StaticResource ButtonBase_Icon_Small}"
                                     ToolTip="下载" />
                                 <Button
                                     Content="&#xe891;"
-                                    Style="{StaticResource IconButtonBase_Small}"
+                                    Style="{StaticResource ButtonBase_Icon_Small}"
                                     ToolTip="评论" />
                                 <Button
                                     Content="&#xe608;"
-                                    Style="{StaticResource IconButtonBase_Small}"
+                                    Style="{StaticResource ButtonBase_Icon_Small}"
                                     ToolTip="分享" />
                                 <Button
                                     Content="&#xe682;"
-                                    Style="{StaticResource IconButtonBase_Small}"
+                                    Style="{StaticResource ButtonBase_Icon_Small}"
                                     ToolTip="更多" />
                             </StackPanel>
                         </DockPanel>
@@ -1431,27 +1431,27 @@
                         Grid.Column="1"
                         HorizontalAlignment="Center"
                         Orientation="Horizontal">
-                        <Button Command="{Binding RewindCommand}" Style="{StaticResource Rewind1sIconButton}" />
+                        <Button Command="{Binding RewindCommand}" Style="{StaticResource Button_Icon_Rewind_1s}" />
 
                         <Button
                             Command="{Binding PrevCommand}"
                             CommandParameter="{Binding CurrentMedia}"
-                            Style="{StaticResource PrevOneIconButton}" />
+                            Style="{StaticResource Button_Icon_Prev}" />
 
                         <ToggleButton
                             Command="{Binding PlayPlayingCommand}"
                             CommandParameter="{Binding CurrentMedia}"
                             IsChecked="{Binding Running, Mode=OneWay}"
-                            Style="{StaticResource PlayIconToggleButton}" />
+                            Style="{StaticResource ToggleButton_Icon_Play}" />
 
                         <Button
                             Command="{Binding NextCommand}"
                             CommandParameter="{Binding CurrentMedia}"
-                            Style="{StaticResource NextOneIconButton}" />
+                            Style="{StaticResource Button_Icon_Next}" />
 
-                        <Button Command="{Binding FastForwardCommand}" Style="{StaticResource FastForward1sIconButton}" />
+                        <Button Command="{Binding FastForwardCommand}" Style="{StaticResource Button_Icon_FastForward_1s}" />
 
-                        <Button Command="{Binding StopPlayCommand}" Style="{StaticResource StopMediaIconButton}" />
+                        <Button Command="{Binding StopPlayCommand}" Style="{StaticResource Button_Icon_Stop}" />
                     </StackPanel>
                 </Viewbox>
 
@@ -1470,7 +1470,7 @@
                             Background="Transparent">
                             <TextBlock
                                 HorizontalAlignment="Center"
-                                Style="{StaticResource NotImportantTxt_Black}"
+                                Style="{StaticResource TextBlock_NotImportant_Black}"
                                 Visibility="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=Grid}, Converter={StaticResource BoolToCollapsedVisibleConverter}}">
                                 <TextBlock Text="{Binding CurrentMedia.CurrentTime, FallbackValue=00:00}" />
                                 /
@@ -1553,7 +1553,7 @@
                             x:Name="VolumeToggleButton"
                             Click="VolumeToggleButton_Click"
                             IsChecked="{Binding IsMuted, ElementName=mediaPlayer, Mode=TwoWay}"
-                            Style="{StaticResource VolumeIconToggleButton}" />
+                            Style="{StaticResource ToggleButton_Icon_Volume}" />
                         <Popup
                             x:Name="VolumePopup"
                             Width="65"
@@ -1581,7 +1581,7 @@
                                 <TextBlock
                                     x:Name="volumeStr"
                                     HorizontalAlignment="Center"
-                                    Style="{StaticResource NotImportantTxt_White}">
+                                    Style="{StaticResource TextBlock_NotImportant_White}">
                                     <TextBlock Text="{Binding Path=Value, ElementName=VolumeSlider, Mode=OneWay}" />
                                     %
                                 </TextBlock>
@@ -1590,7 +1590,7 @@
 
                         <ToggleButton x:Name="listButton" IsChecked="{Binding IsEditingPlayOrder}">
                             <ToggleButton.Style>
-                                <Style BasedOn="{StaticResource IconButtonBase_Small}" TargetType="ToggleButton">
+                                <Style BasedOn="{StaticResource ButtonBase_Icon_Small}" TargetType="ToggleButton">
                                     <Setter Property="Margin" Value="2,0" />
 
                                     <Setter Property="Content" Value="{Binding SelectedItem.IconString, ElementName=PlayOrderList, FallbackValue=播放顺序}" />
@@ -1620,7 +1620,7 @@
                                             <Setter Property="ContentTemplate">
                                                 <Setter.Value>
                                                     <DataTemplate DataType="contracts:MediaPlayOrderModel">
-                                                        <TextBlock Margin="30,10" Style="{StaticResource IconText}">
+                                                        <TextBlock Margin="30,10" Style="{StaticResource TextBlock_Icon}">
                                                             <TextBlock Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Text="{Binding IconString}" />
                                                             <TextBlock Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Text="{Binding Description}" />
                                                         </TextBlock>
@@ -1646,7 +1646,7 @@
 
                         <Button
                             Content="&#xe607;"
-                            Style="{StaticResource IconButtonBase_Small}"
+                            Style="{StaticResource ButtonBase_Icon_Small}"
                             ToolTip="一起听" />
 
                         <ToggleButton
@@ -1655,7 +1655,7 @@
                             IsChecked="{Binding DesktopLyric.IsDesktopLyricShow, Mode=OneWay}"
                             ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
                             <ToggleButton.Style>
-                                <Style BasedOn="{StaticResource ColoredExpandIconToggleButton}" TargetType="ToggleButton">
+                                <Style BasedOn="{StaticResource ToggleButton_Icon_Fill}" TargetType="ToggleButton">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding DisplayPlaying.Count}" Value="0">
                                             <Setter Property="IsEnabled" Value="False" />
@@ -1670,7 +1670,7 @@
                             Click="PlayingListButton_Click"
                             ToolTip="{Binding KeyGestureDic[播放列表].ToolTip}">
                             <ToggleButton.Style>
-                                <Style BasedOn="{StaticResource IconButtonBase_Small}" TargetType="ToggleButton">
+                                <Style BasedOn="{StaticResource ButtonBase_Icon_Small}" TargetType="ToggleButton">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding DisplayPlaying.Count}" Value="0">
                                             <Setter Property="IsEnabled" Value="False" />
@@ -1735,13 +1735,13 @@
                                                 <ToggleButton
                                                     x:Name="QueryButton"
                                                     Content="&#xe632;"
-                                                    Style="{StaticResource IconButtonBase_Small}"
+                                                    Style="{StaticResource ButtonBase_Icon_Small}"
                                                     ToolTip="搜索" />
 
                                                 <Button
                                                     Command="{Binding CleanPlayingCommand}"
                                                     Content="&#xec7b;"
-                                                    Style="{StaticResource IconButtonBase_Small}"
+                                                    Style="{StaticResource ButtonBase_Icon_Small}"
                                                     ToolTip="{Binding KeyGestureDic[清空播放队列].ToolTip}" />
                                             </TextBlock>
                                         </DockPanel>
@@ -1768,7 +1768,7 @@
                                                 CommandParameter="StopPlayingListFilte"
                                                 Content="消失"
                                                 Foreground="{StaticResource LightWhite}"
-                                                Style="{StaticResource IconButtonBase_Small}" />
+                                                Style="{StaticResource ButtonBase_Icon_Small}" />
                                         </StackPanel>
                                     </DockPanel>
 

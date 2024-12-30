@@ -78,13 +78,13 @@
                 Margin="2"
                 DockPanel.Dock="Left"
                 FontSize="25">
-                <TextBlock Style="{StaticResource InterestingText}">
-                    <TextBlock Style="{StaticResource IconText}" Text="&#xe64d;" />
+                <TextBlock Style="{StaticResource TextBlock_Theme_MouseOver}">
+                    <TextBlock Style="{StaticResource TextBlock_Icon}" Text="&#xe64d;" />
                     <TextBlock FontSize="18" Text="{Binding CurrentTime}" />
                     <TextBlock FontSize="18" Text="{Binding Week}" />
                 </TextBlock>
 
-                <TextBlock Style="{StaticResource ThemeBlk}">
+                <TextBlock Style="{StaticResource TextBlock_Theme}">
                     <TextBlock Text="Cpu:" />
                     <TextBlock
                         MinWidth="25"
@@ -93,7 +93,7 @@
                     <TextBlock Text="%" />
                 </TextBlock>
 
-                <TextBlock Style="{StaticResource ThemeBlk}">
+                <TextBlock Style="{StaticResource TextBlock_Theme}">
                     <TextBlock Text="Ram:" />
                     <TextBlock
                         MinWidth="25"
@@ -104,29 +104,29 @@
             </TextBlock>
         </DockPanel>
 
-        <TextBlock Style="{StaticResource TitleText}" Text="{Binding Title}" />
+        <TextBlock Style="{StaticResource TextBlock_Title}" Text="{Binding Title}" />
 
         <DockPanel HorizontalAlignment="Right">
-            <Button DockPanel.Dock="Right" Style="{StaticResource CloseIconButton}" />
-            <ToggleButton DockPanel.Dock="Right" Style="{StaticResource MaxWindowIconToggleButton}" />
-            <Button DockPanel.Dock="Right" Style="{StaticResource MinWindowIconButton}" />
+            <Button DockPanel.Dock="Right" Style="{StaticResource Button_Icon_Close}" />
+            <ToggleButton DockPanel.Dock="Right" Style="{StaticResource ToggleButton_Icon_MaxWindow}" />
+            <Button DockPanel.Dock="Right" Style="{StaticResource Button_Icon_MinWindow}" />
 
             <TextBlock
                 DockPanel.Dock="Right"
-                Style="{StaticResource IconText}"
+                Style="{StaticResource TextBlock_Icon}"
                 Text="&#xe63a;" />
 
             <Button
                 ContextMenu="{StaticResource MainMenu}"
                 DockPanel.Dock="Right"
                 MyAttachProperty.HasContextMenu="True"
-                Style="{StaticResource MainMenuIconButton}" />
+                Style="{StaticResource Button_Icon_MainMenu}" />
 
 
             <Button
                 DockPanel.Dock="Right"
                 MouseRightButtonUp="SwitchBackSliderMoveOut_OnMouseRightButtonUp"
-                Style="{StaticResource SwitchThemeIconButton}">
+                Style="{StaticResource Button_Icon_Theme}">
                 <Button.InputBindings>
                     <MouseBinding Command="{Binding SwitchThemeCommand}" MouseAction="LeftClick" />
                 </Button.InputBindings>
@@ -150,7 +150,7 @@
                 </ToggleButton.RenderTransform>
 
                 <ToggleButton.Style>
-                    <Style BasedOn="{StaticResource SlideIconToggleButton}" TargetType="ToggleButton">
+                    <Style BasedOn="{StaticResource ToggleButton_Icon_Slide}" TargetType="ToggleButton">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsTitleBarHidden}" Value="True">
                                 <DataTrigger.EnterActions>
@@ -185,7 +185,7 @@
                 x:Name="ToggleButtonUser"
                 DockPanel.Dock="Right"
                 IsChecked="{Binding IsLogin}"
-                Style="{StaticResource LoginIconToggleButton}" />
+                Style="{StaticResource ToggleButton_Icon_Login}" />
             <Popup
                 IsOpen="{Binding IsLogin}"
                 Placement="Center"
@@ -222,7 +222,7 @@
                             Grid.Row="2"
                             HorizontalAlignment="Center"
                             Orientation="Horizontal">
-                            <TextBlock Style="{StaticResource ThemeBlk}" Text="用户名：" />
+                            <TextBlock Style="{StaticResource TextBlock_Theme}" Text="用户名：" />
                             <TextBox
                                 Width="250"
                                 MaxLength="12"
@@ -234,7 +234,7 @@
                             Grid.Row="3"
                             HorizontalAlignment="Center"
                             Orientation="Horizontal">
-                            <TextBlock Style="{StaticResource ThemeBlk}" Text="密   码：" />
+                            <TextBlock Style="{StaticResource TextBlock_Theme}" Text="密   码：" />
                             <PasswordBox
                                 x:Name="Pwd"
                                 Width="250"
@@ -254,7 +254,7 @@
                 Click="BrightToggleButton_Click"
                 IsChecked="{Binding IsLeastBright}"
                 MouseWheel="Button_MouseWheel"
-                Style="{StaticResource BrightIconToggleButton}" />
+                Style="{StaticResource ToggleButton_Icon_Brightness}" />
             <Popup
                 x:Name="brightPopup"
                 Width="250"
@@ -282,18 +282,18 @@
                     <TextBlock
                         x:Name="brightStr"
                         HorizontalAlignment="Center"
-                        Style="{StaticResource NotImportantTxt_White}">
+                        Style="{StaticResource TextBlock_NotImportant_White}">
                         <TextBlock Text="{Binding Path=Value, ElementName=brightSlider, Mode=OneWay}" />
                         %
                     </TextBlock>
                 </StackPanel>
             </Popup>
 
-            <Button DockPanel.Dock="Left" Style="{StaticResource RestartIconButton}" />
+            <Button DockPanel.Dock="Left" Style="{StaticResource Button_Icon_Restart}" />
 
-            <Button DockPanel.Dock="Left" Style="{StaticResource LockScreenIconButton}" />
+            <Button DockPanel.Dock="Left" Style="{StaticResource Button_Icon_LockScreen}" />
 
-            <ToggleButton DockPanel.Dock="Left" Style="{StaticResource TopMostIconToggleButton}" />
+            <ToggleButton DockPanel.Dock="Left" Style="{StaticResource ToggleButton_Icon_TopMost}" />
 
             <Popup
                 IsOpen="{Binding Settings.IsEditingSetting}"
@@ -324,7 +324,7 @@
                             MaxWidth="500"
                             Margin="20"
                             FontSize="24"
-                            Style="{StaticResource ThemeBlk}"
+                            Style="{StaticResource TextBlock_Theme}"
                             Text="{Binding DialogMessage.DisplayMessage}"
                             TextWrapping="Wrap" />
 
@@ -332,7 +332,7 @@
                             Grid.Row="1"
                             Margin="0,10"
                             FontSize="15"
-                            Style="{StaticResource ThemeBlk}">
+                            Style="{StaticResource TextBlock_Theme}">
                             <TextBlock Text="{Binding DialogMessage.Seconds}" />
                             秒后关闭
                         </TextBlock>

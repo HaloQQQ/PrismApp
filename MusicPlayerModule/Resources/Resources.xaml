@@ -245,7 +245,7 @@
 
     <Style
         x:Key="MusicEffectToggleButton"
-        BasedOn="{StaticResource TransparentButtonBase}"
+        BasedOn="{StaticResource ButtonBase_Transparent}"
         TargetType="ToggleButton">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="12,2" />
@@ -277,7 +277,7 @@
 
     <Style
         x:Key="BatchOperateToggleButton"
-        BasedOn="{StaticResource TransparentButtonBase}"
+        BasedOn="{StaticResource ButtonBase_Transparent}"
         TargetType="ToggleButton">
         <Setter Property="Content">
             <Setter.Value>
@@ -297,7 +297,7 @@
 
     <Style
         x:Key="DeleteButton"
-        BasedOn="{StaticResource TransparentButtonBase}"
+        BasedOn="{StaticResource ButtonBase_Transparent}"
         TargetType="Button">
         <Setter Property="Content">
             <Setter.Value>
@@ -318,7 +318,7 @@
 
     <Style
         x:Key="PlayAllButton"
-        BasedOn="{StaticResource TransparentButtonBase}"
+        BasedOn="{StaticResource ButtonBase_Transparent}"
         TargetType="Button">
         <Setter Property="Content">
             <Setter.Value>
@@ -332,7 +332,7 @@
 
     <Style
         x:Key="DownloadButton"
-        BasedOn="{StaticResource TransparentButtonBase}"
+        BasedOn="{StaticResource ButtonBase_Transparent}"
         TargetType="Button">
         <Setter Property="Content">
             <Setter.Value>
@@ -346,7 +346,7 @@
 
     <Style
         x:Key="AddMusicButton"
-        BasedOn="{StaticResource TransparentButtonBase}"
+        BasedOn="{StaticResource ButtonBase_Transparent}"
         TargetType="Button">
         <Setter Property="Content">
             <Setter.Value>
@@ -360,7 +360,7 @@
 
     <Style
         x:Key="LyricSlideTxt"
-        BasedOn="{StaticResource IconText}"
+        BasedOn="{StaticResource TextBlock_Icon}"
         TargetType="TextBlock">
         <Setter Property="FontSize" Value="16" />
         <Setter Property="Margin" Value="40,20,0,0" />
@@ -438,7 +438,7 @@
 
     <Style
         x:Key="PointABTextBlock"
-        BasedOn="{StaticResource ThemeBlk}"
+        BasedOn="{StaticResource TextBlock_Theme}"
         TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="Margin" Value="0" />
@@ -465,7 +465,7 @@
 
     <Style
         x:Key="DefaultSingerBack"
-        BasedOn="{StaticResource IconText}"
+        BasedOn="{StaticResource TextBlock_Icon}"
         TargetType="TextBlock">
         <Setter Property="Background" Value="White" />
         <Setter Property="Foreground" Value="{StaticResource DeepGray}" />

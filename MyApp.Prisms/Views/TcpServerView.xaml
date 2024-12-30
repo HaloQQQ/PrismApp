@@ -11,7 +11,7 @@
         <ResourceDictionary>
             <Style
                 x:Key="Lable"
-                BasedOn="{StaticResource ThemeBlk}"
+                BasedOn="{StaticResource TextBlock_Theme}"
                 TargetType="TextBlock">
                 <Setter Property="FontSize" Value="12" />
                 <Setter Property="Margin" Value="0" />
@@ -52,7 +52,7 @@
                                         CommandParameter="{Binding}"
                                         Content="&#xe612;"
                                         DockPanel.Dock="Right"
-                                        Style="{StaticResource IconButtonBase_Small_Expand}"
+                                        Style="{StaticResource ButtonBase_Icon_ScaleUp_Small}"
                                         Visibility="Hidden" />
 
                                     <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
@@ -124,12 +124,12 @@
                         InputScope="Digits"
                         IsEnabled="{Binding Socket.IsConnected, Converter={StaticResource OppositeBoolConverter}}"
                         MaxLength="5"
-                        Style="{StaticResource TextBox_DisplayInfo}"
+                        Style="{StaticResource TextBox_HideButton}"
                         Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Button Command="{Binding ConnectCommand}">
                         <Button.Style>
-                            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                            <Style BasedOn="{StaticResource ButtonBase_Transparent}" TargetType="Button">
                                 <Setter Property="Content">
                                     <Setter.Value>
                                         <TextBlock>
@@ -198,30 +198,21 @@
                 </DockPanel>
             </Grid>
 
-            <Viewbox
+            <TextBox
                 Grid.Row="2"
-                HorizontalAlignment="Left"
-                Style="{StaticResource OnlyDownViewbox}">
-                <StackPanel Grid.Row="2" Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource ThemeBlk}" Text="发送：" />
-                    <TextBox
-                        MinWidth="200"
-                        MyAttachProperty.PlaceHolder="待发送消息"
-                        Text="{Binding SendMessage, UpdateSourceTrigger=PropertyChanged}">
-                        <TextBox.Style>
-                            <Style BasedOn="{StaticResource WidthAnimationWithoutPrefixTextBox}" TargetType="TextBox">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ConnList.Count}" Value="0">
-                                        <Setter Property="IsEnabled" Value="False" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-
-                    <Button Command="{Binding SendCommand}" Content="发送" />
-                </StackPanel>
-            </Viewbox>
+                MinWidth="200"
+                MyAttachProperty.Command="{Binding SendCommand}"
+                Text="{Binding SendMessage, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.Style>
+                    <Style BasedOn="{StaticResource TextBox_PlaceHolderAsLable_PostMsg}" TargetType="TextBox">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ConnList.Count}" Value="0">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
         </Grid>
     </GroupBox>
 </UserControl>

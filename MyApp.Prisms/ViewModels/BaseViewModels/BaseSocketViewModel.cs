@@ -29,10 +29,12 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
         public BaseSocketViewModel(IConfigManager config, string name)
         {
             this.Name = name;
-            this.IsLogging = config.IsTrue(new string[] { "IsLogging", this.Name });
+
+            var configKey = new string[] { "IsLogging", this.Name };
+            this.IsLogging = config.IsTrue(configKey);
 
             config.SetConfig += config =>
-                config.WriteConfigNode<bool>(this.IsLogging, new string[] { "IsLogging", this.Name });
+                config.WriteConfigNode<bool>(this.IsLogging, configKey);
 
             this.ConnectCommand = new DelegateCommand(this.Connect);
 
@@ -40,9 +42,10 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
                     () => this.Socket.SendAsync(this.SendMessage),
                     () => this.Socket.IsNotNullAnd(server => server.IsConnected) && !this.SendMessage.IsNullOrBlank()
                 )
-                .ObservesProperty(() => this.SendMessage);
+                .ObservesProperty(() => this.SendMessage)
+                .ObservesProperty(() => this.Socket.IsConnected);
 
-            this.OpenLogCommand = new DelegateCommand(()=> Helper.Helper.OpenLog(this.Name));
+            this.OpenLogCommand = new DelegateCommand(() => Helper.Helper.OpenLog(this.Name));
 
             this.Ip = AppStatics.Ip;
         }

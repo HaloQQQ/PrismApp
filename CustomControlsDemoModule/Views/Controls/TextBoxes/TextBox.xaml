@@ -15,20 +15,22 @@
 
         <TextBox
             HorizontalContentAlignment="Center"
-            MyAttachProperty.PlaceHolder="TextBox_DisplayInfo"
-            Style="{StaticResource TextBox_DisplayInfo}" />
-        <TextBox MyAttachProperty.PlaceHolder="TransparentTextBox" Style="{StaticResource TransparentTextBox}" />
+            MyAttachProperty.PlaceHolder="TextBox_HideButton"
+            Style="{StaticResource TextBox_HideButton}" />
+        <TextBox MyAttachProperty.PlaceHolder="TextBox_Transparent" Style="{StaticResource TextBox_Transparent}" />
         <TextBox
             HorizontalContentAlignment="Center"
-            MyAttachProperty.PlaceHolder="TextBox_FilteList"
-            Style="{StaticResource TextBox_FilteList}" />
-        <TextBox MyAttachProperty.PlaceHolder="TextBox_QueryTxt" Style="{StaticResource TextBox_QueryTxt}" />
+            MyAttachProperty.PlaceHolder="TextBox_Filter"
+            Style="{StaticResource TextBox_Filter}" />
+        <TextBox MyAttachProperty.PlaceHolder="TextBox_Query" Style="{StaticResource TextBox_Query}" />
         <TextBox
             HorizontalContentAlignment="Center"
-            MyAttachProperty.PlaceHolder="CopyAsTextBlock"
-            Style="{StaticResource CopyAsTextBlock}" />
+            MyAttachProperty.PlaceHolder="TextBox_CopyAsTextBlock"
+            Style="{StaticResource TextBox_CopyAsTextBlock}" />
         <TextBox
             FontSize="25"
+            MyAttachProperty.DoubleValue="50"
+            MyAttachProperty.IconFontText="&#xe612;"
             MyAttachProperty.PlaceHolder="TextBox_PlaceHolderAsLable"
             Style="{StaticResource TextBox_PlaceHolderAsLable}" />
 

@@ -71,40 +71,57 @@
 
     <!--  不自动补全前缀的、聚焦时Width变化的TextBox  -->
     <Style
-        x:Key="WidthAnimationWithoutPrefixTextBox"
-        BasedOn="{StaticResource TextBox_DisplayInfo}"
+        x:Key="TextBox_PlaceHolderAsLable_PostMsg"
+        BasedOn="{StaticResource TextBox_PlaceHolderAsLable_Execute}"
         TargetType="TextBox">
+        <Setter Property="MyAttachProperty.DoubleValue" Value="25" />
+        <Setter Property="MyAttachProperty.IconFontText" Value="&#xe64f;" />
+        <Setter Property="MyAttachProperty.PlaceHolder" Value="待发送的消息" />
+
+        <Setter Property="IsEnabled" Value="False" />
+
         <Style.Triggers>
-            <EventTrigger RoutedEvent="TextBox.GotFocus">
-                <BeginStoryboard>
-                    <Storyboard>
-                        <DoubleAnimation
-                            Storyboard.TargetProperty="(TextBox.Width)"
-                            From="200"
-                            To="300"
-                            Duration="0:0:1">
-                            <!-- <DoubleAnimation.EasingFunction> -->
-                            <!--     <BounceEase Bounces="3" Bounciness="1" EasingMode="EaseInOut" /> -->
-                            <!-- </DoubleAnimation.EasingFunction> -->
-                        </DoubleAnimation>
-                    </Storyboard>
-                </BeginStoryboard>
-            </EventTrigger>
-            <EventTrigger RoutedEvent="TextBox.LostFocus">
-                <BeginStoryboard>
-                    <Storyboard>
-                        <DoubleAnimation
-                            By="-5"
-                            Storyboard.TargetProperty="(TextBox.Width)"
-                            To="200"
-                            Duration="0:0:1">
-                            <!-- <DoubleAnimation.EasingFunction> -->
-                            <!--     <BackEase EasingMode="EaseInOut" Amplitude="5" /> -->
-                            <!-- </DoubleAnimation.EasingFunction> -->
-                        </DoubleAnimation>
-                    </Storyboard>
-                </BeginStoryboard>
-            </EventTrigger>
+            <DataTrigger Binding="{Binding Socket.IsConnected}" Value="True">
+                <Setter Property="IsEnabled" Value="True" />
+            </DataTrigger>
+
+            <!--<Trigger Property="IsFocused" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="(TextBox.Width)"
+                                From="200"
+                                To="300"
+                                Duration="0:0:1">
+            -->
+            <!-- <DoubleAnimation.EasingFunction> -->
+            <!--     <BounceEase Bounces="3" Bounciness="1" EasingMode="EaseInOut" /> -->
+            <!-- </DoubleAnimation.EasingFunction> -->
+            <!--
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                By="-5"
+                                Storyboard.TargetProperty="(TextBox.Width)"
+                                To="200"
+                                Duration="0:0:1">
+            -->
+            <!-- <DoubleAnimation.EasingFunction> -->
+            <!--     <BackEase EasingMode="EaseInOut" Amplitude="5" /> -->
+            <!-- </DoubleAnimation.EasingFunction> -->
+            <!--
+                            </DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>-->
         </Style.Triggers>
     </Style>
 

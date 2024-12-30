@@ -11,7 +11,7 @@
     FocusVisualStyle="{x:Null}"
     MyAttachProperty.IsElementFocused="True">
     <prism:Dialog.WindowStyle>
-        <Style BasedOn="{StaticResource WithoutTitleBar}" TargetType="Window">
+        <Style BasedOn="{StaticResource Window_WithoutTitleBar}" TargetType="Window">
             <Setter Property="MinWidth" Value="1200" />
             <Setter Property="MinHeight" Value="640" />
         </Style>
@@ -153,7 +153,7 @@
 
             <Style
                 x:Key="HorizentalLable"
-                BasedOn="{StaticResource ThemeBlk}"
+                BasedOn="{StaticResource TextBlock_Theme}"
                 TargetType="TextBlock">
                 <Setter Property="FontSize" Value="14" />
                 <Setter Property="FontWeight" Value="Bold" />
@@ -162,7 +162,7 @@
 
             <Style
                 x:Key="VerticalLable"
-                BasedOn="{StaticResource ThemeBlk}"
+                BasedOn="{StaticResource TextBlock_Theme}"
                 TargetType="TextBlock">
                 <Setter Property="FontWeight" Value="Bold" />
                 <Setter Property="Canvas.Top" Value="590" />
@@ -170,7 +170,7 @@
 
             <Style
                 x:Key="FunctionButton"
-                BasedOn="{StaticResource IconButtonBase_Big_Scale_SkyBlue}"
+                BasedOn="{StaticResource ButtonBase_Icon_ScaleDown_Big_SkyBlue}"
                 TargetType="Button">
                 <Setter Property="Margin" Value="10,0" />
 
@@ -268,7 +268,7 @@
                             <TextBlock
                                 Grid.Column="1"
                                 HorizontalAlignment="Left"
-                                Style="{StaticResource ThemeBlk}"
+                                Style="{StaticResource TextBlock_Theme}"
                                 Text="黑方" />
 
                             <Ellipse
@@ -316,7 +316,7 @@
                             <TextBlock
                                 Grid.Column="0"
                                 HorizontalAlignment="Right"
-                                Style="{StaticResource ThemeBlk}"
+                                Style="{StaticResource TextBlock_Theme}"
                                 Text="白方" />
 
                             <Ellipse

@@ -44,7 +44,7 @@
                         Command="{Binding DataContext.ResetAppHotKeyGroupCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         CommandParameter="{Binding}"
                         Content="&#xe614;"
-                        Style="{StaticResource IconButtonBase_Expand}"
+                        Style="{StaticResource ButtonBase_Icon_ScaleUp}"
                         ToolTip="重置快捷键" />
 
                     <ListBox
@@ -110,7 +110,7 @@
                     </TextBox.Style>
                 </TextBox>
 
-                <CheckBox IsChecked="{Binding IsUsable}" Style="{StaticResource SlideCheckBox}" />
+                <CheckBox IsChecked="{Binding IsUsable}" Style="{StaticResource CheckBox_Switch}" />
             </StackPanel>
         </DataTemplate>
 
@@ -125,7 +125,7 @@
                         Command="{Binding DataContext.ResetGlobalHotKeyGroupCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         CommandParameter="{Binding}"
                         Content="&#xe614;"
-                        Style="{StaticResource IconButtonBase_Expand}"
+                        Style="{StaticResource ButtonBase_Icon_ScaleUp}"
                         ToolTip="重置快捷键" />
 
                     <ListBox
@@ -140,14 +140,14 @@
                             CommandParameter="{Binding}"
                             Content="取消"
                             DockPanel.Dock="Right"
-                            Style="{StaticResource TransparentButtonBase}" />
+                            Style="{StaticResource ButtonBase_Transparent}" />
                         <Button
                             Margin="20,10"
                             Command="{Binding DataContext.SubmitCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                             CommandParameter="{Binding}"
                             Content="确认"
                             DockPanel.Dock="Right"
-                            Style="{StaticResource TransparentButtonBase}" />
+                            Style="{StaticResource ButtonBase_Transparent}" />
                     </DockPanel>
                 </StackPanel>
             </GroupBox>
@@ -208,18 +208,18 @@
                     </TextBox.Style>
                 </TextBox>
 
-                <CheckBox IsChecked="{Binding IsUsable}" Style="{StaticResource SlideCheckBox}" />
+                <CheckBox IsChecked="{Binding IsUsable}" Style="{StaticResource CheckBox_Switch}" />
             </StackPanel>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModels:Pair}">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Style="{StaticResource ThemeBlk}" Text="邮箱:" />
+                <TextBlock Style="{StaticResource TextBlock_Theme}" Text="邮箱:" />
                 <TextBox
                     Width="250"
                     IsReadOnly="True"
                     Text="{Binding Key}" />
-                <TextBlock Style="{StaticResource ThemeBlk}" Text="授权码:" />
+                <TextBlock Style="{StaticResource TextBlock_Theme}" Text="授权码:" />
                 <PasswordBox
                     Width="250"
                     MyAttachProperty.IsReadOnly="True"
@@ -229,13 +229,13 @@
                     CommandParameter="{Binding}"
                     Content="&#xe60a;"
                     FontSize="30"
-                    Style="{StaticResource IconButtonBase_Small_Scale}" />
+                    Style="{StaticResource ButtonBase_Icon_ScaleDown_Small}" />
             </StackPanel>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type models:SettingModel}">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Style="{StaticResource ThemeBlk}" Text="{Binding Name}" />
+                <TextBlock Style="{StaticResource TextBlock_Theme}" Text="{Binding Name}" />
                 <TextBox
                     Width="500"
                     IsReadOnly="True"
@@ -244,7 +244,7 @@
                 <Button
                     Command="{Binding OpenFolderCommand}"
                     Content="浏览"
-                    Style="{StaticResource TransparentButtonBase}" />
+                    Style="{StaticResource ButtonBase_Transparent}" />
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
@@ -263,12 +263,12 @@
             <TabItem Header="默认邮箱">
                 <StackPanel>
                     <StackPanel Margin="2,0,0,0" Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource ThemeBlk}" Text="邮箱:" />
+                        <TextBlock Style="{StaticResource TextBlock_Theme}" Text="邮箱:" />
                         <TextBox
                             Width="250"
                             MyAttachProperty.PlaceHolder="邮箱"
                             Text="{Binding DataContext.CurrentMailPair.Key, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=TabControl}}" />
-                        <TextBlock Style="{StaticResource ThemeBlk}" Text="授权码:" />
+                        <TextBlock Style="{StaticResource TextBlock_Theme}" Text="授权码:" />
                         <PasswordBox
                             Width="250"
                             MyAttachProperty.Password="{Binding DataContext.CurrentMailPair.Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=TabControl}}"
@@ -278,7 +278,7 @@
                             Command="{Binding DataContext.AddMailAccountCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                             Content="&#xe622;"
                             FontSize="30"
-                            Style="{StaticResource IconButtonBase_Small_Scale}" />
+                            Style="{StaticResource ButtonBase_Icon_ScaleDown_Small}" />
                     </StackPanel>
                     <ListBox
                         HorizontalContentAlignment="Left"
@@ -298,30 +298,30 @@
                         Command="{Binding DataContext.SmallGameCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         CommandParameter="_2048"
                         Content="2048"
-                        Style="{StaticResource TransparentButtonBase}" />
+                        Style="{StaticResource ButtonBase_Transparent}" />
 
                     <Button
                         Command="{Binding DataContext.SmallGameCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         CommandParameter="五子棋"
                         Content="五子棋"
-                        Style="{StaticResource TransparentButtonBase}" />
+                        Style="{StaticResource ButtonBase_Transparent}" />
 
                     <Button
                         Command="{Binding DataContext.SmallGameCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         CommandParameter="象棋"
                         Content="象棋"
-                        Style="{StaticResource TransparentButtonBase}" />
+                        Style="{StaticResource ButtonBase_Transparent}" />
 
                     <Button
                         Command="{Binding DataContext.ColorPickerCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         Content="颜色选择器"
-                        Style="{StaticResource TransparentButtonBase}" />
+                        Style="{StaticResource ButtonBase_Transparent}" />
                 </WrapPanel>
             </TabItem>
             <TabItem Header="设置">
                 <StackPanel>
                     <WrapPanel>
-                        <TextBlock Style="{StaticResource ThemeBlk}" Text="窗口圆角:" />
+                        <TextBlock Style="{StaticResource TextBlock_Theme}" Text="窗口圆角:" />
                         <Slider
                             Width="630"
                             Height="4"
@@ -334,7 +334,7 @@
 
                     <Button
                         Command="{Binding DataContext.CleanConfigWhenExitAppCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
-                        Style="{StaticResource TransparentButtonBase}"
+                        Style="{StaticResource ButtonBase_Transparent}"
                         ToolTip="关闭程序时清空所有配置">
                         <Button.Content>
                             <TextBlock>

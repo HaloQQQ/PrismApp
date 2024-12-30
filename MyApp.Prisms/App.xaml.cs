@@ -71,7 +71,7 @@ namespace MyApp.Prisms
         {
             var list = this.GetMessageList(e.ExceptionObject as Exception);
 
-            var message = "Domain出现异常:\r\n" + string.Join("\r\n", list);
+            var message = $"Domain出现异常:{AppStatics.NewLineChars}" + AppStatics.NewLineChars.Join(list);
             Helper.Helper.Log(CustomConstants.LogType.DomainException_Log_Dir, message);
             MessageBox.Show(message);
         }
@@ -81,7 +81,7 @@ namespace MyApp.Prisms
         {
             var list = this.GetMessageList(e.Exception);
 
-            var message = "App出现异常:\r\n" + string.Join("\r\n", list);
+            var message = $"App出现异常:{AppStatics.NewLineChars}" + AppStatics.NewLineChars.Join(list);
             Helper.Helper.Log(CustomConstants.LogType.Exception_Log_Dir, message);
             MessageBox.Show(message);
         }

@@ -16,7 +16,7 @@
     ResizeMode="NoResize"
     ShowInTaskbar="False"
     SizeToContent="WidthAndHeight"
-    Style="{StaticResource WithoutTitleBar}"
+    Style="{StaticResource Window_WithoutTitleBar}"
     Topmost="True">
     <Window.Resources>
         <ResourceDictionary>
@@ -114,12 +114,12 @@
                 <Button
                     Command="{Binding RewindCommand}"
                     Content="&#xe68e;"
-                    Style="{StaticResource IconButtonBase_Small_Scale}"
+                    Style="{StaticResource ButtonBase_Icon_ScaleDown_Small}"
                     ToolTip="{Binding KeyGestureDic[快退].ToolTip}" />
 
                 <Button Command="{Binding PrevCommand}" CommandParameter="{Binding CurrentMedia}">
                     <Button.Style>
-                        <Style BasedOn="{StaticResource PrevOneIconButton}" TargetType="Button">
+                        <Style BasedOn="{StaticResource Button_Icon_Prev}" TargetType="Button">
                             <Setter Property="FontSize" Value="25" />
                             <Setter Property="Foreground" Value="#EBEBEB" />
 
@@ -137,7 +137,7 @@
                     CommandParameter="{Binding CurrentMedia}"
                     IsChecked="{Binding Running, Mode=OneWay}">
                     <ToggleButton.Style>
-                        <Style BasedOn="{StaticResource PlayIconToggleButton}" TargetType="ToggleButton">
+                        <Style BasedOn="{StaticResource ToggleButton_Icon_Play}" TargetType="ToggleButton">
                             <Setter Property="FontSize" Value="28" />
                             <Setter Property="Foreground" Value="#EBEBEB" />
 
@@ -152,7 +152,7 @@
 
                 <Button Command="{Binding NextCommand}" CommandParameter="{Binding CurrentMedia}">
                     <Button.Style>
-                        <Style BasedOn="{StaticResource NextOneIconButton}" TargetType="Button">
+                        <Style BasedOn="{StaticResource Button_Icon_Next}" TargetType="Button">
                             <Setter Property="FontSize" Value="25" />
                             <Setter Property="Foreground" Value="#EBEBEB" />
 
@@ -168,12 +168,12 @@
                 <Button
                     Command="{Binding FastForwardCommand}"
                     Content="&#xe690;"
-                    Style="{StaticResource IconButtonBase_Small_Scale}"
+                    Style="{StaticResource ButtonBase_Icon_ScaleDown_Small}"
                     ToolTip="{Binding KeyGestureDic[快进].ToolTip}" />
 
                 <ToggleButton IsChecked="{Binding DesktopLyric.IsSingleLine}">
                     <ToggleButton.Style>
-                        <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="ToggleButton">
+                        <Style BasedOn="{StaticResource ButtonBase_Icon_ScaleDown_Small}" TargetType="ToggleButton">
                             <Setter Property="Content" Value="&#xe60b;" />
                             <Setter Property="Foreground" Value="#EBEBEB" />
                             <Setter Property="ToolTip" Value="单行" />
@@ -191,7 +191,7 @@
 
                 <ToggleButton IsChecked="{Binding DesktopLyric.IsVertical}">
                     <ToggleButton.Style>
-                        <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="ToggleButton">
+                        <Style BasedOn="{StaticResource ButtonBase_Icon_ScaleDown_Small}" TargetType="ToggleButton">
                             <Setter Property="Content" Value="&#xe65c;" />
                             <Setter Property="Foreground" Value="#EBEBEB" />
                             <Setter Property="ToolTip" Value="竖屏" />
@@ -209,7 +209,7 @@
 
                 <Button Command="{Binding DesktopLyricPanelCommand}" ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
                     <Button.Style>
-                        <Style BasedOn="{StaticResource IconButtonBase_Small_Scale}" TargetType="Button">
+                        <Style BasedOn="{StaticResource ButtonBase_Icon_ScaleDown_Small}" TargetType="Button">
                             <Setter Property="Content" Value="&#xe624;" />
                             <Setter Property="Foreground" Value="#EBEBEB" />
                             <Setter Property="FontWeight" Value="Bold" />
@@ -225,7 +225,7 @@
                 <TextBlock
                     Margin="10"
                     Foreground="#EBEBEB"
-                    Style="{StaticResource NotImportantTxt_Black}">
+                    Style="{StaticResource TextBlock_NotImportant_Black}">
                     <TextBlock.LayoutTransform>
                         <RotateTransform Angle="90" />
                     </TextBlock.LayoutTransform>

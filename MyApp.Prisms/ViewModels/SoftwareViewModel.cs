@@ -92,6 +92,10 @@ namespace MyApp.Prisms.ViewModels
                     case "视频播放器":
                         uri = nameof(VideoPlayerView);
                         break;
+
+                    case "小工具":
+                        uri = nameof(ToolsView);
+                        break;
                     default:
                         break;
                 }
@@ -146,7 +150,7 @@ namespace MyApp.Prisms.ViewModels
                 config.WriteConfigNode(this.IsMusicPlayer, CustomConstants.IsMusicPlayer.FillToArray());
                 config.WriteConfigNode(this.IsVideoPlayer, CustomConstants.IsVideoPlayer.FillToArray());
 
-                AppUtils.AutoStartWithDirectory(this.AutoStart);
+                AppUtils.AutoStartWithShortcut(this.AutoStart);
             };
         }
 

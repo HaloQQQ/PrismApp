@@ -129,10 +129,7 @@ namespace MyApp.Prisms.ViewModels
                 eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(message, 4));
             });
 
-            this.SmallGameCommand = new DelegateCommand<string>(gameName =>
-            {
-                dialogService.ShowDialog(gameName);
-            });
+            this.SmallGameCommand = new DelegateCommand<string>(dialogService.ShowDialog);
 
             eventAggregator.GetEvent<ColorPickerEvent>().Subscribe(ToggleColorPicker);
 

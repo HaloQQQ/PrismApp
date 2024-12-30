@@ -12,7 +12,7 @@
     MyAttachProperty.UseWindowCommand="False"
     ShowInTaskbar="False"
     SizeToContent="WidthAndHeight"
-    Style="{StaticResource WithoutTitleBar}"
+    Style="{StaticResource Window_WithoutTitleBar}"
     Top="0"
     Topmost="True"
     WindowStartupLocation="Manual" />

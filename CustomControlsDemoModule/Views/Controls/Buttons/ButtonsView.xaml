@@ -12,42 +12,42 @@
         <Button Content="普通按钮" />
         <Button Content="普通按钮" IsEnabled="False" />
 
-        <Button Content="透明按钮" Style="{StaticResource TransparentButtonBase}" />
+        <Button Content="透明按钮" Style="{StaticResource ButtonBase_Transparent}" />
         <Button
             Content="透明按钮"
             IsEnabled="False"
-            Style="{StaticResource TransparentButtonBase}" />
+            Style="{StaticResource ButtonBase_Transparent}" />
 
         <Button
             Content="环形按钮"
             MyAttachProperty.CornerRadius="20"
-            Style="{StaticResource CircleButton}" />
+            Style="{StaticResource Button_Circle}" />
         <Button
             Content="环形按钮"
             IsEnabled="False"
             MyAttachProperty.CornerRadius="10"
-            Style="{StaticResource CircleButton}" />
+            Style="{StaticResource Button_Circle}" />
 
-        <Button Style="{StaticResource CloseIconButton}" />
-        <Button Style="{StaticResource MinWindowIconButton}" />
-        <Button Style="{StaticResource MainMenuIconButton}" />
-        <Button Style="{StaticResource RestartIconButton}" />
-        <Button Style="{StaticResource LockScreenIconButton}" />
+        <Button Style="{StaticResource Button_Icon_Close}" />
+        <Button Style="{StaticResource Button_Icon_MinWindow}" />
+        <Button Style="{StaticResource Button_Icon_MainMenu}" />
+        <Button Style="{StaticResource Button_Icon_Restart}" />
+        <Button Style="{StaticResource Button_Icon_LockScreen}" />
 
-        <Button Style="{StaticResource RewindIconButton}" />
-        <Button Style="{StaticResource Rewind5sIconButton}" />
-        <Button Style="{StaticResource Rewind1sIconButton}" />
+        <Button Style="{StaticResource Button_Icon_Rewind}" />
+        <Button Style="{StaticResource Button_Icon_Rewind_5s}" />
+        <Button Style="{StaticResource Button_Icon_Rewind_1s}" />
 
-        <Button Style="{StaticResource PrevOneIconButton}" />
-        <Button Style="{StaticResource NextOneIconButton}" />
+        <Button Style="{StaticResource Button_Icon_Prev}" />
+        <Button Style="{StaticResource Button_Icon_Next}" />
 
-        <Button Style="{StaticResource FastForwardIconButton}" />
-        <Button Style="{StaticResource FastForward5sIconButton}" />
-        <Button Style="{StaticResource FastForward1sIconButton}" />
+        <Button Style="{StaticResource Button_Icon_FastForward}" />
+        <Button Style="{StaticResource Button_Icon_FastForward_5s}" />
+        <Button Style="{StaticResource Button_Icon_FastForward_1s}" />
 
-        <Button Style="{StaticResource StopMediaIconButton}" />
+        <Button Style="{StaticResource Button_Icon_Stop}" />
 
-        <Button Style="{StaticResource SwitchThemeIconButton}" />
+        <Button Style="{StaticResource Button_Icon_Theme}" />
 
         <Slider x:Name="slider" Style="{StaticResource Slider_Custom}" />
 
@@ -79,7 +79,7 @@
             FontSize="20"
             Maximum="100"
             MyAttachProperty.PlaceHolder="当前进度"
-            Style="{StaticResource PieProgressBar}"
+            Style="{StaticResource ProgressBar_Pie}"
             Value="{Binding Value, Source={x:Reference slider}}" />
 
         <ProgressBar
@@ -88,7 +88,7 @@
             BorderBrush="Red"
             BorderThickness="1"
             MyAttachProperty.PlaceHolder="当前进度"
-            Style="{StaticResource WaveProgressBar}"
+            Style="{StaticResource ProgressBar_Wave}"
             Value="{Binding Value, Source={x:Reference slider}}" />
     </WrapPanel>
 </UserControl>

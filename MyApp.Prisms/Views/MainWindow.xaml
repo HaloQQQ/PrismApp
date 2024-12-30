@@ -11,7 +11,7 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius}"
     MyAttachProperty.IsMinimalScreen="True"
-    Style="{StaticResource NoTitleWithAnimation}">
+    Style="{StaticResource Window_WithoutTitleBar_Animation}">
     <Grid ClipToBounds="True">
         <Grid.Background>
             <ImageBrush ImageSource="{Binding CurrentBkGrd}" Stretch="UniformToFill" />
@@ -50,6 +50,8 @@
                                 <system:String>颜色转换</system:String>
 
                                 <system:String>控件样例</system:String>
+                                <system:String>小工具</system:String>
+
                                 <system:String>音乐播放器</system:String>
                                 <system:String>视频播放器</system:String>
                             </x:Array>

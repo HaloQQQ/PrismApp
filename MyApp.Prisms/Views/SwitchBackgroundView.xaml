@@ -57,23 +57,23 @@
                 Command="Close"
                 Content="&#xe65f;"
                 DockPanel.Dock="Left"
-                Style="{StaticResource IconButtonBase_Small_Scale}"
+                Style="{StaticResource ButtonBase_Icon_ScaleDown_Small}"
                 ToolTip="向右隐藏" />
             <ToggleButton
                 DockPanel.Dock="Left"
                 IsChecked="{Binding ShowInList}"
-                Style="{StaticResource BlockLayoutToggleButton}" />
+                Style="{StaticResource ToggleButton_Icon_Layout}" />
 
             <Button
                 Command="{Binding RefreshCommand}"
                 Content="&#xe63e;"
                 DockPanel.Dock="Right"
-                Style="{StaticResource IconButtonBase_Small_Scale}"
+                Style="{StaticResource ButtonBase_Icon_ScaleDown_Small}"
                 ToolTip="刷新数据" />
 
             <TextBlock
                 DockPanel.Dock="Right"
-                Style="{StaticResource ThemeBlk}"
+                Style="{StaticResource TextBlock_Theme}"
                 Text="{Binding ImagesCount}" />
         </DockPanel>
 
@@ -107,7 +107,7 @@
             </ListBox.ItemContainerStyle>
 
             <ListBox.Style>
-                <Style BasedOn="{StaticResource VerticalScrollVirtualItemsControl}" TargetType="ListBox">
+                <Style BasedOn="{StaticResource ItemsControl_Virtual_VerticalScroll}" TargetType="ListBox">
                     <Setter Property="ItemsPanel">
                         <Setter.Value>
                             <ItemsPanelTemplate>
