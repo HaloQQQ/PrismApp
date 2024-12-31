@@ -53,8 +53,6 @@
 
     <myconverter:DesktopLyricColorfulMultiConverter x:Key="DesktopLyricColorfulMultiConverter" />
 
-    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-
     <DataTemplate x:Key="HorizentalDesktopLyric">
         <Grid Margin="20,5" HorizontalAlignment="Center">
             <TextBlock
@@ -245,7 +243,7 @@
 
     <Style
         x:Key="MusicEffectToggleButton"
-        BasedOn="{StaticResource ButtonBase_Transparent}"
+        BasedOn="{StaticResource ButtonBase_Icon_Conent_Transparent}"
         TargetType="ToggleButton">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="12,2" />
@@ -276,17 +274,35 @@
     </Style>
 
     <Style
+        x:Key="PlayAllButton"
+        BasedOn="{StaticResource ButtonBase_Icon_Conent_Transparent}"
+        TargetType="Button">
+        <Setter Property="MyAttachProperty.IconFontText" Value="&#xea6d;" />
+        <Setter Property="Content" Value="播放" />
+    </Style>
+
+    <Style
+        x:Key="DownloadButton"
+        BasedOn="{StaticResource ButtonBase_Icon_Conent_Transparent}"
+        TargetType="Button">
+        <Setter Property="MyAttachProperty.IconFontText" Value="&#xe63b;" />
+        <Setter Property="Content" Value="下载" />
+    </Style>
+
+    <Style
+        x:Key="AddFilesButton"
+        BasedOn="{StaticResource ButtonBase_Icon_Conent_Transparent}"
+        TargetType="Button">
+        <Setter Property="MyAttachProperty.IconFontText" Value="&#xe663;" />
+        <Setter Property="Content" Value="本地添加" />
+    </Style>
+
+    <Style
         x:Key="BatchOperateToggleButton"
-        BasedOn="{StaticResource ButtonBase_Transparent}"
+        BasedOn="{StaticResource ButtonBase_Icon_Conent_Transparent}"
         TargetType="ToggleButton">
-        <Setter Property="Content">
-            <Setter.Value>
-                <TextBlock>
-                    <TextBlock Text="&#xe74f;" />
-                    <TextBlock Text="批量操作" />
-                </TextBlock>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="MyAttachProperty.IconFontText" Value="&#xe74f;" />
+        <Setter Property="Content" Value="批量操作" />
 
         <Style.Triggers>
             <Trigger Property="IsChecked" Value="True">
@@ -297,81 +313,17 @@
 
     <Style
         x:Key="DeleteButton"
-        BasedOn="{StaticResource ButtonBase_Transparent}"
+        BasedOn="{StaticResource ButtonBase_Icon_Conent_Transparent}"
         TargetType="Button">
-        <Setter Property="Content">
-            <Setter.Value>
-                <TextBlock>
-                    <TextBlock Text="&#xec7b;" />
-                    <TextBlock Text="删除" />
-                </TextBlock>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="MyAttachProperty.IconFontText" Value="&#xec7b;" />
+        <Setter Property="Content" Value="删除" />
 
         <Setter Property="Visibility" Value="Collapsed" />
+
         <Style.Triggers>
             <DataTrigger Binding="{Binding CanBatchSelect, Mode=OneWay}" Value="True">
                 <Setter Property="Visibility" Value="Visible" />
             </DataTrigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style
-        x:Key="PlayAllButton"
-        BasedOn="{StaticResource ButtonBase_Transparent}"
-        TargetType="Button">
-        <Setter Property="Content">
-            <Setter.Value>
-                <TextBlock>
-                    <TextBlock Text="&#xea6d;" />
-                    <TextBlock Text="播放" />
-                </TextBlock>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style
-        x:Key="DownloadButton"
-        BasedOn="{StaticResource ButtonBase_Transparent}"
-        TargetType="Button">
-        <Setter Property="Content">
-            <Setter.Value>
-                <TextBlock>
-                    <TextBlock Text="&#xe63b;" />
-                    <TextBlock Text="下载" />
-                </TextBlock>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style
-        x:Key="AddMusicButton"
-        BasedOn="{StaticResource ButtonBase_Transparent}"
-        TargetType="Button">
-        <Setter Property="Content">
-            <Setter.Value>
-                <TextBlock>
-                    <TextBlock Text="&#xe663;" />
-                    <TextBlock Text="本地添加" />
-                </TextBlock>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style
-        x:Key="LyricSlideTxt"
-        BasedOn="{StaticResource TextBlock_Icon}"
-        TargetType="TextBlock">
-        <Setter Property="FontSize" Value="16" />
-        <Setter Property="Margin" Value="40,20,0,0" />
-        <Setter Property="HorizontalAlignment" Value="Left" />
-        <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="Text" Value="&#xe65e;" />
-        <Setter Property="Foreground" Value="{StaticResource LightWhite}" />
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource HoveredTransparentButtonBackground}" />
-            </Trigger>
         </Style.Triggers>
     </Style>
 
@@ -465,7 +417,7 @@
 
     <Style
         x:Key="DefaultSingerBack"
-        BasedOn="{StaticResource TextBlock_Icon}"
+        BasedOn="{StaticResource TextBlock_Theme_Icon_MouseOver}"
         TargetType="TextBlock">
         <Setter Property="Background" Value="White" />
         <Setter Property="Foreground" Value="{StaticResource DeepGray}" />

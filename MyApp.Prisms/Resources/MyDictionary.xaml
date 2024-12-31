@@ -84,44 +84,23 @@
             <DataTrigger Binding="{Binding Socket.IsConnected}" Value="True">
                 <Setter Property="IsEnabled" Value="True" />
             </DataTrigger>
+        </Style.Triggers>
+    </Style>
 
-            <!--<Trigger Property="IsFocused" Value="True">
-                <Trigger.EnterActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation
-                                Storyboard.TargetProperty="(TextBox.Width)"
-                                From="200"
-                                To="300"
-                                Duration="0:0:1">
-            -->
-            <!-- <DoubleAnimation.EasingFunction> -->
-            <!--     <BounceEase Bounces="3" Bounciness="1" EasingMode="EaseInOut" /> -->
-            <!-- </DoubleAnimation.EasingFunction> -->
-            <!--
-                            </DoubleAnimation>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.EnterActions>
+    <Style
+        x:Key="Button_Connect"
+        BasedOn="{StaticResource ButtonBase_Icon_Conent_Transparent}"
+        TargetType="Button">
+        <Setter Property="Command" Value="{Binding ConnectCommand}" />
 
-                <Trigger.ExitActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation
-                                By="-5"
-                                Storyboard.TargetProperty="(TextBox.Width)"
-                                To="200"
-                                Duration="0:0:1">
-            -->
-            <!-- <DoubleAnimation.EasingFunction> -->
-            <!--     <BackEase EasingMode="EaseInOut" Amplitude="5" /> -->
-            <!-- </DoubleAnimation.EasingFunction> -->
-            <!--
-                            </DoubleAnimation>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.ExitActions>
-            </Trigger>-->
+        <Setter Property="MyAttachProperty.IconFontText" Value="&#xe650;" />
+
+        <Setter Property="Content" Value="打开连接" />
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Socket.IsConnected}" Value="True">
+                <Setter Property="Content" Value="关闭连接" />
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 

@@ -200,7 +200,7 @@
                 ContentTemplate="{StaticResource HorizentalDesktopLyric}"
                 FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                 MouseEnter="DesktopLyricPanel_Visible"
-                Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                Visibility="{Binding DesktopLyric.IsSingleLine, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
         </Grid>
     </Grid>
 </Window>

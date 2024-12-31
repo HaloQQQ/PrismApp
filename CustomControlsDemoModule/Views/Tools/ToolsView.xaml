@@ -28,7 +28,7 @@
                 <Button
                     Command="{Binding AutoStartCommand}"
                     Content="执行"
-                    Style="{StaticResource ButtonBase_Transparent}" />
+                    Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
             </WrapPanel>
 
             <TextBox

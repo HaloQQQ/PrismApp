@@ -66,37 +66,12 @@
 
                     <CheckBox IsChecked="{Binding UnreachableDisConnect}">
                         <TextBlock FontSize="14">
-                            <TextBlock Style="{StaticResource TextBlock_Icon}" Text="&#xec6f;" />
+                            <TextBlock Style="{StaticResource TextBlock_Theme_Icon_MouseOver}" Text="&#xec6f;" />
                             <TextBlock Text="失败断开：" />
                         </TextBlock>
                     </CheckBox>
 
-                    <Button Command="{Binding ConnectCommand}">
-                        <Button.Style>
-                            <Style BasedOn="{StaticResource ButtonBase_Transparent}" TargetType="Button">
-                                <Setter Property="Content">
-                                    <Setter.Value>
-                                        <TextBlock>
-                                            <TextBlock Text="&#xe650;" />
-                                            <TextBlock>
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="Text" Value="打开连接" />
-
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Socket.IsConnected}" Value="True">
-                                                                <Setter Property="Text" Value="关闭连接" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                        </TextBlock>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Style>
-                    </Button>
+                    <Button Style="{StaticResource Button_Connect}" />
                 </StackPanel>
             </Viewbox>
 

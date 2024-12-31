@@ -9,7 +9,7 @@
             Video
         }
 
-        public static List<MediaPlayOrderModel> MediaPlayOrderList { get; private set; } = new()
+        public static List<MediaPlayOrderModel> MediaPlayOrderList { get; } = new()
         {
             new MediaPlayOrderModel("\ue871","顺序播放", MediaPlayOrderModel.EnumOrderType.Order),
             new MediaPlayOrderModel("\ue66c","循环播放", MediaPlayOrderModel.EnumOrderType.Loop),

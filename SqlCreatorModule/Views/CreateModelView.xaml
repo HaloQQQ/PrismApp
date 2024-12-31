@@ -12,7 +12,7 @@
             <Setter Property="IsReadOnly" Value="True" />
         </Style>
 
-        <Style BasedOn="{StaticResource ButtonBase_Transparent}" TargetType="Button" />
+        <Style BasedOn="{StaticResource ButtonBase_Icon_Conent_Transparent}" TargetType="Button" />
 
         <ObjectDataProvider
             x:Key="EnumDataSetDateTime"
@@ -44,28 +44,29 @@
             <!--<TextBlock Text="服务器地址*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
             <TextBox
                 MyAttachProperty.PlaceHolder="服务器地址*"
+                TabIndex="0"
                 Text="{Binding Host, UpdateSourceTrigger=PropertyChanged}"
                 Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
             <!--<TextBlock Text="数据库名*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
             <TextBox
                 MyAttachProperty.PlaceHolder="数据库名*"
+                TabIndex="1"
                 Text="{Binding CurrentDbName, UpdateSourceTrigger=PropertyChanged}"
                 Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
-            <!--<TextBlock Text="用户名*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
             <TextBox
                 MyAttachProperty.PlaceHolder="用户名*"
+                TabIndex="2"
                 Text="{Binding Uid, UpdateSourceTrigger=PropertyChanged}"
                 Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
-            <!--<TextBlock Text="密码*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
             <PasswordBox
                 MyAttachProperty.Password="{Binding Pwd, Mode=TwoWay}"
                 MyAttachProperty.PlaceHolder="密码*"
+                TabIndex="3"
                 Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
-            <!--<TextBlock Text="服务器端口:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
             <TextBox
                 MyAttachProperty.PlaceHolder="服务器端口"
                 Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}"
@@ -74,12 +75,15 @@
             <TextBlock Text="数据库文件*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
             <TextBox
                 Width="175"
-                MyAttachProperty.PlaceHolder="数据库文件"
                 IsReadOnly="True"
+                MyAttachProperty.PlaceHolder="数据库文件"
                 Text="{Binding DbFilePath}"
                 Visibility="{Binding IsSqlite, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
 
-            <Button Command="{Binding ConnectCommand}" Content="连接获取数据库" />
+            <Button
+                Command="{Binding ConnectCommand}"
+                Content="连接获取数据库"
+                MyAttachProperty.IconFontText="&#xe650;" />
 
             <TextBlock Text="数据库列表:" />
             <ComboBox
@@ -87,30 +91,42 @@
                 SelectedValue="{Binding CurrentDbName}"
                 Text="{Binding CurrentDbName}" />
 
-            <Button Command="{Binding GetTablesCommand}" Content="获取表名集合" />
+            <Button
+                Command="{Binding GetTablesCommand}"
+                Content="获取表名集合"
+                MyAttachProperty.IconFontText="&#xe632;" />
             <TextBlock Text="数据表列表:" />
             <ComboBox
                 ItemsSource="{Binding TableNames}"
                 SelectedValue="{Binding CurrentTableName}"
                 Text="{Binding CurrentTableName}" />
 
-            <Button Command="{Binding ShowTableStructureCommand}" Content="获取表结构" />
+            <Button
+                Command="{Binding ShowTableStructureCommand}"
+                Content="获取表结构"
+                MyAttachProperty.IconFontText="&#xe627;" />
 
             <TextBox
                 Width="300"
-                MyAttachProperty.PlaceHolder="导出模型目录"
                 IsReadOnly="True"
+                MyAttachProperty.PlaceHolder="导出模型目录"
                 Text="{Binding ModelExportDir}" />
-            <Button Command="{Binding OpenExportDirCommand}" Content="选择导出目录" />
-            <Button Command="{Binding ExportTableStructureToFileCommand}" Content="表结构导出" />
+            <Button
+                Command="{Binding OpenExportDirCommand}"
+                Content="选择导出目录"
+                MyAttachProperty.IconFontText="&#xebdf;" />
+            <Button
+                Command="{Binding ExportTableStructureToFileCommand}"
+                Content="表结构导出"
+                MyAttachProperty.IconFontText="&#xe608;" />
         </WrapPanel>
 
         <DataGrid
             Grid.Row="2"
-            MyAttachProperty.DataGridCellHorizontalAlignment="Center"
+            HorizontalScrollBarVisibility="Auto"
             ItemsSource="{Binding TableColumnsStructure}"
             MinColumnWidth="0"
-            HorizontalScrollBarVisibility="Auto"
+            MyAttachProperty.DataGridCellHorizontalAlignment="Center"
             Style="{StaticResource DataGrid_Transparent}">
             <DataGrid.Columns>
                 <DataGridTextColumn
@@ -121,9 +137,9 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox
-                                MyAttachProperty.IsReadOnly="True"
                                 IsChecked="{Binding Unique, Mode=OneTime}"
                                 IsEnabled="False"
+                                MyAttachProperty.IsReadOnly="True"
                                 Style="{StaticResource CheckBox_CheckMark}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -132,9 +148,9 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox
-                                MyAttachProperty.IsReadOnly="True"
                                 IsChecked="{Binding AllowDBNull, Mode=OneTime}"
                                 IsEnabled="False"
+                                MyAttachProperty.IsReadOnly="True"
                                 Style="{StaticResource CheckBox_CheckMark}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -145,9 +161,9 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox
-                                MyAttachProperty.IsReadOnly="True"
                                 IsChecked="{Binding AutoIncrement, Mode=OneTime}"
                                 IsEnabled="False"
+                                MyAttachProperty.IsReadOnly="True"
                                 Style="{StaticResource CheckBox_CheckMark}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -158,9 +174,9 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <CheckBox
-                                MyAttachProperty.IsReadOnly="True"
                                 IsChecked="{Binding ReadOnly, Mode=OneTime}"
                                 IsEnabled="False"
+                                MyAttachProperty.IsReadOnly="True"
                                 Style="{StaticResource CheckBox_CheckMark}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

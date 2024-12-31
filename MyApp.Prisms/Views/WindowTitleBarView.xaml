@@ -78,8 +78,8 @@
                 Margin="2"
                 DockPanel.Dock="Left"
                 FontSize="25">
-                <TextBlock Style="{StaticResource TextBlock_Theme_MouseOver}">
-                    <TextBlock Style="{StaticResource TextBlock_Icon}" Text="&#xe64d;" />
+                <TextBlock Style="{StaticResource TextBlock_Theme_Icon_MouseOver}">
+                    <TextBlock Style="{StaticResource TextBlock_Theme_Icon_MouseOver}" Text="&#xe64d;" />
                     <TextBlock FontSize="18" Text="{Binding CurrentTime}" />
                     <TextBlock FontSize="18" Text="{Binding Week}" />
                 </TextBlock>
@@ -113,7 +113,7 @@
 
             <TextBlock
                 DockPanel.Dock="Right"
-                Style="{StaticResource TextBlock_Icon}"
+                Style="{StaticResource TextBlock_Theme_Icon_MouseOver}"
                 Text="&#xe63a;" />
 
             <Button

@@ -4,7 +4,6 @@ using CustomControlsDemoModule.Views.Controls;
 using CustomControlsDemoModule.Views.Controls.TextBoxes;
 using Prism.Ioc;
 using Prism.Modularity;
-using Prism.Regions;
 
 namespace CustomControlsDemoModule
 {

@@ -29,7 +29,6 @@ namespace MusicPlayerModule
         public void OnInitialized(IContainerProvider containerProvider)
         {
             _regionManager.RegisterViewWithRegion<MusicPlayer>("MusicPlayerRegion");
-            //_regionManager.RegisterViewWithRegion<VideoPlayerView>("VideoPlayerRegion");
         }
     }
 }

@@ -32,7 +32,7 @@
             </TreeView.ItemTemplate>
         </TreeView>
 
-        <TreeView ItemsSource="{Binding Controls}" MyAttachProperty.TreeViewItemExpandIconPosition="Left">
+        <TreeView ItemsSource="{Binding Controls}" MyAttachProperty.IconPosition="Left">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type models:ControlNode}" ItemsSource="{Binding Items}">
                     <ContentPresenter Content="{Binding Name}" />

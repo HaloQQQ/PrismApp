@@ -4,15 +4,12 @@
     xmlns:myConverter="clr-namespace:MusicPlayerModule.Converters">
 
     <myConverter:MusicDistributeMultiConverter x:Key="MusicDistributeMultiConverter" />
-    <MultiConverter_IsStringEquals x:Key="MultiConverter_IsStringEquals" />
 
     <Style
         x:Key="IconTextNoForegroundChanged"
-        BasedOn="{StaticResource {x:Type TextBlock}}"
+        BasedOn="{StaticResource TextBlock_Theme_Icon}"
         TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource Iconfont}" />
-        <!--<Setter Property="FontSize" Value="{Binding FontSize,RelativeSource={RelativeSource AncestorType=MenuItem}}" />-->
-        <!--<Setter Property="Cursor" Value="Hand" />-->
+        <!--<Setter Property="FontFamily" Value="{StaticResource Iconfont}" />-->
     </Style>
 
     <Style

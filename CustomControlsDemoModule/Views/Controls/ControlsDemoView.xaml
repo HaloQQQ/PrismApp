@@ -30,6 +30,9 @@
                 <Style BasedOn="{StaticResource {x:Type TreeViewItem}}" TargetType="TreeViewItem">
                     <Setter Property="IsSelected" Value="{Binding IsSelected}" />
 
+                    <Setter Property="MyAttachProperty.IconFontText" Value="&#xe64f;" />
+                    <Setter Property="MyAttachProperty.IconPosition" Value="Left" />
+
                     <Setter Property="ItemsSource" Value="{Binding Items}" />
                 </Style>
             </TreeView.ItemContainerStyle>

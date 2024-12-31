@@ -12,9 +12,6 @@
     MaxHeight="500"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
-        <Key2StringConverter x:Key="Key2StringConverter" />
-        <CornerRadiusToDigitConverter x:Key="CornerRadiusToDigitConverter" />
-
         <ObjectDataProvider
             x:Key="CustomKeys"
             MethodName="GetNames"
@@ -140,14 +137,14 @@
                             CommandParameter="{Binding}"
                             Content="取消"
                             DockPanel.Dock="Right"
-                            Style="{StaticResource ButtonBase_Transparent}" />
+                            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
                         <Button
                             Margin="20,10"
                             Command="{Binding DataContext.SubmitCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                             CommandParameter="{Binding}"
                             Content="确认"
                             DockPanel.Dock="Right"
-                            Style="{StaticResource ButtonBase_Transparent}" />
+                            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
                     </DockPanel>
                 </StackPanel>
             </GroupBox>
@@ -244,7 +241,8 @@
                 <Button
                     Command="{Binding OpenFolderCommand}"
                     Content="浏览"
-                    Style="{StaticResource ButtonBase_Transparent}" />
+                    MyAttachProperty.IconFontText="&#xebdf;"
+                    Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
@@ -298,30 +296,30 @@
                         Command="{Binding DataContext.SmallGameCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         CommandParameter="_2048"
                         Content="2048"
-                        Style="{StaticResource ButtonBase_Transparent}" />
+                        Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
 
                     <Button
                         Command="{Binding DataContext.SmallGameCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         CommandParameter="五子棋"
                         Content="五子棋"
-                        Style="{StaticResource ButtonBase_Transparent}" />
+                        Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
 
                     <Button
                         Command="{Binding DataContext.SmallGameCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         CommandParameter="象棋"
                         Content="象棋"
-                        Style="{StaticResource ButtonBase_Transparent}" />
+                        Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
 
                     <Button
                         Command="{Binding DataContext.ColorPickerCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         Content="颜色选择器"
-                        Style="{StaticResource ButtonBase_Transparent}" />
+                        Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
                 </WrapPanel>
             </TabItem>
             <TabItem Header="设置">
                 <StackPanel>
                     <WrapPanel>
-                        <TextBlock Style="{StaticResource TextBlock_Theme}" Text="窗口圆角:" />
+                        <TextBlock Style="{StaticResource TextBlock_Theme}" Text="窗口圆角：" />
                         <Slider
                             Width="630"
                             Height="4"
@@ -334,7 +332,7 @@
 
                     <Button
                         Command="{Binding DataContext.CleanConfigWhenExitAppCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
-                        Style="{StaticResource ButtonBase_Transparent}"
+                        Style="{StaticResource ButtonBase_Icon_Conent_Transparent}"
                         ToolTip="关闭程序时清空所有配置">
                         <Button.Content>
                             <TextBlock>

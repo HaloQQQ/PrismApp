@@ -161,12 +161,14 @@
                     <Button
                         Command="{Binding SendMailCommand}"
                         Content="发送"
-                        Style="{StaticResource ButtonBase_Transparent}" />
+                        MyAttachProperty.IconFontText="&#xe64f;"
+                        Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
 
                     <Button
                         Command="{Binding DeleteDeletionCommand}"
                         Content="清空删除"
-                        Style="{StaticResource ButtonBase_Transparent}" />
+                        MyAttachProperty.IconFontText="&#xec7b;"
+                        Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
                 </StackPanel>
                 <Border
                     BorderBrush="{StaticResource LightWhite}"
@@ -185,7 +187,8 @@
                         <Button
                             Command="{Binding QueryMailCommand}"
                             Content="查询"
-                            Style="{StaticResource ButtonBase_Transparent}" />
+                            MyAttachProperty.IconFontText="&#xe632;"
+                            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
                     </WrapPanel>
                 </Border>
             </StackPanel>

@@ -84,40 +84,24 @@
 
                     <CheckBox IsChecked="{Binding TryReConnect}">
                         <TextBlock>
-                            <TextBlock Style="{StaticResource TextBlock_Icon}" Text="&#xe627;" />
+                            <TextBlock Style="{StaticResource TextBlock_Theme_Icon_MouseOver}" Text="&#xe627;" />
                             <TextBlock Style="{StaticResource TextBlock_Theme}" Text="自动重连：" />
                         </TextBlock>
                     </CheckBox>
 
                     <Button x:Name="ConnButton" Command="{Binding ConnectCommand}">
                         <Button.Style>
-                            <Style BasedOn="{StaticResource ButtonBase_Transparent}" TargetType="Button">
-                                <Setter Property="Content">
-                                    <Setter.Value>
-                                        <TextBlock>
-                                            <TextBlock Text="&#xe650;" />
-                                            <TextBlock>
-                                                <TextBlock.Style>
-                                                    <Style TargetType="TextBlock">
-                                                        <Setter Property="Text" Value="打开连接" />
+                            <Style BasedOn="{StaticResource ButtonBase_Icon_Conent_Transparent}" TargetType="Button">
+                                <Setter Property="MyAttachProperty.IconFontText" Value="&#xe650;" />
 
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Socket.IsConnected}" Value="True">
-                                                                <Setter Property="Text" Value="关闭连接" />
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding Socket.IsTryConnecting}" Value="True">
-                                                                <Setter Property="Text" Value="重连中.." />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </TextBlock.Style>
-                                            </TextBlock>
-                                        </TextBlock>
-                                    </Setter.Value>
-                                </Setter>
+                                <Setter Property="Content" Value="打开连接" />
 
                                 <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Socket.IsConnected}" Value="True">
+                                        <Setter Property="Content" Value="关闭连接" />
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding Socket.IsTryConnecting}" Value="True">
+                                        <Setter Property="Content" Value="重连中.." />
                                         <Setter Property="IsEnabled" Value="False" />
                                     </DataTrigger>
                                 </Style.Triggers>

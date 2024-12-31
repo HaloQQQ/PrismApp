@@ -2,9 +2,6 @@
     x:Class="CustomControlsDemoModule.Views.Controls.ButtonsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:CustomControlsDemoModule.Views"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
 
@@ -12,15 +9,20 @@
         <Button Content="普通按钮" />
         <Button Content="普通按钮" IsEnabled="False" />
 
-        <Button Content="透明按钮" Style="{StaticResource ButtonBase_Transparent}" />
+        <Button
+            Content="透明按钮"
+            MyAttachProperty.IconFontText="&#xe64f;"
+            MyAttachProperty.IconPosition="Right"
+            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
         <Button
             Content="透明按钮"
             IsEnabled="False"
-            Style="{StaticResource ButtonBase_Transparent}" />
+            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
 
         <Button
             Content="环形按钮"
             MyAttachProperty.CornerRadius="20"
+            MyAttachProperty.IconFontText="&#xe64f;"
             Style="{StaticResource Button_Circle}" />
         <Button
             Content="环形按钮"
@@ -49,7 +51,10 @@
 
         <Button Style="{StaticResource Button_Icon_Theme}" />
 
-        <Slider x:Name="slider" Style="{StaticResource Slider_Custom}" />
+        <Slider
+            x:Name="slider"
+            Orientation="Vertical"
+            Style="{StaticResource Slider_Custom}" />
 
         <Slider
             Width="12"

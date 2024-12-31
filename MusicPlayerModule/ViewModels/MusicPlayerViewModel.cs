@@ -551,6 +551,11 @@ namespace MusicPlayerModule.ViewModels
             PlayingMusicViewModel.ToNextMusic += NextMedia_CommandExecute;
 
             eventAggregator.GetEvent<BatchAddToPlayingEvent>().Subscribe(coll => this.AddAllToPlaying(new BatchAddAndPlayModel(null, coll), false));
+
+            eventAggregator.GetEvent<ToggleDesktopLyricEvent>().Subscribe(() =>
+            {
+                this.DesktopLyric.IsDesktopLyricShow = !this.DesktopLyric.IsDesktopLyricShow;
+            });
         }
 
         protected override void InitCommands()

@@ -14,8 +14,6 @@
                 x:Key="TcpServerComboBoxEnableStyle"
                 BasedOn="{StaticResource {x:Type ComboBox}}"
                 TargetType="ComboBox">
-                <Setter Property="IsEnabled" Value="True" />
-
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding MachineServerContext.Socket.IsConnected}" Value="True">
                         <Setter Property="IsEnabled" Value="False" />
@@ -31,8 +29,6 @@
                 x:Key="CheckBoxEnableStyle"
                 BasedOn="{StaticResource {x:Type CheckBox}}"
                 TargetType="CheckBox">
-                <Setter Property="IsEnabled" Value="True" />
-
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding MachineServerContext.Socket.IsConnected}" Value="True">
                         <Setter Property="IsEnabled" Value="False" />
@@ -72,8 +68,8 @@
                     DockPanel.Dock="Left"
                     IsChecked="{Binding IsTcp}"
                     Style="{StaticResource CheckBoxEnableStyle}">
-                    <TextBlock>
-                        <TextBlock Style="{StaticResource TextBlock_Icon}" Text="&#xec6f;" />
+                    <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
+                        <TextBlock Text="&#xec6f;" />
                         <TextBlock Text="Tcp：" />
                     </TextBlock>
                 </CheckBox>
@@ -83,19 +79,16 @@
                     Orientation="Horizontal"
                     Visibility="{Binding IsTcp, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
                     <CheckBox IsChecked="{Binding IsTcpServer}" Style="{StaticResource CheckBoxEnableStyle}">
-                        <TextBlock>
-                            <TextBlock
-                                FontSize="18"
-                                Style="{StaticResource TextBlock_Icon}"
-                                Text="&#xe98e;" />
+                        <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
+                            <TextBlock Text="&#xe98e;" />
                             <TextBlock Text="服务器：" />
                         </TextBlock>
                     </CheckBox>
 
                     <StackPanel Orientation="Horizontal" Visibility="{Binding IsTcpServer, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
-                        <TextBlock>
-                            <TextBlock Style="{StaticResource TextBlock_Icon}" Text="&#xe653;" />
-                            <TextBlock Style="{StaticResource TextBlock_Theme}" Text="服务端最大连接数：" />
+                        <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
+                            <TextBlock Text="&#xe653;" />
+                            <TextBlock Text="服务端最大连接数：" />
                         </TextBlock>
                         <ComboBox
                             FontSize="20"
@@ -118,9 +111,9 @@
                     DockPanel.Dock="Left"
                     IsChecked="{Binding IsHex}"
                     Style="{StaticResource CheckBox_Switch}">
-                    <TextBlock>
-                        <TextBlock Style="{StaticResource TextBlock_Icon}" Text="&#xe653;" />
-                        <TextBlock Style="{StaticResource TextBlock_Theme}" Text="HEX：" />
+                    <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
+                        <TextBlock Text="&#xe653;" />
+                        <TextBlock Text="HEX：" />
                     </TextBlock>
                 </CheckBox>
             </DockPanel>
