@@ -119,7 +119,7 @@ namespace MyApp.Prisms.Views
         {
             try
             {
-                if (e.Command == CustomCommands.PostCommand) //回车发送
+                if (e.Command == System.Windows.Documents.EditingCommands.EnterParagraphBreak) //回车发送
                 {
                     var msg = this._tcpSocketViewModel.SendMessage;
 
@@ -142,7 +142,7 @@ namespace MyApp.Prisms.Views
 
             e.CanExecute = true;
 
-            if (e.Command == CustomCommands.PostCommand) // 发送消息
+            if (e.Command == CustomCommands.TextBoxEnterCommand) // 发送消息
             {
                 if (this._tcpSocketViewModel != null)
                 {

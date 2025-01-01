@@ -2,6 +2,7 @@
     x:Class="MusicPlayerModule.Views.VerticalMusicLyricDesktopWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:MusicPlayerModule.Converters"
     xmlns:datatemplateselectors="clr-namespace:MusicPlayerModule.DataTemplateSelectors"
     xmlns:prism="http://prismlibrary.com/"
     Title="VerticalMusicLyricDesktopWindow"
@@ -19,22 +20,126 @@
     Style="{StaticResource Window_WithoutTitleBar}"
     Topmost="True">
     <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/MusicPlayerModule;component/Resources/Resources.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+        <Style TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
 
-            <BoolToHiddenVisibleConverter x:Key="BoolToHiddenVisibleConverter" />
+        <converters:DesktopLyricColorfulMultiConverter x:Key="DesktopLyricColorfulMultiConverter" />
 
-            <Style TargetType="TextBlock">
-                <Setter Property="TextWrapping" Value="Wrap" />
-            </Style>
+        <converters:NoEnglishDesktopLyricColorfulMultiConverter x:Key="NoEnglishDesktopLyricColorfulMultiConverter" />
 
-            <datatemplateselectors:VerticalLyricDataTemplateSelector
-                x:Key="LyricDataTemlateSelector"
-                VerticalDesktopLyricWithEnglish="{StaticResource VerticalDesktopLyricWithEnglish}"
-                VerticalDesktopLyricWithoutEnglish="{StaticResource VerticalDesktopLyricWithoutEnglish}" />
-        </ResourceDictionary>
+        <DataTemplate x:Key="VerticalDesktopLyricWithoutEnglish">
+            <Grid Margin="10,20">
+                <TextBlock
+                    Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
+                    VerticalAlignment="Top"
+                    FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ContentControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                    Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=ContentControl}}"
+                    LineHeight="{Binding FontSize, RelativeSource={RelativeSource Self}}"
+                    LineStackingStrategy="BlockLineHeight"
+                    Text="{Binding VerticalWords, FallbackValue=狗空音乐，就是歌多}"
+                    TextTrimming="None"
+                    TextWrapping="Wrap" />
+
+                <TextBlock
+                    Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
+                    VerticalAlignment="Top"
+                    FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ContentControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                    LineHeight="{Binding FontSize, RelativeSource={RelativeSource Self}}"
+                    LineStackingStrategy="BlockLineHeight"
+                    Text="{Binding VerticalWords}"
+                    TextTrimming="None"
+                    TextWrapping="Wrap">
+                    <TextBlock.Foreground>
+                        <LinearGradientBrush StartPoint="1,0" EndPoint="0,0">
+                            <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
+                            <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
+                        </LinearGradientBrush>
+                    </TextBlock.Foreground>
+                    <TextBlock.Height>
+                        <MultiBinding Converter="{StaticResource NoEnglishDesktopLyricColorfulMultiConverter}">
+                            <Binding Mode="OneWay" Path="IsPlayed" />
+
+                            <Binding Mode="OneWay" Path="IsPlayingLine" />
+
+                            <Binding
+                                Mode="OneWay"
+                                Path="DataContext.CurrentMedia.WordProgress"
+                                RelativeSource="{RelativeSource AncestorType=ContentControl}" />
+
+                            <Binding Mode="OneWay" Path="Words.Length" />
+
+                            <Binding
+                                Mode="OneWay"
+                                Path="FontSize"
+                                RelativeSource="{RelativeSource Self}" />
+                        </MultiBinding>
+                    </TextBlock.Height>
+                </TextBlock>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="VerticalDesktopLyricWithEnglish">
+            <Grid Margin="10,20">
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ContentControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                    Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=ContentControl}}"
+                    Text="{Binding Words, FallbackValue=狗空音乐，就是歌多}"
+                    TextAlignment="Center"
+                    TextTrimming="None"
+                    TextWrapping="NoWrap">
+                    <TextBlock.LayoutTransform>
+                        <TransformGroup>
+                            <TranslateTransform Y="-50" />
+                            <RotateTransform Angle="90" />
+                        </TransformGroup>
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ContentControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                    Text="{Binding Words}"
+                    TextAlignment="Center"
+                    TextTrimming="None"
+                    TextWrapping="NoWrap">
+                    <TextBlock.LayoutTransform>
+                        <TransformGroup>
+                            <TranslateTransform Y="-50" />
+                            <RotateTransform Angle="90" />
+                        </TransformGroup>
+                    </TextBlock.LayoutTransform>
+                    <TextBlock.Foreground>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
+                            <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
+                        </LinearGradientBrush>
+                    </TextBlock.Foreground>
+                    <TextBlock.Width>
+                        <MultiBinding Converter="{StaticResource DesktopLyricColorfulMultiConverter}">
+                            <Binding Mode="OneWay" Path="IsPlayed" />
+
+                            <Binding Mode="OneWay" Path="IsPlayingLine" />
+
+                            <Binding
+                                Mode="OneWay"
+                                Path="DataContext.CurrentMedia.WordProgress"
+                                RelativeSource="{RelativeSource AncestorType=ContentControl}" />
+
+                            <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
+                        </MultiBinding>
+                    </TextBlock.Width>
+                </TextBlock>
+            </Grid>
+        </DataTemplate>
+
+        <datatemplateselectors:VerticalLyricDataTemplateSelector
+            x:Key="LyricDataTemlateSelector"
+            VerticalDesktopLyricWithEnglish="{StaticResource VerticalDesktopLyricWithEnglish}"
+            VerticalDesktopLyricWithoutEnglish="{StaticResource VerticalDesktopLyricWithoutEnglish}" />
     </Window.Resources>
 
     <Grid

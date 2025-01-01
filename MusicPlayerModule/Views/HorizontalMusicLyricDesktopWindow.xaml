@@ -2,6 +2,7 @@
     x:Class="MusicPlayerModule.Views.HorizontalMusicLyricDesktopWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:MusicPlayerModule.Converters"
     xmlns:prism="http://prismlibrary.com/"
     Title="HorizontalMusicLyricDesktopWindow"
     MinWidth="900"
@@ -17,13 +18,49 @@
     Style="{StaticResource Window_WithoutTitleBar}"
     Topmost="True">
     <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/MusicPlayerModule;component/Resources/Resources.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+        <converters:DesktopLyricColorfulMultiConverter x:Key="DesktopLyricColorfulMultiConverter" />
 
-            <BoolToHiddenVisibleConverter x:Key="BoolToHiddenVisibleConverter" />
-        </ResourceDictionary>
+        <DataTemplate x:Key="HorizentalDesktopLyric">
+            <Grid Margin="20,5" HorizontalAlignment="Center">
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ContentControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                    Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=ContentControl}}"
+                    Text="{Binding Words, FallbackValue=狗空音乐，就是歌多}"
+                    TextAlignment="Center"
+                    TextTrimming="None"
+                    TextWrapping="NoWrap" />
+                <TextBlock
+                    HorizontalAlignment="Left"
+                    ClipToBounds="True"
+                    FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ContentControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
+                    Text="{Binding Words}"
+                    TextAlignment="Center"
+                    TextTrimming="None"
+                    TextWrapping="NoWrap">
+                    <TextBlock.Foreground>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
+                            <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
+                        </LinearGradientBrush>
+                    </TextBlock.Foreground>
+                    <TextBlock.Width>
+                        <MultiBinding Converter="{StaticResource DesktopLyricColorfulMultiConverter}">
+                            <Binding Mode="OneWay" Path="IsPlayed" />
+
+                            <Binding Mode="OneWay" Path="IsPlayingLine" />
+
+                            <Binding
+                                Mode="OneWay"
+                                Path="DataContext.CurrentMedia.WordProgress"
+                                RelativeSource="{RelativeSource AncestorType=ContentControl}" />
+
+                            <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
+                        </MultiBinding>
+                    </TextBlock.Width>
+                </TextBlock>
+            </Grid>
+        </DataTemplate>
     </Window.Resources>
 
     <Grid MouseDown="DragWindow_MouseDonw" MouseLeave="DesktopLyricPanel_Hidden">

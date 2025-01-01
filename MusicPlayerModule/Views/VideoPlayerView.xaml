@@ -11,9 +11,114 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/MusicPlayerModule;component/Resources/Resources.xaml" />
-                <ResourceDictionary Source="/MusicPlayerModule;component/Resources/DataGridContextMenu.xaml" />
+                <ResourceDictionary Source="/MusicPlayerModule;component/Resources/MediaDic.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <ContextMenu x:Key="VideoContextMenu_Button">
+                <MenuItem Command="{Binding PlacementTarget.Tag.PlayPlayingCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                    <MenuItem.Style>
+                        <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
+                            <Setter Property="Header">
+                                <Setter.Value>
+                                    <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
+                                        <TextBlock Text="&#xea6d;" />
+                                        <TextBlock Text="播放" />
+                                    </TextBlock>
+                                </Setter.Value>
+                            </Setter>
+
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding PlacementTarget.DataContext.IsPlayingMedia, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
+                                        <Condition Binding="{Binding PlacementTarget.Tag.Running, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
+                                    </MultiDataTrigger.Conditions>
+
+                                    <Setter Property="Header">
+                                        <Setter.Value>
+                                            <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
+                                                <TextBlock Text="&#xe62a;" />
+                                                <TextBlock Text="暂停" />
+                                            </TextBlock>
+                                        </Setter.Value>
+                                    </Setter>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </MenuItem.Style>
+                </MenuItem>
+
+                <MenuItem Command="{Binding PlacementTarget.Tag.OpenInExploreCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.DataContext.Video.FileDir, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                    <MenuItem.Header>
+                        <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
+                            <TextBlock Text="&#xebdf;" />
+                            <TextBlock Text="打开目录位置" />
+                        </TextBlock>
+                    </MenuItem.Header>
+                </MenuItem>
+
+                <MenuItem Command="{Binding PlacementTarget.Tag.DeletePlayingCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                    <MenuItem.Header>
+                        <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
+                            <TextBlock Text="&#xec7b;" />
+                            <TextBlock Text="从播放队列删除" />
+                        </TextBlock>
+                    </MenuItem.Header>
+                </MenuItem>
+            </ContextMenu>
+
+            <ContextMenu x:Key="VideoContextMenu_DataGrid">
+                <MenuItem Command="{Binding PlacementTarget.DataContext.PlayPlayingCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                    <MenuItem.Style>
+                        <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
+                            <Setter Property="Header">
+                                <Setter.Value>
+                                    <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
+                                        <TextBlock Text="&#xea6d;" />
+                                        <TextBlock Text="播放" />
+                                    </TextBlock>
+                                </Setter.Value>
+                            </Setter>
+
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding PlacementTarget.SelectedItem.IsPlayingMedia, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
+                                        <Condition Binding="{Binding PlacementTarget.DataContext.Running, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
+                                    </MultiDataTrigger.Conditions>
+
+                                    <Setter Property="Header">
+                                        <Setter.Value>
+                                            <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
+                                                <TextBlock Text="&#xe62a;" />
+                                                <TextBlock Text="暂停" />
+                                            </TextBlock>
+                                        </Setter.Value>
+                                    </Setter>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </MenuItem.Style>
+                </MenuItem>
+
+                <MenuItem Command="{Binding PlacementTarget.DataContext.OpenInExploreCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.SelectedItem.Video.FileDir, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                    <MenuItem.Header>
+                        <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
+                            <TextBlock Text="&#xebdf;" />
+                            <TextBlock Text="打开目录位置" />
+                        </TextBlock>
+                    </MenuItem.Header>
+                </MenuItem>
+
+                <MenuItem Command="{Binding PlacementTarget.DataContext.DeletePlayingCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                    <MenuItem.Header>
+                        <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
+                            <TextBlock Text="&#xec7b;" />
+                            <TextBlock Text="从播放队列删除" />
+                        </TextBlock>
+                    </MenuItem.Header>
+                </MenuItem>
+            </ContextMenu>
 
             <ObjectDataProvider
                 x:Key="StretchsData"
@@ -514,7 +619,7 @@
                             VerticalOffset="5">
                             <Border
                                 Width="100"
-                                Height="165"
+                                Height="185"
                                 Background="{StaticResource PopupBackground}"
                                 Clip="{StaticResource PopupGeometryGroup_VideoStretchMode}">
                                 <ListBox ItemsSource="{Binding Source={StaticResource StretchsData}}" SelectedItem="{Binding Stretch}">

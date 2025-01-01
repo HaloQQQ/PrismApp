@@ -75,7 +75,7 @@ namespace MyApp.Prisms.Views
         {
             try
             {
-                if (e.Command == CustomCommands.PostCommand)    // 回车发送
+                if (e.Command == CustomCommands.TextBoxEnterCommand)    // 回车发送
                 {
                     var msg = this._udpSocketViewModel.SendMessage;
 
@@ -98,7 +98,7 @@ namespace MyApp.Prisms.Views
 
             e.CanExecute = true;
 
-            if (e.Command == CustomCommands.PostCommand)
+            if (e.Command == CustomCommands.TextBoxEnterCommand)
             {
                 if (this._udpSocketViewModel != null)
                 {

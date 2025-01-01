@@ -32,6 +32,8 @@
         <DatePicker
             Grid.Row="1"
             Grid.Column="1"
-            VerticalAlignment="Top" />
+            VerticalAlignment="Top"
+            MyAttachProperty.CornerRadius="10"
+            MyAttachProperty.DoubleValue="30" />
     </Grid>
 </UserControl>

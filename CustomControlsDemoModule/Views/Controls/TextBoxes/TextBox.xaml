@@ -18,10 +18,7 @@
             MyAttachProperty.PlaceHolder="TextBox_HideButton"
             Style="{StaticResource TextBox_HideButton}" />
         <TextBox MyAttachProperty.PlaceHolder="TextBox_Transparent" Style="{StaticResource TextBox_Transparent}" />
-        <TextBox
-            HorizontalContentAlignment="Center"
-            MyAttachProperty.PlaceHolder="TextBox_Filter"
-            Style="{StaticResource TextBox_Filter}" />
+        <TextBox HorizontalContentAlignment="Center" Style="{StaticResource TextBox_Filter}" />
         <TextBox MyAttachProperty.PlaceHolder="TextBox_Query" Style="{StaticResource TextBox_Query}" />
         <TextBox
             HorizontalContentAlignment="Center"

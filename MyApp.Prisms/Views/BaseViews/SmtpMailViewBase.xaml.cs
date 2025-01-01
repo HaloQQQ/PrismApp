@@ -27,7 +27,7 @@ namespace MyApp.Prisms.Views.BaseViews
 
         private void StackPanel_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (e.Command == CustomCommands.PostCommand)
+            if (e.Command == CustomCommands.TextBoxEnterCommand)
             {
                 e.Handled = true;
                 if (e.Source is TextBox textBox && !textBox.Name.IsNullOrBlank())
