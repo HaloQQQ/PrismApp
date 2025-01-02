@@ -11,7 +11,7 @@ using System.Linq;
 using DryIoc;
 using Prism.Ioc;
 using Prism.Events;
-using PrismAppBasicLib.MsgEvents;
+using PrismAppBasicLib.Contracts;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {
@@ -100,13 +100,13 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
         {
             if (this.Ip.IsNullOrBlank())
             {
-                ContainerLocator.Current.Resolve<IEventAggregator>().GetEvent<DialogMessageEvent>().Publish(new DialogMessage("Ip无效"));
+                CommonUtil.PublishMessage(ContainerLocator.Current.Resolve<IEventAggregator>(), "Ip无效");
                 return;
             }
 
             if (!ushort.TryParse(this.Port, out this._port))
             {
-                ContainerLocator.Current.Resolve<IEventAggregator>().GetEvent<DialogMessageEvent>().Publish(new DialogMessage("端口无效"));
+                CommonUtil.PublishMessage(ContainerLocator.Current.Resolve<IEventAggregator>(), "端口无效");
                 return;
             }
 

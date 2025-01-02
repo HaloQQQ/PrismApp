@@ -9,7 +9,6 @@ using IceTea.Atom.Contracts;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
-using PrismAppBasicLib.MsgEvents;
 using System.Windows;
 using System;
 using IceTea.Atom.Utils.HotKey.Global.Contracts;
@@ -20,6 +19,7 @@ using Prism.Services.Dialogs;
 using PrismAppBasicLib.Models;
 using CustomControlsDemoModule.Views;
 using CustomControlsDemoModule.Events;
+using PrismAppBasicLib.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -74,7 +74,7 @@ namespace MyApp.Prisms.ViewModels
             {
                 if (!Regex.IsMatch(this.CurrentMailPair.Key, RegexConstants.EmailPattern))
                 {
-                    eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage("要添加的邮箱不符合邮箱规则"));
+                    CommonUtil.PublishMessage(eventAggregator, "要添加的邮箱不符合邮箱规则");
                     return;
                 }
 
@@ -106,7 +106,7 @@ namespace MyApp.Prisms.ViewModels
                 var failedItems = globalHotKeyGroup.Submit();
                 var message = failedItems.Any() ? $"{string.Join(Environment.NewLine, failedItems.Select(i => i.ToString()))}{Environment.NewLine}提交失败" : "提交成功";
 
-                eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(message, 4));
+                CommonUtil.PublishMessage(eventAggregator, message, 4);
             });
 
             this.ResetGlobalHotKeyGroupCommand = new DelegateCommand<IGlobalConfigFileHotKeyGroup>(globalHotKeyGroup =>
@@ -116,7 +116,7 @@ namespace MyApp.Prisms.ViewModels
                 var failedItems = globalHotKeyGroup.Reset();
                 var message = failedItems.Any() ? $"{string.Join(Environment.NewLine, failedItems.Select(i => i.ToString()))}{Environment.NewLine}重置失败" : "重置成功";
 
-                eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(message, 4));
+                CommonUtil.PublishMessage(eventAggregator, message, 4);
             });
 
             this.ResetAppHotKeyGroupCommand = new DelegateCommand<IAppConfigFileHotKeyGroup>(appHotKeyGroup =>
@@ -126,7 +126,7 @@ namespace MyApp.Prisms.ViewModels
                 var failedItems = appHotKeyGroup.Reset();
                 var message = failedItems.Any() ? $"{string.Join(Environment.NewLine, failedItems.Select(i => i.ToString()))}{Environment.NewLine}重置失败" : "重置成功";
 
-                eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(message, 4));
+                CommonUtil.PublishMessage(eventAggregator, message, 4);
             });
 
             this.SmallGameCommand = new DelegateCommand<string>(dialogService.ShowDialog);

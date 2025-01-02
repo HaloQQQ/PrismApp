@@ -58,15 +58,18 @@
         <MenuItem
             Command="Refresh"
             CommandTarget="{Binding PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-            Header="清空" />
+            Header="清空"
+            Icon="&#xec7b;" />
         <MenuItem
             Header="记录日志"
+            Icon="&#xe654;"
             IsCheckable="True"
             IsChecked="{Binding IsLogging}" />
         <MenuItem
             Command="{Binding OpenLogCommand}"
             CommandTarget="{Binding PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-            Header="打开日志文件" />
+            Header="打开日志文件"
+            Icon="&#xebdf;" />
     </ContextMenu>
 
     <!--  不自动补全前缀的、聚焦时Width变化的TextBox  -->

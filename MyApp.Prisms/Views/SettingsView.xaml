@@ -332,15 +332,10 @@
 
                     <Button
                         Command="{Binding DataContext.CleanConfigWhenExitAppCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        Content="清空配置"
+                        MyAttachProperty.IconFontText="&#xec7b;"
                         Style="{StaticResource ButtonBase_Icon_Conent_Transparent}"
-                        ToolTip="关闭程序时清空所有配置">
-                        <Button.Content>
-                            <TextBlock>
-                                <TextBlock Text="&#xec7b;" />
-                                <TextBlock Text="清空配置" />
-                            </TextBlock>
-                        </Button.Content>
-                    </Button>
+                        ToolTip="关闭程序时清空所有配置" />
                 </StackPanel>
             </TabItem>
         </TabControl>

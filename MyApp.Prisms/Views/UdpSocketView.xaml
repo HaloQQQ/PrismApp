@@ -10,6 +10,7 @@
             x:Key="cmbIP"
             BasedOn="{StaticResource {x:Type ComboBox}}"
             TargetType="ComboBox">
+            <Setter Property="Margin" Value="0,0,5,0" />
             <Setter Property="ItemsSource" Value="{x:Static viewModels:BaseSocketViewModel.Ips}" />
             <Setter Property="IsEnabled" Value="{Binding Socket.IsConnected, Converter={StaticResource OppositeBoolConverter}}" />
         </Style>
@@ -44,10 +45,8 @@
                 Style="{StaticResource OnlyDownViewbox}">
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
                     <TextBlock Style="{StaticResource Lable}" Text="本机IP：" />
-                    <ComboBox
-                        Width="135"
-                        Style="{StaticResource cmbIP}"
-                        Text="{Binding Ip, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <ComboBox Style="{StaticResource cmbIP}" Text="{Binding Ip, UpdateSourceTrigger=PropertyChanged}" />
 
                     <TextBlock Style="{StaticResource Lable}" Text="本机本机端口：" />
                     <TextBox

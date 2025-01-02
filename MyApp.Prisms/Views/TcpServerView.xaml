@@ -104,9 +104,7 @@
                         <ComboBox.Style>
                             <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="ComboBox">
                                 <Setter Property="IsEnabled" Value="True" />
-                                <Setter Property="Margin" Value="3,0" />
-
-                                <Setter Property="Width" Value="135" />
+                                <Setter Property="Margin" Value="0,0,5,0" />
 
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Socket.IsConnected}" Value="True">

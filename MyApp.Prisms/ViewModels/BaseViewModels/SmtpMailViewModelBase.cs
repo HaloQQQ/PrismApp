@@ -6,12 +6,12 @@ using System.Windows.Input;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Contracts;
 using System.Collections.Generic;
-using PrismAppBasicLib.MsgEvents;
 using IceTea.Atom.Mails;
 using IceTea.Wpf.Atom.Utils;
 using IceTea.Core.Utils.Mails;
 using System;
 using IceTea.Atom.BaseModels;
+using PrismAppBasicLib.Contracts;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {
@@ -51,16 +51,12 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
         {
             this.InitEmailManager();
 
-            _emailManager.ExceptionOccured += (sender, ex) => PublishMessage(ex.Message);
+            _emailManager.ExceptionOccured += (sender, ex) => CommonUtil.PublishMessage(_eventAggregator, ex.Message);
             _emailManager.SendCompletedEventHandler += (sender, e) =>
             {
-                PublishMessage("发送完成");
+                CommonUtil.PublishMessage(_eventAggregator, "发送完成");
 
-                CommonAtomUtils.BeginInvoke(
-                () =>
-                {
-                    this.Reset();
-                });
+                CommonAtomUtils.BeginInvoke(this.Reset);
             };
 
             MailOutDto.SelectStatusChanged += newValue =>
@@ -140,7 +136,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
                 if (!result.IsSucceed)
                 {
-                    PublishMessage(result.ErrorMessage);
+                    CommonUtil.PublishMessage(_eventAggregator, result.ErrorMessage);
                 }
 
                 this.IsMailsSelectedAll = false;
@@ -204,11 +200,6 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
                 }
             }, _ => Mails.Any(m => m.IsSelected))
             .ObservesProperty(() => NotUse);
-        }
-
-        private void PublishMessage(string message)
-        {
-            _eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(message));
         }
 
         private void Reset()

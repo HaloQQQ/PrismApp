@@ -51,7 +51,7 @@
             <Setter Property="Visibility" Value="Collapsed" />
 
             <Style.Triggers>
-                <DataTrigger Binding="{Binding CanBatchSelect, Mode=OneWay}" Value="True">
+                <DataTrigger Binding="{Binding DistributeMusicViewModel.CanBatchSelect, Mode=OneWay}" Value="True">
                     <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
             </Style.Triggers>
@@ -62,7 +62,7 @@
             BasedOn="{StaticResource {x:Type ToggleButton}}"
             TargetType="RadioButton">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding DisplayFavorites.Count}" Value="0">
+                <DataTrigger Binding="{Binding DistributeMusicViewModel.DisplayFavorites.Count}" Value="0">
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding IsLoading}" Value="True">
@@ -93,11 +93,11 @@
                     Style="{StaticResource PlayAllButton}"
                     ToolTip="{Binding KeyGestureDic[播放所有音乐].ToolTip}" />
 
-                <ToggleButton IsChecked="{Binding CanBatchSelect, Mode=TwoWay}">
+                <ToggleButton IsChecked="{Binding DistributeMusicViewModel.CanBatchSelect, Mode=TwoWay}">
                     <ToggleButton.Style>
                         <Style BasedOn="{StaticResource BatchOperateToggleButton}" TargetType="ToggleButton">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding DisplayFavorites.Count}" Value="0">
+                                <DataTrigger Binding="{Binding DistributeMusicViewModel.DisplayFavorites.Count}" Value="0">
                                     <Setter Property="IsEnabled" Value="False" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsLoading}" Value="True">
@@ -123,7 +123,7 @@
                     </Button.InputBindings>
                 </Button>
 
-                <Button Command="{Binding BatchDeleteCommand}" Style="{StaticResource DeleteButton}" />
+                <Button Command="{Binding DistributeMusicViewModel.BatchDeleteCommand}" Style="{StaticResource DeleteButton}" />
             </StackPanel>
         </Viewbox>
 
@@ -141,7 +141,7 @@
                     BorderThickness="1"
                     CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}, Converter={StaticResource DigitToCornerRadiusConverter}}"
                     DockPanel.Dock="Right"
-                    Visibility="{Binding CanBatchSelect, Converter={StaticResource BoolToCollapsedVisibleConverter}}">
+                    Visibility="{Binding DistributeMusicViewModel.CanBatchSelect, Converter={StaticResource BoolToCollapsedVisibleConverter}}">
                     <Border.Clip>
                         <MultiBinding Converter="{StaticResource MultiConverter_CornerRadiusAndSizeToClip}">
                             <MultiBinding.Bindings>
@@ -161,7 +161,7 @@
                             BorderThickness="0,0,0.5,0"
                             Content="&#xe790;"
                             GroupName="MusicDisplayMode"
-                            IsChecked="{Binding IsInSong}"
+                            IsChecked="{Binding DistributeMusicViewModel.IsInSong}"
                             Style="{StaticResource CategoryRadioButton}"
                             ToolTip="单曲" />
                         <RadioButton
@@ -196,10 +196,10 @@
                     <TextBox.Style>
                         <Style BasedOn="{StaticResource TextBox_Filter}" TargetType="TextBox">
 
-                            <Setter Property="Text" Value="{Binding FavoriteListFilteKeyWords, UpdateSourceTrigger=PropertyChanged, Delay=100}" />
+                            <Setter Property="Text" Value="{Binding DistributeMusicViewModel.FavoriteListFilteKeyWords, UpdateSourceTrigger=PropertyChanged, Delay=100}" />
 
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding CanBatchSelect}" Value="True">
+                                <DataTrigger Binding="{Binding DistributeMusicViewModel.CanBatchSelect}" Value="True">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
 
@@ -209,8 +209,8 @@
 
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding FavoriteListFilteKeyWords}" Value="{x:Null}" />
-                                        <Condition Binding="{Binding DisplayFavorites.Count}" Value="0" />
+                                        <Condition Binding="{Binding DistributeMusicViewModel.FavoriteListFilteKeyWords}" Value="{x:Null}" />
+                                        <Condition Binding="{Binding DistributeMusicViewModel.DisplayFavorites.Count}" Value="0" />
                                     </MultiDataTrigger.Conditions>
 
                                     <Setter Property="IsEnabled" Value="False" />
@@ -218,8 +218,8 @@
 
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding FavoriteListFilteKeyWords.Length}" Value="0" />
-                                        <Condition Binding="{Binding DisplayFavorites.Count}" Value="0" />
+                                        <Condition Binding="{Binding DistributeMusicViewModel.FavoriteListFilteKeyWords.Length}" Value="0" />
+                                        <Condition Binding="{Binding DistributeMusicViewModel.DisplayFavorites.Count}" Value="0" />
                                     </MultiDataTrigger.Conditions>
 
                                     <Setter Property="IsEnabled" Value="False" />
@@ -236,9 +236,9 @@
                 <ToggleButton
                     Content="退出批量操作"
                     DockPanel.Dock="Right"
-                    IsChecked="{Binding CanBatchSelect, Converter={StaticResource OppositeBoolConverter}, Mode=TwoWay}"
+                    IsChecked="{Binding DistributeMusicViewModel.CanBatchSelect, Converter={StaticResource OppositeBoolConverter}, Mode=TwoWay}"
                     Style="{StaticResource ButtonBase_Icon_Conent_Transparent}"
-                    Visibility="{Binding CanBatchSelect, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
+                    Visibility="{Binding DistributeMusicViewModel.CanBatchSelect, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
             </DockPanel>
         </Viewbox>
     </Grid>

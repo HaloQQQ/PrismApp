@@ -5,8 +5,8 @@ using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
 using Prism.Events;
 using Prism.Ioc;
-using PrismAppBasicLib.MsgEvents;
 using IceTea.SocketStandard.Udp.Contracts;
+using PrismAppBasicLib.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -24,13 +24,13 @@ namespace MyApp.Prisms.ViewModels
         {
             if (this.RemoteIp.IsNullOrBlank())
             {
-                ContainerLocator.Current.Resolve<IEventAggregator>().GetEvent<DialogMessageEvent>().Publish(new DialogMessage("远程Ip无效"));
+                CommonUtil.PublishMessage(ContainerLocator.Current.Resolve<IEventAggregator>(), "远程Ip无效");
                 return false;
             }
 
             if (!ushort.TryParse(this.RemotePort, out ushort remotePort))
             {
-                ContainerLocator.Current.Resolve<IEventAggregator>().GetEvent<DialogMessageEvent>().Publish(new DialogMessage("远程端口无效"));
+                CommonUtil.PublishMessage(ContainerLocator.Current.Resolve<IEventAggregator>(), "远程端口无效");
                 return false;
             }
 

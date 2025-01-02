@@ -8,7 +8,7 @@ using Prism.Ioc;
 using IceTea.Atom.Utils;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Contracts;
-using PrismAppBasicLib.MsgEvents;
+using PrismAppBasicLib.Contracts;
 
 namespace MyApp.Prisms.Helper
 {
@@ -66,9 +66,7 @@ namespace MyApp.Prisms.Helper
 
             if (!AppUtils.OpenWithNotePad(filePath))
             {
-                ContainerLocator.Current.Resolve<IEventAggregator>()
-                    ?.GetEvent<DialogMessageEvent>()
-                    ?.Publish(new DialogMessage($"日志文件{filePath}不存在!", 2));
+                CommonUtil.PublishMessage(ContainerLocator.Current.Resolve<IEventAggregator>(), $"日志文件{filePath}不存在!", 2);
             }
         }
     }

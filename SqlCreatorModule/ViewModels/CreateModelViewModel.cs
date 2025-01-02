@@ -1,5 +1,4 @@
 ﻿using IceTea.Atom.Extensions;
-using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils;
 using IceTea.SqlStandard.Contracts;
 using IceTea.SqlStandard.DbModels;
@@ -8,11 +7,11 @@ using IceTea.Wpf.Core.Utils;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
-using PrismAppBasicLib.MsgEvents;
 using SqlCreatorModule.Models;
 using System.Data;
 using System.Windows.Input;
 using IceTea.Wpf.Atom.Utils;
+using PrismAppBasicLib.Contracts;
 
 namespace SqlCreatorModule.ViewModels
 {
@@ -52,12 +51,12 @@ namespace SqlCreatorModule.ViewModels
                         this.DbNames = db.GetDBsName();
                     }
 
-                    this.PublishMsg(eventAggregator, "连接成功");
+                    CommonUtil.PublishMessage(eventAggregator, "连接成功");
                 }
                 catch (Exception ex)
                 {
                     this.CurrentDbName = string.Empty;
-                    this.PublishMsg(eventAggregator, ex.Message);
+                    CommonUtil.PublishMessage(eventAggregator, ex.Message);
                 }
             });
 
@@ -84,11 +83,11 @@ namespace SqlCreatorModule.ViewModels
                         this.CurrentTableName = this.TableNames.FirstOrDefault();
                     }
 
-                    this.PublishMsg(eventAggregator, "查询表名集合成功");
+                    CommonUtil.PublishMessage(eventAggregator, "查询表名集合成功");
                 }
                 catch (Exception ex)
                 {
-                    this.PublishMsg(eventAggregator, ex.Message);
+                    CommonUtil.PublishMessage(eventAggregator, ex.Message);
                 }
             });
 
@@ -120,12 +119,12 @@ namespace SqlCreatorModule.ViewModels
 
                         this.TableColumnsStructure = list;
 
-                        this.PublishMsg(eventAggregator, "查询表结构成功");
+                        CommonUtil.PublishMessage(eventAggregator, "查询表结构成功");
                     }
                 }
                 catch (Exception ex)
                 {
-                    this.PublishMsg(eventAggregator, ex.Message);
+                    CommonUtil.PublishMessage(eventAggregator, ex.Message);
                 }
             });
 
@@ -152,11 +151,11 @@ namespace SqlCreatorModule.ViewModels
                     ModelHelper.BuildTheModelClassFromColumns(TableColumnsStructure.Select(column => new ModelHelper.ColumnProperty(CurrentTableName.ToPascal(), column.ColumnName, column.DataType)),
                         this.CurrentTableName, $"{CurrentDbType}.{CurrentDbName}导出数据表{CurrentTableName}", ModelExportDir, "SqlCreatorModule.ExportModels");
 
-                    this.PublishMsg(eventAggregator, "导出成功");
+                    CommonUtil.PublishMessage(eventAggregator, "导出成功");
                 }
                 catch (Exception ex)
                 {
-                    this.PublishMsg(eventAggregator, ex.Message);
+                    CommonUtil.PublishMessage(eventAggregator, ex.Message);
                 }
             });
         }
@@ -215,11 +214,6 @@ namespace SqlCreatorModule.ViewModels
 
                 return new PostgreSQLDb(this.Host, this.CurrentDbName, this.Uid, this.Pwd, port);
             }
-        }
-
-        private void PublishMsg(IEventAggregator eventAggregator, string message)
-        {
-            eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(message, 3));
         }
 
         private IEnumerable<DataColumnInfoModel> _tableColumnsStructure;

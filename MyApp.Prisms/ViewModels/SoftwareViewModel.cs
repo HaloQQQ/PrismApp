@@ -17,7 +17,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.Events;
-using PrismAppBasicLib.MsgEvents;
 using IceTea.Desktop.Utils;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using IceTea.Wpf.Atom.Contracts.MyEvents;
@@ -30,6 +29,7 @@ using CustomControlsDemoModule.Views.Controls;
 using MusicPlayerModule.Views;
 using System.Windows.Media.Imaging;
 using IceTea.Desktop.Extensions;
+using PrismAppBasicLib.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -106,7 +106,7 @@ namespace MyApp.Prisms.ViewModels
                     });
             });
 
-            this.SubscribeDialogMessage(eventAggregator);
+            CommonUtil.SubscribeMessage(eventAggregator, item => this.DialogMessage = item);
 
             this.LoadConfig(config);
             this.InitHotkeys(appConfigFileHotKeyManager);
@@ -345,11 +345,6 @@ namespace MyApp.Prisms.ViewModels
         {
             get => this._dialogMessage;
             set => SetProperty<DialogMessage>(ref _dialogMessage, value);
-        }
-
-        private void SubscribeDialogMessage(IEventAggregator eventAggregator)
-        {
-            eventAggregator.GetEvent<DialogMessageEvent>().Subscribe(item => this.DialogMessage = item);
         }
 
         public SettingsViewModel Settings { get; }

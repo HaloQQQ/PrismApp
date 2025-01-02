@@ -14,7 +14,6 @@ using MyApp.Prisms.Views;
 using IceTea.Atom.Utils;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Utils.Setting;
-using PrismAppBasicLib.MsgEvents;
 using Prism.Regions;
 using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.Views;
@@ -30,6 +29,7 @@ using IceTea.Atom.Extensions;
 using MusicPlayerModule.MsgEvents.Music;
 using PrismAppBasicLib.Models;
 using CustomControlsDemoModule.Events;
+using PrismAppBasicLib.Contracts;
 
 namespace MyApp.Prisms
 {
@@ -281,7 +281,9 @@ namespace MyApp.Prisms
 
             if (failedKeys.Any())
             {
-                this.Container.Resolve<IEventAggregator>().GetEvent<DialogMessageEvent>().Publish(new DialogMessage($"{AppStatics.NewLineChars.Join(failedKeys)}{AppStatics.NewLineChars}注册失败", 4));
+                CommonUtil.PublishMessage(
+                    this.Container.Resolve<IEventAggregator>(),
+                    $"{AppStatics.NewLineChars.Join(failedKeys)}{AppStatics.NewLineChars}注册失败");
             }
         }
     }

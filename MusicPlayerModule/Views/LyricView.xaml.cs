@@ -9,6 +9,7 @@ using Prism.Events;
 using Prism.Ioc;
 using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.MsgEvents.Music;
+using IceTea.Atom.Utils;
 
 namespace MusicPlayerModule.Views
 {
@@ -31,24 +32,29 @@ namespace MusicPlayerModule.Views
         /// <param name="e"></param>
         internal void LyricPageSlide(object? sender, RoutedEventArgs? e)
         {
-            var storyBoard = new Storyboard();
+            AppUtils.AssertDataValidation(this.RenderTransform is TranslateTransform, "Invalid Data");
 
-            var y = (this.RenderTransform as TranslateTransform).Y;
-
-            var to = y == 0 ? SystemParameters.PrimaryScreenHeight : 0;
-
-            var translateAnimation = new DoubleAnimation(y, to, new Duration(TimeSpan.FromMilliseconds(500)));
-
-            Storyboard.SetTarget(translateAnimation, this);
-            Storyboard.SetTargetProperty(translateAnimation, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
-
-            storyBoard.Children.Add(translateAnimation);
-
-            storyBoard.Begin();
-
-            if (e != null)
+            if (this.RenderTransform is TranslateTransform translateTransform)
             {
-                e.Handled = true;
+                var y = translateTransform.Y;
+
+                var to = y == 0 ? SystemParameters.PrimaryScreenHeight : 0;
+
+                var storyBoard = new Storyboard();
+
+                var translateAnimation = new DoubleAnimation(y, to, new Duration(TimeSpan.FromMilliseconds(500)));
+
+                Storyboard.SetTarget(translateAnimation, this);
+                Storyboard.SetTargetProperty(translateAnimation, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
+
+                storyBoard.Children.Add(translateAnimation);
+
+                storyBoard.Begin();
+
+                if (e != null)
+                {
+                    e.Handled = true;
+                }
             }
         }
 

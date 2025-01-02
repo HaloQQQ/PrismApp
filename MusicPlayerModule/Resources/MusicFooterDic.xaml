@@ -25,18 +25,12 @@
         </Style.Triggers>
     </Style>
 
-    <ContextMenu x:Key="PlayinigDataGridContextMenu">
+    <ContextMenu x:Key="PlayinigDataGridContextMenu" MyAttachProperty.IsCollapsed="True">
         <MenuItem Command="{Binding PlacementTarget.DataContext.PlayPlayingCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Style>
                 <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
-                    <Setter Property="Header">
-                        <Setter.Value>
-                            <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
-                                <TextBlock Text="&#xea6d;" />
-                                <TextBlock Text="播放" />
-                            </TextBlock>
-                        </Setter.Value>
-                    </Setter>
+                    <Setter Property="Icon" Value="&#xea6d;" />
+                    <Setter Property="Header" Value="播放" />
 
                     <Style.Triggers>
                         <MultiDataTrigger>
@@ -45,54 +39,38 @@
                                 <Condition Binding="{Binding PlacementTarget.DataContext.Running, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
                             </MultiDataTrigger.Conditions>
 
-                            <Setter Property="Header">
-                                <Setter.Value>
-                                    <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
-                                        <TextBlock Text="&#xe62a;" />
-                                        <TextBlock Text="暂停" />
-                                    </TextBlock>
-                                </Setter.Value>
-                            </Setter>
+                            <Setter Property="Icon" Value="&#xe62a;" />
+                            <Setter Property="Header" Value="暂停" />
                         </MultiDataTrigger>
                     </Style.Triggers>
                 </Style>
             </MenuItem.Style>
         </MenuItem>
 
-        <MenuItem Command="{Binding PlacementTarget.DataContext.OpenInExploreCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.SelectedItem.Music.FileDir, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-            <MenuItem.Header>
-                <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
-                    <TextBlock Text="&#xebdf;" />
-                    <TextBlock Text="打开目录位置" />
-                </TextBlock>
-            </MenuItem.Header>
-        </MenuItem>
+        <MenuItem
+            Command="{Binding PlacementTarget.DataContext.OpenInExploreCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            CommandParameter="{Binding PlacementTarget.SelectedItem.Music.FileDir, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            Header="打开目录位置"
+            Icon="&#xebdf;" />
 
-        <MenuItem Command="{Binding PlacementTarget.DataContext.DownLoadCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.SelectedItem.Music, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-            <MenuItem.Header>
-                <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
-                    <TextBlock Text="&#xe63b;" />
-                    <TextBlock Text="下载" />
-                </TextBlock>
-            </MenuItem.Header>
-        </MenuItem>
 
-        <MenuItem Command="{Binding PlacementTarget.DataContext.DeletePlayingCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-            <MenuItem.Header>
-                <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
-                    <TextBlock Text="&#xec7b;" />
-                    <TextBlock Text="从播放队列删除" />
-                </TextBlock>
-            </MenuItem.Header>
-        </MenuItem>
+        <MenuItem
+            Command="{Binding PlacementTarget.DataContext.DownLoadCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            CommandParameter="{Binding PlacementTarget.SelectedItem.Music, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            Header="下载"
+            Icon="&#xe63b;" />
 
-        <MenuItem ItemsSource="{Binding PlacementTarget.DataContext.DistributeMusicViewModel.MusicDirs, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-            <MenuItem.Header>
-                <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
-                    <TextBlock Text="&#xe663;" />
-                    <TextBlock Text="添加到" />
-                </TextBlock>
-            </MenuItem.Header>
+        <MenuItem
+            Command="{Binding PlacementTarget.DataContext.DeletePlayingCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            Header="从播放队列删除"
+            Icon="&#xec7b;"
+            IsEnabled="{Binding PlacementTarget.SelectedItem.IsPlayingMedia, RelativeSource={RelativeSource AncestorType=ContextMenu}, Converter={StaticResource OppositeBoolConverter}}" />
+
+        <MenuItem
+            Header="添加到"
+            Icon="&#xe663;"
+            ItemsSource="{Binding PlacementTarget.DataContext.DistributeMusicViewModel.MusicDirs, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.ItemContainerStyle>
                 <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
                     <Setter Property="Header" Value="{Binding DirName}" />
@@ -162,18 +140,12 @@
                     Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                     ToolTip="更多">
                     <Button.ContextMenu>
-                        <ContextMenu>
+                        <ContextMenu MyAttachProperty.IsCollapsed="True">
                             <MenuItem Command="{Binding PlacementTarget.Tag.PlayPlayingCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                                 <MenuItem.Style>
                                     <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
-                                        <Setter Property="Header">
-                                            <Setter.Value>
-                                                <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
-                                                    <TextBlock Text="&#xea6d;" />
-                                                    <TextBlock Text="播放" />
-                                                </TextBlock>
-                                            </Setter.Value>
-                                        </Setter>
+                                        <Setter Property="Icon" Value="&#xea6d;" />
+                                        <Setter Property="Header" Value="播放" />
 
                                         <Style.Triggers>
                                             <MultiDataTrigger>
@@ -182,54 +154,37 @@
                                                     <Condition Binding="{Binding PlacementTarget.Tag.Running, RelativeSource={RelativeSource AncestorType=ContextMenu}}" Value="True" />
                                                 </MultiDataTrigger.Conditions>
 
-                                                <Setter Property="Header">
-                                                    <Setter.Value>
-                                                        <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
-                                                            <TextBlock Text="&#xe62a;" />
-                                                            <TextBlock Text="暂停" />
-                                                        </TextBlock>
-                                                    </Setter.Value>
-                                                </Setter>
+                                                <Setter Property="Icon" Value="&#xe62a;" />
+                                                <Setter Property="Header" Value="暂停" />
                                             </MultiDataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </MenuItem.Style>
                             </MenuItem>
 
-                            <MenuItem Command="{Binding PlacementTarget.Tag.OpenInExploreCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.DataContext.Music.FileDir, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-                                <MenuItem.Header>
-                                    <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
-                                        <TextBlock Text="&#xebdf;" />
-                                        <TextBlock Text="打开目录位置" />
-                                    </TextBlock>
-                                </MenuItem.Header>
-                            </MenuItem>
+                            <MenuItem
+                                Command="{Binding PlacementTarget.Tag.OpenInExploreCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                CommandParameter="{Binding PlacementTarget.DataContext.Music.FileDir, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                Header="打开目录位置"
+                                Icon="&#xebdf;" />
 
-                            <MenuItem Command="{Binding PlacementTarget.Tag.DownLoadCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.DataContext.Music, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-                                <MenuItem.Header>
-                                    <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
-                                        <TextBlock Text="&#xe63b;" />
-                                        <TextBlock Text="下载" />
-                                    </TextBlock>
-                                </MenuItem.Header>
-                            </MenuItem>
+                            <MenuItem
+                                Command="{Binding PlacementTarget.Tag.DownLoadCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                CommandParameter="{Binding PlacementTarget.DataContext.Music, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                Header="下载"
+                                Icon="&#xe63b;" />
 
-                            <MenuItem Command="{Binding PlacementTarget.Tag.DeletePlayingCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-                                <MenuItem.Header>
-                                    <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
-                                        <TextBlock Text="&#xec7b;" />
-                                        <TextBlock Text="从播放队列删除" />
-                                    </TextBlock>
-                                </MenuItem.Header>
-                            </MenuItem>
+                            <MenuItem
+                                Command="{Binding PlacementTarget.Tag.DeletePlayingCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                Header="从播放队列删除"
+                                Icon="&#xec7b;"
+                                IsEnabled="{Binding PlacementTarget.DataContext.IsPlayingMedia, RelativeSource={RelativeSource AncestorType=ContextMenu}, Converter={StaticResource OppositeBoolConverter}}" />
 
-                            <MenuItem ItemsSource="{Binding PlacementTarget.Tag.DistributeMusicViewModel.MusicDirs, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
-                                <MenuItem.Header>
-                                    <TextBlock Style="{StaticResource TextBlock_Theme_Icon}">
-                                        <TextBlock Text="&#xe663;" />
-                                        <TextBlock Text="添加到" />
-                                    </TextBlock>
-                                </MenuItem.Header>
+                            <MenuItem
+                                Header="添加到"
+                                Icon="&#xe663;"
+                                ItemsSource="{Binding PlacementTarget.Tag.DistributeMusicViewModel.MusicDirs, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                                 <MenuItem.ItemContainerStyle>
                                     <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
                                         <Setter Property="Header" Value="{Binding DirName}" />

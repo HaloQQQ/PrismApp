@@ -132,7 +132,7 @@
 
         <views:OperationButtonsView Grid.Row="0" />
 
-        <views:MusicListView Grid.Row="1" />
+        <views:MusicListView Grid.Row="1" Margin="0,0,0,10" />
 
         <!--  歌词展示页面  -->
         <views:LyricView Grid.RowSpan="3" />

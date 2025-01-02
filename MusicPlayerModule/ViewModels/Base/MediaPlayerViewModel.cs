@@ -13,6 +13,7 @@ using IceTea.Atom.Extensions;
 using MusicPlayerModule.Contracts;
 using IceTea.Atom.BaseModels;
 using PrismAppBasicLib.Models;
+using PrismAppBasicLib.Contracts;
 
 namespace MusicPlayerModule.ViewModels.Base
 {
@@ -302,6 +303,13 @@ namespace MusicPlayerModule.ViewModels.Base
 
         protected virtual void DeletePlaying_CommandExecute(MediaBaseViewModel media)
         {
+            if (media.IsNotNullAnd(m => m.IsPlayingMedia))
+            {
+                CommonUtil.PublishMessage(_eventAggregator, "当前音乐正在播放，不允许删除");
+
+                return;
+            }
+
             if (media != null && media == this.CurrentMedia)
             {
                 if (this.DisplayPlaying.Count > 1)

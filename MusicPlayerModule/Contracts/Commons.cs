@@ -1,7 +1,4 @@
-﻿using IceTea.Atom.Contracts;
-using Prism.Events;
-using PrismAppBasicLib.MsgEvents;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace MusicPlayerModule.Contracts
 {
@@ -36,11 +33,6 @@ namespace MusicPlayerModule.Contracts
             slider.Value = 0;
             mediaElement.Stop();
             mediaElement.Position = TimeSpan.Zero;
-        }
-
-        internal static void PublishMessage(IEventAggregator eventAggregator, string msg, int seconds = 3)
-        {
-            eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage(msg, seconds));
         }
     }
 }
