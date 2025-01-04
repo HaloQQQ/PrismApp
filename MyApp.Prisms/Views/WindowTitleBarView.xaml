@@ -264,7 +264,7 @@
                 Opened="BrightPopup_Opened"
                 Placement="Bottom"
                 PlacementTarget="{Binding ElementName=brightToggleButton}"
-                VerticalOffset="-10">
+                VerticalOffset="-5">
                 <!--  亮度调节模态框  -->
                 <StackPanel
                     Background="{StaticResource PopupBackground}"

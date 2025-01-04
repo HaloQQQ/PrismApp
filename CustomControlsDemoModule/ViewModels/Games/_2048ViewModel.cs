@@ -4,7 +4,7 @@ using IceTea.Atom.Extensions;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using Prism.Events;
-using PrismAppBasicLib.MsgEvents;
+using PrismAppBasicLib.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -164,7 +164,7 @@ namespace CustomControlsDemoModule.ViewModels
 
                 MaxScore = Math.Max(MaxScore, Score);
 
-                _eventAggregator.GetEvent<DialogMessageEvent>().Publish(new DialogMessage("游戏结束"));
+                CommonUtil.PublishMessage(_eventAggregator, "游戏结束");
 
                 return true;
             }

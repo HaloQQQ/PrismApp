@@ -4,8 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
-    <StackPanel Margin="10">
-        <DockPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0">
             <TextBlock
                 HorizontalAlignment="Left"
                 DockPanel.Dock="Top"
@@ -43,5 +47,42 @@
                 Style="{StaticResource TextBox_PlaceHolderAsLable_Execute}"
                 Text="{Binding FilePath}" />
         </DockPanel>
-    </StackPanel>
+
+        <DockPanel Grid.Row="1">
+            <TextBlock
+                HorizontalAlignment="Left"
+                DockPanel.Dock="Top"
+                FontSize="30"
+                FontWeight="Bold"
+                Style="{StaticResource TextBlock_Theme}"
+                Text="启动关闭服务" />
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Style="{StaticResource TextBlock_Theme}" Text="服务：" />
+                <ComboBox
+                    Width="180"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding Services}"
+                    SelectedIndex="0"
+                    Text="{Binding CurrentServiceName}" />
+
+                <Button
+                    Command="{Binding FentchServiceCommand}"
+                    Content="&#xe632;"
+                    Style="{StaticResource ButtonBase_Icon_ScaleDown_Big_SkyBlue}" />
+
+                <Button
+                    Command="{Binding StartServiceCommand}"
+                    CommandParameter="{Binding CurrentServiceName}"
+                    Content="&#xe87c;"
+                    Style="{StaticResource Button_Icon_Stop}" />
+
+                <Button
+                    Command="{Binding StopServiceCommand}"
+                    CommandParameter="{Binding CurrentServiceName}"
+                    Content="&#xea89;"
+                    Style="{StaticResource Button_Icon_Stop}" />
+            </StackPanel>
+        </DockPanel>
+    </Grid>
 </UserControl>

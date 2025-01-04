@@ -43,7 +43,7 @@
                     CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                     Header="修改目录名" />
                 <MenuItem
-                    Command="{Binding DistributeMusicViewModel.AddToPlayingCommand}"
+                    Command="{Binding AddToPlayingCommand}"
                     CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
                     Header="添加到播放队列" />
             </ContextMenu>
@@ -332,7 +332,7 @@
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding IsLoading}" Value="True" />
+                                <Condition Binding="{Binding DistributeMusicViewModel.IsLoading}" Value="True" />
                                 <Condition Binding="{Binding DistributeMusicViewModel.DisplayFavorites.Count}" Value="0" />
                             </MultiDataTrigger.Conditions>
 
@@ -358,7 +358,7 @@
                             <Setter Property="ContextMenu" Value="{x:Null}" />
                         </DataTrigger>
 
-                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                        <DataTrigger Binding="{Binding DistributeMusicViewModel.IsLoading}" Value="True">
                             <Setter Property="IsEnabled" Value="False" />
                         </DataTrigger>
                     </Style.Triggers>
@@ -380,7 +380,7 @@
                     Visibility="{Binding DataContext.DistributeMusicViewModel.CanBatchSelect, Converter={StaticResource BoolToVisibleCollapsedConverter}, Source={x:Reference dummyElement}}">
                     <DataGridCheckBoxColumn.HeaderTemplate>
                         <DataTemplate>
-                            <CheckBox Command="{Binding DataContext.SelectAllCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" IsChecked="{Binding DataContext.DistributeMusicViewModel.SelectFavoriteAll, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                            <CheckBox IsChecked="{Binding DataContext.DistributeMusicViewModel.SelectFavoriteAll, RelativeSource={RelativeSource AncestorType=DataGrid}}">
                                 <CheckBox.Style>
                                     <Style BasedOn="{StaticResource CheckBox_SelectAll}" TargetType="CheckBox">
                                         <Style.Triggers>

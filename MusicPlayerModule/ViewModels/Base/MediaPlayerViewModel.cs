@@ -7,8 +7,6 @@ using IceTea.Atom.Contracts;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using MusicPlayerModule.MsgEvents;
-using System.Diagnostics;
-using System.IO;
 using IceTea.Atom.Extensions;
 using MusicPlayerModule.Contracts;
 using IceTea.Atom.BaseModels;
@@ -33,7 +31,7 @@ namespace MusicPlayerModule.ViewModels.Base
         {
             this._eventAggregator = eventAggregator.AssertNotNull(nameof(IEventAggregator));
             this._configManager = configManager.AssertArgumentNotNull(nameof(IConfigManager));
-            this._settingManager = settingManager;
+            this._settingManager = settingManager.AssertArgumentNotNull(nameof(ISettingManager<SettingModel>));
 
             this._settingManager.TryAdd(CustomStatics.MUSIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode(CustomStatics.LastMusicDir_ConfigKey), null));
             this._settingManager.TryAdd(CustomStatics.LYRIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode(CustomStatics.LastLyricDir_ConfigKey), null));
@@ -105,9 +103,9 @@ namespace MusicPlayerModule.ViewModels.Base
         {
             this.OpenInExploreCommand = new DelegateCommand<string>(mediaDir =>
             {
-                if (Directory.Exists(mediaDir))
+                if (mediaDir.IsDirectoryExists())
                 {
-                    Process.Start("explorer", mediaDir);
+                    AppUtils.OpenExplorer(mediaDir);
                 }
             });
 
@@ -310,7 +308,7 @@ namespace MusicPlayerModule.ViewModels.Base
                 return;
             }
 
-            if (media != null && media == this.CurrentMedia)
+            if (media.IsNotNullAnd(_ => _ == this.CurrentMedia))
             {
                 if (this.DisplayPlaying.Count > 1)
                 {
@@ -407,8 +405,6 @@ namespace MusicPlayerModule.ViewModels.Base
         #endregion
 
         #region Fields
-        private bool _isLoading;
-
         protected Random _random = new Random();
         #endregion
 
@@ -479,12 +475,6 @@ namespace MusicPlayerModule.ViewModels.Base
                 new AppHotKey(MediaHotKeyConsts.PlayingListPanel, Key.X, ModifierKeys.Alt)
             };
         #endregion
-
-        public bool IsLoading
-        {
-            get => this._isLoading;
-            set => SetProperty<bool>(ref _isLoading, value);
-        }
 
         public ObservableCollection<MediaBaseViewModel> DisplayPlaying { get; private set; } = new();
 
@@ -635,35 +625,11 @@ namespace MusicPlayerModule.ViewModels.Base
 
         public void Dispose()
         {
-            this.OpenInExploreCommand = null;
-
-            this.AddFilesCommand = null;
-            this.AddFolderCommand = null;
-
-            this.PrevCommand = null;
-            this.NextCommand = null;
-
-            this.RewindCommand = null;
-            this.FastForwardCommand = null;
-
-            this.CleanPlayingCommand = null;
-
-            this.PointACommand = null;
-            this.PointBCommand = null;
-            this.ResetPointABCommand = null;
-            this.ToPointACommand = null;
-
-            this.MoveToHomeCommand = null;
-            this.MoveToEndCommand = null;
-
-            this.StopPlayCommand = null;
-
-            this.PlayPlayingCommand = null;
-
             foreach (var item in this.DisplayPlaying)
             {
                 item.Dispose();
             }
+
             this.DisplayPlaying.Clear();
             this.DisplayPlaying = null;
         }

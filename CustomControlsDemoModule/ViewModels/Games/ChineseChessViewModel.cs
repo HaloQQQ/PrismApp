@@ -4,7 +4,7 @@ using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using Prism.Events;
-using PrismAppBasicLib.MsgEvents;
+using PrismAppBasicLib.Contracts;
 using System.Linq;
 using System.Windows.Input;
 
@@ -84,7 +84,7 @@ namespace CustomControlsDemoModule.ViewModels
                             actor = IsRedTurn ? "黑方" : "红方";
                         }
 
-                        eventAggregator.GetEvent<DialogMessageEvent>().Publish(new IceTea.Atom.Contracts.DialogMessage($"{actor}获胜"));
+                        CommonUtil.PublishMessage(_eventAggregator, $"{actor}获胜");
                         return;
                     }
 

@@ -12,7 +12,7 @@ namespace MusicPlayerModule.Models
             Collection = collection.AssertNotEmpty(nameof(Collection));
         }
 
-        public FavoriteMusicViewModel TargetToPlay { get; set; }
+        public FavoriteMusicViewModel TargetToPlay { get; }
         public IEnumerable<FavoriteMusicViewModel> Collection { get; }
     }
 }

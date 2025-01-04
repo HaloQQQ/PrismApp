@@ -11,7 +11,7 @@ using IceTea.Atom.Contracts;
 namespace MusicPlayerModule.Models;
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
 
-internal class MusicModel : MediaBaseModel, IDisposable
+internal class MusicModel : MediaBaseModel, IDisposable, IEquatable<MusicModel>
 {
     public bool IsEnglishTitle { get; }
     public bool IsEnglishSinger { get; }
@@ -29,10 +29,10 @@ internal class MusicModel : MediaBaseModel, IDisposable
         IsEnglishTitle = Regex.IsMatch(Name, RegexConstants.ContainsEnglishPattern);
         IsEnglishSinger = Regex.IsMatch(Performer, RegexConstants.ContainsEnglishPattern);
 
-        Album = file.Tag.Album;             // 专辑名称
+        Album = file.Tag.Album ?? "空专辑";             // 专辑名称
         Year = (int)file.Tag.Year;             // 年份
         TrackNum = (int)file.Tag.Track;        // 曲目号
-        Genre = file.Tag.Genres.Length > 0 ? file.Tag.Genres[0] : string.Empty;   // 流派
+        Genre = file.Tag.Genres.Length > 0 ? file.Tag.Genres[0] : "空流派";   // 流派
 
         // 获取时长（单位为毫秒）
         int duration = (int)file.Properties.Duration.TotalMilliseconds;
@@ -120,7 +120,7 @@ internal class MusicModel : MediaBaseModel, IDisposable
 
     public bool MoveTo(string targetDir)
     {
-        if (Directory.Exists(targetDir) && System.IO.File.Exists(FilePath))
+        if (targetDir.IsDirectoryExists() && FilePath.IsFileExists())
         {
             var file = FilePath.GetFileName();
 
@@ -141,5 +141,10 @@ internal class MusicModel : MediaBaseModel, IDisposable
         base.Dispose();
 
         ImageSource = null;
+    }
+
+    public bool Equals(MusicModel? other)
+    {
+        return other.IsNotNullAnd(_ => _.FilePath == this.FilePath);
     }
 }

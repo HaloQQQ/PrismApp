@@ -65,7 +65,7 @@
                 <DataTrigger Binding="{Binding DistributeMusicViewModel.DisplayFavorites.Count}" Value="0">
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                <DataTrigger Binding="{Binding DistributeMusicViewModel.IsLoading}" Value="True">
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
                 <Trigger Property="IsChecked" Value="True">
@@ -89,7 +89,7 @@
             <StackPanel Orientation="Horizontal">
                 <Button
                     Command="{Binding PlayAllCommand}"
-                    IsEnabled="{Binding IsLoading, Converter={StaticResource OppositeBoolConverter}}"
+                    IsEnabled="{Binding DistributeMusicViewModel.IsLoading, Converter={StaticResource OppositeBoolConverter}}"
                     Style="{StaticResource PlayAllButton}"
                     ToolTip="{Binding KeyGestureDic[播放所有音乐].ToolTip}" />
 
@@ -100,7 +100,7 @@
                                 <DataTrigger Binding="{Binding DistributeMusicViewModel.DisplayFavorites.Count}" Value="0">
                                     <Setter Property="IsEnabled" Value="False" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                <DataTrigger Binding="{Binding DistributeMusicViewModel.IsLoading}" Value="True">
                                     <Setter Property="IsEnabled" Value="False" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -110,12 +110,12 @@
 
                 <Button
                     Command="{Binding DownLoadCommand}"
-                    IsEnabled="{Binding IsLoading, Converter={StaticResource OppositeBoolConverter}}"
+                    IsEnabled="{Binding DistributeMusicViewModel.IsLoading, Converter={StaticResource OppositeBoolConverter}}"
                     Style="{StaticResource DownloadButton}" />
 
                 <Button
                     Command="{Binding AddFilesCommand}"
-                    IsEnabled="{Binding IsLoading, Converter={StaticResource OppositeBoolConverter}}"
+                    IsEnabled="{Binding DistributeMusicViewModel.IsLoading, Converter={StaticResource OppositeBoolConverter}}"
                     Style="{StaticResource AddFilesButton}"
                     ToolTip="{Binding KeyGestureDic[打开文件夹].ToolTip}">
                     <Button.InputBindings>
@@ -166,7 +166,6 @@
                             ToolTip="单曲" />
                         <RadioButton
                             x:Name="RadioBtnShowByAlbum"
-                            Command="{Binding DistributeMusicViewModel.DistributeByAlbumCommand}"
                             Content="&#xe6dc;"
                             GroupName="MusicDisplayMode"
                             IsChecked="{Binding DistributeMusicViewModel.IsInAlbum}"
@@ -174,7 +173,6 @@
                             ToolTip="专辑" />
                         <RadioButton
                             x:Name="RadioBtnShowBySinger"
-                            Command="{Binding DistributeMusicViewModel.DistributeBySingerCommand}"
                             Content="&#xe61c;"
                             GroupName="MusicDisplayMode"
                             IsChecked="{Binding DistributeMusicViewModel.IsInSinger}"
@@ -183,7 +181,6 @@
                         <RadioButton
                             x:Name="RadioBtnShowByDir"
                             BorderThickness="0.5,0,0,0"
-                            Command="{Binding DistributeMusicViewModel.DistributeByDirectoryCommand}"
                             Content="&#xebdf;"
                             GroupName="MusicDisplayMode"
                             IsChecked="{Binding DistributeMusicViewModel.IsInDir}"
@@ -225,7 +222,7 @@
                                     <Setter Property="IsEnabled" Value="False" />
                                 </MultiDataTrigger>
 
-                                <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                <DataTrigger Binding="{Binding DistributeMusicViewModel.IsLoading}" Value="True">
                                     <Setter Property="IsEnabled" Value="False" />
                                 </DataTrigger>
                             </Style.Triggers>

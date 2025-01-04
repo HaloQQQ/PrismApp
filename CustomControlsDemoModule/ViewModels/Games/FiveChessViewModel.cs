@@ -4,7 +4,7 @@ using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using Prism.Events;
-using PrismAppBasicLib.MsgEvents;
+using PrismAppBasicLib.Contracts;
 using System.Collections.Generic;
 using System.Windows.Input;
 
@@ -38,7 +38,8 @@ namespace CustomControlsDemoModule.ViewModels
                     IsGameOver = true;
 
                     var msg = (bool)model.IsWhite ? "白方" : "黑方";
-                    eventAggregator.GetEvent<DialogMessageEvent>().Publish(new IceTea.Atom.Contracts.DialogMessage($"{msg}获胜"));
+
+                    CommonUtil.PublishMessage(eventAggregator, $"{msg}获胜");
 
                     return;
                 }

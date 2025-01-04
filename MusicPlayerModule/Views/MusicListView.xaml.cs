@@ -2,7 +2,6 @@
 using MusicPlayerModule.Models;
 using MusicPlayerModule.ViewModels;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace MusicPlayerModule.Views
@@ -27,11 +26,6 @@ namespace MusicPlayerModule.Views
             e.Handled = true;
 
             if (e.ChangedButton != MouseButton.Left)
-            {
-                return;
-            }
-
-            if (e.OriginalSource is Run || (e.OriginalSource is TextBlock txt && 16 == txt.ActualHeight))
             {
                 return;
             }

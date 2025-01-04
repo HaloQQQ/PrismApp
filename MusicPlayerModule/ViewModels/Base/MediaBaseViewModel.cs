@@ -37,7 +37,7 @@ namespace MusicPlayerModule.ViewModels.Base
         public virtual int MillsStep => 1000;
 
         public void Rewind() => this.CurrentMills = Math.Max(this.CurrentMills - this.MillsStep, 0);
-        public void FastForward() => this.CurrentMills += this.MillsStep;
+        public void FastForward() => this.CurrentMills = Math.Min(this.CurrentMills + this.MillsStep, TotalMills);
 
         private bool _isPlayingMedia;
         public bool IsPlayingMedia

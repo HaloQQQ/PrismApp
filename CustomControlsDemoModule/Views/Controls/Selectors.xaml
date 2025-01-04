@@ -27,6 +27,8 @@
             <ComboBox IsReadOnly="True" ItemsSource="{StaticResource Data}" />
 
             <ComboBox IsEnabled="False" ItemsSource="{StaticResource Data}" />
+
+            <ComboBox ItemsSource="{StaticResource Data}" Style="{StaticResource ComboBox_ReadOnly}" />
         </WrapPanel>
 
         <DataGrid BorderBrush="Red" BorderThickness="1">
@@ -34,7 +36,10 @@
                 <DataGridCheckBoxColumn MinWidth="90" Header="选中" />
                 <DataGridComboBoxColumn MinWidth="90" Header="选项" />
                 <DataGridTextColumn MinWidth="90" Header="名称" />
-                <DataGridTemplateColumn MinWidth="90" Header="模板" />
+                <DataGridTemplateColumn
+                    Width="*"
+                    MinWidth="90"
+                    Header="模板" />
             </DataGrid.Columns>
         </DataGrid>
 
