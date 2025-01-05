@@ -59,7 +59,7 @@ namespace MusicPlayerModule.Models
 
         public bool Contains(FavoriteMusicViewModel item)
         {
-            return this.DisplayByClassifyKeyFavorites.Any(i => i.Music.FilePath == item.Music.FilePath);
+            return this.DisplayByClassifyKeyFavorites.Any(i => i.Equals(item));
         }
 
         public bool HasUnselected()

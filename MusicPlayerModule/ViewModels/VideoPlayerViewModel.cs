@@ -41,7 +41,6 @@ namespace MusicPlayerModule.ViewModels
         }
 
         private bool _isEditingStretch;
-
         public bool IsEditingStretch
         {
             get => this._isEditingStretch;
@@ -49,7 +48,6 @@ namespace MusicPlayerModule.ViewModels
         }
 
         private Stretch _stretch;
-
         public Stretch Stretch
         {
             get => this._stretch;
@@ -75,16 +73,16 @@ namespace MusicPlayerModule.ViewModels
                 return false;
             }
 
-            List<string> list = TryGetNewFiles(filePaths).ToList();
+            IEnumerable<string> list = TryGetNewFiles(filePaths);
 
-            if (list.Count == 0)
+            if (!list.Any())
             {
                 return false;
             }
 
             foreach (var filePath in list)
             {
-                this.DisplayPlaying.Add(new PlayingVideoViewModel(this._dto, new VideoModel(filePath)));
+                new PlayingVideoViewModel(this._dto, new VideoModel(filePath)).TryAddTo(this.DisplayPlaying);
             }
 
             this.RefreshPlayingIndex();
@@ -119,10 +117,8 @@ namespace MusicPlayerModule.ViewModels
         #region overrides
         protected override void AddMediaFromFileDialog_CommandExecute()
         {
-            var path = this.VideoSetting.Value;
-
             OpenFileDialog openFileDialog =
-                CommonAtomUtils.OpenFileDialog(path, new VideoMedia());
+                CommonAtomUtils.OpenFileDialog(this.VideoSetting.Value, new VideoMedia());
 
             if (openFileDialog != null)
             {
@@ -134,9 +130,8 @@ namespace MusicPlayerModule.ViewModels
 
         protected override void AddMediaFromFolderDialog_CommandExecute()
         {
-            var path = this.VideoSetting.Value;
+            var selectedPath = CommonCoreUtils.OpenFolderDialog(this.VideoSetting.Value);
 
-            var selectedPath = CommonCoreUtils.OpenFolderDialog(path);
             if (!selectedPath.IsNullOrBlank())
             {
                 var list = selectedPath.GetFiles(str => str.EndsWith(".mp4"));
@@ -196,23 +191,16 @@ namespace MusicPlayerModule.ViewModels
             _eventAggregator.GetEvent<ResetPlayerAndPlayVideoEvent>().Publish(this.Identity);
         }
 
-        protected override void PlayPlaying_CommandExecute(MediaBaseViewModel currentMedia)
+        protected override void PlayInPlaying_CommandExecute(MediaBaseViewModel currentMedia)
         {
+            base.PlayInPlaying_CommandExecute(currentMedia);
+
             if (currentMedia == this.CurrentMedia)
             {
-                if (this.Running = !this.Running)
+                if (!this.Running)
                 {
-                    this.RaiseContinueMediaEvent();
-                }
-                else
-                {
-                    this.RaisePauseMediaEvent();
                     this.RefreshMediaOperation(OperationType.Pause);
                 }
-            }
-            else
-            {
-                this.SetAndPlay(currentMedia);
             }
         }
 

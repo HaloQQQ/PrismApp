@@ -160,7 +160,7 @@
                         Style="{StaticResource Button_Icon_Prev}" />
 
                     <ToggleButton
-                        Command="{Binding PlayPlayingCommand}"
+                        Command="{Binding TogglePlayCommand}"
                         CommandParameter="{Binding CurrentMedia}"
                         IsChecked="{Binding Running, Mode=OneWay}"
                         Style="{StaticResource ToggleButton_Icon_Play}" />
@@ -371,7 +371,7 @@
                         ToolTip="一起听" />
 
                     <ToggleButton
-                        Command="{Binding DesktopLyricPanelCommand}"
+                        Command="{Binding ToggleDesktopLyricCommand}"
                         Content="&#xe671;"
                         IsChecked="{Binding DesktopLyric.IsDesktopLyricShow, Mode=OneWay}"
                         ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">

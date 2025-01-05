@@ -2,11 +2,11 @@
 
 namespace MusicPlayerModule.Contracts
 {
-    internal interface IChildren
+    internal interface IChildren : IDisposable
     {
         IList<IList> Parents { get; }
 
-        bool AddTo(IList parent);
+        bool TryAddTo(IList parent);
 
         bool RemoveFrom(IList parent);
 

@@ -52,7 +52,7 @@ namespace MusicPlayerModule.ViewModels
                     MusicClassifyType.Dir);
                 current.IsSelected = true;
 
-                current.AddTo(MusicDirFavorites);
+                current.TryAddTo(MusicDirFavorites);
 
                 return true;
             }
@@ -77,7 +77,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 foreach (var favorite in newColls)
                 {
-                    favorite.AddTo(targetColls);
+                    favorite.TryAddTo(targetColls);
 
                     favorite.Music.MoveTo(targetDir);
 
@@ -423,7 +423,7 @@ namespace MusicPlayerModule.ViewModels
                             this.TryRemoveMusicWithClassifyModel(originDir);
                         }
 
-                        item.AddTo(targetCollection);
+                        item.TryAddTo(targetCollection);
 
                         CommonUtil.PublishMessage(_eventAggregator, $"【{moveModel.Music.Name}】移动成功");
                     }
@@ -455,17 +455,17 @@ namespace MusicPlayerModule.ViewModels
                                 classifyType
                             );
 
-                    classifyModel.AddTo(collection);
+                    classifyModel.TryAddTo(collection);
 
                     if (displayCollection != null)
                     {
-                        classifyModel.AddTo(displayCollection);
+                        classifyModel.TryAddTo(displayCollection);
                     }
                 }
 
                 if (!classifyModel.Contains(musicModel))
                 {
-                    musicModel.AddTo(classifyModel.DisplayByClassifyKeyFavorites);
+                    musicModel.TryAddTo(classifyModel.DisplayByClassifyKeyFavorites);
                 }
             }
         }
@@ -622,8 +622,8 @@ namespace MusicPlayerModule.ViewModels
             foreach (var file in filePathList)
             {
                 var children = new FavoriteMusicViewModel(new MusicModel(file));
-                children.AddTo(DisplayFavorites);
-                children.AddTo(Favorites);
+                children.TryAddTo(DisplayFavorites);
+                children.TryAddTo(Favorites);
 
                 AddNewMusic(children);
             }
@@ -652,8 +652,8 @@ namespace MusicPlayerModule.ViewModels
                             CommonAtomUtils.Invoke(() =>
                             {
                                 var children = new FavoriteMusicViewModel(new MusicModel(item));
-                                children.AddTo(DisplayFavorites);
-                                children.AddTo(Favorites);
+                                children.TryAddTo(DisplayFavorites);
+                                children.TryAddTo(Favorites);
 
                                 AddNewMusic(children);
                             });

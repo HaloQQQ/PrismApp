@@ -88,7 +88,7 @@ namespace MusicPlayerModule.Views
             {
                 this.PlayingListButton.IsChecked = !this.PlayingListButton.IsChecked;
 
-                if (this.PlayingListButton.IsChecked.HasValue && this.PlayingListButton.IsChecked.Value)
+                if (this.PlayingListButton.IsChecked == true)
                 {
                     this.AdaptPlayingListPanelSize();
                 }
@@ -147,7 +147,7 @@ namespace MusicPlayerModule.Views
 
                 if (dataGrid.DataContext is MusicPlayerViewModel musicPlayerViewModel)
                 {
-                    musicPlayerViewModel.PlayPlayingCommand.Execute(playing);
+                    musicPlayerViewModel.TogglePlayCommand.Execute(playing);
                 }
             }
         }

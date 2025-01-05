@@ -24,28 +24,36 @@
                 </Style.Triggers>
             </Style>
 
-            <ContextMenu x:Key="MusicDir_CRUD">
+            <ContextMenu x:Key="MusicDir_CRUD" MyAttachProperty.IsCollapsed="True">
                 <MenuItem
                     Command="{Binding OpenInExploreCommand}"
                     CommandParameter="{Binding PlacementTarget.SelectedItem.ClassifyKey, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                    Header="打开目录位置" />
-                <MenuItem Command="{Binding DistributeMusicViewModel.AddMusicDirCommand}" Header="新增目录" />
+                    Header="打开目录位置"
+                    Icon="&#xebdf;" />
+                <MenuItem
+                    Command="{Binding DistributeMusicViewModel.AddMusicDirCommand}"
+                    Header="新增目录"
+                    Icon="&#xe622;" />
                 <MenuItem
                     Command="{Binding DistributeMusicViewModel.BatchMoveMusicDirCommand}"
                     CommandParameter="{Binding PlacementTarget.SelectedItem.ClassifyKey, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                    Header="移动内容" />
+                    Header="移动内容"
+                    Icon="&#xe64f;" />
                 <MenuItem
                     Command="{Binding DistributeMusicViewModel.RemoveMusicDirCommand}"
                     CommandParameter="{Binding PlacementTarget.SelectedItem.ClassifyKey, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                    Header="移除目录" />
+                    Header="移除目录"
+                    Icon="&#xec7b;" />
                 <MenuItem
                     Command="{Binding DistributeMusicViewModel.RenameMusicDirCommand}"
                     CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                    Header="修改目录名" />
+                    Header="修改目录名"
+                    Icon="&#xe654;" />
                 <MenuItem
                     Command="{Binding AddToPlayingCommand}"
                     CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                    Header="添加到播放队列" />
+                    Header="添加到播放队列"
+                    Icon="&#xe704;" />
             </ContextMenu>
 
             <ContextMenu x:Key="FavoriteDataGridContextMenu" MyAttachProperty.IsCollapsed="True">

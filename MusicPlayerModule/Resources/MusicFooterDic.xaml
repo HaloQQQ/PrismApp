@@ -26,7 +26,7 @@
     </Style>
 
     <ContextMenu x:Key="PlayinigDataGridContextMenu" MyAttachProperty.IsCollapsed="True">
-        <MenuItem Command="{Binding PlacementTarget.DataContext.PlayPlayingCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+        <MenuItem Command="{Binding PlacementTarget.DataContext.TogglePlayCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
             <MenuItem.Style>
                 <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
                     <Setter Property="Icon" Value="&#xea6d;" />
@@ -108,7 +108,7 @@
     <DataTemplate x:Key="PlayingDataGridFirstColumnCellTemplate">
         <DockPanel Width="280">
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                <Button Command="{Binding DataContext.PlayPlayingCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}">
+                <Button Command="{Binding DataContext.TogglePlayCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}">
                     <Button.Style>
                         <Style BasedOn="{StaticResource ButtonBase_Icon_Small}" TargetType="Button">
                             <Setter Property="Content" Value="&#xea6d;" />
@@ -141,7 +141,7 @@
                     ToolTip="更多">
                     <Button.ContextMenu>
                         <ContextMenu MyAttachProperty.IsCollapsed="True">
-                            <MenuItem Command="{Binding PlacementTarget.Tag.PlayPlayingCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                            <MenuItem Command="{Binding PlacementTarget.Tag.TogglePlayCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                                 <MenuItem.Style>
                                     <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
                                         <Setter Property="Icon" Value="&#xea6d;" />

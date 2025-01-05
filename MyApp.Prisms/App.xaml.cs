@@ -217,44 +217,45 @@ namespace MyApp.Prisms
                     {
                         if (item is GlobalHotKey hotKey && hotKey.Code == mid)
                         {
+                            var eventAggerator = this.Container.Resolve<IEventAggregator>();
                             switch (item.Name)
                             {
-                                case CustomConstants.GlobalHotKeysConst.Pause:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<ToggeleCurrentMediaEvent>().Publish();
+                                case CustomConstants.GlobalHotKeysConst.TogglePlay:
+                                    eventAggerator.GetEvent<ToggeleCurrentMediaEvent>().Publish();
                                     break;
                                 case CustomConstants.GlobalHotKeysConst.Prev:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<PrevMediaEvent>().Publish();
+                                    eventAggerator.GetEvent<PrevMediaEvent>().Publish();
                                     break;
                                 case CustomConstants.GlobalHotKeysConst.Next:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<NextMediaEvent>().Publish();
+                                    eventAggerator.GetEvent<NextMediaEvent>().Publish();
                                     break;
 
                                 case CustomConstants.GlobalHotKeysConst.FastForward:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<FastForwardMediaEvent>().Publish();
+                                    eventAggerator.GetEvent<FastForwardMediaEvent>().Publish();
                                     break;
                                 case CustomConstants.GlobalHotKeysConst.Rewind:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<RewindMediaEvent>().Publish();
+                                    eventAggerator.GetEvent<RewindMediaEvent>().Publish();
                                     break;
 
                                 case CustomConstants.GlobalHotKeysConst.IncreaseVolume:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<IncreaseVolumeEvent>().Publish();
+                                    eventAggerator.GetEvent<IncreaseVolumeEvent>().Publish();
                                     break;
                                 case CustomConstants.GlobalHotKeysConst.DecreaseVolume:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<DecreaseVolumeEvent>().Publish();
+                                    eventAggerator.GetEvent<DecreaseVolumeEvent>().Publish();
                                     break;
 
                                 case CustomConstants.GlobalHotKeysConst.UpScreenBright:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<UpdateScreenBrightEvent>().Publish(5);
+                                    eventAggerator.GetEvent<UpdateScreenBrightEvent>().Publish(5);
                                     break;
                                 case CustomConstants.GlobalHotKeysConst.DownScreenBright:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<UpdateScreenBrightEvent>().Publish(-5);
+                                    eventAggerator.GetEvent<UpdateScreenBrightEvent>().Publish(-5);
                                     break;
                                 case CustomConstants.GlobalHotKeysConst.MusicLyricDesktop:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<ToggleDesktopLyricEvent>().Publish();
+                                    eventAggerator.GetEvent<ToggleDesktopLyricEvent>().Publish();
                                     break;
 
                                 case CustomConstants.GlobalHotKeysConst.ColorPicker:
-                                    this.Container.Resolve<IEventAggregator>().GetEvent<ColorPickerEvent>().Publish();
+                                    eventAggerator.GetEvent<ColorPickerEvent>().Publish();
                                     break;
                             }
                         }

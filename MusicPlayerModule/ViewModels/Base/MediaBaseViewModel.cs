@@ -1,14 +1,13 @@
-﻿using IceTea.Atom.BaseModels;
-using IceTea.Atom.Extensions;
+﻿using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
+using MusicPlayerModule.Contracts;
 using MusicPlayerModule.Models;
 
 namespace MusicPlayerModule.ViewModels.Base
 {
-    internal abstract class MediaBaseViewModel : BaseNotifyModel, IDisposable
+    internal abstract class MediaBaseViewModel : ChildrenBase, IDisposable
     {
         private int _index;
-
         public int Index
         {
             get { return _index; }
@@ -57,7 +56,6 @@ namespace MusicPlayerModule.ViewModels.Base
         public double ProgressPercent => this.TotalMills == 0 ? 0 : Math.Round((this.CurrentMills * 1.0) / this.TotalMills * 100, 1);
 
         protected int _currentMills;
-
         public virtual int CurrentMills { get => _currentMills; set { throw new NotImplementedException(); } }
 
         public string CurrentTime => this.GetFormatTime(this._currentMills);
@@ -67,7 +65,6 @@ namespace MusicPlayerModule.ViewModels.Base
         public bool LoadedABPoint { get; set; }
 
         private int _pointAMills;
-
         public int PointAMills
         {
             get { return _pointAMills; }
@@ -101,7 +98,6 @@ namespace MusicPlayerModule.ViewModels.Base
         }
 
         private int _pointBMills;
-
         public int PointBMills
         {
             get { return _pointBMills; }
@@ -129,6 +125,11 @@ namespace MusicPlayerModule.ViewModels.Base
             }
         }
 
+        public bool ShouleSaveABPoint()
+        {
+            return this.PointAMills != 0 || this.PointBMills != 0;
+        }
+
         public virtual void ResetABPoint()
         {
             this.PointAMills = 0;
@@ -141,8 +142,6 @@ namespace MusicPlayerModule.ViewModels.Base
             TimeSpan time = TimeSpan.FromMilliseconds(mills);
             return time.FormatTimeSpan(this.TotalMills > 1000 * 60 * 60);
         }
-
-        public abstract void Dispose();
 
         /// <summary>
         /// 加载时重置数据

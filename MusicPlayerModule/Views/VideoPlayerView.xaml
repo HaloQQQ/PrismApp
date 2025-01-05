@@ -15,7 +15,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <ContextMenu x:Key="VideoContextMenu_Button">
-                <MenuItem Command="{Binding PlacementTarget.Tag.PlayPlayingCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                <MenuItem Command="{Binding PlacementTarget.Tag.TogglePlayCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                     <MenuItem.Style>
                         <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
                             <Setter Property="Header">
@@ -68,7 +68,7 @@
             </ContextMenu>
 
             <ContextMenu x:Key="VideoContextMenu_DataGrid">
-                <MenuItem Command="{Binding PlacementTarget.DataContext.PlayPlayingCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
+                <MenuItem Command="{Binding PlacementTarget.DataContext.TogglePlayCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}" CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType=ContextMenu}}">
                     <MenuItem.Style>
                         <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
                             <Setter Property="Header">
@@ -151,7 +151,7 @@
         <Grid.InputBindings>
             <KeyBinding
                 Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"
-                Command="{Binding PlayPlayingCommand}"
+                Command="{Binding TogglePlayCommand}"
                 CommandParameter="{Binding CurrentMedia}"
                 Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" />
 
@@ -205,7 +205,7 @@
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"
-                Command="{Binding PlayPlayingCommand}"
+                Command="{Binding TogglePlayCommand}"
                 CommandParameter="{Binding CurrentMedia}"
                 Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" />
 
@@ -255,7 +255,7 @@
             Stretch="{Binding Stretch}">
             <MediaElement.InputBindings>
                 <MouseBinding
-                    Command="{Binding PlayPlayingCommand}"
+                    Command="{Binding TogglePlayCommand}"
                     CommandParameter="{Binding CurrentMedia}"
                     MouseAction="LeftClick" />
             </MediaElement.InputBindings>
@@ -411,7 +411,7 @@
                             Style="{StaticResource Button_Icon_Prev}" />
 
                         <ToggleButton
-                            Command="{Binding PlayPlayingCommand}"
+                            Command="{Binding TogglePlayCommand}"
                             CommandParameter="{Binding CurrentMedia}"
                             IsChecked="{Binding Running, Mode=OneWay}"
                             Style="{StaticResource ToggleButton_Icon_Play}" />
@@ -543,7 +543,7 @@
                                                             </TextBlock>
 
                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                                                <Button Command="{Binding DataContext.PlayPlayingCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}">
+                                                                <Button Command="{Binding DataContext.TogglePlayCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}">
                                                                     <Button.Style>
                                                                         <Style BasedOn="{StaticResource ButtonBase_Icon_Small}" TargetType="Button">
                                                                             <Setter Property="Content" Value="&#xea6d;" />

@@ -17,7 +17,7 @@ namespace MusicPlayerModule.Views
         }
 
         /// <summary>
-        /// 添加所有到播放列表
+        /// 播放当前列表
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -40,14 +40,14 @@ namespace MusicPlayerModule.Views
                 {
                     if (dataGrid.DataContext is MusicPlayerViewModel musicPlayerViewModel)
                     {
-                        musicPlayerViewModel.PlayAndAddCurrentFavoritesCommand.Execute(new BatchAddAndPlayModel(music, items));
+                        musicPlayerViewModel.PlayCurrentItemsCommand.Execute(new BatchAddAndPlayModel(music, items));
                     }
                 }
             }
         }
 
         /// <summary>
-        /// 播放分类中的选中音乐集合
+        /// 播放当前选中的分类
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

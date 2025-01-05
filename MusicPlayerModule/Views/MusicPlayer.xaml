@@ -87,7 +87,7 @@
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"
-                Command="{Binding PlayPlayingCommand}"
+                Command="{Binding TogglePlayCommand}"
                 CommandParameter="{Binding CurrentMedia}"
                 Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" />
 

@@ -196,7 +196,7 @@ namespace MusicPlayerModule.Views
 
             if (e.Source is DataGridRow row && row.DataContext is PlayingVideoViewModel playing)
             {
-                this._videoPlayerViewModel.PlayPlayingCommand.Execute(playing);
+                this._videoPlayerViewModel.TogglePlayCommand.Execute(playing);
             }
         }
 

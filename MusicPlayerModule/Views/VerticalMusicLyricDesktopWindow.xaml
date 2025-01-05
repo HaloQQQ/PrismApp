@@ -238,7 +238,7 @@
                 </Button>
 
                 <ToggleButton
-                    Command="{Binding PlayPlayingCommand}"
+                    Command="{Binding TogglePlayCommand}"
                     CommandParameter="{Binding CurrentMedia}"
                     IsChecked="{Binding Running, Mode=OneWay}">
                     <ToggleButton.Style>
@@ -312,7 +312,7 @@
                     </ToggleButton.Style>
                 </ToggleButton>
 
-                <Button Command="{Binding DesktopLyricPanelCommand}" ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
+                <Button Command="{Binding ToggleDesktopLyricCommand}" ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
                     <Button.Style>
                         <Style BasedOn="{StaticResource ButtonBase_Icon_ScaleDown_Small}" TargetType="Button">
                             <Setter Property="Content" Value="&#xe624;" />

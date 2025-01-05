@@ -54,7 +54,7 @@ namespace MyApp.Prisms.Helper
 
         internal static class GlobalHotKeysConst
         {
-            internal const string Pause = "暂停";
+            internal const string TogglePlay = "播放/暂停";
 
             internal const string Prev = "上一个";
             internal const string Next = "下一个";
@@ -90,7 +90,7 @@ namespace MyApp.Prisms.Helper
         }
 
         internal static GlobalHotKeyInfo[] GlobalHotKeys = {
-            new GlobalHotKeyInfo(GlobalHotKeysConst.Pause, CustomModifierKeys.Alt, CustomKeys.S),
+            new GlobalHotKeyInfo(GlobalHotKeysConst.TogglePlay, CustomModifierKeys.Alt, CustomKeys.S),
 
             new GlobalHotKeyInfo(GlobalHotKeysConst.Prev, CustomModifierKeys.Alt, CustomKeys.Left),
             new GlobalHotKeyInfo(GlobalHotKeysConst.Next, CustomModifierKeys.Alt, CustomKeys.Right),

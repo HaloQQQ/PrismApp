@@ -1,5 +1,4 @@
 ﻿using IceTea.Atom.BaseModels;
-using IceTea.Atom.Utils;
 using System.Collections;
 
 namespace MusicPlayerModule.Contracts
@@ -9,9 +8,14 @@ namespace MusicPlayerModule.Contracts
         private IList<IList> _parents = new List<IList>();
         public IList<IList> Parents => _parents;
 
-        public bool AddTo(IList parent)
+        public bool TryAddTo(IList parent)
         {
-            if (!Parents.Contains(parent.AssertNotNull(nameof(parent))))
+            if (parent.Contains(this))
+            {
+                return false;
+            }
+
+            if (!Parents.Contains(parent))
             {
                 Parents.Add(parent);
             }
@@ -23,21 +27,50 @@ namespace MusicPlayerModule.Contracts
 
         public bool RemoveFrom(IList parent)
         {
-            parent.Remove(this);
-
-            Parents.Remove(parent);
-
-            return true;
-        }
-
-        public bool RemoveFromAll()
-        {
-            foreach (var item in Parents)
+            if (Parents.Remove(parent))
             {
-                item.Remove(this);
+                parent.Remove(this);
+
+                return true;
             }
 
-            return true;
+            return false;
+        }
+
+        private bool _isRemovedAll;
+        public bool RemoveFromAll()
+        {
+            if (!_isDisposed || !_isRemovedAll)
+            {
+                foreach (var item in Parents)
+                {
+                    item.Remove(this);
+                }
+
+                _isRemovedAll = true;
+
+                this.Dispose();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool _isDisposed;
+        /// <summary>
+        /// 从父集合移除
+        /// </summary>
+        public virtual void Dispose()
+        {
+            if (!_isDisposed || !_isRemovedAll)
+            {
+                _isDisposed = true;
+
+                this.RemoveFromAll();
+
+                this.Parents.Clear();
+            }
         }
     }
 }

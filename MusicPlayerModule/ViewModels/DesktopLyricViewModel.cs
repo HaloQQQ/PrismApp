@@ -165,6 +165,11 @@ namespace MusicPlayerModule.ViewModels
             set => SetProperty<bool>(ref _isDesktopLyricShow, value);
         }
 
+        internal void ToggleDesktopLyric()
+        {
+            this.IsDesktopLyricShow = !this.IsDesktopLyricShow;
+        }
+
         private bool _isVertical;
 
         public bool IsVertical
