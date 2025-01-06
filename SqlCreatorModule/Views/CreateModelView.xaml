@@ -109,12 +109,12 @@
             <TextBox
                 Width="300"
                 IsReadOnly="True"
+                MyAttachProperty.Command="{Binding OpenExportDirCommand}"
+                MyAttachProperty.IconFontText="&#xebdf;"
                 MyAttachProperty.PlaceHolder="导出模型目录"
+                Style="{StaticResource TextBox_PlaceHolderAsLable_Execute}"
                 Text="{Binding ModelExportDir}" />
-            <Button
-                Command="{Binding OpenExportDirCommand}"
-                Content="选择导出目录"
-                MyAttachProperty.IconFontText="&#xebdf;" />
+
             <Button
                 Command="{Binding ExportTableStructureToFileCommand}"
                 Content="表结构导出"
