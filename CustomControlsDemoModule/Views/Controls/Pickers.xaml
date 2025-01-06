@@ -34,6 +34,7 @@
             Grid.Column="1"
             VerticalAlignment="Top"
             MyAttachProperty.CornerRadius="10"
-            MyAttachProperty.DoubleValue="30" />
+            MyAttachProperty.DoubleValue="30"
+            MyAttachProperty.IsReadOnly="True" />
     </Grid>
 </UserControl>

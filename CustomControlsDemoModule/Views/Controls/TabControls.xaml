@@ -15,12 +15,22 @@
             </TabItem>
         </TabControl>
 
-        <TabControl>
+        <TabControl MyAttachProperty.SelectedBackground="Red">
             <TabControl.Style>
                 <Style BasedOn="{StaticResource TabControl_ScrollContent}" TargetType="TabControl">
-                    <Setter Property="Height" Value="100" />
+                    <Setter Property="Height" Value="220" />
 
-                    <Setter Property="ItemContainerStyle" Value="{StaticResource TabItem_Transparent}" />
+                    <Setter Property="ItemContainerStyle">
+                        <Setter.Value>
+                            <Style BasedOn="{StaticResource TabItem_Transparent}" TargetType="TabItem">
+                                <Setter Property="MyAttachProperty.IconFontText" Value="&#xe64f;" />
+                                <Setter Property="MyAttachProperty.DoubleValue" Value="30" />
+                                <Setter Property="MyAttachProperty.IconPosition" Value="Top" />
+
+                                <Setter Property="MaxHeight" Value="100" />
+                            </Style>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </TabControl.Style>
 

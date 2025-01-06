@@ -2,14 +2,42 @@
     x:Class="CustomControlsDemoModule.Views.Controls.ItemsControls"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:models="clr-namespace:CustomControlsDemoModule.Models">
-    <UniformGrid Columns="2" Rows="2">
-        <Menu ItemsSource="{Binding Menus}">
+    xmlns:models="clr-namespace:CustomControlsDemoModule.Models"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <UniformGrid Columns="2" Rows="3">
+        <Menu ItemsSource="{Binding Menus}" MyAttachProperty.IsCollapsed="True">
             <Menu.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type models:MenuNode}" ItemsSource="{Binding Items}">
                     <ContentPresenter Content="{Binding Name}" />
                 </HierarchicalDataTemplate>
             </Menu.ItemTemplate>
+            <Menu.ItemContainerStyle>
+                <Style BasedOn="{StaticResource {x:Type MenuItem}}" TargetType="MenuItem">
+                    <Setter Property="IsCheckable" Value="False" />
+                </Style>
+            </Menu.ItemContainerStyle>
+        </Menu>
+
+        <Menu HorizontalAlignment="Center">
+            <Menu.ItemsSource>
+                <x:Array Type="{x:Type sys:String}">
+                    <sys:String>AA</sys:String>
+                    <sys:String>BB</sys:String>
+                    <sys:String>CC</sys:String>
+                </x:Array>
+            </Menu.ItemsSource>
+        </Menu>
+
+        <Menu>
+            <MenuItem Header="A" Icon="&#xe66f;" />
+            <MenuItem Header="B" Icon="&#xe66f;">
+                <MenuItem
+                    Header="B&gt;A"
+                    Icon="&#xe66f;"
+                    IsCheckable="True"
+                    IsChecked="True" />
+            </MenuItem>
+            <MenuItem Header="C" Icon="&#xe66f;" />
         </Menu>
 
         <Button Content="上下文菜单" MyAttachProperty.HasContextMenu="True">
@@ -30,6 +58,12 @@
                     <ContentPresenter Content="{Binding Name}" />
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
+            <TreeView.ItemContainerStyle>
+                <Style BasedOn="{StaticResource {x:Type TreeViewItem}}" TargetType="TreeViewItem">
+                    <Setter Property="MyAttachProperty.IconFontText" Value="&#xe61c;" />
+                    <Setter Property="MyAttachProperty.DoubleValue" Value="30" />
+                </Style>
+            </TreeView.ItemContainerStyle>
         </TreeView>
 
         <TreeView ItemsSource="{Binding Controls}" MyAttachProperty.IconPosition="Left">
