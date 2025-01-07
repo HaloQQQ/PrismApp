@@ -250,6 +250,7 @@
         <MediaElement
             x:Name="mediaPlayer"
             Grid.Row="0"
+            LoadedBehavior="Manual"
             MediaOpened="mediaPlayer_MediaOpened"
             Source="{Binding CurrentMedia.Video.FilePath}"
             Stretch="{Binding Stretch}">
@@ -441,7 +442,7 @@
                             DockPanel.Dock="Right"
                             ToolTip="{Binding KeyGestureDic[播放列表].ToolTip}">
                             <ToggleButton.Style>
-                                <Style BasedOn="{StaticResource ButtonBase_Icon_Small}" TargetType="ToggleButton">
+                                <Style BasedOn="{StaticResource ButtonBase_Icon_Small_HoverBlue}" TargetType="ToggleButton">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding DisplayPlaying.Count}" Value="0">
                                             <Setter Property="IsEnabled" Value="False" />
@@ -484,11 +485,11 @@
                                             </TextBlock>
 
                                             <TextBlock HorizontalAlignment="Right" DockPanel.Dock="Right">
-                                                <!--<ToggleButton x:Name="QueryButton" Content="&#xe632;" ToolTip="搜索" Style="{StaticResource ButtonBase_Icon_Small}"/>-->
+                                                <!--<ToggleButton x:Name="QueryButton" Content="&#xe632;" ToolTip="搜索" Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"/>-->
                                                 <Button
                                                     Command="{Binding CleanPlayingCommand}"
                                                     Content="&#xec7b;"
-                                                    Style="{StaticResource ButtonBase_Icon_Small}"
+                                                    Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                                                     ToolTip="{Binding KeyGestureDic[清空播放队列].ToolTip}" />
                                             </TextBlock>
                                         </DockPanel>
@@ -545,7 +546,7 @@
                                                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                                                                 <Button Command="{Binding DataContext.TogglePlayCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}">
                                                                     <Button.Style>
-                                                                        <Style BasedOn="{StaticResource ButtonBase_Icon_Small}" TargetType="Button">
+                                                                        <Style BasedOn="{StaticResource ButtonBase_Icon_Small_HoverBlue}" TargetType="Button">
                                                                             <Setter Property="Content" Value="&#xea6d;" />
                                                                             <Setter Property="ToolTip" Value="播放当前" />
                                                                             <Style.Triggers>
@@ -566,7 +567,7 @@
                                                                     Content="&#xe682;"
                                                                     ContextMenu="{StaticResource VideoContextMenu_Button}"
                                                                     MyAttachProperty.HasContextMenu="True"
-                                                                    Style="{StaticResource ButtonBase_Icon_Small}"
+                                                                    Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                                                                     Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                                                     ToolTip="更多" />
 
@@ -603,7 +604,7 @@
                             DockPanel.Dock="Right"
                             IsChecked="{Binding IsEditingStretch}">
                             <ToggleButton.Style>
-                                <Style BasedOn="{StaticResource ButtonBase_Icon_Small}" TargetType="ToggleButton">
+                                <Style BasedOn="{StaticResource ButtonBase_Icon_Small_HoverBlue}" TargetType="ToggleButton">
                                     <Setter Property="Margin" Value="2,0" />
 
                                     <Setter Property="Content" Value="画面适应" />
@@ -674,7 +675,7 @@
                             DockPanel.Dock="Right"
                             IsChecked="{Binding IsEditingPlayOrder}">
                             <ToggleButton.Style>
-                                <Style BasedOn="{StaticResource ButtonBase_Icon_Small}" TargetType="ToggleButton">
+                                <Style BasedOn="{StaticResource ButtonBase_Icon_Small_HoverBlue}" TargetType="ToggleButton">
                                     <Setter Property="Margin" Value="2,0" />
 
                                     <Setter Property="Content" Value="{Binding SelectedItem.IconString, ElementName=PlayOrderList, FallbackValue=播放顺序}" />
@@ -731,7 +732,7 @@
                             x:Name="VideoSpeedRatioButton"
                             Content="&#xe60c;"
                             DockPanel.Dock="Right"
-                            Style="{StaticResource ButtonBase_Icon_Small}"
+                            Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                             ToolTip="倍速播放" />
                         <Popup
                             HorizontalOffset="-132"

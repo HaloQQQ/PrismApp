@@ -39,6 +39,7 @@
                 <DataGridTemplateColumn
                     Width="*"
                     MinWidth="90"
+                    MaxWidth="1000"
                     Header="模板" />
             </DataGrid.Columns>
         </DataGrid>

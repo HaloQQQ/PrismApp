@@ -150,7 +150,7 @@
                     Command="{x:Static NavigationCommands.GoToPage}"
                     Content="&#xe65e;"
                     DockPanel.Dock="Left"
-                    Style="{StaticResource ButtonBase_Icon_Small}" />
+                    Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}" />
 
                 <ToggleButton
                     x:Name="LyricSettingButton"

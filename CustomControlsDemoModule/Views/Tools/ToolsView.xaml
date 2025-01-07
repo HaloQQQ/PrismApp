@@ -25,7 +25,7 @@
                     Style="{StaticResource CheckBox_Switch}" />
                 <CheckBox
                     HorizontalContentAlignment="Left"
-                    Content="自己可用："
+                    Content="仅自用："
                     IsChecked="{Binding IsOnlyForMe}"
                     Style="{StaticResource CheckBox_CheckMark}" />
 
@@ -64,6 +64,7 @@
                     IsReadOnly="True"
                     ItemsSource="{Binding Services}"
                     SelectedIndex="0"
+                    Style="{StaticResource ComboBox_ReadOnly}"
                     Text="{Binding CurrentServiceName}" />
 
                 <Button

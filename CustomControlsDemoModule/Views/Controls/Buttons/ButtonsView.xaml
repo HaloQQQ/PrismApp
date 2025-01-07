@@ -6,11 +6,12 @@
     prism:ViewModelLocator.AutoWireViewModel="True">
 
     <WrapPanel>
-        <Button Content="普通按钮" />
+        <Button Content="普通按钮" MyAttachProperty.UseCornerRadius="False" />
         <Button Content="普通按钮" IsEnabled="False" />
 
         <Button
             Content="透明按钮"
+            MyAttachProperty.CornerRadius="5"
             MyAttachProperty.IconFontText="&#xe64f;"
             MyAttachProperty.IconPosition="Right"
             Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
@@ -21,13 +22,13 @@
 
         <Button
             Content="环形按钮"
-            MyAttachProperty.CornerRadius="20"
+            MyAttachProperty.CornerRadius="10"
             MyAttachProperty.IconFontText="&#xe64f;"
             Style="{StaticResource Button_Circle}" />
         <Button
             Content="环形按钮"
             IsEnabled="False"
-            MyAttachProperty.CornerRadius="10"
+            MyAttachProperty.CornerRadius="15"
             Style="{StaticResource Button_Circle}" />
 
         <Button Style="{StaticResource Button_Icon_Close}" />
@@ -51,49 +52,50 @@
 
         <Button Style="{StaticResource Button_Icon_Theme}" />
 
-        <Slider
-            x:Name="slider"
-            Orientation="Vertical"
-            Style="{StaticResource Slider_Custom}" />
+        <StackPanel>
+            <Slider
+                x:Name="slider"
+                Orientation="Horizontal"
+                Style="{StaticResource Slider_Custom}" />
 
-        <Slider
-            Width="12"
-            BorderBrush="Red"
-            BorderThickness="2"
-            MyAttachProperty.CornerRadius="15,5,15,10"
-            MyAttachProperty.UseCornerRadius="False"
-            Orientation="Vertical"
-            Value="{Binding Value, Source={x:Reference slider}}" />
+            <Slider
+                BorderBrush="Red"
+                BorderThickness="2"
+                MyAttachProperty.CornerRadius="15,5,15,10"
+                MyAttachProperty.UseCornerRadius="False"
+                Orientation="Horizontal"
+                Value="{Binding Value, Source={x:Reference slider}}" />
 
-        <ProgressBar
-            Width="30"
-            Height="200"
-            BorderBrush="Red"
-            BorderThickness="2"
-            MyAttachProperty.CornerRadius="10,15,5,10"
-            MyAttachProperty.PlaceHolder="当前进度"
-            MyAttachProperty.UseCornerRadius="True"
-            Orientation="Vertical"
-            Value="{Binding Value, Source={x:Reference slider}}" />
+            <ProgressBar
+                BorderBrush="Red"
+                BorderThickness="2"
+                MyAttachProperty.CornerRadius="10,15,5,10"
+                MyAttachProperty.PlaceHolder="当前进度"
+                MyAttachProperty.UseCornerRadius="True"
+                Orientation="Horizontal"
+                Value="{Binding Value, Source={x:Reference slider}}" />
+        </StackPanel>
 
-        <ProgressBar
-            Width="300"
-            Background="Transparent"
-            BorderBrush="Red"
-            BorderThickness="20"
-            FontSize="20"
-            Maximum="100"
-            MyAttachProperty.PlaceHolder="当前进度"
-            Style="{StaticResource ProgressBar_Pie}"
-            Value="{Binding Value, Source={x:Reference slider}}" />
+        <StackPanel Orientation="Horizontal">
+            <ProgressBar
+                Width="300"
+                Background="Transparent"
+                BorderBrush="Red"
+                BorderThickness="20"
+                FontSize="20"
+                Maximum="100"
+                MyAttachProperty.PlaceHolder="当前进度"
+                Style="{StaticResource ProgressBar_Pie}"
+                Value="{Binding Value, Source={x:Reference slider}}" />
 
-        <ProgressBar
-            Width="300"
-            Margin="10"
-            BorderBrush="Red"
-            BorderThickness="1"
-            MyAttachProperty.PlaceHolder="当前进度"
-            Style="{StaticResource ProgressBar_Wave}"
-            Value="{Binding Value, Source={x:Reference slider}}" />
+            <ProgressBar
+                Width="300"
+                Margin="10"
+                BorderBrush="Red"
+                BorderThickness="1"
+                MyAttachProperty.PlaceHolder="当前进度"
+                Style="{StaticResource ProgressBar_Wave}"
+                Value="{Binding Value, Source={x:Reference slider}}" />
+        </StackPanel>
     </WrapPanel>
 </UserControl>

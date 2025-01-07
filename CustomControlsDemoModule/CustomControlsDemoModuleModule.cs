@@ -1,6 +1,7 @@
 ﻿using CustomControlsDemoModule.ViewModels;
 using CustomControlsDemoModule.Views;
 using CustomControlsDemoModule.Views.Controls;
+using CustomControlsDemoModule.Views.Controls.Buttons;
 using CustomControlsDemoModule.Views.Controls.TextBoxes;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -42,6 +43,7 @@ namespace CustomControlsDemoModule
 
             containerRegistry.RegisterForNavigation<ButtonsView>();
             containerRegistry.RegisterForNavigation<ToggleButtonsView>();
+            containerRegistry.RegisterForNavigation<IconFontView>();
 
             containerRegistry.RegisterForNavigation<PasswordBox>();
             containerRegistry.RegisterForNavigation<RichTextBox>();

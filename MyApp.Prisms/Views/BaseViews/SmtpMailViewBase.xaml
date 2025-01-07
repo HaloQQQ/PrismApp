@@ -54,7 +54,7 @@
                                     Command="Close"
                                     Content="&#xe612;"
                                     DockPanel.Dock="Right"
-                                    Style="{StaticResource ButtonBase_Icon_ScaleUp_Small}"
+                                    Style="{StaticResource ButtonBase_Icon_ScaleUp_Small_HoverBlue}"
                                     Visibility="Hidden" />
 
                                 <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
@@ -154,7 +154,7 @@
                         Command="{x:Static ApplicationCommands.Open}"
                         Content="&#xe704;"
                         FontSize="20"
-                        Style="{StaticResource ButtonBase_Icon_ScaleDown_Small}" />
+                        Style="{StaticResource ButtonBase_Icon_ScaleDown_Small_HoverBlue}" />
                     <ListBox x:Name="lstBxAttachments" ItemsSource="{Binding Attachments}" />
                 </WrapPanel>
                 <StackPanel Orientation="Horizontal">
@@ -176,10 +176,12 @@
                     CornerRadius="10">
                     <WrapPanel>
                         <ComboBox
+                            IsReadOnly="True"
                             ItemsSource="{Binding TargetFolders}"
                             SelectedIndex="0"
                             Text="{Binding CurrentFolder}" />
                         <ComboBox
+                            IsReadOnly="True"
                             ItemsSource="{Binding MessageFlags}"
                             SelectedIndex="0"
                             Text="{Binding CurrentFlag}" />

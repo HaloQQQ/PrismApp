@@ -128,19 +128,19 @@
                             <ToggleButton Style="{StaticResource Love}" />
                             <Button
                                 Content="&#xe63b;"
-                                Style="{StaticResource ButtonBase_Icon_Small}"
+                                Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                                 ToolTip="下载" />
                             <Button
                                 Content="&#xe891;"
-                                Style="{StaticResource ButtonBase_Icon_Small}"
+                                Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                                 ToolTip="评论" />
                             <Button
                                 Content="&#xe608;"
-                                Style="{StaticResource ButtonBase_Icon_Small}"
+                                Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                                 ToolTip="分享" />
                             <Button
                                 Content="&#xe682;"
-                                Style="{StaticResource ButtonBase_Icon_Small}"
+                                Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                                 ToolTip="更多" />
                         </StackPanel>
                     </DockPanel>
@@ -311,7 +311,7 @@
 
                     <ToggleButton x:Name="listButton" IsChecked="{Binding IsEditingPlayOrder}">
                         <ToggleButton.Style>
-                            <Style BasedOn="{StaticResource ButtonBase_Icon_Small}" TargetType="ToggleButton">
+                            <Style BasedOn="{StaticResource ButtonBase_Icon_Small_HoverBlue}" TargetType="ToggleButton">
                                 <Setter Property="Margin" Value="2,0" />
 
                                 <Setter Property="Content" Value="{Binding SelectedItem.IconString, ElementName=PlayOrderList, FallbackValue=播放顺序}" />
@@ -367,7 +367,7 @@
 
                     <Button
                         Content="&#xe607;"
-                        Style="{StaticResource ButtonBase_Icon_Small}"
+                        Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                         ToolTip="一起听" />
 
                     <ToggleButton
@@ -391,7 +391,7 @@
                         Click="PlayingListButton_Click"
                         ToolTip="{Binding KeyGestureDic[播放列表].ToolTip}">
                         <ToggleButton.Style>
-                            <Style BasedOn="{StaticResource ButtonBase_Icon_Small}" TargetType="ToggleButton">
+                            <Style BasedOn="{StaticResource ButtonBase_Icon_Small_HoverBlue}" TargetType="ToggleButton">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding DisplayPlaying.Count}" Value="0">
                                         <Setter Property="IsEnabled" Value="False" />
@@ -456,13 +456,13 @@
                                             <ToggleButton
                                                 x:Name="QueryButton"
                                                 Content="&#xe632;"
-                                                Style="{StaticResource ButtonBase_Icon_Small}"
+                                                Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                                                 ToolTip="搜索" />
 
                                             <Button
                                                 Command="{Binding CleanPlayingCommand}"
                                                 Content="&#xec7b;"
-                                                Style="{StaticResource ButtonBase_Icon_Small}"
+                                                Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                                                 ToolTip="{Binding KeyGestureDic[清空播放队列].ToolTip}" />
                                         </TextBlock>
                                     </DockPanel>
@@ -489,7 +489,7 @@
                                             CommandParameter="StopPlayingListFilte"
                                             Content="消失"
                                             Foreground="{StaticResource LightWhite}"
-                                            Style="{StaticResource ButtonBase_Icon_Small}" />
+                                            Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}" />
                                     </StackPanel>
                                 </DockPanel>
 
@@ -497,6 +497,7 @@
                                     x:Name="PlayingDataGrid"
                                     Grid.Row="1"
                                     ContextMenu="{StaticResource PlayinigDataGridContextMenu}"
+                                    FontSize="14"
                                     HeadersVisibility="Row"
                                     ItemsSource="{Binding DisplayPlaying}"
                                     SelectedItem="{Binding CurrentMedia, Mode=OneWay}"

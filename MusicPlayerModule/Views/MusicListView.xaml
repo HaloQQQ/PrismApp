@@ -133,22 +133,10 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="DataGridColumnHeader">
                             <Grid Margin="10,0,0,0">
-                                <TextBlock>
+                                <TextBlock Style="{StaticResource TextBlock_NotImportant_White}" Visibility="{Binding DataContext.DistributeMusicViewModel.CanBatchSelect, RelativeSource={RelativeSource AncestorType=DataGrid}, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
                                     <TextBlock Text="已选" />
                                     <TextBlock Text="{Binding DataContext.DistributeMusicViewModel.SelectedCount, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
                                     <TextBlock Text="首" />
-
-                                    <TextBlock.Style>
-                                        <Style BasedOn="{StaticResource TextBlock_NotImportant_White}" TargetType="TextBlock">
-                                            <Setter Property="Visibility" Value="Collapsed" />
-
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding DataContext.DistributeMusicViewModel.CanBatchSelect, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="True">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
                                 </TextBlock>
 
                                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -183,24 +171,24 @@
                             Command="{Binding DataContext.PlayFavoriteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                             CommandParameter="{Binding}"
                             Content="&#xea6d;"
-                            Style="{StaticResource ButtonBase_Icon_Small}"
+                            Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                             ToolTip="播放当前" />
                         <Button
                             Command="{Binding DataContext.AddNextCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                             CommandParameter="{Binding}"
                             Content="&#xe704;"
-                            Style="{StaticResource ButtonBase_Icon_Small}"
+                            Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                             ToolTip="下一首播放" />
                         <Button
                             Command="{Binding DataContext.DownLoadCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                             CommandParameter="{Binding Music}"
                             Content="&#xe63b;"
-                            Style="{StaticResource ButtonBase_Icon_Small}"
+                            Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                             ToolTip="下载" />
                         <Button
                             Content="&#xe682;"
                             MyAttachProperty.HasContextMenu="True"
-                            Style="{StaticResource ButtonBase_Icon_Small}"
+                            Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                             Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                             ToolTip="更多">
                             <Button.ContextMenu>
@@ -332,30 +320,15 @@
         <NeedleWaitLoad
             Width="80"
             Height="80"
-            Foreground="DodgerBlue">
-            <NeedleWaitLoad.Style>
-                <Style TargetType="UserControl">
-                    <Setter Property="Visibility" Value="Collapsed" />
-
-                    <Style.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding DistributeMusicViewModel.IsLoading}" Value="True" />
-                                <Condition Binding="{Binding DistributeMusicViewModel.DisplayFavorites.Count}" Value="0" />
-                            </MultiDataTrigger.Conditions>
-
-                            <Setter Property="Visibility" Value="Visible" />
-                        </MultiDataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </NeedleWaitLoad.Style>
-        </NeedleWaitLoad>
+            Foreground="DodgerBlue"
+            Visibility="{Binding DistributeMusicViewModel.IsLoading, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
 
         <DataGrid
             x:Name="DataGrid_ShowBySong"
+            EnableRowVirtualization="False"
             HeadersVisibility="All"
             ItemsSource="{Binding DistributeMusicViewModel.DisplayFavorites}"
-            MyAttachProperty.DisplayRowNumber="False"
+            MyAttachProperty.DisplayRowNumber="True"
             Visibility="{Binding DistributeMusicViewModel.IsInSong, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
             <DataGrid.Style>
                 <Style BasedOn="{StaticResource DataGrid_Transparent}" TargetType="DataGrid">
@@ -543,6 +516,7 @@
 
             <DataGrid
                 Grid.Column="1"
+                EnableRowVirtualization="False"
                 HeadersVisibility="All"
                 ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites, ElementName=MusicByAlbumListBox}"
                 MyAttachProperty.DisplayRowNumber="True">
@@ -594,7 +568,7 @@
                         SortMemberPath="Music.Name" />
 
                     <DataGridTemplateColumn
-                        Width="Auto"
+                        Width="*"
                         MaxWidth="1000"
                         SortMemberPath="Music.Singer">
                         <DataGridTemplateColumn.HeaderTemplate>
@@ -666,6 +640,7 @@
             <DataGrid
                 x:Name="DataGrid_ShowBySinger"
                 Grid.Column="1"
+                EnableRowVirtualization="False"
                 HeadersVisibility="All"
                 ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites, ElementName=MusicBySingerListBox}"
                 MyAttachProperty.DisplayRowNumber="True">
@@ -717,7 +692,7 @@
                         SortMemberPath="Music.Name" />
 
                     <DataGridTemplateColumn
-                        Width="Auto"
+                        Width="*"
                         MaxWidth="1000"
                         SortMemberPath="Music.Album">
                         <DataGridTemplateColumn.HeaderTemplate>
@@ -781,6 +756,7 @@
             <DataGrid
                 x:Name="DataGrid_ShowByDir"
                 Grid.Column="1"
+                EnableRowVirtualization="False"
                 HeadersVisibility="All"
                 ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites, ElementName=MusicByDirListBox}"
                 MyAttachProperty.DisplayRowNumber="True">
@@ -832,7 +808,7 @@
                         SortMemberPath="Music.Name" />
 
                     <DataGridTemplateColumn
-                        Width="Auto"
+                        Width="*"
                         MaxWidth="1000"
                         SortMemberPath="Music.Singer">
                         <DataGridTemplateColumn.HeaderTemplate>

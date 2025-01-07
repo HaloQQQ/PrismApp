@@ -226,7 +226,7 @@
                     CommandParameter="{Binding}"
                     Content="&#xe60a;"
                     FontSize="30"
-                    Style="{StaticResource ButtonBase_Icon_ScaleDown_Small}" />
+                    Style="{StaticResource ButtonBase_Icon_ScaleDown_Small_HoverBlue}" />
             </StackPanel>
         </DataTemplate>
 
@@ -276,7 +276,7 @@
                             Command="{Binding DataContext.AddMailAccountCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                             Content="&#xe622;"
                             FontSize="30"
-                            Style="{StaticResource ButtonBase_Icon_ScaleDown_Small}" />
+                            Style="{StaticResource ButtonBase_Icon_ScaleDown_Small_HoverBlue}" />
                     </StackPanel>
                     <ListBox
                         HorizontalContentAlignment="Left"

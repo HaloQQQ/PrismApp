@@ -94,7 +94,7 @@
                     Orientation="Horizontal">
                     <ToggleButton IsChecked="{Binding DesktopLyric.IsSingleLine}">
                         <ToggleButton.Style>
-                            <Style BasedOn="{StaticResource ButtonBase_Icon_ScaleDown_Small}" TargetType="ToggleButton">
+                            <Style BasedOn="{StaticResource ButtonBase_Icon_ScaleDown_Small_HoverBlue}" TargetType="ToggleButton">
                                 <Setter Property="Content" Value="&#xe60b;" />
                                 <Setter Property="Foreground" Value="#EBEBEB" />
                                 <Setter Property="ToolTip" Value="单行" />
@@ -112,7 +112,7 @@
                     <Button
                         Command="{Binding RewindCommand}"
                         Content="&#xe68e;"
-                        Style="{StaticResource ButtonBase_Icon_ScaleDown_Small}"
+                        Style="{StaticResource ButtonBase_Icon_ScaleDown_Small_HoverBlue}"
                         ToolTip="{Binding KeyGestureDic[快退].ToolTip}" />
 
                     <Button Command="{Binding PrevCommand}" CommandParameter="{Binding CurrentMedia}">
@@ -166,12 +166,12 @@
                     <Button
                         Command="{Binding FastForwardCommand}"
                         Content="&#xe690;"
-                        Style="{StaticResource ButtonBase_Icon_ScaleDown_Small}"
+                        Style="{StaticResource ButtonBase_Icon_ScaleDown_Small_HoverBlue}"
                         ToolTip="{Binding KeyGestureDic[快进].ToolTip}" />
 
                     <Button Command="{Binding ToggleDesktopLyricCommand}" ToolTip="{Binding KeyGestureDic[桌面歌词].ToolTip}">
                         <Button.Style>
-                            <Style BasedOn="{StaticResource ButtonBase_Icon_ScaleDown_Small}" TargetType="Button">
+                            <Style BasedOn="{StaticResource ButtonBase_Icon_ScaleDown_Small_HoverBlue}" TargetType="Button">
                                 <Setter Property="Content" Value="&#xe624;" />
                                 <Setter Property="Foreground" Value="#EBEBEB" />
                                 <Setter Property="FontWeight" Value="Bold" />
@@ -181,7 +181,7 @@
 
                     <ToggleButton IsChecked="{Binding DesktopLyric.IsVertical}">
                         <ToggleButton.Style>
-                            <Style BasedOn="{StaticResource ButtonBase_Icon_ScaleDown_Small}" TargetType="ToggleButton">
+                            <Style BasedOn="{StaticResource ButtonBase_Icon_ScaleDown_Small_HoverBlue}" TargetType="ToggleButton">
                                 <Setter Property="Content" Value="&#xe65c;" />
                                 <Setter Property="Foreground" Value="#EBEBEB" />
                                 <Setter Property="ToolTip" Value="竖屏" />

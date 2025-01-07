@@ -601,6 +601,8 @@ namespace MusicPlayerModule.ViewModels
 
             this.IsLoading = false;
 
+            this.RefreshFavoriteIndex();
+
             return true;
 
             IEnumerable<string> TryGetNewFiles(IEnumerable<string> filePaths)
@@ -627,8 +629,6 @@ namespace MusicPlayerModule.ViewModels
 
                 AddNewMusic(children);
             }
-
-            this.RefreshFavoriteIndex();
         }
 
         private async Task MultiThreadBatchLoadMusic(IList<string> filePathList)
@@ -649,7 +649,7 @@ namespace MusicPlayerModule.ViewModels
                                                  .Take(step)
                                      )
                         {
-                            CommonAtomUtils.Invoke(() =>
+                            CommonAtomUtils.BeginInvoke(() =>
                             {
                                 var children = new FavoriteMusicViewModel(new MusicModel(item));
                                 children.TryAddTo(DisplayFavorites);
@@ -664,8 +664,6 @@ namespace MusicPlayerModule.ViewModels
             }
 
             await Task.WhenAll(taskList);
-
-            this.RefreshFavoriteIndex();
         }
         #endregion
 

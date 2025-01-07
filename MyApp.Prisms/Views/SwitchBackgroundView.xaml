@@ -57,7 +57,7 @@
                 Command="Close"
                 Content="&#xe65f;"
                 DockPanel.Dock="Left"
-                Style="{StaticResource ButtonBase_Icon_ScaleDown_Small}"
+                Style="{StaticResource ButtonBase_Icon_ScaleDown_Small_HoverBlue}"
                 ToolTip="向右隐藏" />
             <ToggleButton
                 DockPanel.Dock="Left"
@@ -68,7 +68,7 @@
                 Command="{Binding RefreshCommand}"
                 Content="&#xe63e;"
                 DockPanel.Dock="Right"
-                Style="{StaticResource ButtonBase_Icon_ScaleDown_Small}"
+                Style="{StaticResource ButtonBase_Icon_ScaleDown_Small_HoverBlue}"
                 ToolTip="刷新数据" />
 
             <TextBlock

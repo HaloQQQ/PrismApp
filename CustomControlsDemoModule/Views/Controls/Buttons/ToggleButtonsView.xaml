@@ -24,7 +24,7 @@
             <ToggleButton
                 Background="Red"
                 Content="ToggleButton"
-                MyAttachProperty.CornerRadius="10" />
+                Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
             <ToggleButton Style="{StaticResource ToggleButton_Icon_Layout}" />
             <ToggleButton Style="{StaticResource ToggleButton_Icon_MaxWindow}" />
             <ToggleButton Style="{StaticResource ToggleButton_Icon_Login}" />
@@ -42,9 +42,7 @@
                 HorizontalContentAlignment="Right"
                 Content="普通CheckBox" />
             <CheckBox
-                Height="20"
                 HorizontalContentAlignment="Right"
-                BorderThickness="3"
                 Content="Switch CheckBox"
                 Style="{StaticResource CheckBox_Switch}" />
             <CheckBox

@@ -110,7 +110,7 @@
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                 <Button Command="{Binding DataContext.TogglePlayCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}">
                     <Button.Style>
-                        <Style BasedOn="{StaticResource ButtonBase_Icon_Small}" TargetType="Button">
+                        <Style BasedOn="{StaticResource ButtonBase_Icon_Small_HoverBlue}" TargetType="Button">
                             <Setter Property="Content" Value="&#xea6d;" />
                             <Setter Property="ToolTip" Value="播放当前" />
                             <Style.Triggers>
@@ -131,12 +131,12 @@
                     Command="{Binding DataContext.DownLoadCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                     CommandParameter="{Binding Music}"
                     Content="&#xe63b;"
-                    Style="{StaticResource ButtonBase_Icon_Small}"
+                    Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                     ToolTip="下载" />
                 <Button
                     Content="&#xe682;"
                     MyAttachProperty.HasContextMenu="True"
-                    Style="{StaticResource ButtonBase_Icon_Small}"
+                    Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                     Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                     ToolTip="更多">
                     <Button.ContextMenu>

@@ -19,10 +19,15 @@
             x:Key="Lable"
             BasedOn="{StaticResource TextBlock_Theme}"
             TargetType="TextBlock">
-            <Setter Property="FontSize" Value="14" />
             <Setter Property="Margin" Value="0" />
         </Style>
     </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding
+            Key="O"
+            Command="{Binding OpenLogCommand}"
+            Modifiers="Ctrl" />
+    </UserControl.InputBindings>
 
     <GroupBox>
         <GroupBox.Header>
@@ -45,7 +50,6 @@
                 Style="{StaticResource OnlyDownViewbox}">
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
                     <TextBlock Style="{StaticResource Lable}" Text="本机IP：" />
-
                     <ComboBox Style="{StaticResource cmbIP}" Text="{Binding Ip, UpdateSourceTrigger=PropertyChanged}" />
 
                     <TextBlock Style="{StaticResource Lable}" Text="本机本机端口：" />
@@ -64,7 +68,7 @@
                         Text="{Binding RemotePort, UpdateSourceTrigger=PropertyChanged}" />
 
                     <CheckBox IsChecked="{Binding UnreachableDisConnect}">
-                        <TextBlock FontSize="14">
+                        <TextBlock>
                             <TextBlock Style="{StaticResource TextBlock_Theme_Icon_MouseOver}" Text="&#xec6f;" />
                             <TextBlock Text="失败断开：" />
                         </TextBlock>
@@ -79,11 +83,7 @@
                 Grid.Row="1"
                 Background="Transparent"
                 ContextMenu="{StaticResource ForMessageBoard}"
-                DockPanel.Dock="Bottom">
-                <RichTextBox.CommandBindings>
-                    <CommandBinding Command="Open" />
-                </RichTextBox.CommandBindings>
-            </RichTextBox>
+                DockPanel.Dock="Bottom" />
 
             <TextBox
                 Grid.Row="2"

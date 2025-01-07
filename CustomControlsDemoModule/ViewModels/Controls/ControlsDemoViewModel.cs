@@ -1,5 +1,6 @@
 ﻿using CustomControlsDemoModule.Models;
 using CustomControlsDemoModule.Views.Controls;
+using CustomControlsDemoModule.Views.Controls.Buttons;
 using CustomControlsDemoModule.Views.Controls.TextBoxes;
 using IceTea.Atom.Extensions;
 using Prism.Commands;
@@ -81,6 +82,9 @@ namespace CustomControlsDemoModule.ViewModels.Controls
                         case "双击按钮":
                             uri = nameof(ToggleButtonsView);
                             break;
+                        case "IconFton图标":
+                            uri = nameof(IconFontView);
+                            break;
 
                         case "单行文本":
                             uri = nameof(TextBox);
@@ -130,8 +134,8 @@ namespace CustomControlsDemoModule.ViewModels.Controls
         private void InitTreeViewData()
         {
             var list = new List<ControlNode>()
-            {
-                new ControlNode("按钮").Add(new("单击按钮")).Add(new("双击按钮")),
+            {                                                                        
+                new ControlNode("按钮").Add(new("单击按钮")).Add(new("双击按钮")).Add(new("IconFton图标")),
 
                 new ControlNode("文本框").Add(new("单行文本")).Add(new("多行文本")).Add(new("密码框")),
 

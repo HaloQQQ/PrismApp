@@ -69,7 +69,8 @@
             Command="{Binding OpenLogCommand}"
             CommandTarget="{Binding PlacementTarget, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
             Header="打开日志文件"
-            Icon="&#xebdf;" />
+            Icon="&#xebdf;"
+            InputGestureText="Ctrl+O" />
     </ContextMenu>
 
     <!--  不自动补全前缀的、聚焦时Width变化的TextBox  -->

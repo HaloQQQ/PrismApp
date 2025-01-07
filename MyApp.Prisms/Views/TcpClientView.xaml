@@ -13,11 +13,16 @@
                 x:Key="Lable"
                 BasedOn="{StaticResource TextBlock_Theme}"
                 TargetType="TextBlock">
-                <Setter Property="FontSize" Value="12" />
                 <Setter Property="Margin" Value="0" />
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding
+            Key="O"
+            Command="{Binding OpenLogCommand}"
+            Modifiers="Ctrl" />
+    </UserControl.InputBindings>
 
     <GroupBox>
         <GroupBox.Header>
@@ -43,9 +48,6 @@
                     <ComboBox ItemsSource="{x:Static viewModels:BaseSocketViewModel.Ips}" Text="{Binding Ip, UpdateSourceTrigger=PropertyChanged}">
                         <ComboBox.Style>
                             <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="ComboBox">
-                                <Setter Property="IsEnabled" Value="True" />
-                                <Setter Property="Margin" Value="0,0,5,0" />
-
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Socket.IsConnected}" Value="True">
                                         <Setter Property="IsEnabled" Value="False" />
@@ -64,9 +66,6 @@
                     <TextBox Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.Style>
                             <Style BasedOn="{StaticResource TextBox_HideButton}" TargetType="TextBox">
-                                <Setter Property="IsEnabled" Value="True" />
-                                <Setter Property="Margin" Value="3,0" />
-
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Socket.IsConnected}" Value="True">
                                         <Setter Property="IsEnabled" Value="False" />
