@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:contracts="clr-namespace:MusicPlayerModule.Contracts"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
@@ -386,10 +387,7 @@
                         </ToggleButton.Style>
                     </ToggleButton>
 
-                    <ToggleButton
-                        x:Name="PlayingListButton"
-                        Click="PlayingListButton_Click"
-                        ToolTip="{Binding KeyGestureDic[播放列表].ToolTip}">
+                    <ToggleButton x:Name="PlayingListButton" ToolTip="{Binding KeyGestureDic[播放列表].ToolTip}">
                         <ToggleButton.Style>
                             <Style BasedOn="{StaticResource ButtonBase_Icon_Small_HoverBlue}" TargetType="ToggleButton">
                                 <Style.Triggers>
@@ -407,7 +405,7 @@
                     <Popup
                         x:Name="PlayingListPopup"
                         Width="400"
-                        Height="490"
+                        Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=0.8}"
                         Closed="PlayingListPopup_Closed"
                         HorizontalOffset="-343"
                         IsOpen="{Binding IsChecked, ElementName=PlayingListButton}"
@@ -452,7 +450,7 @@
                                             首
                                         </TextBlock>
 
-                                        <TextBlock HorizontalAlignment="Right" DockPanel.Dock="Right">
+                                        <WrapPanel HorizontalAlignment="Right" DockPanel.Dock="Right">
                                             <ToggleButton
                                                 x:Name="QueryButton"
                                                 Content="&#xe632;"
@@ -464,7 +462,7 @@
                                                 Content="&#xec7b;"
                                                 Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
                                                 ToolTip="{Binding KeyGestureDic[清空播放队列].ToolTip}" />
-                                        </TextBlock>
+                                        </WrapPanel>
                                     </DockPanel>
 
                                     <StackPanel
@@ -502,7 +500,11 @@
                                     ItemsSource="{Binding DisplayPlaying}"
                                     SelectedItem="{Binding CurrentMedia, Mode=OneWay}"
                                     Style="{StaticResource DataGrid_Transparent}">
-
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDoubleClick">
+                                            <i:InvokeCommandAction Command="{Binding DataContext.TogglePlayCommand, RelativeSource={RelativeSource AncestorType=Grid}}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
                                     <DataGrid.CellStyle>
                                         <Style BasedOn="{StaticResource DataGridCell_General}" TargetType="DataGridCell">
                                             <Style.Triggers>
@@ -515,8 +517,6 @@
 
                                     <DataGrid.RowStyle>
                                         <Style BasedOn="{StaticResource {x:Type DataGridRow}}" TargetType="DataGridRow">
-                                            <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_Playing_MouseDoubleClick" />
-
                                             <Setter Property="Header" Value="{Binding IndexString, Mode=OneWay}" />
                                         </Style>
                                     </DataGrid.RowStyle>

@@ -6,14 +6,20 @@
     prism:ViewModelLocator.AutoWireViewModel="True">
 
     <WrapPanel>
-        <Button Content="普通按钮" MyAttachProperty.UseCornerRadius="False" />
+        <Button Content="普通按钮" MyAttachProperty.UseCornerRadius="True">
+            <Button.Style>
+                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                    <Setter Property="MyAttachProperty.CornerRadius" Value="5" />
+                </Style>
+            </Button.Style>
+        </Button>
         <Button Content="普通按钮" IsEnabled="False" />
 
         <Button
             Content="透明按钮"
-            MyAttachProperty.CornerRadius="5"
             MyAttachProperty.IconFontText="&#xe64f;"
             MyAttachProperty.IconPosition="Right"
+            MyAttachProperty.UseCornerRadius="False"
             Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
         <Button
             Content="透明按钮"

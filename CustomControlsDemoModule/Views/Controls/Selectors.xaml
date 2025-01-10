@@ -31,7 +31,10 @@
             <ComboBox ItemsSource="{StaticResource Data}" Style="{StaticResource ComboBox_ReadOnly}" />
         </WrapPanel>
 
-        <DataGrid BorderBrush="Red" BorderThickness="1">
+        <DataGrid
+            BorderBrush="Red"
+            BorderThickness="1"
+            MyAttachProperty.CornerRadius="10">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn MinWidth="90" Header="选中" />
                 <DataGridComboBoxColumn MinWidth="90" Header="选项" />

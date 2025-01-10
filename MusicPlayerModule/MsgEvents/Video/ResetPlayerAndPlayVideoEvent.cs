@@ -2,7 +2,5 @@
 
 namespace MusicPlayerModule.MsgEvents.Video
 {
-    internal class ResetPlayerAndPlayVideoEvent : PubSubEvent<Guid>
-    {
-    }
+    internal class ResetPlayerAndPlayVideoEvent : PubSubEvent<Guid> { }
 }

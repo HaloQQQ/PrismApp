@@ -1,5 +1,5 @@
-﻿using IceTea.Atom.Utils;
-using MusicPlayerModule.Contracts;
+﻿using IceTea.Atom.Contracts;
+using IceTea.Atom.Utils;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;

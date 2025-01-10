@@ -60,8 +60,7 @@ internal class PlayingMusicViewModel : MediaBaseViewModel, IEquatable<PlayingMus
 
                 if (value <= 0)
                 {
-                    return (
-                                charCount + (tempChar.CharDuring.TotalMilliseconds + value) /
+                    return (charCount + (tempChar.CharDuring.TotalMilliseconds + value) /
                                 tempChar.CharDuring.TotalMilliseconds * tempChar.Word.Length
                             ) / line.Words.Length;
                 }
@@ -123,7 +122,7 @@ internal class PlayingMusicViewModel : MediaBaseViewModel, IEquatable<PlayingMus
         {
             // 不要await不然会卡死界面
 #pragma warning disable CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
-            LoadLyricToMusicModel.TryLoadLyricAsync(_lyricSetting.Value, this.Music);
+            LyricUtil.TryLoadLyricAsync(_lyricSetting.Value, this.Music);
 
             return false;
         }

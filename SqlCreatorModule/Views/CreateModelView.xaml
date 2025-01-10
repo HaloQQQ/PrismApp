@@ -41,23 +41,18 @@
         </StackPanel>
 
         <WrapPanel Grid.Row="1" Orientation="Horizontal">
-            <!--<TextBlock Text="服务器地址*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
             <TextBox
                 MyAttachProperty.PlaceHolder="服务器地址*"
-                TabIndex="0"
                 Text="{Binding Host, UpdateSourceTrigger=PropertyChanged}"
                 Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
-            <!--<TextBlock Text="数据库名*:" Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />-->
             <TextBox
                 MyAttachProperty.PlaceHolder="数据库名*"
-                TabIndex="1"
                 Text="{Binding CurrentDbName, UpdateSourceTrigger=PropertyChanged}"
                 Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
             <TextBox
                 MyAttachProperty.PlaceHolder="用户名*"
-                TabIndex="2"
                 Text="{Binding Uid, UpdateSourceTrigger=PropertyChanged}"
                 Visibility="{Binding IsSqlite, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
@@ -96,10 +91,7 @@
                 Content="获取表名集合"
                 MyAttachProperty.IconFontText="&#xe632;" />
             <TextBlock Text="数据表列表:" />
-            <ComboBox
-                ItemsSource="{Binding TableNames}"
-                SelectedValue="{Binding CurrentTableName}"
-                Text="{Binding CurrentTableName}" />
+            <ComboBox ItemsSource="{Binding TableNames}" Text="{Binding CurrentTableName}" />
 
             <Button
                 Command="{Binding ShowTableStructureCommand}"
@@ -125,14 +117,32 @@
             Grid.Row="2"
             HorizontalScrollBarVisibility="Auto"
             ItemsSource="{Binding TableColumnsStructure}"
-            MinColumnWidth="0"
+            MinColumnWidth="50"
             MyAttachProperty.DataGridCellHorizontalAlignment="Center"
             Style="{StaticResource DataGrid_Transparent}">
             <DataGrid.Columns>
-                <DataGridTextColumn
-                    MinWidth="0"
-                    Binding="{Binding ColumnName}"
-                    Header="列名" />
+                <DataGridTemplateColumn Width="*" Header="列名">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ColumnName}" ToolTip="{Binding ColumnName}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding DataType}" Header="数据类型" />
+                <DataGridTemplateColumn Header="Db数据类型">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DbDataType}" ToolTip="{Binding DbDataType}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="*" Header="注释">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Comment}" ToolTip="{Binding Comment}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTemplateColumn Header="唯一约束">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -170,25 +180,6 @@
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Binding="{Binding AutoIncrementSeed}" Header="自增起点" />
                 <DataGridTextColumn Binding="{Binding AutoIncrementStep}" Header="自增步长" />
-                <DataGridTemplateColumn Header="只读">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <CheckBox
-                                IsChecked="{Binding ReadOnly, Mode=OneTime}"
-                                IsEnabled="False"
-                                MyAttachProperty.IsReadOnly="True"
-                                Style="{StaticResource CheckBox_CheckMark}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding DataType}" Header="数据类型" />
-                <DataGridComboBoxColumn
-                    Header="日期模式"
-                    IsReadOnly="True"
-                    ItemsSource="{Binding Source={StaticResource EnumDataSetDateTime}}"
-                    SelectedValueBinding="{Binding DateTimeMode, Mode=OneTime}" />
-                <DataGridTextColumn Binding="{Binding Namespace}" Header="命名空间" />
-                <DataGridTextColumn Binding="{Binding Expression}" Header="值筛选表达式" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

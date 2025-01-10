@@ -2,7 +2,9 @@
     x:Class="MusicPlayerModule.Views.MusicListView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converters="clr-namespace:MusicPlayerModule.Converters">
+    xmlns:converters="clr-namespace:MusicPlayerModule.Converters"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:prism="http://prismlibrary.com/">
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:MusicDistributeMultiConverter x:Key="MusicDistributeMultiConverter" />
@@ -311,8 +313,11 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
+            <converters:BatchAddAndPlayModelConverter x:Key="BatchAddAndPlayModelConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
+
 
     <Grid Grid.Row="1" Background="Transparent">
         <FrameworkElement x:Name="dummyElement" Visibility="Collapsed" />
@@ -325,11 +330,24 @@
 
         <DataGrid
             x:Name="DataGrid_ShowBySong"
-            EnableRowVirtualization="False"
             HeadersVisibility="All"
             ItemsSource="{Binding DistributeMusicViewModel.DisplayFavorites}"
             MyAttachProperty.DisplayRowNumber="True"
             Visibility="{Binding DistributeMusicViewModel.IsInSong, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding DataContext.PlayCurrentItemsCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                        <i:InvokeCommandAction.CommandParameter>
+                            <MultiBinding Converter="{StaticResource BatchAddAndPlayModelConverter}">
+                                <MultiBinding.Bindings>
+                                    <Binding Path="DataContext.DistributeMusicViewModel.DisplayFavorites" RelativeSource="{RelativeSource AncestorType=DataGrid}" />
+                                    <Binding Path="SelectedItem" RelativeSource="{RelativeSource AncestorType=DataGrid}" />
+                                </MultiBinding.Bindings>
+                            </MultiBinding>
+                        </i:InvokeCommandAction.CommandParameter>
+                    </i:InvokeCommandAction>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <DataGrid.Style>
                 <Style BasedOn="{StaticResource DataGrid_Transparent}" TargetType="DataGrid">
                     <Setter Property="ContextMenu" Value="{StaticResource FavoriteDataGridContextMenu}" />
@@ -347,8 +365,6 @@
             </DataGrid.Style>
             <DataGrid.RowStyle>
                 <Style BasedOn="{StaticResource {x:Type DataGridRow}}" TargetType="DataGridRow">
-                    <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_Favorites_MouseDoubleClick" />
-
                     <Setter Property="Header" Value="{Binding IndexString, Mode=OneWay}" />
                 </Style>
             </DataGrid.RowStyle>
@@ -470,9 +486,12 @@
             </Grid.ColumnDefinitions>
             <DockPanel Grid.Column="0">
                 <TextBox
+                    Background="Transparent"
+                    BorderBrush="{StaticResource TransparentButtonBackground}"
                     DockPanel.Dock="Top"
+                    MyAttachProperty.IsCollapsed="True"
                     MyAttachProperty.PlaceHolder="搜索专辑"
-                    Style="{StaticResource TextBox_Query}"
+                    Style="{StaticResource TextBox_Execute}"
                     Text="{Binding DistributeMusicViewModel.AlbumMusicFilteKeyWords, UpdateSourceTrigger=PropertyChanged, Delay=100}" />
 
                 <ListBox
@@ -482,11 +501,14 @@
                     DockPanel.Dock="Bottom"
                     ItemsSource="{Binding DistributeMusicViewModel.DisplayMusicAlbumFavorites}"
                     SelectedIndex="0">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding DataContext.PlayCurrentCategoryCommand, RelativeSource={RelativeSource AncestorType=Grid}}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListBox}}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <ListBox.ItemContainerStyle>
                         <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
                             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-
-                            <EventSetter Event="MouseDoubleClick" Handler="MusicDistribute_ListBox_MouseDoubleClick" />
                         </Style>
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
@@ -516,10 +538,23 @@
 
             <DataGrid
                 Grid.Column="1"
-                EnableRowVirtualization="False"
                 HeadersVisibility="All"
                 ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites, ElementName=MusicByAlbumListBox}"
                 MyAttachProperty.DisplayRowNumber="True">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding DataContext.PlayCurrentItemsCommand, RelativeSource={RelativeSource AncestorType=Grid}}">
+                            <i:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource BatchAddAndPlayModelConverter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="ItemsSource" RelativeSource="{RelativeSource AncestorType=DataGrid}" />
+                                        <Binding Path="SelectedItem" RelativeSource="{RelativeSource AncestorType=DataGrid}" />
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </i:InvokeCommandAction.CommandParameter>
+                        </i:InvokeCommandAction>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <DataGrid.Style>
                     <Style BasedOn="{StaticResource DataGrid_Transparent}" TargetType="DataGrid">
                         <Setter Property="ContextMenu" Value="{StaticResource FavoriteDataGridContextMenu}" />
@@ -531,11 +566,6 @@
                         </Style.Triggers>
                     </Style>
                 </DataGrid.Style>
-                <DataGrid.RowStyle>
-                    <Style BasedOn="{StaticResource {x:Type DataGridRow}}" TargetType="DataGridRow">
-                        <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_Favorites_MouseDoubleClick" />
-                    </Style>
-                </DataGrid.RowStyle>
 
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn
@@ -597,9 +627,12 @@
 
             <DockPanel Grid.Column="0">
                 <TextBox
+                    Background="Transparent"
+                    BorderBrush="{StaticResource TransparentButtonBackground}"
                     DockPanel.Dock="Top"
+                    MyAttachProperty.IsCollapsed="True"
                     MyAttachProperty.PlaceHolder="搜索歌手"
-                    Style="{StaticResource TextBox_Query}"
+                    Style="{StaticResource TextBox_Execute}"
                     Text="{Binding DistributeMusicViewModel.SingerMusicFilteKeyWords, UpdateSourceTrigger=PropertyChanged, Delay=100}" />
 
                 <ListBox
@@ -608,11 +641,14 @@
                     DockPanel.Dock="Bottom"
                     ItemsSource="{Binding DistributeMusicViewModel.DisplayMusicSingerFavorites}"
                     SelectedIndex="0">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <i:InvokeCommandAction Command="{Binding DataContext.PlayCurrentCategoryCommand, RelativeSource={RelativeSource AncestorType=Grid}}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListBox}}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
                     <ListBox.ItemContainerStyle>
                         <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
                             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-
-                            <EventSetter Event="MouseDoubleClick" Handler="MusicDistribute_ListBox_MouseDoubleClick" />
                         </Style>
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
@@ -640,10 +676,23 @@
             <DataGrid
                 x:Name="DataGrid_ShowBySinger"
                 Grid.Column="1"
-                EnableRowVirtualization="False"
                 HeadersVisibility="All"
                 ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites, ElementName=MusicBySingerListBox}"
                 MyAttachProperty.DisplayRowNumber="True">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding DataContext.PlayCurrentItemsCommand, RelativeSource={RelativeSource AncestorType=Grid}}">
+                            <i:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource BatchAddAndPlayModelConverter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="ItemsSource" RelativeSource="{RelativeSource AncestorType=DataGrid}" />
+                                        <Binding Path="SelectedItem" RelativeSource="{RelativeSource AncestorType=DataGrid}" />
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </i:InvokeCommandAction.CommandParameter>
+                        </i:InvokeCommandAction>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <DataGrid.Style>
                     <Style BasedOn="{StaticResource DataGrid_Transparent}" TargetType="DataGrid">
                         <Setter Property="ContextMenu" Value="{StaticResource FavoriteDataGridContextMenu}" />
@@ -655,11 +704,6 @@
                         </Style.Triggers>
                     </Style>
                 </DataGrid.Style>
-                <DataGrid.RowStyle>
-                    <Style BasedOn="{StaticResource {x:Type DataGridRow}}" TargetType="DataGridRow">
-                        <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_Favorites_MouseDoubleClick" />
-                    </Style>
-                </DataGrid.RowStyle>
 
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn
@@ -727,11 +771,14 @@
                 DockPanel.Dock="Bottom"
                 ItemsSource="{Binding DistributeMusicViewModel.MusicDirFavorites}"
                 SelectedIndex="0">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding DataContext.PlayCurrentCategoryCommand, RelativeSource={RelativeSource AncestorType=Grid}}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListBox}}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <ListBox.ItemContainerStyle>
                     <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
                         <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-
-                        <EventSetter Event="MouseDoubleClick" Handler="MusicDistribute_ListBox_MouseDoubleClick" />
                     </Style>
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
@@ -756,10 +803,23 @@
             <DataGrid
                 x:Name="DataGrid_ShowByDir"
                 Grid.Column="1"
-                EnableRowVirtualization="False"
                 HeadersVisibility="All"
                 ItemsSource="{Binding SelectedItem.DisplayByClassifyKeyFavorites, ElementName=MusicByDirListBox}"
                 MyAttachProperty.DisplayRowNumber="True">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding DataContext.PlayCurrentItemsCommand, RelativeSource={RelativeSource AncestorType=Grid}}">
+                            <i:InvokeCommandAction.CommandParameter>
+                                <MultiBinding Converter="{StaticResource BatchAddAndPlayModelConverter}">
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="ItemsSource" RelativeSource="{RelativeSource AncestorType=DataGrid}" />
+                                        <Binding Path="SelectedItem" RelativeSource="{RelativeSource AncestorType=DataGrid}" />
+                                    </MultiBinding.Bindings>
+                                </MultiBinding>
+                            </i:InvokeCommandAction.CommandParameter>
+                        </i:InvokeCommandAction>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
                 <DataGrid.Style>
                     <Style BasedOn="{StaticResource DataGrid_Transparent}" TargetType="DataGrid">
                         <Setter Property="ContextMenu" Value="{StaticResource FavoriteDataGridContextMenu}" />
@@ -771,11 +831,6 @@
                         </Style.Triggers>
                     </Style>
                 </DataGrid.Style>
-                <DataGrid.RowStyle>
-                    <Style BasedOn="{StaticResource {x:Type DataGridRow}}" TargetType="DataGridRow">
-                        <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_Favorites_MouseDoubleClick" />
-                    </Style>
-                </DataGrid.RowStyle>
 
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn

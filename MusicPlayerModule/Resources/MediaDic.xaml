@@ -61,4 +61,21 @@
         </RectangleGeometry>
         <PathGeometry Figures="M130,90 L140,100 L150,90 Z" />
     </GeometryGroup>
+
+    <Style
+        x:Key="Love"
+        BasedOn="{StaticResource ToggleButton_Icon_Fill}"
+        TargetType="ToggleButton">
+        <Setter Property="MyAttachProperty.SelectedForeground" Value="{StaticResource OrangeRed}" />
+
+        <Setter Property="Content" Value="&#xe644;" />
+        <Setter Property="ToolTip" Value="收藏" />
+
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Content" Value="&#xe684;" />
+                <Setter Property="ToolTip" Value="取消收藏" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

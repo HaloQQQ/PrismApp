@@ -26,7 +26,7 @@ namespace MusicPlayerModule.Views
         }
 
         /// <summary>
-        /// 歌词封面显示和隐藏
+        /// 歌词页显示和隐藏
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

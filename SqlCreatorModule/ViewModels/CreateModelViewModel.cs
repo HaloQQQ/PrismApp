@@ -12,6 +12,7 @@ using System.Data;
 using System.Windows.Input;
 using IceTea.Wpf.Atom.Utils;
 using PrismAppBasicLib.Contracts;
+using System.Collections.ObjectModel;
 
 namespace SqlCreatorModule.ViewModels
 {
@@ -66,18 +67,7 @@ namespace SqlCreatorModule.ViewModels
                 {
                     this.CurrentTableName = string.Empty;
 
-                    if (this.IsSqlite)
-                    {
-                        using (IDb sqlite = this.GetSqliteDb(false))
-                        {
-                            this.TableNames = sqlite.GetTables();
-                            this.CurrentTableName = this.TableNames.FirstOrDefault();
-                        }
-
-                        return;
-                    }
-
-                    using (IDb db = this.GetDb())
+                    using (IDb db = this.IsSqlite ? this.GetSqliteDb(false) : this.GetDb())
                     {
                         this.TableNames = db.GetTables();
                         this.CurrentTableName = this.TableNames.FirstOrDefault();
@@ -95,20 +85,10 @@ namespace SqlCreatorModule.ViewModels
             {
                 try
                 {
-                    this.TableColumnsStructure = null;
+                    this.TableColumnsStructure.Clear();
 
-                    IDb db = null;
-                    using (IDisposable disposable = new DisposeAction(() => db?.Dispose()))
+                    using (IDb db = this.IsSqlite ? this.GetSqliteDb(false) : this.GetDb())
                     {
-                        if (this.IsSqlite)
-                        {
-                            db = this.GetSqliteDb(false);
-                        }
-                        else
-                        {
-                            db = this.GetDb();
-                        }
-
                         var dataTable = db.ExecuteQueryAtOnce($"select * from {this.CurrentTableName};", null).Tables[0];
 
                         var list = new List<DataColumnInfoModel>();
@@ -117,7 +97,25 @@ namespace SqlCreatorModule.ViewModels
                             list.Add(new DataColumnInfoModel(item));
                         }
 
-                        this.TableColumnsStructure = list;
+                        if (!IsSqlite)
+                        {
+                            var fields = db.GetColumns(this.CurrentTableName);
+                            foreach (var item in fields)
+                            {
+                                var array = item.Split(',');
+
+                                var column = list.FirstOrDefault(t => t.ColumnName.EqualsIgnoreCase(array[0]));
+
+                                if (column != null)
+                                {
+                                    column.DbDataType = array[1];
+
+                                    column.Comment = array[2];
+                                }
+                            }
+                        }
+
+                        this.TableColumnsStructure.AddIfItemsNotWhileOrNotContains(list, _ => this.TableColumnsStructure.Any(t => t.Equals(_)));
 
                         CommonUtil.PublishMessage(eventAggregator, "查询表结构成功");
                     }
@@ -216,20 +214,19 @@ namespace SqlCreatorModule.ViewModels
             }
         }
 
-        private IEnumerable<DataColumnInfoModel> _tableColumnsStructure;
+        private IList<DataColumnInfoModel> _tableColumnsStructure = new ObservableCollection<DataColumnInfoModel>();
 
-        public IEnumerable<DataColumnInfoModel> TableColumnsStructure
+        public IList<DataColumnInfoModel> TableColumnsStructure
         {
             get => this._tableColumnsStructure;
-            set => SetProperty<IEnumerable<DataColumnInfoModel>>(ref _tableColumnsStructure, value);
         }
 
-        public ICommand OpenExportDirCommand { get; private set; }
-        public ICommand ExportTableStructureToFileCommand { get; private set; }
+        public ICommand OpenExportDirCommand { get; }
+        public ICommand ExportTableStructureToFileCommand { get; }
 
-        public ICommand ShowTableStructureCommand { get; private set; }
-        public ICommand GetTablesCommand { get; private set; }
-        public ICommand ConnectCommand { get; private set; }
+        public ICommand ShowTableStructureCommand { get; }
+        public ICommand GetTablesCommand { get; }
+        public ICommand ConnectCommand { get; }
 
 
         private string _modelExportDir;

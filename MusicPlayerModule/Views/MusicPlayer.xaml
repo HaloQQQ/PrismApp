@@ -63,7 +63,10 @@
                 Command="{Binding AddFolderCommand}"
                 Modifiers="{Binding KeyGestureDic[打开文件夹].ModifierKey}" />
 
-
+            <KeyBinding
+                Key="{Binding KeyGestureDic[全体返回开头].SelectedKey}"
+                Command="{Binding AllMoveToHomeEventCommand}"
+                Modifiers="{Binding KeyGestureDic[全体返回开头].ModifierKey}" />
             <KeyBinding
                 Key="{Binding KeyGestureDic[返回开头].SelectedKey}"
                 Command="{Binding MoveToHomeCommand}"

@@ -1,11 +1,9 @@
 ﻿using Prism.Events;
 
-namespace MusicPlayerModule.MsgEvents.Music
+namespace MusicPlayerModule.MsgEvents.Media
 {
     /// <summary>
     /// 播放状态改变时启动或停止获取歌曲进度的Timer
     /// </summary>
-    internal class MusicProgressTimerIsEnableUpdatedEvent : PubSubEvent<bool>
-    {
-    }
+    internal class MediaProgressTimerIsEnableUpdatedEvent : PubSubEvent<bool> { }
 }

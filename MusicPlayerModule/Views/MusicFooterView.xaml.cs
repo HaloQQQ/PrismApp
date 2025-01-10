@@ -1,6 +1,5 @@
 ﻿using MusicPlayerModule.MsgEvents.Music;
 using MusicPlayerModule.MsgEvents;
-using MusicPlayerModule.ViewModels;
 using Prism.Events;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using MusicPlayerModule.Contracts;
 using IceTea.Atom.Contracts;
-using IceTea.Wpf.Atom.Extensions;
+using MusicPlayerModule.MsgEvents.Media;
 
 namespace MusicPlayerModule.Views
 {
@@ -39,7 +38,7 @@ namespace MusicPlayerModule.Views
             this._lyricTime.Tick += (sender, e) =>
                 this.musicSlider.Value = this.mediaPlayer.Position.TotalMilliseconds;
 
-            eventAggregator.GetEvent<MusicProgressTimerIsEnableUpdatedEvent>().Subscribe(isTimerEnable => this._lyricTime.IsEnabled = isTimerEnable);
+            eventAggregator.GetEvent<MediaProgressTimerIsEnableUpdatedEvent>().Subscribe(isTimerEnable => this._lyricTime.IsEnabled = isTimerEnable);
             eventAggregator.GetEvent<ResetPlayerAndPlayMediaEvent>().Subscribe(() =>
             {
                 Commons.ResetMediaPlayer(this.musicSlider, this.mediaPlayer);
@@ -64,6 +63,13 @@ namespace MusicPlayerModule.Views
             });
             eventAggregator.GetEvent<ResetMediaPlayerEvent>().Subscribe(() => Commons.ResetMediaPlayer(this.musicSlider, this.mediaPlayer));
 
+            eventAggregator.GetEvent<MediaPositionEvent>().Subscribe(timeSpan => this.mediaPlayer.Position = timeSpan);
+
+            eventAggregator.GetEvent<PlayListPanelOpenEvent>().Subscribe(() =>
+            {
+                this.PlayingListButton.IsChecked = !this.PlayingListButton.IsChecked;
+            });
+
             eventAggregator.GetEvent<ContinueCurrentMediaEvent>().Subscribe(() => this.mediaPlayer.Play());
             eventAggregator.GetEvent<PauseCurrentMediaEvent>().Subscribe(() => this.mediaPlayer.Pause());
 
@@ -79,18 +85,6 @@ namespace MusicPlayerModule.Views
                 if (this.mediaPlayer.IsLoaded)
                 {
                     Commons.DecreaseVolume(mediaPlayer);
-                }
-            });
-
-            eventAggregator.GetEvent<MediaPositionEvent>().Subscribe(timeSpan => this.mediaPlayer.Position = timeSpan);
-
-            eventAggregator.GetEvent<PlayListPanelOpenEvent>().Subscribe(() =>
-            {
-                this.PlayingListButton.IsChecked = !this.PlayingListButton.IsChecked;
-
-                if (this.PlayingListButton.IsChecked == true)
-                {
-                    this.AdaptPlayingListPanelSize();
                 }
             });
         }
@@ -133,46 +127,6 @@ namespace MusicPlayerModule.Views
         }
 
         /// <summary>
-        /// 播放在播放列表中的某个音乐
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DataGridRow_Playing_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = true;
-
-            if (e.Source is DataGridRow row && row.DataContext is PlayingMusicViewModel playing)
-            {
-                var dataGrid = row.GetVisualAncestor<DataGrid>();
-
-                if (dataGrid.DataContext is MusicPlayerViewModel musicPlayerViewModel)
-                {
-                    musicPlayerViewModel.TogglePlayCommand.Execute(playing);
-                }
-            }
-        }
-
-        private void musicSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            e.Handled = true;
-            var newSpan = TimeSpan.FromMilliseconds(e.NewValue);
-            if (Math.Abs(this.mediaPlayer.Position.Subtract(newSpan).TotalMilliseconds) > 50)
-            {
-                this.mediaPlayer.Position = newSpan;
-            }
-        }
-
-        private void MusicSpeedRatioSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            e.Handled = true;
-
-            double newValue = Math.Round(e.NewValue, 1); // 保留1位小数
-            this.MusicSpeedRatioSlider.Value = newValue;
-
-            this.mediaPlayer.SpeedRatio = newValue;
-        }
-
-        /// <summary>
         /// 播放列表搜索某个歌曲时搜索框获取焦点
         /// </summary>
         /// <param name="sender"></param>
@@ -185,29 +139,68 @@ namespace MusicPlayerModule.Views
             }
         }
 
-        private void PlayingListButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Popup打开时加载DataGrid滚动条
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PlayingListPopup_UpdateDataGridScrollBar(object sender, EventArgs e)
+        {
+            if (this.PlayingDataGrid.SelectedItem != null)
+            {
+                this.PlayingDataGrid.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, () =>
+                    this.PlayingDataGrid.ScrollIntoView(this.PlayingDataGrid.SelectedItem)
+                );
+            }
+        }
+
+        private void PlayingListPopup_Closed(object sender, EventArgs e)
+        {
+            this.PlayingKeyWordsTxt.Text = string.Empty;
+            this.QueryButton.IsChecked = false;
+        }
+
+        /// <summary>
+        /// 拦截Popup的点击事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EmptyHandler(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// 进度
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void musicSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            e.Handled = true;
+            var newSpan = TimeSpan.FromMilliseconds(e.NewValue);
+            if (Math.Abs(this.mediaPlayer.Position.Subtract(newSpan).TotalMilliseconds) > 50)
+            {
+                this.mediaPlayer.Position = newSpan;
+            }
+        }
+
+        /// <summary>
+        /// 播放速度
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MusicSpeedRatioSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             e.Handled = true;
 
-            this.AdaptPlayingListPanelSize();
+            double newValue = Math.Round(e.NewValue, 1); // 保留1位小数
+            this.MusicSpeedRatioSlider.Value = newValue;
+
+            this.mediaPlayer.SpeedRatio = newValue;
         }
 
-
-        private void AdaptPlayingListPanelSize()
-        {
-            // 根据屏幕高度设置播放列表弹窗高度
-            var window = Window.GetWindow(this);
-
-            if (window.WindowState == WindowState.Maximized)
-            {
-                this.PlayingListPopup.Height = 664;
-            }
-            else
-            {
-                this.PlayingListPopup.Height = 522;
-            }
-        }
-
+        #region 音量调整
         //音量调节
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -235,7 +228,6 @@ namespace MusicPlayerModule.Views
             }
         }
 
-        #region 音量调整
         private double _lastVolume;
         private void VolumeToggleButton_Click(object sender, RoutedEventArgs e)
         {
@@ -269,36 +261,5 @@ namespace MusicPlayerModule.Views
             }
         }
         #endregion
-
-        /// <summary>
-        /// Popup打开时加载DataGrid滚动条
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void PlayingListPopup_UpdateDataGridScrollBar(object sender, EventArgs e)
-        {
-            if (this.PlayingDataGrid.SelectedItem != null)
-            {
-                this.PlayingDataGrid.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, () =>
-                    this.PlayingDataGrid.ScrollIntoView(this.PlayingDataGrid.SelectedItem)
-                );
-            }
-        }
-
-        private void PlayingListPopup_Closed(object sender, EventArgs e)
-        {
-            this.PlayingKeyWordsTxt.Text = string.Empty;
-            this.QueryButton.IsChecked = false;
-        }
-
-        /// <summary>
-        /// 拦截Popup的点击事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void EmptyHandler(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = true;
-        }
     }
 }

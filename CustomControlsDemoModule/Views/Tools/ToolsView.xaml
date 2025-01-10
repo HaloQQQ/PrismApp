@@ -57,14 +57,13 @@
                 Style="{StaticResource TextBlock_Theme}"
                 Text="启动关闭服务" />
 
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Margin="10,0" Orientation="Horizontal">
                 <TextBlock Style="{StaticResource TextBlock_Theme}" Text="服务：" />
                 <ComboBox
                     Width="180"
                     IsReadOnly="True"
                     ItemsSource="{Binding Services}"
                     SelectedIndex="0"
-                    Style="{StaticResource ComboBox_ReadOnly}"
                     Text="{Binding CurrentServiceName}" />
 
                 <Button

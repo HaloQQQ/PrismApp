@@ -5,7 +5,7 @@ using System.IO;
 
 namespace MusicPlayerModule.Utils
 {
-    internal class LoadLyricToMusicModel
+    internal static class LyricUtil
     {
         public static async Task TryLoadLyricAsync(string lyricDir, IEnumerable<MusicModel> musics)
         {

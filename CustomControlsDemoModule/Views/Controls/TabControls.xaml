@@ -63,7 +63,13 @@
             </TabItem>
         </TabControl>
 
-        <TabControl ItemContainerStyle="{StaticResource TabItem_General}">
+        <TabControl>
+            <TabControl.ItemContainerStyle>
+                <Style BasedOn="{StaticResource TabItem_General}" TargetType="TabItem">
+                    <Setter Property="Width" Value="68" />
+                </Style>
+            </TabControl.ItemContainerStyle>
+
             <TabItem Header="A">
                 <StackPanel
                     Width="300"

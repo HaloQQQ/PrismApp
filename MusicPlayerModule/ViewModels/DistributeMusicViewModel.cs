@@ -516,7 +516,7 @@ namespace MusicPlayerModule.ViewModels
             }
         }
 
-        internal void RefreshFavoriteIndex()
+        private void RefreshFavoriteIndex()
         {
             for (int i = 0; i < DisplayFavorites.Count; i++)
             {
@@ -539,7 +539,7 @@ namespace MusicPlayerModule.ViewModels
                 {
                     musicSetting.Value = selectedPath;
 
-                    var lyricDir = await LoadLyricToMusicModel.TryGetLyricDir(selectedPath);
+                    var lyricDir = await LyricUtil.TryGetLyricDir(selectedPath);
                     if (!lyricDir.IsNullOrBlank())
                     {
                         lyricSetting.Value = lyricDir;
@@ -568,7 +568,7 @@ namespace MusicPlayerModule.ViewModels
 
                     musicSetting.Value = musicDir;
 
-                    var lyricDir = await LoadLyricToMusicModel.TryGetLyricDir(musicDir);
+                    var lyricDir = await LyricUtil.TryGetLyricDir(musicDir);
                     if (!lyricDir.IsNullOrBlank())
                     {
                         lyricSetting.Value = lyricDir;
@@ -600,8 +600,6 @@ namespace MusicPlayerModule.ViewModels
             await this.MultiThreadBatchLoadMusic(list).ConfigureAwait(false);
 
             this.IsLoading = false;
-
-            this.RefreshFavoriteIndex();
 
             return true;
 

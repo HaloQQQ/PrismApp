@@ -3,15 +3,16 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <StackPanel>
-        <TextBox MyAttachProperty.PlaceHolder="Normal" />
+        <TextBox MyAttachProperty.IconFontText="&#xec7b;" MyAttachProperty.PlaceHolder="Normal" />
         <TextBox
             HorizontalContentAlignment="Center"
             IsReadOnly="True"
-            MyAttachProperty.PlaceHolder="TextBox" />
+            MyAttachProperty.PlaceHolder="ReadOnly TextBox"
+            MyAttachProperty.UseCornerRadius="True" />
         <TextBox
             HorizontalContentAlignment="Right"
             IsEnabled="False"
-            MyAttachProperty.PlaceHolder="TextBox" />
+            MyAttachProperty.PlaceHolder="Disabled TextBox" />
 
         <TextBox
             HorizontalContentAlignment="Center"
@@ -19,17 +20,30 @@
             Style="{StaticResource TextBox_HideButton}" />
         <TextBox MyAttachProperty.PlaceHolder="TextBox_Transparent" Style="{StaticResource TextBox_Transparent}" />
         <TextBox HorizontalContentAlignment="Center" Style="{StaticResource TextBox_Filter}" />
-        <TextBox MyAttachProperty.PlaceHolder="TextBox_Query" Style="{StaticResource TextBox_Query}" />
         <TextBox
             HorizontalContentAlignment="Center"
             MyAttachProperty.PlaceHolder="TextBox_CopyAsTextBlock"
             Style="{StaticResource TextBox_CopyAsTextBlock}" />
         <TextBox
-            FontSize="25"
-            MyAttachProperty.DoubleValue="50"
-            MyAttachProperty.IconFontText="&#xe612;"
+            FontSize="20"
+            MyAttachProperty.DoubleValue="20"
+            MyAttachProperty.IconFontText="&#xe614;"
             MyAttachProperty.PlaceHolder="TextBox_PlaceHolderAsLable"
             Style="{StaticResource TextBox_PlaceHolderAsLable}" />
+
+        <TextBox
+            MyAttachProperty.Brush="Blue"
+            MyAttachProperty.DoubleValue="30"
+            MyAttachProperty.IconFontText="&#xe662;"
+            MyAttachProperty.PlaceHolder="TextBox_Execute"
+            Style="{StaticResource TextBox_Execute}" />
+
+        <TextBox
+            MyAttachProperty.Brush="LightBlue"
+            MyAttachProperty.DoubleValue="40"
+            MyAttachProperty.IconFontText="&#xebdf;"
+            MyAttachProperty.PlaceHolder="TextBox_PlaceHolderAsLable_Execute"
+            Style="{StaticResource TextBox_PlaceHolderAsLable_Execute}" />
 
         <NumericUpDown
             FontSize="25"

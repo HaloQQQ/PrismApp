@@ -81,7 +81,6 @@ namespace MusicPlayerModule.Views
                     this.mediaPlayer.Play();
                 }
             });
-
             this._eventAggregator.GetEvent<PauseCurrentVideoEvent>().Subscribe(guid =>
             {
                 if (this._videoPlayerViewModel.Identity == guid)
@@ -94,48 +93,51 @@ namespace MusicPlayerModule.Views
             {
                 if (this._dto.Guid == guid)
                 {
-                    this.ShowOperationAnimation();
+                    ShowOperationAnimation();
+                }
+
+                /// <summary>
+                /// 视频暂停操作隐藏动画
+                /// </summary>
+                void ShowOperationAnimation()
+                {
+                    var storyBoard = new Storyboard();
+
+                    var keyframes = new ObjectAnimationUsingKeyFrames();
+
+                    var show = new DiscreteObjectKeyFrame();
+                    show.KeyTime = TimeSpan.FromSeconds(0);
+                    show.Value = Visibility.Visible;
+                    keyframes.KeyFrames.Add(show);
+
+                    var keyFrame = new DiscreteObjectKeyFrame();
+                    keyFrame.KeyTime = TimeSpan.FromSeconds(2);
+                    keyFrame.Value = Visibility.Collapsed;
+                    keyframes.KeyFrames.Add(keyFrame);
+
+                    Storyboard.SetTarget(keyframes, this.OperationResultBox);
+                    Storyboard.SetTargetProperty(keyframes, new PropertyPath("Visibility"));
+
+                    storyBoard.Children.Add(keyframes);
+
+                    storyBoard.Begin();
                 }
             });
 
             this._eventAggregator.GetEvent<IncreaseVolumeEvent>().Subscribe(() =>
             {
-                if (_videoPlayerViewModel.CurrentMedia != null)
+                if (this.mediaPlayer.IsLoaded)
                 {
                     Commons.IncreaseVolume(mediaPlayer);
                 }
             });
             this._eventAggregator.GetEvent<DecreaseVolumeEvent>().Subscribe(() =>
             {
-                if (_videoPlayerViewModel.CurrentMedia != null)
+                if (this.mediaPlayer.IsLoaded)
                 {
                     Commons.DecreaseVolume(mediaPlayer);
                 }
             });
-        }
-
-        private void ShowOperationAnimation()
-        {
-            var storyBoard = new Storyboard();
-
-            var keyframes = new ObjectAnimationUsingKeyFrames();
-
-            var show = new DiscreteObjectKeyFrame();
-            show.KeyTime = TimeSpan.FromSeconds(0);
-            show.Value = Visibility.Visible;
-            keyframes.KeyFrames.Add(show);
-
-            var keyFrame = new DiscreteObjectKeyFrame();
-            keyFrame.KeyTime = TimeSpan.FromSeconds(2);
-            keyFrame.Value = Visibility.Collapsed;
-            keyframes.KeyFrames.Add(keyFrame);
-
-            Storyboard.SetTarget(keyframes, this.OperationResultBox);
-            Storyboard.SetTargetProperty(keyframes, new PropertyPath("Visibility"));
-
-            storyBoard.Children.Add(keyframes);
-
-            storyBoard.Begin();
         }
 
         private Point lastMousePosition;  // 上次鼠标位置
@@ -160,68 +162,14 @@ namespace MusicPlayerModule.Views
             }
         }
 
-        private void musicSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            e.Handled = true;
-
-            var newSpan = TimeSpan.FromMilliseconds(e.NewValue);
-            if (Math.Abs(this.mediaPlayer.Position.Subtract(newSpan).TotalMilliseconds) > 50)
-            {
-                this.mediaPlayer.Position = newSpan;
-            }
-        }
-
-        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            e.Handled = true;
-
-            if (e.NewValue == 0)
-            {
-                this.mediaPlayer.IsMuted = true;
-            }
-            else
-            {
-                if (this.mediaPlayer.IsMuted)
-                {
-                    this.mediaPlayer.IsMuted = false;
-                }
-            }
-        }
-
         private VideoModelAndGuid _dto;
-
-        private void DataGridRow_Playing_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = true;
-
-            if (e.Source is DataGridRow row && row.DataContext is PlayingVideoViewModel playing)
-            {
-                this._videoPlayerViewModel.TogglePlayCommand.Execute(playing);
-            }
-        }
-
-        private double _lastVolume;
-        private void VolumeToggleButton_Click(object sender, RoutedEventArgs e)
-        {
-            e.Handled = true;
-
-            if (this.mediaPlayer.IsMuted)
-            {
-                this._lastVolume = this.mediaPlayer.Volume;
-                this.mediaPlayer.Volume = 0;
-            }
-            else
-            {
-                this.mediaPlayer.Volume = this._lastVolume;
-            }
-        }
 
         /// <summary>
         /// 播放列表弹窗出现时更新列表滚动条位置
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DataGrid_UpdateScrollBar(object sender, EventArgs e)
+        private void PlayingListPopup_UpdateDataGridScrollBar(object sender, EventArgs e)
         {
             if (this.PlayingDataGrid.SelectedItem != null)
             {
@@ -231,15 +179,19 @@ namespace MusicPlayerModule.Views
             }
         }
 
+        private bool _hasSubscribedWindowStateChangedEvent;
+        /// <summary>
+        /// 获取时常、窗口最小化时静音
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void mediaPlayer_MediaOpened(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
 
             if (this.DataContext is VideoPlayerViewModel videoPlayerViewModel)
             {
-                PlayingVideoViewModel video = videoPlayerViewModel.CurrentMedia as PlayingVideoViewModel;
-
-                if (video.TotalMills == 0)
+                if (videoPlayerViewModel.CurrentMedia is PlayingVideoViewModel video && video.TotalMills == 0)
                 {
                     video.SetVideoTotalMills((int)this.mediaPlayer.NaturalDuration.TimeSpan.TotalMilliseconds);
                 }
@@ -253,18 +205,15 @@ namespace MusicPlayerModule.Views
                 {
                     window.StateChanged += (sender, e) =>
                     {
-                        if (sender is Window window)
+                        if (window.WindowState == WindowState.Minimized)
                         {
-                            if (window.WindowState == WindowState.Minimized)
-                            {
-                                this.mediaPlayer.Pause();
-                                this._videoPlayerViewModel.Running = false;
-                            }
-                            else
-                            {
-                                this.mediaPlayer.Play();
-                                this._videoPlayerViewModel.Running = true;
-                            }
+                            this.mediaPlayer.Pause();
+                            this._videoPlayerViewModel.Running = false;
+                        }
+                        else
+                        {
+                            this.mediaPlayer.Play();
+                            this._videoPlayerViewModel.Running = true;
                         }
                     };
 
@@ -272,7 +221,6 @@ namespace MusicPlayerModule.Views
                 }
             }
         }
-        private bool _hasSubscribedWindowStateChangedEvent;
 
         private void UserControl_Executed(object sender, ExecutedRoutedEventArgs e)
         {
@@ -281,14 +229,30 @@ namespace MusicPlayerModule.Views
                 e.Handled = true;
 
                 this.PlayingListButton.IsChecked = !this.PlayingListButton.IsChecked;
-
-                if ((bool)this.PlayingListButton.IsChecked)
-                {
-                    this.AdaptPlayingListPanelSize();
-                }
             }
         }
 
+        /// <summary>
+        /// 进度
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void musicSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            e.Handled = true;
+
+            var newSpan = TimeSpan.FromMilliseconds(e.NewValue);
+            if (Math.Abs(this.mediaPlayer.Position.Subtract(newSpan).TotalMilliseconds) > 50)
+            {
+                this.mediaPlayer.Position = newSpan;
+            }
+        }
+
+        /// <summary>
+        /// 播放速度
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void VideoSpeedRatioSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             e.Handled = true;
@@ -299,6 +263,7 @@ namespace MusicPlayerModule.Views
             this.mediaPlayer.SpeedRatio = newValue;
         }
 
+        #region 音量调节
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (this.VolumePopup.IsOpen)
@@ -322,26 +287,38 @@ namespace MusicPlayerModule.Views
             }
         }
 
-        private void PlayingListButton_Click(object sender, RoutedEventArgs e)
+        private double _lastVolume;
+        private void VolumeToggleButton_Click(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
 
-            this.AdaptPlayingListPanelSize();
-        }
-
-        private void AdaptPlayingListPanelSize()
-        {
-            // 根据屏幕高度设置播放列表弹窗高度
-            var window = Window.GetWindow(this);
-
-            if (window.WindowState == WindowState.Maximized)
+            if (this.mediaPlayer.IsMuted)
             {
-                this.PlayingListPopup.Height = 630;
+                this._lastVolume = this.mediaPlayer.Volume;
+                this.mediaPlayer.Volume = 0;
             }
             else
             {
-                this.PlayingListPopup.Height = 501;
+                this.mediaPlayer.Volume = this._lastVolume;
             }
         }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            e.Handled = true;
+
+            if (e.NewValue == 0)
+            {
+                this.mediaPlayer.IsMuted = true;
+            }
+            else
+            {
+                if (this.mediaPlayer.IsMuted)
+                {
+                    this.mediaPlayer.IsMuted = false;
+                }
+            }
+        }
+        #endregion
     }
 }

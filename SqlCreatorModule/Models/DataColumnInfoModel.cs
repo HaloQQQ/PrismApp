@@ -1,10 +1,12 @@
-﻿using System.Data;
+﻿using IceTea.Atom.Extensions;
+using System.Data;
 
 namespace SqlCreatorModule.Models
 {
 #pragma warning disable CS8601 // 引用类型赋值可能为 null。
+#pragma warning disable CS8602
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
-    internal class DataColumnInfoModel
+    internal class DataColumnInfoModel : IEquatable<DataColumnInfoModel>
     {
         public DataColumnInfoModel(DataColumn column)
         {
@@ -34,18 +36,33 @@ namespace SqlCreatorModule.Models
         public string Caption { get; }
 
         public string ColumnName { get; }
+        /// <summary>
+        /// 属性数据类型
+        /// </summary>
+        public string DataType { get; }
+
+        /// <summary>
+        /// Db字段数据类型
+        /// </summary>
+        public string DbDataType { get; set; }
+        public string Comment { get; set; }
+
         public string DefaultValue { get; }
         public bool Unique { get; }
         public bool AllowDBNull { get; }
         public bool AutoIncrement { get; }
         public long AutoIncrementSeed { get; }
         public long AutoIncrementStep { get; }
-        public string Expression { get; }
-        public bool ReadOnly { get; }
-        public string DataType { get; }
-        public DataSetDateTime DateTimeMode { get; }
         public int MaxLength { get; }
+
+        public bool ReadOnly { get; }
+        public DataSetDateTime DateTimeMode { get; }
         public string Namespace { get; }
-        //public PropertyCollection ExtendedProperties { get; }
+        public string Expression { get; }
+
+        public bool Equals(DataColumnInfoModel? other)
+        {
+            return other.IsNotNullAnd(_ => _.ColumnName.EqualsIgnoreCase(this.ColumnName));
+        }
     }
 }

@@ -2,7 +2,8 @@
 
 namespace MusicPlayerModule.MsgEvents.Video
 {
-    internal class ContinueCurrentVideoEvent : PubSubEvent<Guid>
-    {
-    }
+    /// <summary>
+    /// 只通知自己
+    /// </summary>
+    internal class ContinueCurrentVideoEvent : PubSubEvent<Guid> { }
 }

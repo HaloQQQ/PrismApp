@@ -2,7 +2,5 @@
 
 namespace MusicPlayerModule.MsgEvents.Music
 {
-    internal class LyricPageSlideEvent :PubSubEvent
-    {
-    }
+    internal class LyricPageSlideEvent : PubSubEvent { }
 }

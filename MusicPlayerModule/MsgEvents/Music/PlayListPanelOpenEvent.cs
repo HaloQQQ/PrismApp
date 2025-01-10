@@ -2,7 +2,5 @@
 
 namespace MusicPlayerModule.MsgEvents.Music
 {
-    internal class PlayListPanelOpenEvent : PubSubEvent
-    {
-    }
+    internal class PlayListPanelOpenEvent : PubSubEvent { }
 }

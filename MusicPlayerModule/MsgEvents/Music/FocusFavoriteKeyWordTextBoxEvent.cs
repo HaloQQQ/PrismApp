@@ -2,7 +2,5 @@
 
 namespace MusicPlayerModule.MsgEvents.Music
 {
-    internal class FocusFavoriteKeyWordTextBoxEvent : PubSubEvent
-    {
-    }
+    internal class FocusFavoriteKeyWordTextBoxEvent : PubSubEvent { }
 }

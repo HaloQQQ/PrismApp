@@ -2,7 +2,5 @@
 
 namespace MusicPlayerModule.MsgEvents
 {
-    public class GoBackMediaPointAEvent : PubSubEvent
-    {
-    }
+    internal class GoBackMediaPointAEvent : PubSubEvent { }
 }

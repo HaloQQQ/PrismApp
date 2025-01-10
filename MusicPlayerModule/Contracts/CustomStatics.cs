@@ -2,7 +2,7 @@
 {
     public static class CustomStatics
     {
-        public enum EnumSettings
+        internal enum EnumSettings
         {
             Music,
             Lyric,

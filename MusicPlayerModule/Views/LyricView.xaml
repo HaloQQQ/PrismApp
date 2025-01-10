@@ -363,7 +363,7 @@
                 </Popup>
             </DockPanel>
 
-            <DockPanel Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitSubConverter}, ConverterParameter=150}" VerticalAlignment="Top">
+            <DockPanel Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=0.8}" VerticalAlignment="Top">
 
                 <TextBlock
                     HorizontalAlignment="Center"

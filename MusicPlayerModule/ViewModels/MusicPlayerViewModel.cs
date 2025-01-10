@@ -29,18 +29,6 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
 
     private SettingModel LyricSetting => this._settingManager[CustomStatics.LYRIC];
 
-    public override bool Running
-    {
-        get => _running;
-        set
-        {
-            if (SetProperty<bool>(ref _running, value))
-            {
-                this._eventAggregator.GetEvent<MusicProgressTimerIsEnableUpdatedEvent>().Publish(value);
-            }
-        }
-    }
-
     protected override void AllMediaModelNotPlaying()
     {
         foreach (var item in this.Playing.Where(m => m.IsPlayingMedia))

@@ -21,7 +21,20 @@
             MyAttachProperty.CornerRadius="10"
             Style="{StaticResource ColorPicker_Custom}" />
 
-        <Calendar Grid.Row="0" Grid.Column="1" />
+        <Calendar Grid.Row="0" Grid.Column="1">
+            <Calendar.CalendarDayButtonStyle>
+                <Style BasedOn="{StaticResource CalendarDayButton_Default}" TargetType="CalendarDayButton">
+                    <Setter Property="Background" Value="Red" />
+                    <Setter Property="MyAttachProperty.UseCornerRadius" Value="False" />
+                </Style>
+            </Calendar.CalendarDayButtonStyle>
+            <Calendar.CalendarButtonStyle>
+                <Style BasedOn="{StaticResource CalendarButton_Default}" TargetType="CalendarButton">
+                    <Setter Property="Background" Value="Green" />
+                    <Setter Property="MyAttachProperty.UseCornerRadius" Value="False" />
+                </Style>
+            </Calendar.CalendarButtonStyle>
+        </Calendar>
 
         <ColorPicker
             Grid.Row="1"
@@ -35,6 +48,7 @@
             VerticalAlignment="Top"
             MyAttachProperty.CornerRadius="10"
             MyAttachProperty.DoubleValue="30"
+            MyAttachProperty.IconFontText="&#xe662;"
             MyAttachProperty.IsReadOnly="True" />
     </Grid>
 </UserControl>

@@ -36,7 +36,7 @@
             <ToggleButton Style="{StaticResource ToggleButton_Icon_Fill}" />
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal">
+        <WrapPanel>
             <CheckBox
                 Height="30"
                 HorizontalContentAlignment="Right"
@@ -47,9 +47,14 @@
                 Style="{StaticResource CheckBox_Switch}" />
             <CheckBox
                 HorizontalContentAlignment="Left"
+                Content="Switch CheckBox"
+                MyAttachProperty.IsCollapsed="True"
+                Style="{StaticResource CheckBox_Switch}" />
+            <CheckBox
+                HorizontalContentAlignment="Left"
                 Content="CheckMark CheckBox"
                 Style="{StaticResource CheckBox_CheckMark}" />
-        </StackPanel>
+        </WrapPanel>
 
         <StackPanel Orientation="Horizontal">
             <RadioButton

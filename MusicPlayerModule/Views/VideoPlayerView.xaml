@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:contracts="clr-namespace:MusicPlayerModule.Contracts"
     xmlns:core="clr-namespace:System.Windows.Media;assembly=PresentationCore"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True"
     Background="Transparent"
@@ -181,6 +182,11 @@
                 Key="{Binding KeyGestureDic[打开文件夹].SelectedKey}"
                 Command="{Binding AddFolderCommand}"
                 Modifiers="{Binding KeyGestureDic[打开文件夹].ModifierKey}" />
+
+            <KeyBinding
+                Key="{Binding KeyGestureDic[全体返回开头].SelectedKey}"
+                Command="{Binding AllMoveToHomeEventCommand}"
+                Modifiers="{Binding KeyGestureDic[全体返回开头].ModifierKey}" />
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[返回开头].SelectedKey}"
@@ -438,7 +444,6 @@
                         LastChildFill="False">
                         <ToggleButton
                             x:Name="PlayingListButton"
-                            Click="PlayingListButton_Click"
                             DockPanel.Dock="Right"
                             ToolTip="{Binding KeyGestureDic[播放列表].ToolTip}">
                             <ToggleButton.Style>
@@ -458,10 +463,10 @@
                         <Popup
                             x:Name="PlayingListPopup"
                             Width="400"
-                            Height="501"
+                            Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=0.8}"
                             HorizontalOffset="-343"
                             IsOpen="{Binding IsChecked, ElementName=PlayingListButton}"
-                            Opened="DataGrid_UpdateScrollBar"
+                            Opened="PlayingListPopup_UpdateDataGridScrollBar"
                             Placement="Top"
                             PlacementTarget="{Binding ElementName=PlayingListButton}"
                             PopupAnimation="Fade"
@@ -478,20 +483,22 @@
                                         Margin="20,20,20,0"
                                         LastChildFill="False">
                                         <DockPanel DockPanel.Dock="Top">
-                                            <TextBlock HorizontalAlignment="Left" DockPanel.Dock="Left">
+                                            <TextBlock
+                                                HorizontalAlignment="Left"
+                                                DockPanel.Dock="Left"
+                                                Foreground="{StaticResource LightWhite}">
                                                 共
                                                 <TextBlock Text="{Binding DisplayPlaying.Count}" />
                                                 个
                                             </TextBlock>
 
-                                            <TextBlock HorizontalAlignment="Right" DockPanel.Dock="Right">
-                                                <!--<ToggleButton x:Name="QueryButton" Content="&#xe632;" ToolTip="搜索" Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"/>-->
-                                                <Button
-                                                    Command="{Binding CleanPlayingCommand}"
-                                                    Content="&#xec7b;"
-                                                    Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
-                                                    ToolTip="{Binding KeyGestureDic[清空播放队列].ToolTip}" />
-                                            </TextBlock>
+                                            <Button
+                                                HorizontalAlignment="Right"
+                                                Command="{Binding CleanPlayingCommand}"
+                                                Content="&#xec7b;"
+                                                DockPanel.Dock="Right"
+                                                Style="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
+                                                ToolTip="{Binding KeyGestureDic[清空播放队列].ToolTip}" />
                                         </DockPanel>
                                     </DockPanel>
 
@@ -503,7 +510,11 @@
                                         ItemsSource="{Binding DisplayPlaying}"
                                         SelectedItem="{Binding CurrentMedia, Mode=OneWay}"
                                         Style="{StaticResource DataGrid_Transparent}">
-
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseDoubleClick">
+                                                <i:InvokeCommandAction Command="{Binding DataContext.TogglePlayCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
                                         <DataGrid.CellStyle>
                                             <Style BasedOn="{StaticResource DataGridCell_General}" TargetType="DataGridCell">
                                                 <Style.Triggers>
@@ -516,8 +527,6 @@
 
                                         <DataGrid.RowStyle>
                                             <Style BasedOn="{StaticResource {x:Type DataGridRow}}" TargetType="DataGridRow">
-                                                <EventSetter Event="MouseDoubleClick" Handler="DataGridRow_Playing_MouseDoubleClick" />
-
                                                 <Setter Property="Header" Value="{Binding IndexString, Mode=OneWay}" />
                                             </Style>
                                         </DataGrid.RowStyle>
@@ -638,7 +647,7 @@
                         </Popup>
 
                         <ToggleButton
-                            x:Name="volumeToggleButton"
+                            x:Name="VolumeToggleButton"
                             Click="VolumeToggleButton_Click"
                             DockPanel.Dock="Right"
                             IsChecked="{Binding IsMuted, ElementName=mediaPlayer, Mode=TwoWay}"
@@ -650,7 +659,7 @@
                             HorizontalOffset="-23"
                             MyAttachProperty.IsAppearOnHovered="True"
                             Placement="Top"
-                            PlacementTarget="{Binding ElementName=volumeToggleButton}"
+                            PlacementTarget="{Binding ElementName=VolumeToggleButton}"
                             VerticalOffset="5">
                             <!--  音量调节模态框  -->
                             <StackPanel Background="{StaticResource PopupBackground}" Clip="{StaticResource PopupGeometryGroup_Volume}">

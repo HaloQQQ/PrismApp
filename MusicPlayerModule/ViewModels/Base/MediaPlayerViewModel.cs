@@ -12,6 +12,7 @@ using MusicPlayerModule.Contracts;
 using IceTea.Atom.BaseModels;
 using PrismAppBasicLib.Models;
 using PrismAppBasicLib.Contracts;
+using MusicPlayerModule.MsgEvents.Media;
 
 namespace MusicPlayerModule.ViewModels.Base;
 
@@ -169,6 +170,8 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
                 () => !this.Running && this.DisplayPlaying.Count > 0)
                 .ObservesProperty(() => this.Running)
                 .ObservesProperty<int>(() => this.DisplayPlaying.Count);
+
+        this.AllMoveToHomeEventCommand = new DelegateCommand(() => this._eventAggregator.GetEvent<MoveToHomeEvent>().Publish());
 
         this.MoveToHomeCommand = new DelegateCommand(
                 () => this.CurrentMedia.CurrentMills = 0,
@@ -371,6 +374,14 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
 
     protected virtual void SubscribeEvents(IEventAggregator eventAggregator)
     {
+        eventAggregator.GetEvent<MoveToHomeEvent>().Subscribe(() =>
+        {
+            if (CurrentMedia != null && Running)
+            {
+                this.CurrentMedia.CurrentMills = 0;
+            }
+        });
+
         eventAggregator.GetEvent<GoBackMediaPointAEvent>().Subscribe(() => this.CurrentMedia?.GoToPointA());
 
         eventAggregator.GetEvent<FastForwardMediaEvent>().Subscribe(() => this.CurrentMedia?.FastForward());
@@ -462,6 +473,7 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
 
         internal const string OpenFolder = "打开文件夹";
 
+        internal const string AllMoveToHome = "全体返回开头";
         internal const string MoveToHome = "返回开头";
         internal const string MoveToEnd = "跳至结尾";
 
@@ -481,6 +493,7 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
             new AppHotKey(MediaHotKeyConsts.ToPointA, Key.D3, ModifierKeys.Alt),
             new AppHotKey(MediaHotKeyConsts.AllToPointA, Key.D1, ModifierKeys.Alt),
 
+            new AppHotKey(MediaHotKeyConsts.AllMoveToHome, Key.Home, ModifierKeys.Control),
             new AppHotKey(MediaHotKeyConsts.MoveToHome, Key.Home, ModifierKeys.None),
             new AppHotKey(MediaHotKeyConsts.MoveToEnd, Key.End, ModifierKeys.None),
             new AppHotKey(MediaHotKeyConsts.Rewind, Key.Left, ModifierKeys.None),
@@ -575,7 +588,13 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
     public virtual bool Running
     {
         get { return _running; }
-        set { throw new NotImplementedException(); }
+        set
+        {
+            if (SetProperty<bool>(ref _running, value))
+            {
+                this._eventAggregator.GetEvent<MediaProgressTimerIsEnableUpdatedEvent>().Publish(value);
+            }
+        }
     }
     #endregion
 
@@ -597,6 +616,7 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
     /// </summary>
     public ICommand AddFolderCommand { get; private set; }
 
+    public ICommand AllMoveToHomeEventCommand { get; private set; }
     public ICommand MoveToHomeCommand { get; private set; }
     public ICommand MoveToEndCommand { get; private set; }
 

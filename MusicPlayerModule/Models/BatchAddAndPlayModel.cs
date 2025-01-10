@@ -6,6 +6,10 @@ namespace MusicPlayerModule.Models
 #pragma warning disable CS8601 // 引用类型赋值可能为 null。
     internal class BatchAddAndPlayModel
     {
+        public BatchAddAndPlayModel()
+        {
+        }
+
         public BatchAddAndPlayModel(FavoriteMusicViewModel? targetToPlay, IEnumerable<FavoriteMusicViewModel> collection)
         {
             TargetToPlay = targetToPlay;
