@@ -78,7 +78,6 @@
         x:Key="TextBox_PlaceHolderAsLable_PostMsg"
         BasedOn="{StaticResource TextBox_PlaceHolderAsLable_Execute}"
         TargetType="TextBox">
-        <Setter Property="MyAttachProperty.DoubleValue" Value="25" />
         <Setter Property="MyAttachProperty.IconFontText" Value="&#xe64f;" />
         <Setter Property="MyAttachProperty.PlaceHolder" Value="待发送的消息" />
 

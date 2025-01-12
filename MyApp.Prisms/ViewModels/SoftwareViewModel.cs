@@ -74,7 +74,7 @@ namespace MyApp.Prisms.ViewModels
                         uri = nameof(MailManager);
                         break;
 
-                    case "Sql创建器":
+                    case "数据表结构":
                         uri = nameof(CreateModelView);
                         break;
                     case "颜色转换":
@@ -286,13 +286,6 @@ namespace MyApp.Prisms.ViewModels
         }
 
         private ScreenBrightManager _brightManager;
-        private bool _isLeastBright;
-
-        public bool IsLeastBright
-        {
-            get => this._isLeastBright;
-            set => SetProperty<bool>(ref _isLeastBright, value);
-        }
 
         private double _currentBright;
         /// <summary>

@@ -46,6 +46,7 @@ namespace CustomControlsDemoModule.ViewModels
             .ObservesProperty(() => FilePath);
 
 
+
             this.FentchServiceCommand = new DelegateCommand(() =>
             {
                 this._services.Clear();
@@ -58,25 +59,36 @@ namespace CustomControlsDemoModule.ViewModels
             });
 
             this.StartServiceCommand = new DelegateCommand<string>(
-                    serviceName =>
-                    {
-                        //this._services.First(s => s.ServiceName == serviceName).Start();
-
-                        AppUtils.ExecuteCmd($"net start {serviceName}");
-                    },
+                    AppUtils.StartService,
                     Services.Contains
                 ).ObservesProperty(() => CurrentServiceName);
 
             this.StopServiceCommand = new DelegateCommand<string>(
-                    serviceName =>
-                    {
-                        //this._services.First(s => s.ServiceName == serviceName).Stop();
-
-                        AppUtils.ExecuteCmd($"net stop {serviceName}");
-                    },
+                    AppUtils.StopService,
                     Services.Contains
                 )
                 .ObservesProperty(() => CurrentServiceName);
+
+
+            this.SelectExeFileCommand = new DelegateCommand(() =>
+            {
+                var dialog = CommonAtomUtils.OpenFileDialog(AppStatics.DeskTop, new ExeFilter());
+
+                if (dialog != null)
+                {
+                    this.ServicExeFilePath = dialog.FileName;
+                }
+            });
+
+            this.InstallServiceCommand = new DelegateCommand<string>(
+                    exeFilePath => AppUtils.InstallService(exeFilePath, this.ServiceName),
+                    _ => ServicExeFilePath.IsFileExists()
+                ).ObservesProperty(() => this.ServicExeFilePath);
+
+            this.UnInstallServiceCommand = new DelegateCommand<string>(
+                    exeFilePath => AppUtils.UnInstallService(exeFilePath, this.ServiceName),
+                    _ => ServicExeFilePath.IsFileExists()
+                ).ObservesProperty(() => this.ServicExeFilePath);
         }
 
         #region Props
@@ -116,6 +128,27 @@ namespace CustomControlsDemoModule.ViewModels
 
         private IList<ServiceController> _services = new List<ServiceController>();
         #endregion
+
+        #region 安装卸载服务
+        class ExeFilter : IMedia
+        {
+            public virtual string Filter => $"可执行文件 (*.exe)|*.exe";
+        }
+
+        private string _servicExeFilePath;
+        public string ServicExeFilePath
+        {
+            get => _servicExeFilePath;
+            set => SetProperty<string>(ref _servicExeFilePath, value);
+        }
+
+        private string _serviceName;
+        public string ServiceName
+        {
+            get => _serviceName;
+            set => SetProperty<string>(ref _serviceName, value);
+        }
+        #endregion
         #endregion
 
         #region Commands
@@ -131,6 +164,13 @@ namespace CustomControlsDemoModule.ViewModels
         public ICommand StartServiceCommand { get; private set; }
 
         public ICommand StopServiceCommand { get; private set; }
+        #endregion
+
+        #region 安装卸载服务
+        public ICommand InstallServiceCommand { get; private set; }
+        public ICommand UnInstallServiceCommand { get; private set; }
+
+        public ICommand SelectExeFileCommand { get; private set; }
         #endregion
         #endregion
     }

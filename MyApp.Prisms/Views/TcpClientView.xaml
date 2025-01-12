@@ -6,17 +6,6 @@
     xmlns:viewModels="clr-namespace:MyApp.Prisms.ViewModels.BaseViewModels"
     prism:ViewModelLocator.AutoWireViewModel="True"
     SnapsToDevicePixels="True">
-
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <Style
-                x:Key="Lable"
-                BasedOn="{StaticResource TextBlock_Theme}"
-                TargetType="TextBlock">
-                <Setter Property="Margin" Value="0" />
-            </Style>
-        </ResourceDictionary>
-    </UserControl.Resources>
     <UserControl.InputBindings>
         <KeyBinding
             Key="O"
@@ -44,10 +33,12 @@
                 HorizontalAlignment="Left"
                 Style="{StaticResource OnlyDownViewbox}">
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource Lable}" Text="服务器IP：" />
+                    <TextBlock Style="{StaticResource TextBlock_Theme}" Text="服务器IP：" />
                     <ComboBox ItemsSource="{x:Static viewModels:BaseSocketViewModel.Ips}" Text="{Binding Ip, UpdateSourceTrigger=PropertyChanged}">
                         <ComboBox.Style>
                             <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="ComboBox">
+                                <Setter Property="Margin" Value="0,0,5,0" />
+
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Socket.IsConnected}" Value="True">
                                         <Setter Property="IsEnabled" Value="False" />
@@ -62,7 +53,7 @@
                     </ComboBox>
 
 
-                    <TextBlock Style="{StaticResource Lable}" Text="服务器监听端口：" />
+                    <TextBlock Style="{StaticResource TextBlock_Theme}" Text="服务器监听端口：" />
                     <TextBox Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}">
                         <TextBox.Style>
                             <Style BasedOn="{StaticResource TextBox_HideButton}" TargetType="TextBox">

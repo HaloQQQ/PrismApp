@@ -1,4 +1,5 @@
-﻿using IceTea.Atom.Extensions;
+﻿using IceTea.Atom.Contracts;
+using IceTea.Atom.Extensions;
 using IceTea.Wpf.Atom.Contracts;
 using IceTea.Wpf.Atom.Contracts.MediaInfo;
 using IceTea.Wpf.Atom.Utils;
@@ -34,7 +35,7 @@ namespace MyApp.Prisms.Views.BaseViews
                 {
                     var text = textBox.Text;
 
-                    if (!Regex.IsMatch(text, "^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$"))
+                    if (!Regex.IsMatch(text, RegexConstants.EmailPattern))
                     {
                         System.Windows.MessageBox.Show("添加内容必须为邮箱");
                         return;

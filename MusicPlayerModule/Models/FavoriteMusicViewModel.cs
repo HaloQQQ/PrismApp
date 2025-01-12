@@ -44,10 +44,8 @@ internal class FavoriteMusicViewModel : ChildrenBase, IDisposable, IEquatable<Fa
 
     public MusicModel Music { get; private set; }
 
-    public override void Dispose()
+    protected override void DisposeCore()
     {
-        base.Dispose();
-
         Music.Dispose();
         Music = null;
     }

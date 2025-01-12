@@ -81,7 +81,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
         {
             SetFlagCommand = new DelegateCommand<IList<string>>(async strList =>
             {
-                var list = this.Mails.Where(m => m.IsSelected).ToList();
+                var list = this.Mails.Where(m => m.IsSelected);
 
                 if (list.Any())
                 {
@@ -113,7 +113,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
                 dto.Attachments.AddRange(Attachments.Select(filePath => new System.Net.Mail.Attachment(filePath)));
 
-                await _emailManager.SendInMailAsync(dto);
+                await _emailManager.SendAsync(dto);
             }, () => !Password.IsNullOrBlank()
                     && !this.Tos.IsNullOrEmpty()
                     && !this.Subject.IsNullOrBlank()
@@ -138,11 +138,13 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
                 {
                     CommonUtil.PublishMessage(_eventAggregator, result.ErrorMessage);
                 }
+                else
+                {
+                    this.IsMailsSelectedAll = false;
 
-                this.IsMailsSelectedAll = false;
-
-                this.Mails.Clear();
-                this.Mails.AddRange(result.PopMails);
+                    this.Mails.Clear();
+                    this.Mails.AddRange(result.PopMails);
+                }
 
                 this.IsLoading = false;
             }, () => !Password.IsNullOrBlank() && !this.IsLoading)
@@ -305,7 +307,6 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
                 var fromMail = this.FromMail;
                 if (!this._settingManager.TryGetValue(fromMail, out var password))
                 {
-                    //PublishMessage($"未找到{fromMail}邮箱相关配置信息，请在配置页面配置完成后重试");
                     return string.Empty;
                 }
 

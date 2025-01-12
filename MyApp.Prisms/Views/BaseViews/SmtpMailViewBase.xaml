@@ -104,8 +104,8 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="7*" />
+            <ColumnDefinition Width="312" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
             <StackPanel CommandManager.Executed="StackPanel_Executed">
@@ -114,13 +114,19 @@
                     <TextBox
                         MinWidth="125"
                         MaxWidth="125"
+                        IsTabStop="True"
                         MyAttachProperty.PlaceHolder="发件邮箱"
+                        TabIndex="0"
                         Text="{Binding From, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock Text="{Binding MailSuffix, Mode=OneTime}" />
                 </WrapPanel>
                 <WrapPanel>
                     <TextBlock Style="{StaticResource Prefix}" Text="收件人:" />
-                    <TextBox x:Name="TosTextBox" MyAttachProperty.PlaceHolder="收件邮箱" />
+                    <TextBox
+                        x:Name="TosTextBox"
+                        IsTabStop="True"
+                        MyAttachProperty.PlaceHolder="收件邮箱"
+                        TabIndex="1" />
                     <ListBox x:Name="lstBxTos" ItemsSource="{Binding Tos}" />
                 </WrapPanel>
                 <WrapPanel>
@@ -197,12 +203,11 @@
         </ScrollViewer>
 
         <Grid Grid.Column="1">
-            <NeedleWaitLoad
-                Width="80"
-                Height="80"
-                Foreground="DodgerBlue"
-                Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
-            <DataGrid ItemsSource="{Binding Mails}" Style="{StaticResource DataGrid_Transparent}">
+            <DataGrid
+                FontSize="14"
+                ItemsSource="{Binding Mails}"
+                MyAttachProperty.DataGridCellHorizontalAlignment="Center"
+                Style="{StaticResource DataGrid_Transparent}">
                 <DataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="设置标记">
@@ -349,7 +354,7 @@
                 </DataGrid.ContextMenu>
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn
-                        MinWidth="50"
+                        MaxWidth="60"
                         Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
                         ElementStyle="{StaticResource CheckBox_CheckMark}">
                         <DataGridCheckBoxColumn.HeaderTemplate>
@@ -362,25 +367,45 @@
                         </DataGridCheckBoxColumn.HeaderTemplate>
                     </DataGridCheckBoxColumn>
                     <DataGridTextColumn Binding="{Binding Id}" Header="编号" />
-                    <DataGridTextColumn
-                        MaxWidth="150"
-                        Binding="{Binding From}"
-                        Header="发件人" />
-                    <DataGridTemplateColumn MaxWidth="150" Header="收件人">
+                    <DataGridTemplateColumn Width="150" Header="发件人">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding From}" ToolTip="{Binding From}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="150" Header="收件人">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding To}" ToolTip="{Binding To}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn MaxWidth="100" Header="主题">
+                    <DataGridTemplateColumn Width="*" Header="主题">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Subject}" ToolTip="{Binding Subject}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Binding="{Binding SendTime, StringFormat=yyyy/MM/dd HH:mm:ss}" Header="发出时间" />
+                    <DataGridTemplateColumn Width="150" Header="发出时间">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding SendTime, StringFormat=yyyy/MM/dd HH:mm:ss}">
+                                    <TextBlock.ToolTip>
+                                        <TextBlock Text="{Binding SendTime, StringFormat=yyyy/MM/dd HH:mm:ss}" />
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="100" Header="正文">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Body}" ToolTip="{Binding Body}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="抄送">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -390,6 +415,12 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
+
+            <NeedleWaitLoad
+                Width="80"
+                Height="80"
+                Foreground="DodgerBlue"
+                Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
         </Grid>
     </Grid>
 </UserControl>

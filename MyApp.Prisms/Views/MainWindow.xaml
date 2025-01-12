@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:regions="http://prismlibrary.com/"
     xmlns:system="clr-namespace:System;assembly=netstandard"
     xmlns:views="clr-namespace:MyApp.Prisms.Views"
     MinWidth="1200"
@@ -11,6 +12,7 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius}"
     MyAttachProperty.IsMinimalScreen="True"
+    MyAttachProperty.IsResizeAdorner="False"
     Style="{StaticResource Window_WithoutTitleBar_Animation}">
     <Grid ClipToBounds="True">
         <Grid.Background>
@@ -18,7 +20,7 @@
         </Grid.Background>
         <Grid Background="#33000000">
             <DockPanel>
-                <views:WindowTitleBarView VerticalAlignment="Top" DockPanel.Dock="Top" />
+                <views:WindowTitleBarView DockPanel.Dock="Top" />
 
                 <Grid DockPanel.Dock="Bottom">
                     <Grid.ColumnDefinitions>
@@ -46,7 +48,7 @@
                                 <system:String>进程服务</system:String>
                                 <system:String>邮件客户端</system:String>
 
-                                <system:String>Sql创建器</system:String>
+                                <system:String>数据表结构</system:String>
                                 <system:String>颜色转换</system:String>
 
                                 <system:String>控件样例</system:String>

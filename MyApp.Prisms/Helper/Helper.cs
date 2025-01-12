@@ -64,7 +64,7 @@ namespace MyApp.Prisms.Helper
             var dir = Path.Combine(AppStatics.ExeDirectory, typeName);
             var filePath = Path.Combine(dir, DateTime.Now.ToString("yyyy-MM-dd") + typeName + ".log");
 
-            if (!AppUtils.OpenWithNotePad(filePath))
+            if (AppUtils.OpenWithNotePad(filePath) == null)
             {
                 CommonUtil.PublishMessage(ContainerLocator.Current.Resolve<IEventAggregator>(), $"日志文件{filePath}不存在!", 2);
             }

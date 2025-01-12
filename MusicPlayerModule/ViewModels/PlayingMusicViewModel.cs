@@ -260,10 +260,8 @@ internal class PlayingMusicViewModel : MediaBaseViewModel, IEquatable<PlayingMus
         }
     }
 
-    public override void Dispose()
+    protected override void DisposeCore()
     {
-        base.Dispose();
-
         this.Music?.Dispose();
 
         this.Music = null;

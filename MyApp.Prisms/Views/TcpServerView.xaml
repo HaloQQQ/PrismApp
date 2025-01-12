@@ -8,73 +8,64 @@
     SnapsToDevicePixels="True">
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <Style
-                x:Key="Lable"
-                BasedOn="{StaticResource TextBlock_Theme}"
-                TargetType="TextBlock">
-                <Setter Property="Margin" Value="0" />
-            </Style>
+        <Style x:Key="HorizontalListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="BorderBrush" Value="{x:Null}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="5,3,0,3" />
+            <Setter Property="Background" Value="{StaticResource TransparentButtonBackground}" />
+            <Setter Property="MaxWidth" Value="130.5" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
 
-            <Style x:Key="HorizontalListBoxItemStyle" TargetType="ListBoxItem">
-                <Setter Property="OverridesDefaultStyle" Value="True" />
-                <Setter Property="SnapsToDevicePixels" Value="True" />
-                <Setter Property="BorderBrush" Value="{x:Null}" />
-                <Setter Property="BorderThickness" Value="0" />
-                <Setter Property="Padding" Value="5,3,0,3" />
-                <Setter Property="Background" Value="{StaticResource TransparentButtonBackground}" />
-                <Setter Property="MaxWidth" Value="130.5" />
-                <Setter Property="Height" Value="30" />
-                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{DynamicResource TextBlock.Foreground}" />
 
-                <Setter Property="Foreground" Value="{DynamicResource TextBlock.Foreground}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border
+                            x:Name="border"
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            Margin="{TemplateBinding Margin}"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="8"
+                            ToolTip="{TemplateBinding Content}">
+                            <DockPanel>
+                                <Button
+                                    x:Name="CloseButton"
+                                    Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                    CommandParameter="{Binding}"
+                                    Content="&#xe612;"
+                                    DockPanel.Dock="Right"
+                                    Style="{StaticResource ButtonBase_Icon_ScaleUp_Small_HoverBlue}"
+                                    Visibility="Hidden" />
 
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ListBoxItem">
-                            <Border
-                                x:Name="border"
-                                Width="{TemplateBinding Width}"
-                                Height="{TemplateBinding Height}"
-                                Margin="{TemplateBinding Margin}"
-                                Padding="{TemplateBinding Padding}"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="8"
-                                ToolTip="{TemplateBinding Content}">
-                                <DockPanel>
-                                    <Button
-                                        x:Name="CloseButton"
-                                        Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
-                                        CommandParameter="{Binding}"
-                                        Content="&#xe612;"
-                                        DockPanel.Dock="Right"
-                                        Style="{StaticResource ButtonBase_Icon_ScaleUp_Small_HoverBlue}"
-                                        Visibility="Hidden" />
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </DockPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource HoveredTransparentButtonBackground}" />
+                                <Setter Property="Cursor" Value="Hand" />
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform CenterX="0" ScaleX="1.01" ScaleY="1.01" />
+                                    </Setter.Value>
+                                </Setter>
 
-                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                                </DockPanel>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="{StaticResource HoveredTransparentButtonBackground}" />
-                                    <Setter Property="Cursor" Value="Hand" />
-                                    <Setter Property="RenderTransform">
-                                        <Setter.Value>
-                                            <ScaleTransform CenterX="0" ScaleX="1.01" ScaleY="1.01" />
-                                        </Setter.Value>
-                                    </Setter>
-
-                                    <Setter TargetName="CloseButton" Property="Visibility" Value="Visible" />
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </ResourceDictionary>
+                                <Setter TargetName="CloseButton" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
     <UserControl.InputBindings>
         <KeyBinding
@@ -103,10 +94,11 @@
                 HorizontalAlignment="Left"
                 Style="{StaticResource OnlyDownViewbox}">
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource Lable}" Text="服务器IP：" />
+                    <TextBlock Style="{StaticResource TextBlock_Theme}" Text="服务器IP：" />
                     <ComboBox ItemsSource="{x:Static viewModels:BaseSocketViewModel.Ips}" Text="{Binding Ip, UpdateSourceTrigger=PropertyChanged}">
                         <ComboBox.Style>
                             <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="ComboBox">
+                                <Setter Property="Margin" Value="0,0,5,0" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Socket.IsConnected}" Value="True">
                                         <Setter Property="IsEnabled" Value="False" />
@@ -116,8 +108,7 @@
                         </ComboBox.Style>
                     </ComboBox>
 
-
-                    <TextBlock Style="{StaticResource Lable}" Text="服务器监听端口：" />
+                    <TextBlock Style="{StaticResource TextBlock_Theme}" Text="监听端口：" />
                     <TextBox
                         InputScope="Digits"
                         IsEnabled="{Binding Socket.IsConnected, Converter={StaticResource OppositeBoolConverter}}"
@@ -137,7 +128,7 @@
                 <TextBlock
                     Grid.Row="0"
                     HorizontalAlignment="Left"
-                    Style="{StaticResource Lable}">
+                    Style="{StaticResource TextBlock_Theme}">
                     <TextBlock Text="连接数：" />
                     <TextBlock Text="{Binding ConnList.Count}" />
                 </TextBlock>

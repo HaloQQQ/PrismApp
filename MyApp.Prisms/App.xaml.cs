@@ -128,7 +128,7 @@ namespace MyApp.Prisms
             containerRegistry.RegisterScoped<TcpServerViewModel>();
             containerRegistry.RegisterScoped<AnotherTcpServerViewModel>();
 
-            ViewModelLocationProvider.Register<WindowTitleBarView, SoftwareViewModel>();
+            ViewModelLocationProvider.Register<WindowTitleView, SoftwareViewModel>();
             ViewModelLocationProvider.Register<SwitchBackgroundView, ImageDisplayViewModel>();
 
             this.RegisterRegion();
