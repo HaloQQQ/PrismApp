@@ -4,6 +4,7 @@ using System.Windows.Data;
 
 namespace MusicPlayerModule.Converters
 {
+#pragma warning disable CS8603 // 可能返回 null 引用。
     internal class BatchAddAndPlayModelConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

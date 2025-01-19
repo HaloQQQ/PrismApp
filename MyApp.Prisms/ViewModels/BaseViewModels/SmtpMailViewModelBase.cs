@@ -12,6 +12,7 @@ using IceTea.Core.Utils.Mails;
 using System;
 using IceTea.Atom.BaseModels;
 using PrismAppBasicLib.Contracts;
+using IceTea.Core.Contracts;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {

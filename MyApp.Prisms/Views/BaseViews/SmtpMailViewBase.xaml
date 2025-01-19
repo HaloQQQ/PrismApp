@@ -205,6 +205,7 @@
         <Grid Grid.Column="1">
             <DataGrid
                 FontSize="14"
+                HorizontalScrollBarVisibility="Auto"
                 ItemsSource="{Binding Mails}"
                 MyAttachProperty.DataGridCellHorizontalAlignment="Center"
                 Style="{StaticResource DataGrid_Transparent}">
@@ -366,7 +367,16 @@
                             </DataTemplate>
                         </DataGridCheckBoxColumn.HeaderTemplate>
                     </DataGridCheckBoxColumn>
-                    <DataGridTextColumn Binding="{Binding Id}" Header="编号" />
+                    <DataGridTemplateColumn
+                        Width="100"
+                        MinWidth="0"
+                        Header="编号">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Id}" ToolTip="{Binding Id}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTemplateColumn Width="150" Header="发件人">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

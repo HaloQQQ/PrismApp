@@ -2,133 +2,265 @@
     x:Class="CustomControlsDemoModule.Views.ToolsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="clr-namespace:CustomControlsDemoModule.Models"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
     prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0">
-            <TextBlock
-                HorizontalAlignment="Left"
-                DockPanel.Dock="Top"
-                FontSize="30"
-                FontWeight="Bold"
-                Style="{StaticResource TextBlock_Theme}"
-                Text="开机启动" />
+    <TabControl
+        HorizontalContentAlignment="Stretch"
+        VerticalContentAlignment="Stretch"
+        TabStripPlacement="Top">
+        <TabControl.Resources>
+            <Style BasedOn="{StaticResource TabItem_Transparent}" TargetType="TabItem" />
+        </TabControl.Resources>
+        <TabItem Header="服务">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <DockPanel Grid.Row="0">
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        DockPanel.Dock="Top"
+                        FontSize="30"
+                        FontWeight="Bold"
+                        Style="{StaticResource TextBlock_Theme}"
+                        Text="重启/关机" />
 
-            <WrapPanel VerticalAlignment="Center" DockPanel.Dock="Right">
-                <CheckBox
-                    Content="开启："
-                    IsChecked="{Binding IsOn}"
-                    Style="{StaticResource CheckBox_Switch}" />
-                <CheckBox
-                    HorizontalContentAlignment="Left"
-                    Content="仅自用："
-                    IsChecked="{Binding IsOnlyForMe}"
-                    Style="{StaticResource CheckBox_CheckMark}" />
+                    <WrapPanel Margin="10,0">
+                        <TextBlock Style="{StaticResource TextBlock_Theme}" Text="时间：" />
+                        <ComboBox
+                            x:Name="Cmb_Duration"
+                            IsReadOnly="True"
+                            SelectedIndex="0">
+                            <ComboBox.ItemsSource>
+                                <x:Array Type="system:String">
+                                    <system:String>立即</system:String>
+                                    <system:String>10秒</system:String>
+                                    <system:String>30秒</system:String>
+                                    <system:String>1分钟</system:String>
+                                    <system:String>3分钟</system:String>
+                                    <system:String>5分钟</system:String>
+                                    <system:String>10分钟</system:String>
+                                    <system:String>30分钟</system:String>
+                                    <system:String>1小时</system:String>
+                                    <system:String>3小时</system:String>
+                                </x:Array>
+                            </ComboBox.ItemsSource>
+                        </ComboBox>
 
-                <Button
-                    Command="{Binding AutoStartCommand}"
-                    Content="执行"
-                    Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
-            </WrapPanel>
+                        <Button
+                            Command="{Binding RestartComputerCommand}"
+                            CommandParameter="{Binding SelectedItem, ElementName=Cmb_Duration}"
+                            Content="重启"
+                            MyAttachProperty.IconFontText="&#xe63e;"
+                            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
 
-            <TextBox
-                IsReadOnly="True"
-                MyAttachProperty.Brush="#0956CC"
-                MyAttachProperty.Command="{Binding SelectFileCommand}"
-                MyAttachProperty.CornerRadius="10"
-                MyAttachProperty.DoubleValue="35"
-                MyAttachProperty.IconFontText="&#xebdf;"
-                MyAttachProperty.IsCollapsed="True"
-                MyAttachProperty.PlaceHolder="文件路径"
-                Style="{StaticResource TextBox_PlaceHolderAsLable_Execute}"
-                Text="{Binding FilePath}" />
-        </DockPanel>
+                        <Button
+                            Command="{Binding ShutdownComputerCommand}"
+                            CommandParameter="{Binding SelectedItem, ElementName=Cmb_Duration}"
+                            Content="关机"
+                            MyAttachProperty.IconFontText="&#xe605;"
+                            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
 
-        <DockPanel Grid.Row="1">
-            <TextBlock
-                HorizontalAlignment="Left"
-                DockPanel.Dock="Top"
-                FontSize="30"
-                FontWeight="Bold"
-                Style="{StaticResource TextBlock_Theme}"
-                Text="安装/卸载服务" />
+                        <Button
+                            Command="{Binding CancelShutdownComputerCommand}"
+                            Content="取消关机"
+                            MyAttachProperty.IconFontText="&#xe621;"
+                            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
+                    </WrapPanel>
+                </DockPanel>
 
-            <WrapPanel VerticalAlignment="Center" DockPanel.Dock="Right">
-                <TextBox
-                    Height="40"
-                    MyAttachProperty.PlaceHolder="服务名"
-                    Text="{Binding ServiceName, UpdateSourceTrigger=PropertyChanged}" />
+                <DockPanel Grid.Row="1">
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        DockPanel.Dock="Top"
+                        FontSize="30"
+                        FontWeight="Bold"
+                        Style="{StaticResource TextBlock_Theme}"
+                        Text="开机启动" />
 
-                <Button
-                    Command="{Binding InstallServiceCommand}"
-                    CommandParameter="{Binding ServicExeFilePath}"
-                    Content="&#xe622;"
-                    FontSize="30"
-                    FontWeight="Bold"
-                    Style="{StaticResource Button_Icon_Stop}" />
+                    <WrapPanel VerticalAlignment="Center" DockPanel.Dock="Right">
+                        <CheckBox
+                            Content="开启："
+                            IsChecked="{Binding IsOn}"
+                            Style="{StaticResource CheckBox_Switch}" />
+                        <CheckBox
+                            HorizontalContentAlignment="Left"
+                            Content="仅自用："
+                            IsChecked="{Binding IsOnlyForMe}"
+                            Style="{StaticResource CheckBox_CheckMark}" />
 
-                <Button
-                    Command="{Binding UnInstallServiceCommand}"
-                    CommandParameter="{Binding ServicExeFilePath}"
-                    Content="&#xe60a;"
-                    FontSize="30"
-                    FontWeight="Bold"
-                    Style="{StaticResource Button_Icon_Stop}" />
-            </WrapPanel>
+                        <Button
+                            Command="{Binding AutoStartCommand}"
+                            Content="执行"
+                            MyAttachProperty.IconFontText="&#xe64f;"
+                            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
+                    </WrapPanel>
 
-            <TextBox
-                IsReadOnly="True"
-                MyAttachProperty.Brush="#0956CC"
-                MyAttachProperty.Command="{Binding SelectExeFileCommand}"
-                MyAttachProperty.CornerRadius="10"
-                MyAttachProperty.DoubleValue="35"
-                MyAttachProperty.IconFontText="&#xebdf;"
-                MyAttachProperty.IsCollapsed="True"
-                MyAttachProperty.PlaceHolder="可执行文件路径"
-                Style="{StaticResource TextBox_PlaceHolderAsLable_Execute}"
-                Text="{Binding ServicExeFilePath}" />
-        </DockPanel>
+                    <TextBox
+                        IsReadOnly="True"
+                        MyAttachProperty.Brush="#0956CC"
+                        MyAttachProperty.Command="{Binding SelectFileCommand}"
+                        MyAttachProperty.CornerRadius="10"
+                        MyAttachProperty.DoubleValue="35"
+                        MyAttachProperty.IconFontText="&#xebdf;"
+                        MyAttachProperty.PlaceHolder="文件路径"
+                        Style="{StaticResource TextBox_PlaceHolderAsLable_Execute}"
+                        Text="{Binding FilePath, Mode=OneWay}" />
+                </DockPanel>
 
-        <DockPanel Grid.Row="2">
-            <TextBlock
-                HorizontalAlignment="Left"
-                DockPanel.Dock="Top"
-                FontSize="30"
-                FontWeight="Bold"
-                Style="{StaticResource TextBlock_Theme}"
-                Text="启动关闭服务" />
+                <DockPanel Grid.Row="2">
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        DockPanel.Dock="Top"
+                        FontSize="30"
+                        FontWeight="Bold"
+                        Style="{StaticResource TextBlock_Theme}"
+                        Text="安装/卸载服务" />
 
-            <StackPanel Margin="10,0" Orientation="Horizontal">
-                <TextBlock Style="{StaticResource TextBlock_Theme}" Text="服务：" />
-                <ComboBox
-                    Width="180"
-                    IsReadOnly="True"
-                    ItemsSource="{Binding Services}"
-                    SelectedIndex="0"
-                    Text="{Binding CurrentServiceName}" />
+                    <WrapPanel VerticalAlignment="Center" DockPanel.Dock="Right">
+                        <TextBox
+                            Height="40"
+                            MyAttachProperty.PlaceHolder="服务名"
+                            Text="{Binding ServiceName, UpdateSourceTrigger=PropertyChanged}" />
 
-                <Button
-                    Command="{Binding FentchServiceCommand}"
-                    Content="&#xe632;"
-                    Style="{StaticResource ButtonBase_Icon_ScaleDown_Big_SkyBlue}" />
+                        <Button
+                            Command="{Binding InstallServiceCommand}"
+                            CommandParameter="{Binding ServicExeFilePath}"
+                            Content="&#xe622;"
+                            FontWeight="Bold"
+                            Style="{StaticResource ButtonBase_Icon_ScaleDown_Big_SkyBlue}" />
 
-                <Button
-                    Command="{Binding StartServiceCommand}"
-                    CommandParameter="{Binding CurrentServiceName}"
-                    Content="&#xe87c;"
-                    Style="{StaticResource Button_Icon_Stop}" />
+                        <Button
+                            Command="{Binding UnInstallServiceCommand}"
+                            CommandParameter="{Binding ServicExeFilePath}"
+                            Content="&#xe60a;"
+                            FontWeight="Bold"
+                            Style="{StaticResource ButtonBase_Icon_ScaleDown_Big_SkyBlue}" />
+                    </WrapPanel>
 
-                <Button
-                    Command="{Binding StopServiceCommand}"
-                    CommandParameter="{Binding CurrentServiceName}"
-                    Content="&#xea89;"
-                    Style="{StaticResource Button_Icon_Stop}" />
-            </StackPanel>
-        </DockPanel>
-    </Grid>
+                    <TextBox
+                        IsReadOnly="True"
+                        MyAttachProperty.Brush="#0956CC"
+                        MyAttachProperty.Command="{Binding SelectExeFileCommand}"
+                        MyAttachProperty.CornerRadius="10"
+                        MyAttachProperty.DoubleValue="35"
+                        MyAttachProperty.IconFontText="&#xebdf;"
+                        MyAttachProperty.PlaceHolder="可执行文件路径"
+                        Style="{StaticResource TextBox_PlaceHolderAsLable_Execute}"
+                        Text="{Binding ServicExeFilePath, Mode=OneWay}" />
+                </DockPanel>
+
+                <DockPanel Grid.Row="3">
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        DockPanel.Dock="Top"
+                        FontSize="30"
+                        FontWeight="Bold"
+                        Style="{StaticResource TextBlock_Theme}"
+                        Text="启动关闭服务" />
+
+                    <StackPanel Margin="10,0" Orientation="Horizontal">
+                        <TextBlock Style="{StaticResource TextBlock_Theme}" Text="服务：" />
+                        <ComboBox
+                            Width="180"
+                            IsReadOnly="True"
+                            ItemsSource="{Binding Services}"
+                            SelectedIndex="0"
+                            Text="{Binding CurrentServiceName}" />
+
+                        <Button
+                            Command="{Binding FentchServiceCommand}"
+                            Content="&#xe632;"
+                            Style="{StaticResource ButtonBase_Icon_ScaleDown_Big_SkyBlue}" />
+
+                        <Button
+                            Command="{Binding SC_StartServiceCommand}"
+                            CommandParameter="{Binding CurrentServiceName}"
+                            Content="&#xe87c;"
+                            Style="{StaticResource ButtonBase_Icon_ScaleDown_Big_SkyBlue}"
+                            ToolTip="SC命令启动" />
+
+                        <Button
+                            Command="{Binding SC_StopServiceCommand}"
+                            CommandParameter="{Binding CurrentServiceName}"
+                            Content="&#xea89;"
+                            Style="{StaticResource ButtonBase_Icon_ScaleDown_Big_SkyBlue}"
+                            ToolTip="SC命令关闭" />
+
+                        <Button
+                            Command="{Binding Net_StartServiceCommand}"
+                            CommandParameter="{Binding CurrentServiceName}"
+                            Content="&#xec61;"
+                            Style="{StaticResource ButtonBase_Icon_ScaleDown_Big_SkyBlue}"
+                            ToolTip="Net命令启动" />
+
+                        <Button
+                            Command="{Binding Net_StopServiceCommand}"
+                            CommandParameter="{Binding CurrentServiceName}"
+                            Content="&#xe67d;"
+                            Style="{StaticResource ButtonBase_Icon_ScaleDown_Big_SkyBlue}"
+                            ToolTip="Net命令关闭" />
+                    </StackPanel>
+                </DockPanel>
+            </Grid>
+        </TabItem>
+        <TabItem Header="图片">
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Top">
+                    <Button
+                        Command="{Binding SolvePictureCommand}"
+                        Content="&#xe64f;"
+                        DockPanel.Dock="Right"
+                        Style="{StaticResource ButtonBase_Icon_ScaleDown_Big_SkyBlue}" />
+                    <TextBox
+                        DockPanel.Dock="Right"
+                        IsReadOnly="True"
+                        MyAttachProperty.Brush="#0956CC"
+                        MyAttachProperty.Command="{Binding SelectPictureCommand}"
+                        MyAttachProperty.CornerRadius="10"
+                        MyAttachProperty.DoubleValue="35"
+                        MyAttachProperty.IconFontText="&#xebdf;"
+                        MyAttachProperty.PlaceHolder="图片"
+                        Style="{StaticResource TextBox_PlaceHolderAsLable_Execute}"
+                        Text="{Binding ImageFilePath, Mode=OneWay}" />
+                </DockPanel>
+                <Grid>
+                    <ListBox ItemsSource="{Binding Pictures}">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid
+                                    Columns="4"
+                                    IsItemsHost="True"
+                                    Rows="4">
+                                    <UniformGrid.Resources>
+                                        <DataTemplate DataType="{x:Type models:Picture}">
+                                            <DockPanel>
+                                                <TextBlock DockPanel.Dock="Top" Text="{Binding Description}" />
+
+                                                <Image
+                                                    Width="200"
+                                                    Height="100"
+                                                    Source="{Binding Source}" />
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </UniformGrid.Resources>
+                                </UniformGrid>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                    </ListBox>
+
+                    <NeedleWaitLoad
+                        Width="100"
+                        Height="100"
+                        Foreground="Blue"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibleHiddenConverter}}" />
+                </Grid>
+            </DockPanel>
+        </TabItem>
+    </TabControl>
 </UserControl>

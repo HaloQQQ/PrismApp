@@ -2,7 +2,6 @@
 using IceTea.Atom.Utils;
 using IceTea.SqlStandard.Contracts;
 using IceTea.SqlStandard.DbModels;
-using IceTea.Wpf.Atom.Contracts.MediaInfo;
 using IceTea.Wpf.Core.Utils;
 using Prism.Commands;
 using Prism.Events;
@@ -13,6 +12,7 @@ using System.Windows.Input;
 using IceTea.Wpf.Atom.Utils;
 using PrismAppBasicLib.Contracts;
 using System.Collections.ObjectModel;
+using IceTea.Wpf.Atom.Contracts.FileFilters;
 
 namespace SqlCreatorModule.ViewModels
 {
@@ -162,7 +162,7 @@ namespace SqlCreatorModule.ViewModels
         {
             if (openFileDialog)
             {
-                var fileDialog = CommonAtomUtils.OpenFileDialog(null, new AnyMedia());
+                var fileDialog = CommonAtomUtils.OpenFileDialog(null, new AnyFilter());
 
                 if (fileDialog == null)
                 {

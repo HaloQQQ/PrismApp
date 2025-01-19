@@ -15,7 +15,7 @@ using PrismAppBasicLib.Contracts;
 using IceTea.Wpf.Atom.Utils;
 using Microsoft.Win32;
 using MusicPlayerModule.Utils;
-using IceTea.Wpf.Atom.Contracts.MediaInfo;
+using IceTea.Wpf.Atom.Contracts.FileFilters;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -558,7 +558,7 @@ namespace MusicPlayerModule.ViewModels
             var lyricSetting = settingManger[CustomStatics.LYRIC];
 
             OpenFileDialog openFileDialog =
-                CommonAtomUtils.OpenFileDialog(musicSetting.Value, new MusicMedia());
+                CommonAtomUtils.OpenFileDialog(musicSetting.Value, new MusicFilter());
 
             if (openFileDialog != null)
             {

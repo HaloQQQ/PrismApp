@@ -1,7 +1,7 @@
 ﻿using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
 using IceTea.Wpf.Atom.Contracts;
-using IceTea.Wpf.Atom.Contracts.MediaInfo;
+using IceTea.Wpf.Atom.Contracts.FileFilters;
 using IceTea.Wpf.Atom.Utils;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using System;
@@ -91,7 +91,7 @@ namespace MyApp.Prisms.Views.BaseViews
             {
                 e.Handled = true;
 
-                var selectFile = CommonAtomUtils.OpenFileDialog(string.Empty, new AnyMedia());
+                var selectFile = CommonAtomUtils.OpenFileDialog(string.Empty, new AnyFilter());
 
                 if (selectFile != null)
                 {

@@ -9,11 +9,11 @@ using System.Windows.Media.Animation;
 using MyApp.Prisms.MsgEvents;
 using MyApp.Prisms.ViewModels;
 using IceTea.Atom.Extensions;
-using IceTea.Wpf.Atom.Contracts.MediaInfo;
 using IceTea.Wpf.Atom.Utils;
 using MyApp.Prisms.Helper;
 using IceTea.Atom.Contracts;
 using PrismAppBasicLib.Models;
+using IceTea.Wpf.Atom.Contracts.FileFilters;
 
 namespace MyApp.Prisms.Views
 {
@@ -103,7 +103,7 @@ namespace MyApp.Prisms.Views
         {
             var settingManager = ContainerLocator.Current.Resolve<ISettingManager<SettingModel>>();
 
-            var openFileDialog = CommonAtomUtils.OpenFileDialog(settingManager[CustomConstants.IMAGE].Value, new PictureMedia());
+            var openFileDialog = CommonAtomUtils.OpenFileDialog(settingManager[CustomConstants.IMAGE].Value, new PictureFilter());
 
             if (openFileDialog != null)
             {

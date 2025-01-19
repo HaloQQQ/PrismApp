@@ -157,7 +157,7 @@ namespace MyApp.Prisms.ViewModels
         private void SetBackgroundImage(string url)
         {
             if (!url.IsNullOrBlank())
-            {                                             
+            {
                 this._imageDisplayViewModel.SelectImage(this.CurrentBkGrd = url);
             }
         }

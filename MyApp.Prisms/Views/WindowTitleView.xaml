@@ -97,7 +97,7 @@
                     Margin="15,0,12,0"
                     Style="{StaticResource Slider_ObviousThumb}"
                     TickFrequency="5"
-                    Value="{Binding CurrentBright}" />
+                    Value="{Binding CurrentBright, Delay=100}" />
 
                 <TextBlock HorizontalAlignment="Center" Style="{StaticResource TextBlock_NotImportant_White}">
                     <TextBlock Text="{Binding CurrentBright}" />

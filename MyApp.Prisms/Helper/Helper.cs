@@ -54,7 +54,7 @@ namespace MyApp.Prisms.Helper
             }
             catch
             {
-                AppUtils.Kill(CustomConstants.NOTE_PAD, filePath.GetFileNameWithoutExtension());
+                AppUtils.Kill(CustomConstants.NOTE_PAD);
                 File.AppendAllText(filePath, wrapMsg + Environment.NewLine);
             }
         }

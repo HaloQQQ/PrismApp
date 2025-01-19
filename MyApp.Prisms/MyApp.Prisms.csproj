@@ -41,9 +41,6 @@
     <ProjectReference Include="..\MusicPlayerModule\MusicPlayerModule.csproj" />
     <ProjectReference Include="..\SqlCreatorModule\SqlCreatorModule.csproj" />
     <Resource Include="Resources\apple.ico" />
-    <Resource Include="Resources\iconfont.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Resources\网络.png" />
     <Resource Include="Resources\雪山祥云.png" />
   </ItemGroup>

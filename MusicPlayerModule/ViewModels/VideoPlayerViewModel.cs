@@ -6,13 +6,13 @@ using System.Windows.Media;
 using Microsoft.Win32;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Contracts;
-using IceTea.Wpf.Atom.Contracts.MediaInfo;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using IceTea.Wpf.Atom.Utils;
 using IceTea.Wpf.Core.Utils;
 using MusicPlayerModule.ViewModels.Base;
 using MusicPlayerModule.Contracts;
 using PrismAppBasicLib.Models;
+using IceTea.Wpf.Atom.Contracts.FileFilters;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -118,7 +118,7 @@ namespace MusicPlayerModule.ViewModels
         protected override void AddMediaFromFileDialog_CommandExecute()
         {
             OpenFileDialog openFileDialog =
-                CommonAtomUtils.OpenFileDialog(this.VideoSetting.Value, new VideoMedia());
+                CommonAtomUtils.OpenFileDialog(this.VideoSetting.Value, new VideoFilter());
 
             if (openFileDialog != null)
             {

@@ -89,7 +89,7 @@ namespace CustomControlsDemoModule.ViewModels
                     y = (int)this.Height - 2 * radius;
                 }
 
-                var bitmap = IceTea.Core.Extensions.ImageExtensions.CaptureScreen(new Rectangle(x, y, 20, 20));
+                var bitmap = IceTea.Core.Extensions.ImageCoreExtensions.CaptureScreen(new Rectangle(x, y, 20, 20));
 
                 this.ImageSource = bitmap.GetImageSource();
             }
