@@ -41,8 +41,6 @@ namespace CustomControlsDemoModule.ViewModels
                 duration => AppUtils.ShutdownPC(GetMills(duration))
             );
 
-            this.CancelShutdownComputerCommand = new DelegateCommand(() => AppUtils.CancalShutdownPC());
-
             uint GetMills(string duration)
             {
                 uint time = 0;
@@ -84,10 +82,11 @@ namespace CustomControlsDemoModule.ViewModels
                 return time;
             }
 
+            this.CancelShutdownComputerCommand = new DelegateCommand(() => AppUtils.CancalShutdownPC());
 
             this.SelectFileCommand = new DelegateCommand(() =>
             {
-                var dialog = CommonAtomUtils.OpenFileDialog(AppStatics.DeskTop, new ExeFilter());
+                var dialog = CommonAtomUtils.OpenFileDialog(AppStatics.DeskTop, new AnyFilter());
 
                 if (dialog != null)
                 {
@@ -103,8 +102,7 @@ namespace CustomControlsDemoModule.ViewModels
 
                 CommonUtil.PublishMessage(eventAggregator, message);
             }, () => FilePath.IsFileExists())
-            .ObservesProperty(() => FilePath);
-
+                .ObservesProperty(() => FilePath);
 
 
             this.FentchServiceCommand = new DelegateCommand(() =>

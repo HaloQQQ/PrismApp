@@ -6,29 +6,23 @@
     xmlns:prism="http://prismlibrary.com/"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     prism:ViewModelLocator.AutoWireViewModel="True">
-    <TabControl
-        HorizontalContentAlignment="Stretch"
-        VerticalContentAlignment="Stretch"
-        TabStripPlacement="Top">
-        <TabControl.Resources>
-            <Style BasedOn="{StaticResource TabItem_Transparent}" TargetType="TabItem" />
-        </TabControl.Resources>
-        <TabItem Header="服务">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <DockPanel Grid.Row="0">
-                    <TextBlock
-                        HorizontalAlignment="Left"
-                        DockPanel.Dock="Top"
-                        FontSize="30"
-                        FontWeight="Bold"
-                        Style="{StaticResource TextBlock_Theme}"
-                        Text="重启/关机" />
+    <UserControl.Resources>
+        <Style
+            x:Key="TitleItem"
+            BasedOn="{StaticResource TextBlock_Theme}"
+            TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="FontSize" Value="30" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="DockPanel.Dock" Value="Top" />
+        </Style>
+    </UserControl.Resources>
+
+    <TabControl ItemContainerStyle="{StaticResource TabItem_Transparent}" TabStripPlacement="Top">
+        <TabItem Header="服务" MyAttachProperty.IconFontText="&#xe8b8;">
+            <StackPanel>
+                <DockPanel DockPanel.Dock="Top">
+                    <TextBlock Style="{StaticResource TitleItem}" Text="重启/关机" />
 
                     <WrapPanel Margin="10,0">
                         <TextBlock Style="{StaticResource TextBlock_Theme}" Text="时间：" />
@@ -74,16 +68,10 @@
                     </WrapPanel>
                 </DockPanel>
 
-                <DockPanel Grid.Row="1">
-                    <TextBlock
-                        HorizontalAlignment="Left"
-                        DockPanel.Dock="Top"
-                        FontSize="30"
-                        FontWeight="Bold"
-                        Style="{StaticResource TextBlock_Theme}"
-                        Text="开机启动" />
+                <DockPanel DockPanel.Dock="Top">
+                    <TextBlock Style="{StaticResource TitleItem}" Text="开机启动" />
 
-                    <WrapPanel VerticalAlignment="Center" DockPanel.Dock="Right">
+                    <WrapPanel DockPanel.Dock="Right">
                         <CheckBox
                             Content="开启："
                             IsChecked="{Binding IsOn}"
@@ -102,6 +90,7 @@
                     </WrapPanel>
 
                     <TextBox
+                        DockPanel.Dock="Right"
                         IsReadOnly="True"
                         MyAttachProperty.Brush="#0956CC"
                         MyAttachProperty.Command="{Binding SelectFileCommand}"
@@ -113,16 +102,10 @@
                         Text="{Binding FilePath, Mode=OneWay}" />
                 </DockPanel>
 
-                <DockPanel Grid.Row="2">
-                    <TextBlock
-                        HorizontalAlignment="Left"
-                        DockPanel.Dock="Top"
-                        FontSize="30"
-                        FontWeight="Bold"
-                        Style="{StaticResource TextBlock_Theme}"
-                        Text="安装/卸载服务" />
+                <DockPanel DockPanel.Dock="Top">
+                    <TextBlock Style="{StaticResource TitleItem}" Text="安装/卸载服务" />
 
-                    <WrapPanel VerticalAlignment="Center" DockPanel.Dock="Right">
+                    <WrapPanel DockPanel.Dock="Right">
                         <TextBox
                             Height="40"
                             MyAttachProperty.PlaceHolder="服务名"
@@ -144,6 +127,7 @@
                     </WrapPanel>
 
                     <TextBox
+                        DockPanel.Dock="Right"
                         IsReadOnly="True"
                         MyAttachProperty.Brush="#0956CC"
                         MyAttachProperty.Command="{Binding SelectExeFileCommand}"
@@ -155,14 +139,8 @@
                         Text="{Binding ServicExeFilePath, Mode=OneWay}" />
                 </DockPanel>
 
-                <DockPanel Grid.Row="3">
-                    <TextBlock
-                        HorizontalAlignment="Left"
-                        DockPanel.Dock="Top"
-                        FontSize="30"
-                        FontWeight="Bold"
-                        Style="{StaticResource TextBlock_Theme}"
-                        Text="启动关闭服务" />
+                <DockPanel DockPanel.Dock="Top">
+                    <TextBlock Style="{StaticResource TitleItem}" Text="启动关闭服务" />
 
                     <StackPanel Margin="10,0" Orientation="Horizontal">
                         <TextBlock Style="{StaticResource TextBlock_Theme}" Text="服务：" />
@@ -207,9 +185,9 @@
                             ToolTip="Net命令关闭" />
                     </StackPanel>
                 </DockPanel>
-            </Grid>
+            </StackPanel>
         </TabItem>
-        <TabItem Header="图片">
+        <TabItem Header="图片" MyAttachProperty.IconFontText="&#xe743;">
             <DockPanel>
                 <DockPanel DockPanel.Dock="Top">
                     <Button
