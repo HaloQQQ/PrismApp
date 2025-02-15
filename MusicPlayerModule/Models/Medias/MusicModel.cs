@@ -136,7 +136,7 @@ internal class MusicModel : MediaBaseModel, IDisposable, IEquatable<MusicModel>
         return false;
     }
 
-    void IDisposable.Dispose()
+    public override void Dispose()
     {
         base.Dispose();
 

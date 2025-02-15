@@ -44,7 +44,7 @@ namespace MusicPlayerModule.Models
         public virtual string FilePath { get; protected set; }
         public string FileDir => FilePath.GetParentPath();
 
-        public void Dispose()
+        public virtual void Dispose()
         {
         }
     }
