@@ -63,7 +63,7 @@
                 Step="1"
                 ValueFormat="F2" />
 
-            <VerificationCodeTextBox Text="Vi" />
+            <VerificationCodeTextBox Count="8" Text="Vi" />
 
             <TextBox MyAttachProperty.InputRegex="{x:Static regex:RegexConstants.DigitPattern}" MyAttachProperty.PlaceHolder="数字" />
 
