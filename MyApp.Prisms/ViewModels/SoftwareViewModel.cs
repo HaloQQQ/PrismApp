@@ -1,7 +1,6 @@
 ﻿using Prism.Commands;
 using Prism.Events;
 using System;
-using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows;
@@ -30,6 +29,7 @@ using MusicPlayerModule.Views;
 using System.Windows.Media.Imaging;
 using IceTea.Desktop.Extensions;
 using PrismAppBasicLib.Contracts;
+using IceTea.Wpf.Core.Utils;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -175,37 +175,20 @@ namespace MyApp.Prisms.ViewModels
 
                 if (CustomConstants.Dark.Source.ToString().EqualsIgnoreCase(currentUri.ToString()))
                 {
-                    _resourceDictionaries.Add(CustomConstants.Dark);
+                    Application.Current.Resources.MergedDictionaries.Add(CustomConstants.Dark);
                 }
                 else
                 {
-                    _resourceDictionaries.Add(CustomConstants.Light);
+                    Application.Current.Resources.MergedDictionaries.Add(CustomConstants.Light);
                 }
             }
         }
 
         #region 主题&背景
-        private Collection<ResourceDictionary> _resourceDictionaries => Application.Current.Resources.MergedDictionaries;
-
         public string DefaultThemeURI { get; set; } = null!;
         private void RefreshTheme()
         {
-            var dict = _resourceDictionaries.FirstOrDefault(item => item == CustomConstants.Light);
-
-            if (dict == null)
-            {
-                _resourceDictionaries.Remove(CustomConstants.Dark);
-                _resourceDictionaries.Add(CustomConstants.Light);
-
-                dict = CustomConstants.Light;
-            }
-            else
-            {
-                _resourceDictionaries.Remove(CustomConstants.Light);
-                _resourceDictionaries.Add(CustomConstants.Dark);
-
-                dict = CustomConstants.Dark;
-            }
+            var dict = CommonCoreUtils.RefreshTheme();
 
             this.DefaultThemeURI = dict.Source.ToString();
         }

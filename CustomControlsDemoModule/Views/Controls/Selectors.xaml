@@ -34,16 +34,46 @@
         <DataGrid
             BorderBrush="Red"
             BorderThickness="1"
-            MyAttachProperty.CornerRadius="10">
+            ItemsSource="{Binding Datas}"
+            MyAttachProperty.CornerRadius="10"
+            Style="{StaticResource DataGrid_Transparent}">
             <DataGrid.Columns>
-                <DataGridCheckBoxColumn MinWidth="90" Header="选中" />
-                <DataGridComboBoxColumn MinWidth="90" Header="选项" />
-                <DataGridTextColumn MinWidth="90" Header="名称" />
-                <DataGridTemplateColumn
+                <DataGridCheckBoxColumn MinWidth="0" Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}">
+                    <DataGridCheckBoxColumn.Header>
+                        <CheckBox Style="{StaticResource CheckBox_SelectAll}" />
+                    </DataGridCheckBoxColumn.Header>
+                    <DataGridCheckBoxColumn.ElementStyle>
+                        <Style BasedOn="{StaticResource CheckBox_CheckMark}" TargetType="CheckBox">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridCheckBoxColumn.ElementStyle>
+                </DataGridCheckBoxColumn>
+                <DataGridTextColumn
+                    MinWidth="90"
+                    Binding="{Binding Name}"
+                    Header="姓名" />
+                <DataGridComboBoxColumn
+                    MinWidth="90"
+                    Header="性别"
+                    SelectedItemBinding="{Binding Gender, UpdateSourceTrigger=PropertyChanged}">
+                    <DataGridComboBoxColumn.ElementStyle>
+                        <Style BasedOn="{StaticResource {x:Type ComboBox}}" TargetType="ComboBox">
+                            <Setter Property="IsReadOnly" Value="True" />
+                        </Style>
+                    </DataGridComboBoxColumn.ElementStyle>
+                    <DataGridComboBoxColumn.ItemsSource>
+                        <x:Array Type="{x:Type system:String}">
+                            <system:String>男</system:String>
+                            <system:String>女</system:String>
+                        </x:Array>
+                    </DataGridComboBoxColumn.ItemsSource>
+                </DataGridComboBoxColumn>
+                <DataGridTextColumn
                     Width="*"
                     MinWidth="90"
                     MaxWidth="1000"
-                    Header="模板" />
+                    Binding="{Binding Address}"
+                    Header="地址" />
             </DataGrid.Columns>
         </DataGrid>
 

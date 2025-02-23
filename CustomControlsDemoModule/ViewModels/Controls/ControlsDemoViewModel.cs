@@ -20,6 +20,8 @@ namespace CustomControlsDemoModule.ViewModels.Controls
 
             InitMenuData();
 
+            InitDataGrid();
+
             InitComamnds(regionManager);
         }
 
@@ -55,15 +57,15 @@ namespace CustomControlsDemoModule.ViewModels.Controls
 
                         return list;
 
-                        void GetNames(IList<string> names, ControlNode node)
+                        void GetNames(IList<string> names, ControlNode _node)
                         {
-                            if (node.Items.Count == 0)
+                            if (_node.Items.Count == 0)
                             {
-                                names.Add(node.Name);
+                                names.Add(_node.Name);
                                 return;
                             }
 
-                            foreach (var item in node.Items)
+                            foreach (var item in _node.Items)
                             {
                                 GetNames(names, item);
                             }
@@ -110,9 +112,39 @@ namespace CustomControlsDemoModule.ViewModels.Controls
             });
         }
 
+        public IEnumerable<DataItem> Datas { get; private set; }
+
         public IEnumerable<ControlNode> Controls { get; private set; }
 
         public IEnumerable<MenuNode> Menus { get; private set; }
+
+        private void InitDataGrid()
+        {
+            this.Datas = new List<DataItem>()
+            {
+                new DataItem()
+                {
+                    IsSelected = true,
+                    Name ="A",
+                    Gender="男",
+                    Address ="北京"
+                },
+                new DataItem()
+                {
+                    IsSelected = false,
+                    Name ="B",
+                    Gender="女",
+                    Address ="上海"
+                },
+                new DataItem()
+                {
+                    IsSelected = true,
+                    Name ="C",
+                    Gender="女",
+                    Address ="广州"
+                }
+            };
+        }
 
         private void InitMenuData()
         {
@@ -134,7 +166,7 @@ namespace CustomControlsDemoModule.ViewModels.Controls
         private void InitTreeViewData()
         {
             var list = new List<ControlNode>()
-            {                                                                        
+            {
                 new ControlNode("按钮").Add(new("单击按钮")).Add(new("双击按钮")).Add(new("IconFton图标")),
 
                 new ControlNode("文本框").Add(new("单行文本")).Add(new("多行文本")).Add(new("密码框")),
