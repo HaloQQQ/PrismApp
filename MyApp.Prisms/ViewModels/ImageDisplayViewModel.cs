@@ -99,7 +99,7 @@ namespace MyApp.Prisms.ViewModels
 
         public ImageDisplayViewModel(IConfigManager config, ISettingManager<SettingModel> settingManager, IEventAggregator eventAggregator)
         {
-            settingManager.TryAdd(CustomConstants.IMAGE, () => new SettingModel(string.Empty, config.ReadConfigNode(CustomConstants.LastImageDir_ConfigKey), null));
+            settingManager.TryAdd(CustomConstants.IMAGE, () => new SettingModel(string.Empty, config.ReadConfigNode<string>(CustomConstants.LastImageDir_ConfigKey), null));
 
             RefreshData(config);
 

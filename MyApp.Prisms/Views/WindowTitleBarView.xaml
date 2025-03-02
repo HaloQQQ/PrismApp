@@ -49,11 +49,10 @@
         </WindowTitleBar.LeftCollection>
         <WindowTitleBar.RightCollection>
             <ElementCollection>
-                <Button MouseRightButtonUp="SwitchBackSliderMoveOut_OnMouseRightButtonUp" Style="{StaticResource Button_Icon_Theme}">
-                    <Button.InputBindings>
-                        <MouseBinding Command="{Binding SwitchThemeCommand}" MouseAction="LeftClick" />
-                    </Button.InputBindings>
-                </Button>
+                <Button
+                    Command="{Binding SwitchThemeCommand}"
+                    MouseRightButtonUp="SwitchBackSliderMoveOut_OnMouseRightButtonUp"
+                    Style="{StaticResource Button_Icon_Theme}" />
 
                 <Button
                     ContextMenu="{StaticResource MainMenu}"

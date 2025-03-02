@@ -21,7 +21,6 @@ using IceTea.Atom.Utils.HotKey.Global;
 using System.Linq;
 using IceTea.Atom.Utils.HotKey.Global.Contracts;
 using CustomControlsDemoModule;
-using IceTea.Wpf.Atom.Utils;
 using IceTea.Wpf.Atom.Utils.HotKey;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
@@ -30,6 +29,7 @@ using MusicPlayerModule.MsgEvents.Music;
 using PrismAppBasicLib.Models;
 using CustomControlsDemoModule.Events;
 using PrismAppBasicLib.Contracts;
+using IceTea.Wpf.Atom.Utils.Configs;
 
 namespace MyApp.Prisms
 {
@@ -91,7 +91,7 @@ namespace MyApp.Prisms
             App.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            containerRegistry.RegisterSingleton<IConfigManager, WpfConfigManager>();
+            containerRegistry.RegisterSingleton<IConfigManager, WpfYamlConfigManager>();
 
             var config = this.Container.Resolve<IConfigManager>();
 

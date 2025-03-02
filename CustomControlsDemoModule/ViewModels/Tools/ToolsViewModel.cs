@@ -9,7 +9,6 @@ using Prism.Events;
 using PrismAppBasicLib.Contracts;
 using System.Collections.Generic;
 using System.ServiceProcess;
-using IceTea.Core.Utils.OS;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System;
@@ -17,10 +16,11 @@ using IceTea.Wpf.Atom.Contracts.FileFilters;
 using CustomControlsDemoModule.Models;
 using System.Windows.Media.Imaging;
 using System.Drawing;
-using IceTea.Core.Extensions;
 using IceTea.Desktop.Extensions;
-using static IceTea.Core.Extensions.ImageCoreExtensions;
 using System.Threading.Tasks;
+using IceTea.Core.Extensions;
+using static IceTea.Core.Extensions.ImageCoreExtensions;
+using IceTea.Core.Utils.OS;
 
 namespace CustomControlsDemoModule.ViewModels
 {

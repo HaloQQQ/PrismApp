@@ -10,8 +10,6 @@ using MyApp.Prisms.Helper;
 using MyApp.Prisms.MsgEvents;
 using IceTea.Atom.Utils;
 using IceTea.Atom.Extensions;
-using IceTea.Core.Utils.OS;
-using IceTea.Core.Utils.QRCodes;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using IceTea.Atom.Contracts;
@@ -30,6 +28,8 @@ using System.Windows.Media.Imaging;
 using IceTea.Desktop.Extensions;
 using PrismAppBasicLib.Contracts;
 using IceTea.Wpf.Core.Utils;
+using IceTea.Core.Utils.OS;
+using IceTea.Core.Utils.QRCodes;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -131,10 +131,10 @@ namespace MyApp.Prisms.ViewModels
             this.AutoStart = config.IsTrue(CustomConstants.AUTO_START.FillToArray());
             this.BackgroundSwitch = config.IsTrue(CustomConstants.BACKGROUND_SWITCH.FillToArray());
 
-            this.DefaultThemeURI = config.ReadConfigNode(CustomConstants.DefaultThemeURI.FillToArray());
+            this.DefaultThemeURI = config.ReadConfigNode<string>(CustomConstants.DefaultThemeURI.FillToArray());
             this.LoadDefaultTheme();
 
-            this.SetBackgroundImage(config.ReadConfigNode(CustomConstants.BkgrdUri.FillToArray()));
+            this.SetBackgroundImage(config.ReadConfigNode<string>(CustomConstants.BkgrdUri.FillToArray()));
             this.IsMusicPlayer = config.IsTrue(CustomConstants.IsMusicPlayer.FillToArray());
             this.IsVideoPlayer = config.IsTrue(CustomConstants.IsVideoPlayer.FillToArray());
 

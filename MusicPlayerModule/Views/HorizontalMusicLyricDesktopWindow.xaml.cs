@@ -24,7 +24,7 @@ namespace MusicPlayerModule.Views
             this.MaxWidth = SystemParameters.PrimaryScreenWidth;
 
             this._configManager = configManager;
-            var pointStr = configManager.ReadConfigNode(CustomStatics.Horizontal_DesktopLyric_WindowLeftTop_ConfigKey);
+            var pointStr = configManager.ReadConfigNode<string>(CustomStatics.Horizontal_DesktopLyric_WindowLeftTop_ConfigKey);
             if (!pointStr.IsNullOrBlank())
             {
                 var arr = pointStr.Split(",");

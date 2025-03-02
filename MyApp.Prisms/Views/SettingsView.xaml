@@ -330,12 +330,24 @@
                             Value="{Binding DataContext.CornerRadius, Converter={StaticResource CornerRadiusToDigitConverter}, ConverterParameter=1, RelativeSource={RelativeSource AncestorType=TabControl}}" />
                     </WrapPanel>
 
-                    <Button
-                        Command="{Binding DataContext.CleanConfigWhenExitAppCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
-                        Content="清空配置"
-                        MyAttachProperty.IconFontText="&#xec7b;"
-                        Style="{StaticResource ButtonBase_Icon_Conent_Transparent}"
-                        ToolTip="关闭程序时清空所有配置" />
+                    <WrapPanel>
+                        <Button
+                            Command="{Binding DataContext.CleanConfigWhenExitAppCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                            Content="清空配置"
+                            MyAttachProperty.IconFontText="&#xec7b;"
+                            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}"
+                            ToolTip="关闭程序时清空所有配置" />
+                        <Button
+                            Command="{Binding DataContext.RestartComputerCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                            Content="重启电脑"
+                            MyAttachProperty.IconFontText="&#xe63e;"
+                            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
+                        <Button
+                            Command="{Binding DataContext.ShutdownComputerCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                            Content="关闭电脑"
+                            MyAttachProperty.IconFontText="&#xe605;"
+                            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
+                    </WrapPanel>
                 </StackPanel>
             </TabItem>
         </TabControl>

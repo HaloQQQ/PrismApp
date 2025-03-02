@@ -144,6 +144,10 @@ namespace MyApp.Prisms.ViewModels
                     dialogService.Show(nameof(FetchBackColorView), null, null, nameof(FetchBackColor));
                 }
             }
+
+            this.RestartComputerCommand = new DelegateCommand(() => AppUtils.RestartPC());
+
+            this.ShutdownComputerCommand = new DelegateCommand(() => AppUtils.ShutdownPC());
         }
 
         #region Emails
@@ -153,20 +157,18 @@ namespace MyApp.Prisms.ViewModels
 
         private void LoadMailAccounts(IConfigManager configManager, ISettingManager settingManager)
         {
-            var accounts = configManager.ReadConfigNode(CustomConstants.MailAccounts);
+            var accounts = configManager.ReadConfigNode<IEnumerable<Pair>>(CustomConstants.MailAccounts);
 
-            if (!accounts.IsNullOrBlank())
+            if (accounts != null)
             {
-                var dictionary = accounts.DeserializeObject<IEnumerable<Pair>>();
+                this.MailAccounts.AddRange(accounts);
 
-                this.MailAccounts.AddRange(dictionary);
-
-                dictionary.ForEach(item => settingManager.AddOrUpdate(item.Key, item.Value));
+                accounts.ForEach(item => settingManager.AddOrUpdate(item.Key, item.Value));
             }
 
             configManager.SetConfig += config =>
             {
-                config.WriteConfigNode(MailAccounts.SerializeObject(), CustomConstants.MailAccounts);
+                config.WriteConfigNode(MailAccounts, CustomConstants.MailAccounts);
             };
         }
         #endregion
@@ -188,6 +190,11 @@ namespace MyApp.Prisms.ViewModels
         public ICommand ResetGlobalHotKeyGroupCommand { get; private set; }
 
         public ICommand ResetAppHotKeyGroupCommand { get; private set; }
+
+
+        public ICommand RestartComputerCommand { get; private set; }
+
+        public ICommand ShutdownComputerCommand { get; private set; }
 
         /// <summary>
         /// 还原未提交的修改
@@ -215,7 +222,7 @@ namespace MyApp.Prisms.ViewModels
 
         private void InitSetting(IConfigManager configManager, ISettingManager<SettingModel> settingModels, string key, string description, params string[] configNode)
         {
-            settingModels.AddOrUpdate(key, new SettingModel(description, configManager.ReadConfigNode(configNode), () => this.IsEditingSetting = true));
+            settingModels.AddOrUpdate(key, new SettingModel(description, configManager.ReadConfigNode<string>(configNode), () => this.IsEditingSetting = true));
 
             configManager.SetConfig += config =>
             {
@@ -225,7 +232,7 @@ namespace MyApp.Prisms.ViewModels
 
         private void LoadWindowCornerRadius(IConfigManager configManager)
         {
-            var windowCornerRadius = configManager.ReadConfigNode(CustomConstants.WindowCornerRadius);
+            var windowCornerRadius = configManager.ReadConfigNode<string>(CustomConstants.WindowCornerRadius);
 
             if (!windowCornerRadius.IsNullOrBlank())
             {

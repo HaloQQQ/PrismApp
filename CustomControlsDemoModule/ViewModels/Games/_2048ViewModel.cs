@@ -179,7 +179,7 @@ namespace CustomControlsDemoModule.ViewModels
             if (MaxScore == 0)
             {
                 var configNodes = new string[] { "Games", "2048", nameof(MaxScore) };
-                var maxScoreString = configManager.ReadConfigNode(configNodes);
+                var maxScoreString = configManager.ReadConfigNode<string>(configNodes);
 
                 if (!maxScoreString.IsNullOrBlank() && int.TryParse(maxScoreString, out int maxScore))
                 {

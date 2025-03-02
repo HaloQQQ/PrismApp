@@ -159,7 +159,7 @@ namespace MusicPlayerModule.ViewModels
         {
             base.LoadConfig(configManager);
 
-            var stretch = configManager.ReadConfigNode(CustomStatics.VideoStretch_ConfigKey);
+            var stretch = configManager.ReadConfigNode<string>(CustomStatics.VideoStretch_ConfigKey);
             if (Enum.TryParse<Stretch>(stretch, true, out Stretch result))
             {
                 this.Stretch = result;

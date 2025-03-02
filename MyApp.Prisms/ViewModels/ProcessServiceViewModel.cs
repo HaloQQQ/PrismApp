@@ -6,12 +6,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MyApp.Prisms.Models;
-using IceTea.Core.Utils.OS;
 using System.ServiceProcess;
 using IceTea.Atom.Extensions;
 using IceTea.Wpf.Atom.Utils;
 using IceTea.Atom.BaseModels;
 using MyApp.Prisms.Helper;
+using IceTea.Core.Utils.OS;
 
 namespace MyApp.Prisms.ViewModels
 {

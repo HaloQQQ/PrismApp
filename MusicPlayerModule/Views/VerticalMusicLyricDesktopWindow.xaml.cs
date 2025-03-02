@@ -24,7 +24,7 @@ namespace MusicPlayerModule.Views
             this.MaxHeight = SystemParameters.PrimaryScreenHeight;
 
             this._configManager = configManager;
-            var pointStr = configManager.ReadConfigNode(CustomStatics.Vertical_DesktopLyric_WindowLeftTop_ConfigKey);
+            var pointStr = configManager.ReadConfigNode<string>(CustomStatics.Vertical_DesktopLyric_WindowLeftTop_ConfigKey);
             if (!pointStr.IsNullOrBlank())
             {
                 var arr = pointStr.Split(",");

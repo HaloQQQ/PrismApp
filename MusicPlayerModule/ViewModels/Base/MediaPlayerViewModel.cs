@@ -34,9 +34,9 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
         this._configManager = configManager.AssertArgumentNotNull(nameof(IConfigManager));
         this._settingManager = settingManager.AssertArgumentNotNull(nameof(ISettingManager<SettingModel>));
 
-        this._settingManager.TryAdd(CustomStatics.MUSIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode(CustomStatics.LastMusicDir_ConfigKey), null));
-        this._settingManager.TryAdd(CustomStatics.LYRIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode(CustomStatics.LastLyricDir_ConfigKey), null));
-        this._settingManager.TryAdd(CustomStatics.VIDEO, () => new SettingModel(string.Empty, configManager.ReadConfigNode(CustomStatics.LastVideoDir_ConfigKey), null));
+        this._settingManager.TryAdd(CustomStatics.MUSIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode<string>(CustomStatics.LastMusicDir_ConfigKey), null));
+        this._settingManager.TryAdd(CustomStatics.LYRIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode<string>(CustomStatics.LastLyricDir_ConfigKey), null));
+        this._settingManager.TryAdd(CustomStatics.VIDEO, () => new SettingModel(string.Empty, configManager.ReadConfigNode<string>(CustomStatics.LastVideoDir_ConfigKey), null));
 
         this.LoadConfig(configManager);
 
@@ -64,7 +64,7 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
 
     protected virtual void LoadConfig(IConfigManager configManager)
     {
-        var playOrder = configManager.ReadConfigNode(this.MediaPlayOrder_ConfigKey);
+        var playOrder = configManager.ReadConfigNode<string>(this.MediaPlayOrder_ConfigKey);
         this.CurrentPlayOrder =
             CustomStatics.MediaPlayOrderList.FirstOrDefault(
                     item => item.Description == playOrder,
@@ -544,7 +544,7 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
                     };
 
                     if (int.TryParse(
-                            this._configManager.ReadConfigNode(pointANode),
+                            this._configManager.ReadConfigNode<string>(pointANode),
                             out int mills))
                     {
                         _currentMedia.CurrentMills = mills;
@@ -558,7 +558,7 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
                     };
 
                     if (int.TryParse(
-                            this._configManager.ReadConfigNode(pointBNode),
+                            this._configManager.ReadConfigNode<string>(pointBNode),
                             out mills))
                     {
                         _currentMedia.SetPointB(mills);

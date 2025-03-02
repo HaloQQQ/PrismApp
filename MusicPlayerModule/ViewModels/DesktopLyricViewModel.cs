@@ -17,16 +17,20 @@ namespace MusicPlayerModule.ViewModels
     {
         public DesktopLyricViewModel(IConfigManager config)
         {
-            var currentLyricFontSize = config.ReadConfigNode(CustomStatics.CurrentLyricFontSize_ConfigKey);
+            var currentLyricFontSize = config.ReadConfigNode<double>(CustomStatics.CurrentLyricFontSize_ConfigKey);
             double fontSize = 20;
-            double.TryParse(currentLyricFontSize, out fontSize);
+            if (currentLyricFontSize != default)
+            {
+                fontSize = currentLyricFontSize;
+            }
+
             this.CurrentLyricFontSize = fontSize;
 
             this.IsDesktopLyricShow = config.IsTrue(CustomStatics.IsDesktopLyricShow_ConfigKey);
             this.IsVertical = config.IsTrue(CustomStatics.IsVertical_ConfigKey);
             this.IsSingleLine = config.IsTrue(CustomStatics.IsSingleLine_ConfigKey);
 
-            string currentFontFamily = config.ReadConfigNode(CustomStatics.CurrentLyricFontFamily_ConfigKey);
+            string currentFontFamily = config.ReadConfigNode<string>(CustomStatics.CurrentLyricFontFamily_ConfigKey);
 
             if (currentFontFamily.IsNullOrBlank())
             {
@@ -54,7 +58,7 @@ namespace MusicPlayerModule.ViewModels
 
             this.LinearGradientColorBrush = new ColorModel(config, CustomStatics.LinearGradientLyricColor_ConfigKey, 190, 250, 253);
 
-            var currentLyricForeground = config.ReadConfigNode(CustomStatics.CurrentLyricForeground_ConfigKey);
+            var currentLyricForeground = config.ReadConfigNode<string>(CustomStatics.CurrentLyricForeground_ConfigKey);
 
             var colorBrush = currentLyricForeground.IsNullOrBlank()
                                 ? this.DefaultLyricForegrounds.First().ColorBrush
@@ -254,7 +258,7 @@ namespace MusicPlayerModule.ViewModels
                 };
             }
 
-            var colorString = config.ReadConfigNode(configKeys);
+            var colorString = config.ReadConfigNode<string>(configKeys);
             if (!colorString.IsNullOrBlank())
             {
                 var color = colorString.GetColorFromString();

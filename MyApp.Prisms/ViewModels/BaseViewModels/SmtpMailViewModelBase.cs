@@ -8,11 +8,11 @@ using IceTea.Atom.Contracts;
 using System.Collections.Generic;
 using IceTea.Atom.Mails;
 using IceTea.Wpf.Atom.Utils;
-using IceTea.Core.Utils.Mails;
 using System;
 using IceTea.Atom.BaseModels;
 using PrismAppBasicLib.Contracts;
 using IceTea.Core.Contracts;
+using IceTea.Core.Utils.Mails;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {
