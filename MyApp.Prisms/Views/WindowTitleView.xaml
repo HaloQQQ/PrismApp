@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:prism="http://prismlibrary.com/"
+    xmlns:viewmodels="clr-namespace:MyApp.Prisms.ViewModels"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <WrapPanel MouseWheel="Bright_MouseWheel">
         <ToggleButton
@@ -50,8 +51,18 @@
                             Width="250"
                             MaxLength="12"
                             MyAttachProperty.PlaceHolder="请输入用户名"
-                            TabIndex="1"
-                            Text="{Binding UserContext.Account}" />
+                            TabIndex="1">
+                            <TextBox.Text>
+                                <Binding
+                                    Delay="100"
+                                    Path="UserContext.Account"
+                                    UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <viewmodels:CustomValidationRule />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
                     </StackPanel>
                     <StackPanel
                         Grid.Row="3"
@@ -60,13 +71,23 @@
                         <TextBlock Style="{StaticResource TextBlock_Theme}" Text="密   码：" />
                         <PasswordBox
                             Width="250"
-                            MyAttachProperty.Password="{Binding UserContext.Password}"
+                            MyAttachProperty.Password="{Binding UserContext.Password, Delay=100}"
                             TabIndex="2" />
                     </StackPanel>
                     <Button
                         Grid.Row="4"
                         HorizontalAlignment="Center"
-                        Content="登录" />
+                        Content="登录">
+                        <Button.Style>
+                            <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding UserContext.HasErrors}" Value="True">
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                 </Grid>
             </Border>
         </Popup>

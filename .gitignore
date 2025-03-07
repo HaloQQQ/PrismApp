@@ -247,3 +247,5 @@ paket-files/
 .fake/
 .DS_Store
 /MauiAppNet
+/MyApp.Prisms/appsettings.json
+/MyApp.Prisms/appsettings.yml

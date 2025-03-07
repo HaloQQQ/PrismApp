@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <Content Include="appsettings.yml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Penguin.ico" />
   </ItemGroup>
@@ -39,7 +39,7 @@
 
   <ItemGroup>
     <Content Include="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <ProjectReference Include="..\CustomControlsDemoModule\CustomControlsDemoModule.csproj" />
     <ProjectReference Include="..\MusicPlayerModule\MusicPlayerModule.csproj" />
