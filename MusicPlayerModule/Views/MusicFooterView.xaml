@@ -122,8 +122,16 @@
 
                     <DockPanel>
                         <StackPanel DockPanel.Dock="Top">
-                            <TextBlock Style="{StaticResource TextBlock_Theme}" Text="{Binding CurrentMedia.Music.Name}" />
-                            <TextBlock Style="{StaticResource TextBlock_Theme}" Text="{Binding CurrentMedia.Music.Singer}" />
+                            <TextBlock
+                                MaxWidth="250"
+                                Style="{StaticResource TextBlock_Theme}"
+                                Text="{Binding CurrentMedia.Music.Name}"
+                                ToolTip="{Binding CurrentMedia.Music.Name}" />
+                            <TextBlock
+                                MaxWidth="250"
+                                Style="{StaticResource TextBlock_Theme}"
+                                Text="{Binding CurrentMedia.Music.Singer}"
+                                ToolTip="{Binding CurrentMedia.Music.Singer}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <ToggleButton Style="{StaticResource Love}" />

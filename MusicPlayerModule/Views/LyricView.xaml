@@ -416,7 +416,9 @@
                             <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
                             <EventSetter Event="PreviewMouseRightButtonDown" Handler="SwitchLyricMode" />
 
-                            <Setter Property="Padding" Value="120,10" />
+                            <Setter Property="Padding" Value="0,10" />
+
+                            <Setter Property="Width" Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=DockPanel}}" />
 
                             <Setter Property="IsSelected" Value="{Binding IsPlayingLine, Mode=OneWay}" />
 

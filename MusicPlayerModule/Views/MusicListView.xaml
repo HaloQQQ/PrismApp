@@ -332,7 +332,7 @@
             x:Name="DataGrid_ShowBySong"
             HeadersVisibility="All"
             ItemsSource="{Binding DistributeMusicViewModel.DisplayFavorites}"
-            MyAttachProperty.DisplayRowNumber="True"
+            MyAttachProperty.DisplayRowNumber="False"
             Visibility="{Binding DistributeMusicViewModel.IsInSong, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">

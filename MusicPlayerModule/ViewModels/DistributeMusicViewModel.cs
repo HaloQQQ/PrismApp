@@ -599,6 +599,8 @@ namespace MusicPlayerModule.ViewModels
 
             await this.MultiThreadBatchLoadMusic(list).ConfigureAwait(false);
 
+            this.RefreshFavoriteIndex();
+
             this.IsLoading = false;
 
             return true;
@@ -647,7 +649,7 @@ namespace MusicPlayerModule.ViewModels
                                                  .Take(step)
                                      )
                         {
-                            CommonAtomUtils.BeginInvoke(() =>
+                            CommonAtomUtils.Invoke(() =>
                             {
                                 var children = new FavoriteMusicViewModel(new MusicModel(item));
                                 children.TryAddTo(DisplayFavorites);

@@ -20,10 +20,14 @@ internal class MusicModel : MediaBaseModel, IDisposable, IEquatable<MusicModel>
     {
         var file = TagLib.File.Create(filePath);   // 打开音频文件
 
-        if (Name == null || Singer == null)
+        if(file.Tag.Performers.Length > 0)
         {
-            Performer = file.Tag.Performers.Length > 0 ? file.Tag.Performers[0] : "佚名";   // 歌手名
-            Name = file.Tag.Title ?? filePath.GetFileNameWithoutExtension();             // 歌曲标题
+            Performer = file.Tag.Performers[0];   // 歌手名
+        }
+
+        if (!file.Tag.Title.IsNullOrBlank())
+        {
+            Name = file.Tag.Title;
         }
 
         IsEnglishTitle = Regex.IsMatch(Name, RegexConstants.ContainsEnglishPattern);
