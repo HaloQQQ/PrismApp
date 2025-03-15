@@ -232,28 +232,43 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
         this.CurrentMedia?.FastForward();
     }
 
-    protected void PrevMedia_CommandExecute(MediaBaseViewModel currentMedia)
+    protected void PrevMedia_CommandExecute(MediaBaseViewModel? currentMedia)
     {
         if (currentMedia != null && this.DisplayPlaying.Count > 0)
         {
-            if (this.CurrentPlayOrder.IsNotNullAnd(order => order.OrderType == MediaPlayOrderModel.EnumOrderType.Random))
+            if (this.CurrentPlayOrder != null)
             {
-                this.SetAndPlay(this.DisplayPlaying[this._random.Next(this.DisplayPlaying.Count)]);
-                return;
+                switch (this.CurrentPlayOrder.OrderType)
+                {
+                    case MediaPlayOrderModel.EnumOrderType.Order:
+                        if (currentMedia.Index == 1)
+                        {
+                            currentMedia = null;
+                        }
+                        break;
+                    case MediaPlayOrderModel.EnumOrderType.SingleOnce:
+                        currentMedia = null;
+                        break;
+                    case MediaPlayOrderModel.EnumOrderType.SingleCycle:
+                        currentMedia = this.CurrentMedia;
+                        break;
+                    case MediaPlayOrderModel.EnumOrderType.Loop:
+                        currentMedia = currentMedia.Index > 1
+                            ? this.DisplayPlaying[currentMedia.Index - 2] : this.DisplayPlaying.Last();
+                        break;
+                    case MediaPlayOrderModel.EnumOrderType.Random:
+                        currentMedia = this.DisplayPlaying[this._random.Next(this.DisplayPlaying.Count)];
+                        break;
+                    default:
+                        throw new IndexOutOfRangeException();
+                }
             }
 
-            if (currentMedia.Index > 1)
-            {
-                this.SetAndPlay(this.DisplayPlaying[currentMedia.Index - 2]);
-            }
-            else
-            {
-                this.SetAndPlay(this.DisplayPlaying[this.DisplayPlaying.Count - 1]);
-            }
+            this.SetAndPlay(currentMedia);
         }
     }
 
-    protected void NextMedia_CommandExecute(MediaBaseViewModel currentMedia)
+    protected void NextMedia_CommandExecute(MediaBaseViewModel? currentMedia)
     {
         if (currentMedia != null && this.DisplayPlaying.Count > 0)
         {
@@ -264,36 +279,28 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
                     case MediaPlayOrderModel.EnumOrderType.Order:
                         if (currentMedia.Index == this.DisplayPlaying.Count)
                         {
-                            this.SetAndPlay(null);
-
-                            return;
+                            currentMedia = null;
                         }
                         break;
                     case MediaPlayOrderModel.EnumOrderType.SingleOnce:
-                        this.SetAndPlay(null);
-                        return;
-
+                        currentMedia = null;
+                        break;
                     case MediaPlayOrderModel.EnumOrderType.SingleCycle:
-                        this.RaiseResetPlayerAndPlayMediaEvent();
-                        return;
+                        currentMedia = this.CurrentMedia;
+                        break;
                     case MediaPlayOrderModel.EnumOrderType.Loop:
+                        currentMedia = currentMedia.Index < this.DisplayPlaying.Count
+                            ? this.DisplayPlaying[currentMedia.Index] : this.DisplayPlaying.First();
                         break;
                     case MediaPlayOrderModel.EnumOrderType.Random:
-                        this.SetAndPlay(this.DisplayPlaying[this._random.Next(this.DisplayPlaying.Count)]);
-                        return;
+                        currentMedia = this.DisplayPlaying[this._random.Next(this.DisplayPlaying.Count)];
+                        break;
                     default:
                         throw new IndexOutOfRangeException();
                 }
             }
 
-            if (currentMedia.Index < this.DisplayPlaying.Count)
-            {
-                this.SetAndPlay(this.DisplayPlaying[currentMedia.Index]);
-            }
-            else
-            {
-                this.SetAndPlay(this.DisplayPlaying[0]);
-            }
+            this.SetAndPlay(currentMedia);
         }
     }
 

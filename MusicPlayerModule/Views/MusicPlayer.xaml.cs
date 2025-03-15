@@ -32,6 +32,10 @@ namespace MusicPlayerModule.Views
                 }
 
             }
+            else if(e.Command == ApplicationCommands.Delete)
+            {
+                ContainerLocator.Current.Resolve<IEventAggregator>().GetEvent<ToggleBatchSeleteEvent>().Publish();
+            }
             else if (e.Command == NavigationCommands.GoToPage)
             {
                 ContainerLocator.Current.Resolve<IEventAggregator>().GetEvent<LyricPageSlideEvent>().Publish();

@@ -2,6 +2,7 @@
 using Prism.Events;
 using System.Windows.Controls;
 using Prism.Ioc;
+using MusicPlayerModule.ViewModels;
 
 namespace MusicPlayerModule.Views
 {
@@ -14,7 +15,15 @@ namespace MusicPlayerModule.Views
         {
             InitializeComponent();
 
-            ContainerLocator.Current.Resolve<IEventAggregator>().GetEvent<FocusFavoriteKeyWordTextBoxEvent>().Subscribe(() => this.FavoritesKeyWordsTxt.Focus());
+            ContainerLocator.Current.Resolve<IEventAggregator>().GetEvent<FocusFavoriteKeyWordTextBoxEvent>().Subscribe(() =>
+            {
+                if (this.DataContext is MusicPlayerViewModel musicPlayerViewModel)
+                {
+                    musicPlayerViewModel.DistributeMusicViewModel.CanBatchSelect = false;
+                }
+
+                this.FavoritesKeyWordsTxt.Focus();
+            });
         }
     }
 }

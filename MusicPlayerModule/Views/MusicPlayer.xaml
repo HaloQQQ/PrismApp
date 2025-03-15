@@ -20,6 +20,11 @@
                 Modifiers="{Binding KeyGestureDic[搜索].ModifierKey}" />
 
             <KeyBinding
+                Key="{Binding KeyGestureDic[允许批量删除].SelectedKey}"
+                Command="Delete"
+                Modifiers="{Binding KeyGestureDic[允许批量删除].ModifierKey}" />
+
+            <KeyBinding
                 Key="{Binding KeyGestureDic[歌词封面].SelectedKey}"
                 Command="GoToPage"
                 Modifiers="{Binding KeyGestureDic[歌词封面].ModifierKey}" />

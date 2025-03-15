@@ -297,7 +297,6 @@
                         <!--  音量调节模态框  -->
                         <StackPanel Background="{StaticResource PopupBackground}" Clip="{StaticResource PopupGeometryGroup_Volume}">
                             <Slider
-                                x:Name="VolumeSlider"
                                 Width="4"
                                 Height="130"
                                 Margin="10,25,10,10"
@@ -308,11 +307,8 @@
                                 ValueChanged="Slider_ValueChanged"
                                 Value="{Binding Volume, ElementName=mediaPlayer, Converter={StaticResource DigitMultiConverter}, ConverterParameter=100}" />
 
-                            <TextBlock
-                                x:Name="volumeStr"
-                                HorizontalAlignment="Center"
-                                Style="{StaticResource TextBlock_NotImportant_White}">
-                                <TextBlock Text="{Binding Path=Value, ElementName=VolumeSlider, Mode=OneWay}" />
+                            <TextBlock HorizontalAlignment="Center" Style="{StaticResource TextBlock_NotImportant_White}">
+                                <TextBlock Text="{Binding Volume, ElementName=mediaPlayer, Converter={StaticResource DigitMultiConverter}, ConverterParameter=100, Mode=OneWay}" />
                                 %
                             </TextBlock>
                         </StackPanel>

@@ -20,7 +20,7 @@ internal class MusicModel : MediaBaseModel, IDisposable, IEquatable<MusicModel>
     {
         var file = TagLib.File.Create(filePath);   // 打开音频文件
 
-        if(file.Tag.Performers.Length > 0)
+        if (file.Tag.Performers.Length > 0)
         {
             Performer = file.Tag.Performers[0];   // 歌手名
         }

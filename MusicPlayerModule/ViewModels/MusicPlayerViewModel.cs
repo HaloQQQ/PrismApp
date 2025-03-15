@@ -225,7 +225,8 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
             new AppHotKey("桌面歌词", Key.C, ModifierKeys.Alt),
             new AppHotKey("歌词封面", Key.Escape, ModifierKeys.None),
 
-            new AppHotKey("搜索", Key.F, ModifierKeys.Control)
+            new AppHotKey("搜索", Key.F, ModifierKeys.Control),
+            new AppHotKey("允许批量删除", Key.E, ModifierKeys.Control)
         });
 
     #region CommandExecute
@@ -265,6 +266,8 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
         {
             this.DesktopLyric.ToggleDesktopLyric();
         });
+
+        eventAggregator.GetEvent<ToggleBatchSeleteEvent>().Subscribe(() => this.DistributeMusicViewModel.CanBatchSelect = !this.DistributeMusicViewModel.CanBatchSelect);
     }
 
     protected override void InitCommands()

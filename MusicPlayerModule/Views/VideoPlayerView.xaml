@@ -259,7 +259,8 @@
             LoadedBehavior="Manual"
             MediaOpened="mediaPlayer_MediaOpened"
             Source="{Binding CurrentMedia.Video.FilePath}"
-            Stretch="{Binding Stretch}">
+            Stretch="{Binding Stretch}"
+            Volume="1">
             <MediaElement.InputBindings>
                 <MouseBinding
                     Command="{Binding TogglePlayCommand}"
@@ -673,7 +674,7 @@
                                     Value="{Binding Volume, ElementName=mediaPlayer, Converter={StaticResource DigitMultiConverter}, ConverterParameter=100}" />
 
                                 <TextBlock HorizontalAlignment="Center" Style="{StaticResource TextBlock_NotImportant_White}">
-                                    <TextBlock Text="{Binding ElementName=mediaPlayer, Path=Volume, Converter={StaticResource DigitMultiConverter}, ConverterParameter=100, Mode=OneWay}" />
+                                    <TextBlock Text="{Binding Volume, ElementName=mediaPlayer, Converter={StaticResource DigitMultiConverter}, ConverterParameter=100, Mode=OneWay}" />
                                     %
                                 </TextBlock>
                             </StackPanel>
