@@ -23,7 +23,7 @@ namespace MyApp.Prisms.Helper
                 Helper.Log(name, message);
             }
 
-            CommonAtomUtils.BeginInvoke(() =>
+            WpfAtomUtils.BeginInvoke(() =>
             {
                 Paragraph paragraph = new Paragraph();
                 paragraph.Inlines.Add(
@@ -56,7 +56,7 @@ namespace MyApp.Prisms.Helper
         internal static void Send(this RichTextBox txt, EndPoint from, EndPoint to, bool isLogging, ISocket socket,
             string message)
         {
-            CommonAtomUtils.BeginInvoke(() =>
+            WpfAtomUtils.BeginInvoke(() =>
             {
                 var paragraph = GetParagraph("Send", from, to, isLogging, socket, message);
                 paragraph.Inlines.LastInline.Foreground = CustomConstants.SendBrush;
@@ -68,7 +68,7 @@ namespace MyApp.Prisms.Helper
         internal static void Recv(this RichTextBox txt, EndPoint from, EndPoint to, bool isLogging, ISocket socket,
             string message)
         {
-            CommonAtomUtils.BeginInvoke(() =>
+            WpfAtomUtils.BeginInvoke(() =>
             {
                 var paragraph = GetParagraph("Recv", from, to, isLogging, socket, message);
                 paragraph.Inlines.LastInline.Foreground = CustomConstants.RecvBrush;

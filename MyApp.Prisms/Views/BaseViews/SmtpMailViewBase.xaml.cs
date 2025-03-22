@@ -91,7 +91,7 @@ namespace MyApp.Prisms.Views.BaseViews
             {
                 e.Handled = true;
 
-                var selectFile = CommonAtomUtils.OpenFileDialog(string.Empty, new AnyFilter());
+                var selectFile = WpfAtomUtils.OpenFileDialog(string.Empty, new AnyFilter());
 
                 if (selectFile != null)
                 {

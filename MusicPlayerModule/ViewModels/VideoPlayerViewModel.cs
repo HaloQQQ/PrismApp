@@ -118,7 +118,7 @@ namespace MusicPlayerModule.ViewModels
         protected override void AddMediaFromFileDialog_CommandExecute()
         {
             OpenFileDialog openFileDialog =
-                CommonAtomUtils.OpenFileDialog(this.VideoSetting.Value, new VideoFilter());
+                WpfAtomUtils.OpenFileDialog(this.VideoSetting.Value, new VideoFilter());
 
             if (openFileDialog != null)
             {
@@ -130,7 +130,7 @@ namespace MusicPlayerModule.ViewModels
 
         protected override void AddMediaFromFolderDialog_CommandExecute()
         {
-            var selectedPath = CommonCoreUtils.OpenFolderDialog(this.VideoSetting.Value);
+            var selectedPath = WpfCoreUtils.OpenFolderDialog(this.VideoSetting.Value);
 
             if (!selectedPath.IsNullOrBlank())
             {

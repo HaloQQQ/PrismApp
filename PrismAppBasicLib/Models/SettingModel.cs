@@ -16,7 +16,7 @@ namespace PrismAppBasicLib.Models
 
             this.OpenFolderCommand = new DelegateCommand(() =>
             {
-                var folder = CommonCoreUtils.OpenFolderDialog(this.Value);
+                var folder = WpfCoreUtils.OpenFolderDialog(this.Value);
 
                 if (!folder.IsNullOrBlank())
                 {

@@ -103,7 +103,7 @@ namespace MyApp.Prisms.Views
         {
             var settingManager = ContainerLocator.Current.Resolve<ISettingManager<SettingModel>>();
 
-            var openFileDialog = CommonAtomUtils.OpenFileDialog(settingManager[CustomConstants.IMAGE].Value, new PictureFilter());
+            var openFileDialog = WpfAtomUtils.OpenFileDialog(settingManager[CustomConstants.IMAGE].Value, new PictureFilter());
 
             if (openFileDialog != null)
             {

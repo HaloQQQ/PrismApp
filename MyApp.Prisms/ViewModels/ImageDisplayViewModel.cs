@@ -135,7 +135,7 @@ namespace MyApp.Prisms.ViewModels
                         //SynchronizationContext.Current.Post(_ => Data.Add(image), null);
 
                         // B.跨线程同步
-                        CommonAtomUtils.BeginInvoke(() =>
+                        WpfAtomUtils.BeginInvoke(() =>
                         {
                             Data.Add(image);
                         });

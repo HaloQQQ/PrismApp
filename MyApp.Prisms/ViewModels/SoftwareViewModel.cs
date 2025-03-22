@@ -131,7 +131,9 @@ namespace MyApp.Prisms.ViewModels
             this.AutoStart = config.IsTrue(CustomConstants.AUTO_START.FillToArray());
             this.BackgroundSwitch = config.IsTrue(CustomConstants.BACKGROUND_SWITCH.FillToArray());
 
-            this.DefaultThemeURI = config.ReadConfigNode<string>(CustomConstants.DefaultThemeURI.FillToArray());
+            this.FollowSystemTheme = config.IsTrue(CustomConstants.FollowSystemThemes);
+
+            this.DefaultThemeURI = config.ReadConfigNode<string>(CustomConstants.DefaultThemeURIs);
             this.LoadDefaultTheme();
 
             this.SetBackgroundImage(config.ReadConfigNode<string>(CustomConstants.BkgrdUri.FillToArray()));
@@ -144,7 +146,9 @@ namespace MyApp.Prisms.ViewModels
                 config.WriteConfigNode<bool>(this.AutoStart, CustomConstants.AUTO_START.FillToArray());
                 config.WriteConfigNode<bool>(this.BackgroundSwitch, CustomConstants.BACKGROUND_SWITCH.FillToArray());
 
-                config.WriteConfigNode(this.DefaultThemeURI, CustomConstants.DefaultThemeURI.FillToArray());
+                config.WriteConfigNode(this.FollowSystemTheme, CustomConstants.FollowSystemThemes);
+                config.WriteConfigNode(this.DefaultThemeURI, CustomConstants.DefaultThemeURIs);
+
                 config.WriteConfigNode(this.CurrentBkGrd, CustomConstants.BkgrdUri.FillToArray());
 
                 config.WriteConfigNode(this.IsMusicPlayer, CustomConstants.IsMusicPlayer.FillToArray());
@@ -164,14 +168,13 @@ namespace MyApp.Prisms.ViewModels
 
         private void LoadDefaultTheme()
         {
-            var defaultThemeUri = this.DefaultThemeURI;
-            if (defaultThemeUri.IsNullOrBlank())
+            if (this.FollowSystemTheme || this.DefaultThemeURI.IsNullOrBlank())
             {
                 this.RefreshTheme();
             }
             else
             {
-                var currentUri = new Uri(defaultThemeUri, UriKind.RelativeOrAbsolute);
+                var currentUri = new Uri(this.DefaultThemeURI, UriKind.RelativeOrAbsolute);
 
                 if (CustomConstants.Dark.Source.ToString().EqualsIgnoreCase(currentUri.ToString()))
                 {
@@ -185,10 +188,10 @@ namespace MyApp.Prisms.ViewModels
         }
 
         #region 主题&背景
-        public string DefaultThemeURI { get; set; } = null!;
+        public string DefaultThemeURI { get; private set; }
         private void RefreshTheme()
         {
-            var dict = CommonCoreUtils.RefreshTheme();
+            var dict = WpfCoreUtils.RefreshTheme(this.FollowSystemTheme);
 
             this.DefaultThemeURI = dict.Source.ToString();
         }
@@ -326,6 +329,13 @@ namespace MyApp.Prisms.ViewModels
         public SettingsViewModel Settings { get; }
 
         #region 辅助功能
+        private bool _followSystemTheme;
+        public bool FollowSystemTheme
+        {
+            get => _followSystemTheme;
+            set => SetProperty<bool>(ref _followSystemTheme, value);
+        }
+
         private bool _onlyOneProcess;
 
         public bool OnlyOneProcess

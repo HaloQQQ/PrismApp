@@ -57,7 +57,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
             {
                 CommonUtil.PublishMessage(_eventAggregator, "发送完成");
 
-                CommonAtomUtils.BeginInvoke(this.Reset);
+                WpfAtomUtils.BeginInvoke(this.Reset);
             };
 
             MailOutDto.SelectStatusChanged += newValue =>

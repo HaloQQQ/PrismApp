@@ -128,7 +128,7 @@ namespace SqlCreatorModule.ViewModels
 
             this.OpenExportDirCommand = new DelegateCommand(() =>
             {
-                var targetDir = CommonCoreUtils.OpenFolderDialog(null);
+                var targetDir = WpfCoreUtils.OpenFolderDialog(null);
 
                 if (targetDir.IsNullOrBlank())
                 {
@@ -162,7 +162,7 @@ namespace SqlCreatorModule.ViewModels
         {
             if (openFileDialog)
             {
-                var fileDialog = CommonAtomUtils.OpenFileDialog(null, new AnyFilter());
+                var fileDialog = WpfAtomUtils.OpenFileDialog(null, new AnyFilter());
 
                 if (fileDialog == null)
                 {

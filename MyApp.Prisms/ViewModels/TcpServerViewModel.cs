@@ -60,7 +60,7 @@ namespace MyApp.Prisms.ViewModels
             {
                 if (socket.RemoteEndPoint != null)
                 {
-                    CommonAtomUtils.BeginInvokeAtOnce(() =>
+                    WpfAtomUtils.BeginInvokeAtOnce(() =>
                         this.ConnList.Add(socket.RemoteEndPoint.ToString()!)
                     );
                 }
@@ -68,7 +68,7 @@ namespace MyApp.Prisms.ViewModels
 
             tcpServer.ExceptionOccurred += (socketName, exception) =>
             {
-                CommonAtomUtils.BeginInvokeAtOnce(() =>
+                WpfAtomUtils.BeginInvokeAtOnce(() =>
                 {
                     if (this.ConnList.Contains(socketName))
                     {

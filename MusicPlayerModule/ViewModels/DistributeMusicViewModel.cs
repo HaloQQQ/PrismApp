@@ -328,7 +328,7 @@ namespace MusicPlayerModule.ViewModels
 
                 var path = settingManager[CustomStatics.MUSIC].Value;
 
-                var selectedPath = CommonCoreUtils.OpenFolderDialog(path);
+                var selectedPath = WpfCoreUtils.OpenFolderDialog(path);
 
                 if (!selectedPath.IsNullOrBlank())
                 {
@@ -345,7 +345,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 var path = settingManager[CustomStatics.MUSIC].Value;
 
-                var selectedPath = CommonCoreUtils.OpenFolderDialog(path);
+                var selectedPath = WpfCoreUtils.OpenFolderDialog(path);
 
                 if (!selectedPath.IsNullOrBlank())
                 {
@@ -371,7 +371,7 @@ namespace MusicPlayerModule.ViewModels
                 }
 
                 var path = settingManager[CustomStatics.MUSIC].Value;
-                var selectedPath = CommonCoreUtils.OpenFolderDialog(path);
+                var selectedPath = WpfCoreUtils.OpenFolderDialog(path);
 
                 if (!selectedPath.IsNullOrBlank())
                 {
@@ -530,7 +530,7 @@ namespace MusicPlayerModule.ViewModels
             var musicSetting = settingManger[CustomStatics.MUSIC];
             var lyricSetting = settingManger[CustomStatics.LYRIC];
 
-            var selectedPath = CommonCoreUtils.OpenFolderDialog(musicSetting.Value);
+            var selectedPath = WpfCoreUtils.OpenFolderDialog(musicSetting.Value);
             if (!selectedPath.IsNullOrBlank())
             {
                 var list = selectedPath.GetFiles(str => str.EndsWithIgnoreCase(".mp3"));
@@ -558,7 +558,7 @@ namespace MusicPlayerModule.ViewModels
             var lyricSetting = settingManger[CustomStatics.LYRIC];
 
             OpenFileDialog openFileDialog =
-                CommonAtomUtils.OpenFileDialog(musicSetting.Value, new MusicFilter());
+                WpfAtomUtils.OpenFileDialog(musicSetting.Value, new MusicFilter());
 
             if (openFileDialog != null)
             {
@@ -649,7 +649,7 @@ namespace MusicPlayerModule.ViewModels
                                                  .Take(step)
                                      )
                         {
-                            CommonAtomUtils.Invoke(() =>
+                            WpfAtomUtils.Invoke(() =>
                             {
                                 var children = new FavoriteMusicViewModel(new MusicModel(item));
                                 children.TryAddTo(DisplayFavorites);

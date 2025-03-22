@@ -25,7 +25,9 @@ namespace MyApp.Prisms.Helper
         internal const string IsVideoPlayer = "IsVideoPlayer";
         internal const string IsMusicPlayer = "IsMusicPlayer";
 
-        internal const string DefaultThemeURI = "DefaultThemeURI";
+        internal static readonly string[] FollowSystemThemes = new[] { "Theme", "FollowSystemTheme" };
+        internal static readonly string[] DefaultThemeURIs = new[] { "Theme", "DefaultThemeURI" };
+
         internal const string BkgrdUri = "BkgrdUri";
 
         internal const string IMAGE = "Image";

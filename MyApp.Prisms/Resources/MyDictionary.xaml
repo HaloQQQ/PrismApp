@@ -27,6 +27,11 @@
             IsChecked="{Binding OnlyOneProcess}" />
 
         <MenuItem
+            Header="主题跟随系统"
+            IsCheckable="True"
+            IsChecked="{Binding FollowSystemTheme}" />
+
+        <MenuItem
             Header="开机自启"
             IsCheckable="True"
             IsChecked="{Binding AutoStart}" />

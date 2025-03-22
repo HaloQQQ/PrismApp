@@ -86,7 +86,7 @@ namespace CustomControlsDemoModule.ViewModels
 
             this.SelectFileCommand = new DelegateCommand(() =>
             {
-                var dialog = CommonAtomUtils.OpenFileDialog(AppStatics.DeskTop, new AnyFilter());
+                var dialog = WpfAtomUtils.OpenFileDialog(AppStatics.DeskTop, new AnyFilter());
 
                 if (dialog != null)
                 {
@@ -141,7 +141,7 @@ namespace CustomControlsDemoModule.ViewModels
 
             this.SelectExeFileCommand = new DelegateCommand(() =>
             {
-                var dialog = CommonAtomUtils.OpenFileDialog(AppStatics.DeskTop, new ExeFilter());
+                var dialog = WpfAtomUtils.OpenFileDialog(AppStatics.DeskTop, new ExeFilter());
 
                 if (dialog != null)
                 {
@@ -162,7 +162,7 @@ namespace CustomControlsDemoModule.ViewModels
             // 图片处理
             this.SelectPictureCommand = new DelegateCommand(() =>
             {
-                var dialog = CommonAtomUtils.OpenFileDialog(AppStatics.DeskTop, new PictureFilter());
+                var dialog = WpfAtomUtils.OpenFileDialog(AppStatics.DeskTop, new PictureFilter());
 
                 if (dialog != null)
                 {
@@ -184,7 +184,7 @@ namespace CustomControlsDemoModule.ViewModels
 
                 var taskA = Task.Run(() =>
                 {
-                    CommonAtomUtils.BeginInvoke(() =>
+                    WpfAtomUtils.BeginInvoke(() =>
                     {
                         var i = new Bitmap(filePath);
                         var waterMarkSource = ImageCoreExtensions.AddWaterMark(i, new PointF(20, 30), "Are you Ok?", null, null).GetImageSource();
@@ -217,7 +217,7 @@ namespace CustomControlsDemoModule.ViewModels
 
                 var taskB = Task.Run(() =>
                 {
-                    CommonAtomUtils.BeginInvoke(() =>
+                    WpfAtomUtils.BeginInvoke(() =>
                     {
                         var i = new Bitmap(filePath);
                         var clipSource = i.CaptureImage(new Rectangle(44, 44, 500, 500)).GetImageSource();
@@ -240,7 +240,7 @@ namespace CustomControlsDemoModule.ViewModels
 
                 var taskC = Task.Run(() =>
                 {
-                    CommonAtomUtils.BeginInvoke(() =>
+                    WpfAtomUtils.BeginInvoke(() =>
                     {
                         var i = new Bitmap(filePath);
                         var resizeSource = i.Resize(200, 200).GetImageSource();
@@ -263,7 +263,7 @@ namespace CustomControlsDemoModule.ViewModels
 
                 var taskD = Task.Run(() =>
                 {
-                    CommonAtomUtils.BeginInvoke(() =>
+                    WpfAtomUtils.BeginInvoke(() =>
                     {
                         var i = new Bitmap(filePath);
                         var compressSource = i.Compress(300, 300).GetImageSource();
