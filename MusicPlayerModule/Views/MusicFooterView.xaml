@@ -506,7 +506,7 @@
                                     Style="{StaticResource DataGrid_Transparent}">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="MouseDoubleClick">
-                                            <i:InvokeCommandAction Command="{Binding DataContext.TogglePlayCommand, RelativeSource={RelativeSource AncestorType=Grid}}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                            <i:InvokeCommandAction Command="{Binding DataContext.TogglePlayCurrentCommand, RelativeSource={RelativeSource AncestorType=Grid}}" CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                     <DataGrid.CellStyle>

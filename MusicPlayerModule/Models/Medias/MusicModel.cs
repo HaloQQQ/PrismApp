@@ -22,7 +22,11 @@ internal class MusicModel : MediaBaseModel, IDisposable, IEquatable<MusicModel>
 
         if (file.Tag.Performers.Length > 0)
         {
-            Performer = file.Tag.Performers[0];   // 歌手名
+            Singer = file.Tag.Performers[0];   // 歌手名
+        }
+        else
+        {
+            Singer = Performer;
         }
 
         if (!file.Tag.Title.IsNullOrBlank())
@@ -31,7 +35,7 @@ internal class MusicModel : MediaBaseModel, IDisposable, IEquatable<MusicModel>
         }
 
         IsEnglishTitle = Regex.IsMatch(Name, RegexConstants.ContainsEnglishPattern);
-        IsEnglishSinger = Regex.IsMatch(Performer, RegexConstants.ContainsEnglishPattern);
+        IsEnglishSinger = Regex.IsMatch(Singer, RegexConstants.ContainsEnglishPattern);
 
         Album = file.Tag.Album ?? "空专辑";             // 专辑名称
         Year = (int)file.Tag.Year;             // 年份
@@ -96,7 +100,7 @@ internal class MusicModel : MediaBaseModel, IDisposable, IEquatable<MusicModel>
     /// </summary>
     public string Genre { get; }
 
-    public string Singer => Performer;
+    public string Singer { get; }
 
     private volatile WeakReference<KRCLyrics> _krcLyrics;
 

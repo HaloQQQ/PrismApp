@@ -31,11 +31,10 @@ namespace MusicPlayerModule.Utils
 
             IEnumerable<string> paths = await TryGetLyricPathsAsync(lyricDir);
 
-            string? lyricFilePath = paths.FirstOrDefault(path => path.Contains(music.Name) &&
+            string? lyricFilePath = paths.FirstOrDefault(path => path.ContainsIgnoreCase(music.Name) &&
                                                             (
-                                                                path.Contains(music.Singer)
-                                                                || path.Contains(
-                                                                    music.Singer.Replace(" ", string.Empty))
+                                                                path.ContainsIgnoreCase(music.Performer)
+                                                                || path.ContainsIgnoreCase(music.Singer)
                                                             )
                                                         );
 

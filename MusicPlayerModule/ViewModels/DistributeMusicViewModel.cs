@@ -767,7 +767,10 @@ namespace MusicPlayerModule.ViewModels
                     else
                     {
                         this.DisplayFavorites.AddRange(this.Favorites);
+
+                        this.RefreshFavoriteIndex();
                     }
+
                 }
             }
         }

@@ -190,6 +190,9 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
                 _ => this.CurrentMedia != null)
                 .ObservesProperty(() => this.CurrentMedia);
 
+        this.TogglePlayCurrentCommand = new DelegateCommand<MediaBaseViewModel>(
+                PlayInPlaying_CommandExecute);
+
         this.AddFilesCommand = new DelegateCommand(AddMediaFromFileDialog_CommandExecute);
 
         this.AddFolderCommand = new DelegateCommand(AddMediaFromFolderDialog_CommandExecute);
@@ -241,9 +244,13 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
                 switch (this.CurrentPlayOrder.OrderType)
                 {
                     case MediaPlayOrderModel.EnumOrderType.Order:
-                        if (currentMedia.Index == 1)
+                        if (currentMedia.Index <= 1)
                         {
                             currentMedia = null;
+                        }
+                        else
+                        {
+                            currentMedia = this.DisplayPlaying[currentMedia.Index - 2];
                         }
                         break;
                     case MediaPlayOrderModel.EnumOrderType.SingleOnce:
@@ -277,9 +284,13 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
                 switch (this.CurrentPlayOrder.OrderType)
                 {
                     case MediaPlayOrderModel.EnumOrderType.Order:
-                        if (currentMedia.Index == this.DisplayPlaying.Count)
+                        if (currentMedia.Index >= this.DisplayPlaying.Count)
                         {
                             currentMedia = null;
+                        }
+                        else
+                        {
+                            currentMedia = this.DisplayPlaying[currentMedia.Index];
                         }
                         break;
                     case MediaPlayOrderModel.EnumOrderType.SingleOnce:
@@ -308,7 +319,6 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
     /// 删除播放列表中的当前Media
     /// </summary>
     /// <param name="media"></param>
-    /// <returns>可被删除</returns>
     protected void DeleteFromPlaying_CommandExecute(MediaBaseViewModel media)
     {
         if (media.IsNotNullAnd(m => m.IsPlayingMedia))
@@ -646,6 +656,11 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
     /// 播放或暂停
     /// </summary>
     public ICommand TogglePlayCommand { get; private set; }
+
+    /// <summary>
+    /// 启停播放列表音乐
+    /// </summary>
+    public ICommand TogglePlayCurrentCommand { get; private set; }
 
     public ICommand PrevCommand { get; private set; }
     public ICommand NextCommand { get; private set; }

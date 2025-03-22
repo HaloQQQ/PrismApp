@@ -28,7 +28,7 @@ namespace MusicPlayerModule.Models
             Size = size.ToString("0.00");
         }
 
-        public string Performer { get; protected set; }
+        public string Performer { get; }
         public string Name { get; protected set; }
         /// <summary>
         /// MB
