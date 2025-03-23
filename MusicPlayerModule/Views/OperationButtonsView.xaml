@@ -89,7 +89,6 @@
             <StackPanel Orientation="Horizontal">
                 <Button
                     Command="{Binding PlayAllCommand}"
-                    IsEnabled="{Binding DistributeMusicViewModel.IsLoading, Converter={StaticResource OppositeBoolConverter}}"
                     Style="{StaticResource PlayAllButton}"
                     ToolTip="{Binding KeyGestureDic[播放所有音乐].ToolTip}" />
 

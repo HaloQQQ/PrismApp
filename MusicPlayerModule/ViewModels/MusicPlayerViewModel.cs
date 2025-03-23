@@ -109,7 +109,7 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
 
             if (result != null)
             {
-                this.RefreshPlayingIndex();
+                this.TryRefreshPlayingIndex();
 
                 if (isFirstNotReplace || aggregate.TargetToPlay != null)
                 {
@@ -127,6 +127,8 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
     public DistributeMusicViewModel DistributeMusicViewModel { get; }
 
     public Collection<PlayingMusicViewModel> Playing { get; } = new();
+
+    protected override bool AllowRefreshPlayingIndex => PlayingListFilteKeyWords.IsNullOrEmpty();
 
     /// <summary>
     /// 播放队列筛选条件
@@ -157,6 +159,8 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
                 else
                 {
                     this.DisplayPlaying.AddRange(this.Playing);
+
+                    this.TryRefreshPlayingIndex();
                 }
             }
         }
@@ -214,6 +218,12 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
     {
         this.DistributeMusicViewModel = new DistributeMusicViewModel(eventAggregator, settingManager);
 
+        this.PlayAllCommand = new DelegateCommand(
+            () => PlayCurrentItems(),
+            () => this.DistributeMusicViewModel.DisplayFavorites.Count > 0 && !this.DistributeMusicViewModel.IsLoading)
+            .ObservesProperty(() => this.DistributeMusicViewModel.DisplayFavorites.Count)
+            .ObservesProperty(() => this.DistributeMusicViewModel.IsLoading);
+
         this.DesktopLyric = new DesktopLyricViewModel(config);
     }
 
@@ -270,10 +280,8 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
         eventAggregator.GetEvent<ToggleBatchSeleteEvent>().Subscribe(() => this.DistributeMusicViewModel.CanBatchSelect = !this.DistributeMusicViewModel.CanBatchSelect);
     }
 
-    protected override void InitCommands()
+    protected override void InitCommandsExtend()
     {
-        base.InitCommands();
-
         this.ToggleDesktopLyricCommand = new DelegateCommand(
             () => this.DesktopLyric.ToggleDesktopLyric(),
             () => this.CurrentMedia != null)
@@ -312,12 +320,6 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
 
             this.PlayCurrentItems(model);
         });
-
-        this.PlayAllCommand = new DelegateCommand(
-            () => PlayCurrentItems(),
-            () => this.DisplayPlaying.Count > 0 && !this.DistributeMusicViewModel.IsLoading)
-            .ObservesProperty(() => this.DisplayPlaying.Count)
-            .ObservesProperty(() => this.DistributeMusicViewModel.IsLoading);
 
         this.PlayFavoriteCommand = new DelegateCommand<FavoriteMusicViewModel>(music =>
         {
@@ -363,7 +365,7 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
                 this.Playing.Insert(this.CurrentMedia.Index, temp);
                 this.DisplayPlaying.Insert(this.CurrentMedia.Index, temp);
 
-                this.RefreshPlayingIndex();
+                this.TryRefreshPlayingIndex();
             }
             else
             {
@@ -385,5 +387,7 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
         this.DistributeMusicViewModel.Dispose();
 
         base.Dispose();
+
+        PlayingMusicViewModel.ToNextMusic -= NextMedia_CommandExecute;
     }
 }

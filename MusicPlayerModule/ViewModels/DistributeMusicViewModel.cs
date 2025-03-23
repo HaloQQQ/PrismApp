@@ -243,7 +243,7 @@ namespace MusicPlayerModule.ViewModels
 
                 music.RemoveFromAll();
 
-                this.RefreshFavoriteIndex();
+                this.TryRefreshFavoriteIndex();
 
                 this.OnlyRefreshClassifySelectAllStatus();
 
@@ -312,7 +312,7 @@ namespace MusicPlayerModule.ViewModels
 
                 this.SelectFavoriteAll = this.DisplayFavorites.Count > 0 && !this.DisplayFavorites.Any(m => !m.IsDeleting);
 
-                this.RefreshFavoriteIndex();
+                this.TryRefreshFavoriteIndex();
 
                 this.RaisePropertyChanged(nameof(SelectedCount));
             }, () => this.DisplayFavorites.Any(item => item.IsDeleting))
@@ -516,11 +516,14 @@ namespace MusicPlayerModule.ViewModels
             }
         }
 
-        private void RefreshFavoriteIndex()
+        private void TryRefreshFavoriteIndex()
         {
-            for (int i = 0; i < DisplayFavorites.Count; i++)
+            if (this.AllowRefreshFavoriteIndex)
             {
-                DisplayFavorites[i].Index = i + 1;
+                for (int i = 0; i < DisplayFavorites.Count; i++)
+                {
+                    DisplayFavorites[i].Index = i + 1;
+                }
             }
         }
 
@@ -599,7 +602,7 @@ namespace MusicPlayerModule.ViewModels
 
             await this.MultiThreadBatchLoadMusic(list).ConfigureAwait(false);
 
-            this.RefreshFavoriteIndex();
+            this.TryRefreshFavoriteIndex();
 
             this.IsLoading = false;
 
@@ -738,6 +741,8 @@ namespace MusicPlayerModule.ViewModels
             }
         }
 
+        private bool AllowRefreshFavoriteIndex => FavoriteListFilteKeyWords.IsNullOrEmpty();
+
         /// <summary>
         /// 收藏队列筛选条件  Name or Singer
         /// </summary>
@@ -768,7 +773,7 @@ namespace MusicPlayerModule.ViewModels
                     {
                         this.DisplayFavorites.AddRange(this.Favorites);
 
-                        this.RefreshFavoriteIndex();
+                        this.TryRefreshFavoriteIndex();
                     }
 
                 }
@@ -967,6 +972,8 @@ namespace MusicPlayerModule.ViewModels
             this.MusicSingerFavorites.Clear();
 
             this.MusicDirFavorites.Clear();
+
+            MusicWithClassifyModel.SelectedEvent -= OnlyRefreshClassifySelectAllStatus;
         }
     }
 }

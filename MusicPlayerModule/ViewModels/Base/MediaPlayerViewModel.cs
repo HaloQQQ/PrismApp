@@ -102,7 +102,9 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
         };
     }
 
-    protected virtual void InitCommands()
+    protected virtual void InitCommandsExtend() { }
+
+    protected void InitCommands()
     {
         this.OpenInExploreCommand = new DelegateCommand<string>(mediaDir =>
         {
@@ -211,6 +213,8 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
             () => _eventAggregator.GetEvent<DecreaseVolumeEvent>().Publish(),
             () => this.CurrentMedia != null)
             .ObservesProperty(() => this.CurrentMedia);
+
+        this.InitCommandsExtend();
     }
 
     #region CommandExecute
@@ -342,7 +346,7 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
 
         media.RemoveFromAll();
 
-        this.RefreshPlayingIndex();
+        this.TryRefreshPlayingIndex();
     }
 
     protected abstract void AddMediaFromFileDialog_CommandExecute();
@@ -439,12 +443,17 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
         }
     }
 
-    protected void RefreshPlayingIndex()
+    protected virtual bool AllowRefreshPlayingIndex => true;
+
+    protected void TryRefreshPlayingIndex()
     {
-        var index = 1;
-        foreach (var item in this.DisplayPlaying)
+        if (this.AllowRefreshPlayingIndex)
         {
-            item.Index = index++;
+            var index = 1;
+            foreach (var item in this.DisplayPlaying)
+            {
+                item.Index = index++;
+            }
         }
     }
 

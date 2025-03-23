@@ -85,7 +85,7 @@ namespace MusicPlayerModule.ViewModels
                 new PlayingVideoViewModel(this._dto, new VideoModel(filePath)).TryAddTo(this.DisplayPlaying);
             }
 
-            this.RefreshPlayingIndex();
+            this.TryRefreshPlayingIndex();
 
             if (this.CurrentMedia == null)
             {
