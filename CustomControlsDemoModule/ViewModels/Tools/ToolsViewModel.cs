@@ -86,7 +86,7 @@ namespace CustomControlsDemoModule.ViewModels
 
             this.SelectFileCommand = new DelegateCommand(() =>
             {
-                var dialog = WpfAtomUtils.OpenFileDialog(AppStatics.DeskTop, new AnyFilter());
+                var dialog = WpfAtomUtils.OpenFileDialog(AppStatics.DeskTopDir, new AnyFilter());
 
                 if (dialog != null)
                 {
@@ -141,7 +141,7 @@ namespace CustomControlsDemoModule.ViewModels
 
             this.SelectExeFileCommand = new DelegateCommand(() =>
             {
-                var dialog = WpfAtomUtils.OpenFileDialog(AppStatics.DeskTop, new ExeFilter());
+                var dialog = WpfAtomUtils.OpenFileDialog(AppStatics.DeskTopDir, new ExeFilter());
 
                 if (dialog != null)
                 {
@@ -162,7 +162,7 @@ namespace CustomControlsDemoModule.ViewModels
             // 图片处理
             this.SelectPictureCommand = new DelegateCommand(() =>
             {
-                var dialog = WpfAtomUtils.OpenFileDialog(AppStatics.DeskTop, new PictureFilter());
+                var dialog = WpfAtomUtils.OpenFileDialog(AppStatics.DeskTopDir, new PictureFilter());
 
                 if (dialog != null)
                 {

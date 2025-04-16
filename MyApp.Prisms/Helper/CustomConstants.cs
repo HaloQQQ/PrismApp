@@ -16,8 +16,6 @@ namespace MyApp.Prisms.Helper
             internal const string Software_Log_Dir = "软件启停记录";
         }
 
-        internal const string NOTE_PAD = "notepad";
-
         internal const string ONLY_ONE_PROCESS = "OnlyOneProcess";
         internal const string AUTO_START = "AutoStart";
         internal const string BACKGROUND_SWITCH = "BackgroundSwitch";

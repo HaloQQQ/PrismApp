@@ -20,7 +20,6 @@ using MusicPlayerModule.Views;
 using IceTea.Atom.Utils.HotKey.Global;
 using System.Linq;
 using IceTea.Atom.Utils.HotKey.Global.Contracts;
-using CustomControlsDemoModule;
 using IceTea.Wpf.Atom.Utils.HotKey;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
@@ -35,6 +34,7 @@ namespace MyApp.Prisms
 {
 #pragma warning disable CS8600 // 将 null 字面量或可能为 null 的值转换为非 null 类型。
 #pragma warning disable CS8604 // 引用类型参数可能为 null。
+#pragma warning disable CA1416 // 验证平台兼容性
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
@@ -44,7 +44,7 @@ namespace MyApp.Prisms
         {
             base.OnExit(e);
 
-            Helper.Helper.Log(CustomConstants.LogType.Software_Log_Dir, $"退出成功!");
+            CommonUtil.Log(CustomConstants.LogType.Software_Log_Dir, $"退出成功!");
         }
 
         private IEnumerable<string> GetMessageList(Exception exception)
@@ -72,7 +72,7 @@ namespace MyApp.Prisms
             var list = this.GetMessageList(e.ExceptionObject as Exception);
 
             var message = $"Domain出现异常:{AppStatics.NewLineChars}" + AppStatics.NewLineChars.Join(list);
-            Helper.Helper.Log(CustomConstants.LogType.DomainException_Log_Dir, message);
+            CommonUtil.Log(CustomConstants.LogType.DomainException_Log_Dir, message);
             MessageBox.Show(message);
         }
 
@@ -82,7 +82,7 @@ namespace MyApp.Prisms
             var list = this.GetMessageList(e.Exception);
 
             var message = $"App出现异常:{AppStatics.NewLineChars}" + AppStatics.NewLineChars.Join(list);
-            Helper.Helper.Log(CustomConstants.LogType.Exception_Log_Dir, message);
+            CommonUtil.Log(CustomConstants.LogType.Exception_Log_Dir, message);
             MessageBox.Show(message);
         }
 
@@ -105,14 +105,14 @@ namespace MyApp.Prisms
                     {
                         AppUtils.ShowWindowAsync(process.MainWindowHandle);
 
-                        Helper.Helper.Log(CustomConstants.LogType.Software_Log_Dir, "当前已有软件运行，启动失败!");
+                        CommonUtil.Log(CustomConstants.LogType.Software_Log_Dir, "当前已有软件运行，启动失败!");
 
                         Environment.Exit(1);
                     }
                 }
             }
 
-            Helper.Helper.Log(CustomConstants.LogType.Software_Log_Dir, $"进程{processName}启动成功!");
+            CommonUtil.Log(CustomConstants.LogType.Software_Log_Dir, $"进程{processName}启动成功!");
 
             containerRegistry.RegisterSingleton<IAppConfigFileHotKeyManager, AppConfigFileHotKeyManager>();
 
@@ -171,7 +171,7 @@ namespace MyApp.Prisms
 
             moduleCatalog.AddModule<SqlCreatorModule.SqlCreatorModule>();
 
-            moduleCatalog.AddModule<CustomControlsDemoModuleModule>();
+            moduleCatalog.AddModule<CustomControlsDemoModule.CustomControlsDemoModule>();
         }
 
         protected override Window CreateShell()
@@ -282,9 +282,7 @@ namespace MyApp.Prisms
 
             if (failedKeys.Any())
             {
-                CommonUtil.PublishMessage(
-                    this.Container.Resolve<IEventAggregator>(),
-                    $"{AppStatics.NewLineChars.Join(failedKeys)}{AppStatics.NewLineChars}注册失败");
+                MessageBox.Show($"{AppStatics.NewLineChars.Join(failedKeys)}{AppStatics.NewLineChars}注册失败", $"警告 - {systemGroupName}", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
     }

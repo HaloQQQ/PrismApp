@@ -8,6 +8,7 @@ using IceTea.Wpf.Atom.Contracts;
 using System.ComponentModel;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using IceTea.SocketStandard.Udp.Contracts;
+using PrismAppBasicLib.Contracts;
 
 namespace MyApp.Prisms.Views
 {

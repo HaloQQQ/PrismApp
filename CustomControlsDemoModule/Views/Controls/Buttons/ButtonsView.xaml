@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
-
     <WrapPanel>
         <Button Content="普通按钮" MyAttachProperty.UseCornerRadius="True">
             <Button.Style>
@@ -90,6 +89,7 @@
                 BorderThickness="20"
                 FontSize="20"
                 Maximum="100"
+                MyAttachProperty.IsCollapsed="True"
                 MyAttachProperty.PlaceHolder="当前进度"
                 Style="{StaticResource ProgressBar_Pie}"
                 Value="{Binding Value, Source={x:Reference slider}}" />

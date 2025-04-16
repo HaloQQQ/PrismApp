@@ -1,7 +1,6 @@
 ﻿using IceTea.Atom.Extensions;
 using MusicPlayerModule.Models;
 using System.Diagnostics;
-using System.IO;
 
 namespace MusicPlayerModule.Utils
 {
@@ -60,13 +59,6 @@ namespace MusicPlayerModule.Utils
         }
 
         public static async Task<IEnumerable<string>> TryGetLyricPathsAsync(string directoryPath)
-                => await TryGetLyricPathsAsync(directoryPath, str => str.EndsWithIgnoreCase(".krc"));
-
-        public static async Task<IEnumerable<string>> TryGetLyricPathsAsync(string directoryPath, Predicate<string> predicate)
-        {
-            Debug.Assert(Directory.Exists(directoryPath), "目录不存在");
-
-            return await Task.FromResult(directoryPath.GetFiles(predicate));
-        }
+                => await Task.FromResult(directoryPath.GetFiles(true, str => str.EndsWithIgnoreCase(".krc")));
     }
 }

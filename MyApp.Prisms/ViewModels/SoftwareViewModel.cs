@@ -441,7 +441,8 @@ namespace MyApp.Prisms.ViewModels
                     }
                     catch (Exception ex)
                     {
-                        Helper.Helper.Log(CustomConstants.LogType.Exception_Log_Dir, ex.Message);
+#pragma warning disable CA1416 // 验证平台兼容性
+                        CommonUtil.Log(CustomConstants.LogType.Exception_Log_Dir, ex.Message);
                     }
                 }
             });

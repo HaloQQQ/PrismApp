@@ -45,7 +45,8 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
                 .ObservesProperty(() => this.SendMessage)
                 .ObservesProperty(() => this.Socket.IsConnected);
 
-            this.OpenLogCommand = new DelegateCommand(() => Helper.Helper.OpenLog(this.Name));
+#pragma warning disable CA1416 // 验证平台兼容性
+            this.OpenLogCommand = new DelegateCommand(() => CommonUtil.OpenLog(this.Name));
 
             this.Ip = AppStatics.Ip;
         }

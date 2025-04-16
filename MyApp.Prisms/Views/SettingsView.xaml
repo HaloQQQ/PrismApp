@@ -293,19 +293,19 @@
             <TabItem Header="小游戏">
                 <WrapPanel>
                     <Button
-                        Command="{Binding DataContext.SmallGameCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        Command="{Binding DataContext.ShowDialogCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         CommandParameter="_2048"
                         Content="2048"
                         Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
 
                     <Button
-                        Command="{Binding DataContext.SmallGameCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        Command="{Binding DataContext.ShowDialogCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         CommandParameter="五子棋"
                         Content="五子棋"
                         Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
 
                     <Button
-                        Command="{Binding DataContext.SmallGameCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        Command="{Binding DataContext.ShowDialogCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         CommandParameter="象棋"
                         Content="象棋"
                         Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
@@ -346,6 +346,13 @@
                             Command="{Binding DataContext.ShutdownComputerCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                             Content="关闭电脑"
                             MyAttachProperty.IconFontText="&#xe605;"
+                            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
+
+                        <Button
+                            Command="{Binding DataContext.ShowDialogCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                            CommandParameter="安装包"
+                            Content="创建安装包"
+                            MyAttachProperty.IconFontText="&#xe8b8;"
                             Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
                     </WrapPanel>
                 </StackPanel>

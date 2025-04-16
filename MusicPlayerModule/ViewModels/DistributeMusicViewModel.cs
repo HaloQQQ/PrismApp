@@ -104,7 +104,7 @@ namespace MusicPlayerModule.ViewModels
         {
             if (originDir.IsDirectoryExists())
             {
-                if (originDir.DeleteIfEmptyOr())
+                if (originDir.DeleteDirIfEmptyOr())
                 {
                     CommonUtil.PublishMessage(_eventAggregator, $"【{originDir}】删除成功");
                 }
@@ -536,7 +536,7 @@ namespace MusicPlayerModule.ViewModels
             var selectedPath = WpfCoreUtils.OpenFolderDialog(musicSetting.Value);
             if (!selectedPath.IsNullOrBlank())
             {
-                var list = selectedPath.GetFiles(str => str.EndsWithIgnoreCase(".mp3"));
+                var list = selectedPath.GetFiles(true, str => str.EndsWithIgnoreCase(".mp3"));
 
                 if (await this.TryLoadMusicAsync(list))
                 {

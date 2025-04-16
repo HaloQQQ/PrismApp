@@ -1,14 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls.Primitives;
-using Prism.Events;
-using Prism.Ioc;
-using IceTea.Atom.Utils;
-using IceTea.Atom.Extensions;
-using IceTea.Atom.Contracts;
-using PrismAppBasicLib.Contracts;
 
 namespace MyApp.Prisms.Helper
 {
@@ -28,46 +19,6 @@ namespace MyApp.Prisms.Helper
             }
 
             return false;
-        }
-
-        private static string GetWrapMsg(string message)
-        {
-            var process = Process.GetCurrentProcess();
-            return
-                $"【{AppStatics.Ip}】【{process.ProcessName}】【{process.Id}】【{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}】【{message}】【{Environment.OSVersion.VersionString}】";
-        }
-
-        internal static void Log(string typeName, string message)
-        {
-            var dir = Path.Combine(AppStatics.ExeDirectory, typeName);
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
-
-            var filePath = Path.Combine(dir, DateTime.Now.FormatTime("yyyy-MM-dd") + typeName + ".log");
-
-            var wrapMsg = GetWrapMsg(message);
-            try
-            {
-                File.AppendAllText(filePath, wrapMsg + Environment.NewLine);
-            }
-            catch
-            {
-                AppUtils.Kill(CustomConstants.NOTE_PAD);
-                File.AppendAllText(filePath, wrapMsg + Environment.NewLine);
-            }
-        }
-
-        internal static void OpenLog(string typeName)
-        {
-            var dir = Path.Combine(AppStatics.ExeDirectory, typeName);
-            var filePath = Path.Combine(dir, DateTime.Now.ToString("yyyy-MM-dd") + typeName + ".log");
-
-            if (AppUtils.OpenWithNotePad(filePath) == null)
-            {
-                CommonUtil.PublishMessage(ContainerLocator.Current.Resolve<IEventAggregator>(), $"日志文件{filePath}不存在!", 2);
-            }
         }
     }
 }

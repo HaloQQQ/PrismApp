@@ -129,7 +129,7 @@ namespace MyApp.Prisms.ViewModels
                 CommonUtil.PublishMessage(eventAggregator, message, 4);
             });
 
-            this.SmallGameCommand = new DelegateCommand<string>(dialogService.ShowDialog);
+            this.ShowDialogCommand = new DelegateCommand<string>(dialogService.ShowDialog);
 
             eventAggregator.GetEvent<ColorPickerEvent>().Subscribe(ToggleColorPicker);
 
@@ -174,7 +174,7 @@ namespace MyApp.Prisms.ViewModels
         #endregion
 
         #region Commands
-        public ICommand SmallGameCommand { get; private set; }
+        public ICommand ShowDialogCommand { get; private set; }
 
         public ICommand ColorPickerCommand { get; private set; }
 

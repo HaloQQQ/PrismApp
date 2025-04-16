@@ -12,9 +12,11 @@ using IceTea.Wpf.Atom.Utils;
 using IceTea.Atom.BaseModels;
 using MyApp.Prisms.Helper;
 using IceTea.Core.Utils.OS;
+using PrismAppBasicLib.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {
+#pragma warning disable CA1416 // 验证平台兼容性
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
     internal class ProcessServiceViewModel : BaseNotifyModel, IDisposable
@@ -79,7 +81,7 @@ namespace MyApp.Prisms.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    Helper.Helper.Log(CustomConstants.LogType.Exception_Log_Dir, $"{nameof(ProcessServiceViewModel)}.Service loading error!{ex.Message}");
+                    CommonUtil.Log(CustomConstants.LogType.Exception_Log_Dir, $"{nameof(ProcessServiceViewModel)}.Service loading error!{ex.Message}");
                 }
             });
         }

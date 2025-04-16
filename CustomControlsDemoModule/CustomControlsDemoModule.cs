@@ -8,7 +8,7 @@ using Prism.Modularity;
 
 namespace CustomControlsDemoModule
 {
-    public class CustomControlsDemoModuleModule : IModule
+    public class CustomControlsDemoModule : IModule
     {
         public void OnInitialized(IContainerProvider containerProvider)
         {

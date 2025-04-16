@@ -134,7 +134,7 @@ namespace MusicPlayerModule.ViewModels
 
             if (!selectedPath.IsNullOrBlank())
             {
-                var list = selectedPath.GetFiles(str => str.EndsWithIgnoreCase(".mp4"));
+                var list = selectedPath.GetFiles(true, str => str.EndsWithIgnoreCase(".mp4"));
 
                 this.TryLoadVideo(list);
 

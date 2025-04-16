@@ -144,15 +144,11 @@ namespace MyApp.Prisms.ViewModels
                     }
 
                     IEnumerable<string> GetImageUris(string imageDir)
-                    {
-                        IList<string> list = imageDir.GetFiles(file =>
-                        {
-                            System.Drawing.Image img = System.Drawing.Image.FromFile(file);
-                            return img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Jpeg) || img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Png);
-                        });
-
-                        return list;
-                    }
+                        => imageDir.GetFiles(true, file =>
+                            {
+                                System.Drawing.Image img = System.Drawing.Image.FromFile(file);
+                                return img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Jpeg) || img.RawFormat.Equals(System.Drawing.Imaging.ImageFormat.Png);
+                            });
                 }).ContinueWith(task => this.IsLoading = false)
                 .ContinueWith(task => this.RaisePropertyChanged(nameof(this.ImagesCount)));
             }
