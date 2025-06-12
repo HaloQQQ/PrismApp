@@ -12,7 +12,7 @@ namespace MyApp.Prisms.ViewModels
 
         private string _account;
         [Required(ErrorMessage = "账号不能为空")]
-        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "只允许英文")]
+        [RegularExpression("^[a-zA-Z\\d_]+$", ErrorMessage = "英文、数字、下划线")]
         [StringLength(16, MinimumLength = 6, ErrorMessage = "长度不对（6-16）")]
         public string Account
         {
@@ -28,7 +28,7 @@ namespace MyApp.Prisms.ViewModels
 
         private string _password;
         [Required(ErrorMessage = "密码不能为空")]
-        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "只允许英文")]
+        [RegularExpression("^[a-zA-Z\\d_]+$", ErrorMessage = "英文、数字、下划线")]
         [StringLength(12, MinimumLength =8, ErrorMessage ="长度不对（8-12）")]
         public string Password
         {

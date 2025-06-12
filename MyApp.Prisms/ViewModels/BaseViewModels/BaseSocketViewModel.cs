@@ -119,7 +119,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
             if (this.InitSocket())
             {
-                this.Socket.Start();
+                this.Socket.StartAsync();
             }
         }
 
