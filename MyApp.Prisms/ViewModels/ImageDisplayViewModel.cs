@@ -101,6 +101,10 @@ namespace MyApp.Prisms.ViewModels
         {
             settingManager.TryAdd(CustomConstants.IMAGE, () => new SettingModel(string.Empty, config.ReadConfigNode<string>(CustomConstants.LastImageDir_ConfigKey), null));
 
+            this.ShowInList = config.ReadConfigNode<bool>(nameof(ShowInList).FillToArray());
+
+            config.SetConfig += _ => _.WriteConfigNode(this.ShowInList, nameof(ShowInList).FillToArray());
+
             RefreshData(config);
 
             this.RefreshCommand = new DelegateCommand(() => RefreshData(config), () => !this.IsLoading).ObservesProperty(() => this.IsLoading);
@@ -138,6 +142,8 @@ namespace MyApp.Prisms.ViewModels
                         WpfAtomUtils.BeginInvoke(() =>
                         {
                             Data.Add(image);
+
+                            RaisePropertyChanged(nameof(ImagesCount));
                         });
 
                         await Task.Delay(20);

@@ -29,7 +29,7 @@ namespace MusicPlayerModule.Models
                 {
                     if (displayByClassifyKeyFavorites.Count == 0)
                     {
-                        this.RemoveFromAll();
+                        this.Dispose();
                     }
                 }
             };

@@ -7,11 +7,14 @@ using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
 using System.Text.RegularExpressions;
 using IceTea.Atom.Contracts;
+using System.Drawing;
+using System.Diagnostics;
 
 namespace MusicPlayerModule.Models;
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
 #pragma warning disable CS8602
-internal class MusicModel : MediaBaseModel, IDisposable, IEquatable<MusicModel>
+[DebuggerDisplay("Name={Name}")]
+internal class MusicModel : MediaBaseModel, IEquatable<MusicModel>
 {
     public bool IsEnglishTitle { get; }
     public bool IsEnglishSinger { get; }
@@ -57,8 +60,11 @@ internal class MusicModel : MediaBaseModel, IDisposable, IEquatable<MusicModel>
             IPicture picture = pictures[0];
             BitmapImage bi = new BitmapImage();
             bi.BeginInit();
+
             bi.StreamSource = new MemoryStream(picture.Data.Data);
+
             bi.CacheOption = BitmapCacheOption.OnLoad;
+
             bi.EndInit();
 
             ImageSource = bi;
@@ -144,9 +150,9 @@ internal class MusicModel : MediaBaseModel, IDisposable, IEquatable<MusicModel>
         return false;
     }
 
-    public override void Dispose()
+    protected override void DisposeCore()
     {
-        base.Dispose();
+        base.DisposeCore();
 
         ImageSource = null;
     }

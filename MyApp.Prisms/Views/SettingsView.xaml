@@ -331,6 +331,14 @@
                     </WrapPanel>
 
                     <WrapPanel>
+                        <CheckBox
+                            Content="浅色主题："
+                            IsChecked="{Binding DataContext.IsLightSysTheme, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                            MyAttachProperty.IconPosition="Right"
+                            Style="{StaticResource CheckBox_Switch}" />
+                    </WrapPanel>
+
+                    <WrapPanel>
                         <Button
                             Command="{Binding DataContext.CleanConfigWhenExitAppCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                             Content="清空配置"

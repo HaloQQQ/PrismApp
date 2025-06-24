@@ -24,7 +24,7 @@ namespace MusicPlayerModule.ViewModels
     /// <summary>
     /// 按照歌名、专辑、歌手、自定义分类
     /// </summary>
-    internal class DistributeMusicViewModel : BaseNotifyModel, IDisposable
+    internal class DistributeMusicViewModel : BaseNotifyModel
     {
         public int SelectedCount => this.DisplayFavorites.Count(item => item.IsDeleting);
 
@@ -241,7 +241,7 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
-                music.RemoveFromAll();
+                music.Dispose();
 
                 this.TryRefreshFavoriteIndex();
 
@@ -264,7 +264,7 @@ namespace MusicPlayerModule.ViewModels
 
                     for (int i = items.Length - 1; i >= 0; i--)
                     {
-                        items[i].RemoveFromAll();
+                        items[i].Dispose();
                     }
                 }
                 else if (this.IsInAlbum)
@@ -276,7 +276,7 @@ namespace MusicPlayerModule.ViewModels
                     {
                         for (int i = items.Length - 1; i >= 0; i--)
                         {
-                            items[i].RemoveFromAll();
+                            items[i].Dispose();
                         }
                     }
                 }
@@ -290,7 +290,7 @@ namespace MusicPlayerModule.ViewModels
                     {
                         for (int i = items.Length - 1; i >= 0; i--)
                         {
-                            items[i].RemoveFromAll();
+                            items[i].Dispose();
                         }
                     }
                 }
@@ -303,7 +303,7 @@ namespace MusicPlayerModule.ViewModels
                     {
                         for (int i = items.Length - 1; i >= 0; i--)
                         {
-                            items[i].RemoveFromAll();
+                            items[i].Dispose();
                         }
                     }
                 }
@@ -952,8 +952,10 @@ namespace MusicPlayerModule.ViewModels
         public ICommand CurrentAlbumSelectAllCommand { get; private set; }
         #endregion
 
-        public void Dispose()
+        protected override void DisposeCore()
         {
+            base.DisposeCore();
+
             foreach (var item in this.Favorites)
             {
                 item.Dispose();

@@ -5,7 +5,7 @@ using MusicPlayerModule.Models;
 
 namespace MusicPlayerModule.ViewModels.Base
 {
-    internal abstract class MediaBaseViewModel : ChildrenBase, IDisposable
+    internal abstract class MediaBaseViewModel : ChildrenBase
     {
         private int _index;
         public int Index

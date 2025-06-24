@@ -20,6 +20,9 @@ using PrismAppBasicLib.Models;
 using CustomControlsDemoModule.Views;
 using CustomControlsDemoModule.Events;
 using PrismAppBasicLib.Contracts;
+using IceTea.Wpf.Atom.Utils;
+using Prism.Ioc;
+using MyApp.Prisms.MsgEvents;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -247,6 +250,23 @@ namespace MyApp.Prisms.ViewModels
         #endregion
 
         #region Props
+        private bool _isLightSysTheme;
+        public bool IsLightSysTheme
+        {
+            get => _isLightSysTheme;
+            set
+            {
+                if (SetProperty<bool>(ref _isLightSysTheme, value))
+                {
+                    if (WpfAtomUtils.SwitchSysTheme(_isLightSysTheme))
+                    {
+                        ContainerLocator.Current.Resolve<IEventAggregator>()
+                            .GetEvent<SwitchThemeEvent>().Publish(_isLightSysTheme);
+                    }
+                }
+            }
+        }
+
         private bool _isColorPicker;
         public bool IsColorPicker
         {
@@ -297,7 +317,6 @@ namespace MyApp.Prisms.ViewModels
         }
 
         private string _key;
-
         public string Key
         {
             get => this._key;
@@ -305,7 +324,6 @@ namespace MyApp.Prisms.ViewModels
         }
 
         private string _value;
-
         public string Value
         {
             get => this._value;

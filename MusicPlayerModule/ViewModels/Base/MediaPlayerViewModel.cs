@@ -21,7 +21,7 @@ namespace MusicPlayerModule.ViewModels.Base;
 #pragma warning disable CS8601 // 引用类型赋值可能为 null。
 #pragma warning disable CS8602 // 解引用可能出现空引用。
 #pragma warning disable CS8604 // 引用类型参数可能为 null。
-internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
+internal abstract class MediaPlayerViewModel : BaseNotifyModel
 {
     protected readonly IEventAggregator _eventAggregator;
     protected readonly ISettingManager<SettingModel> _settingManager;
@@ -344,7 +344,7 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
             }
         }
 
-        media.RemoveFromAll();
+        media.Dispose();
 
         this.TryRefreshPlayingIndex();
     }
@@ -688,8 +688,10 @@ internal abstract class MediaPlayerViewModel : BaseNotifyModel, IDisposable
     public ICommand FastForwardCommand { get; private set; }
     #endregion
 
-    public virtual void Dispose()
+    protected override void DisposeCore()
     {
+        base.DisposeCore();
+
         this.CleanPlaying_CommandExecute();
     }
 }

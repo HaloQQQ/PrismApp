@@ -260,11 +260,26 @@ internal class PlayingMusicViewModel : MediaBaseViewModel, IEquatable<PlayingMus
         }
     }
 
+    public void DisConnect()
+    {
+        base.DisposeCore();
+
+        this.Music = null;
+
+        this._lyricSetting = null;
+
+        this.CurrentLine = null;
+
+        this.AnotherLine = null;
+
+        this.OneLine = null;
+    }
+
     protected override void DisposeCore()
     {
         this.Music?.Dispose();
 
-        this.Music = null;
+        this.DisConnect();
     }
 
     public bool Equals(PlayingMusicViewModel? other)

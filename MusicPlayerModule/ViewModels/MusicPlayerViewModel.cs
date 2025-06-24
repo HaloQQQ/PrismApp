@@ -17,7 +17,7 @@ namespace MusicPlayerModule.ViewModels;
 
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
-internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
+internal class MusicPlayerViewModel : MediaPlayerViewModel
 {
     protected override string MediaType => "音乐";
 
@@ -83,7 +83,7 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
             {
                 for (int i = this.Playing.Count - 1; i >= 0; i--)
                 {
-                    this.Playing[i].Dispose();
+                    this.Playing[i].DisConnect();
                 }
             }
 
@@ -382,11 +382,11 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel, IDisposable
         this.Dispose();
     }
 
-    public override void Dispose()
+    protected override void DisposeCore()
     {
-        this.DistributeMusicViewModel.Dispose();
+        base.DisposeCore();
 
-        base.Dispose();
+        this.DistributeMusicViewModel.Dispose();
 
         PlayingMusicViewModel.ToNextMusic -= NextMedia_CommandExecute;
     }

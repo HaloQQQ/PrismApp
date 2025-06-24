@@ -108,6 +108,14 @@ namespace MyApp.Prisms.ViewModels
 
             CommonUtil.SubscribeMessage(eventAggregator, item => this.DialogMessage = item);
 
+            eventAggregator.GetEvent<SwitchThemeEvent>().Subscribe(isLightTheme =>
+            {
+                if (this.FollowSystemTheme)
+                {
+                    this.RefreshTheme();
+                }
+            });
+
             this.LoadConfig(config);
             this.InitHotkeys(appConfigFileHotKeyManager);
 
@@ -319,7 +327,6 @@ namespace MyApp.Prisms.ViewModels
         #endregion
 
         private DialogMessage _dialogMessage;
-
         public DialogMessage DialogMessage
         {
             get => this._dialogMessage;
@@ -337,7 +344,6 @@ namespace MyApp.Prisms.ViewModels
         }
 
         private bool _onlyOneProcess;
-
         public bool OnlyOneProcess
         {
             get => this._onlyOneProcess;
@@ -345,7 +351,6 @@ namespace MyApp.Prisms.ViewModels
         }
 
         private bool _autoStart;
-
         public bool AutoStart
         {
             get => this._autoStart;
@@ -353,7 +358,6 @@ namespace MyApp.Prisms.ViewModels
         }
 
         private bool _backgroundSwitch;
-
         public bool BackgroundSwitch
         {
             get => this._backgroundSwitch;
@@ -361,7 +365,6 @@ namespace MyApp.Prisms.ViewModels
         }
 
         private bool _isMusicPlayer;
-
         public bool IsMusicPlayer
         {
             get => _isMusicPlayer;
@@ -369,7 +372,6 @@ namespace MyApp.Prisms.ViewModels
         }
 
         private bool _isVideoPlayer;
-
         public bool IsVideoPlayer
         {
             get => this._isVideoPlayer;
@@ -377,7 +379,6 @@ namespace MyApp.Prisms.ViewModels
         }
 
         private bool _isTitleBarHidden;
-
         public bool IsTitleBarHidden
         {
             get => _isTitleBarHidden;
@@ -385,7 +386,6 @@ namespace MyApp.Prisms.ViewModels
         }
 
         private bool _isLogin;
-
         public bool IsLogin
         {
             get => this._isLogin;

@@ -13,7 +13,6 @@ using MyApp.Prisms.ViewModels;
 using MyApp.Prisms.Views;
 using IceTea.Atom.Utils;
 using IceTea.Atom.Contracts;
-using IceTea.Atom.Utils.Setting;
 using Prism.Regions;
 using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.Views;

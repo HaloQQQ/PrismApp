@@ -9,7 +9,7 @@ namespace MusicPlayerModule.Utils
     /// KRC文件行
     /// </summary>
     [DebuggerDisplay("{DebuggerDisplay}")]
-    public class KRCLyricsLine : BaseNotifyModel, IDisposable
+    public class KRCLyricsLine : BaseNotifyModel
     {
         private bool _isPlayingLine;
 
@@ -121,8 +121,10 @@ namespace MusicPlayerModule.Utils
         public string VerticalWords =>
             _verticalWords ??= string.Join(string.Empty, this.Chars.Select(item => item.Word)).Replace(' ', '\u00a0');
 
-        public void Dispose()
+        protected override void DisposeCore()
         {
+            base.DisposeCore();
+
             this._chars.Clear();
             this._chars = null;
         }

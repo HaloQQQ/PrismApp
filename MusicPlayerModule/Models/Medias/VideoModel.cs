@@ -2,7 +2,7 @@
 
 namespace MusicPlayerModule.Models;
 
-internal class VideoModel : MediaBaseModel, IDisposable
+internal class VideoModel : MediaBaseModel
 {
     public VideoModel(string filePath) : base(filePath)
     {
