@@ -7,7 +7,6 @@ using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
 using System.Text.RegularExpressions;
 using IceTea.Atom.Contracts;
-using System.Drawing;
 using System.Diagnostics;
 
 namespace MusicPlayerModule.Models;
@@ -52,24 +51,10 @@ internal class MusicModel : MediaBaseModel, IEquatable<MusicModel>
         TotalMills = (int)time.TotalMilliseconds;
         // 转换为分钟:秒数格式
         Duration = time.FormatTimeSpan();
-
-        // 获取封面
-        IPicture[] pictures = file.Tag.Pictures;
-        if (pictures.Length > 0)
-        {
-            IPicture picture = pictures[0];
-            BitmapImage bi = new BitmapImage();
-            bi.BeginInit();
-
-            bi.StreamSource = new MemoryStream(picture.Data.Data);
-
-            bi.CacheOption = BitmapCacheOption.OnLoad;
-
-            bi.EndInit();
-
-            ImageSource = bi;
-        }
     }
+
+    private bool _noCover;
+    private WeakReference<ImageSource>? _weakReference;
 
     public bool IsLoadingLyric { get; internal set; }
     public bool IsPureMusic { get; internal set; }
@@ -87,7 +72,51 @@ internal class MusicModel : MediaBaseModel, IEquatable<MusicModel>
         }
     }
 
-    public ImageSource? ImageSource { get; private set; }
+    public ImageSource? ImageSource
+    {
+        get
+        {
+            if (_noCover)
+            {
+                return null;
+            }
+
+            if (_weakReference == null || !_weakReference.TryGetTarget(out var source))
+            {
+                var file = TagLib.File.Create(FilePath);   // 打开音频文件
+
+                var pictures = file.Tag.Pictures;
+
+                if (_noCover = (pictures.Length == 0))
+                {
+                    return null;
+                }
+
+                IPicture picture = pictures[0];
+                BitmapImage bi = new BitmapImage();
+                bi.BeginInit();
+
+                bi.StreamSource = new MemoryStream(picture.Data.Data);
+
+                bi.CacheOption = BitmapCacheOption.OnLoad;
+
+                bi.EndInit();
+
+                if (_weakReference == null)
+                {
+                    _weakReference = new WeakReference<ImageSource>(bi);
+                }
+                else
+                {
+                    _weakReference.SetTarget(bi);
+                }
+
+                return bi;
+            }
+
+            return source;
+        }
+    }
 
     /// <summary>
     /// 曲目号
@@ -108,7 +137,7 @@ internal class MusicModel : MediaBaseModel, IEquatable<MusicModel>
 
     public string Singer { get; }
 
-    private volatile WeakReference<KRCLyrics> _krcLyrics;
+    private volatile WeakReference<KRCLyrics>? _krcLyrics;
 
     public KRCLyrics? Lyric
     {
@@ -154,7 +183,9 @@ internal class MusicModel : MediaBaseModel, IEquatable<MusicModel>
     {
         base.DisposeCore();
 
-        ImageSource = null;
+        _weakReference = null;
+
+        _krcLyrics = null;
     }
 
     public bool Equals(MusicModel? other)

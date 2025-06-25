@@ -389,8 +389,6 @@
                     Foreground="{Binding DesktopLyric.CurrentLyricForeground.ColorBrush, FallbackValue=SkyBlue}"
                     Text="{Binding CurrentMedia.Music.Singer}" />
 
-
-
                 <StackPanel
                     x:Name="LyricSimple"
                     Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=DockPanel}}"
@@ -417,7 +415,7 @@
                         Width="300"
                         Height="300"
                         HorizontalAlignment="Left">
-                        <Image>
+                        <Image Style="{StaticResource MusicImage}">
                             <Image.Clip>
                                 <EllipseGeometry
                                     Center="30,30"
@@ -425,33 +423,8 @@
                                     RadiusY="30" />
                             </Image.Clip>
                             <Image.RenderTransform>
-                                <RotateTransform Angle="0" CenterX="30" CenterY="30" />
+                                <RotateTransform Angle="{Binding CurrentMedia.CoverAngle}" CenterX="30" CenterY="30" />
                             </Image.RenderTransform>
-                            <Image.Style>
-                                <Style BasedOn="{StaticResource MusicImage}" TargetType="Image">
-                                    <Style.Triggers>
-                                        <EventTrigger RoutedEvent="Loaded">
-                                            <BeginStoryboard x:Name="CoverRotationStoryboard">
-                                                <Storyboard>
-                                                    <DoubleAnimation
-                                                        RepeatBehavior="Forever"
-                                                        Storyboard.TargetProperty="(Image.RenderTransform).(RotateTransform.Angle)"
-                                                        To="360"
-                                                        Duration="0:0:30" />
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </EventTrigger>
-                                        <DataTrigger Binding="{Binding Running}" Value="False">
-                                            <DataTrigger.EnterActions>
-                                                <PauseStoryboard BeginStoryboardName="CoverRotationStoryboard" />
-                                            </DataTrigger.EnterActions>
-                                            <DataTrigger.ExitActions>
-                                                <ResumeStoryboard BeginStoryboardName="CoverRotationStoryboard" />
-                                            </DataTrigger.ExitActions>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Image.Style>
                         </Image>
                     </Viewbox>
 
