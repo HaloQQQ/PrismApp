@@ -21,7 +21,7 @@ namespace MusicPlayerModule.ViewModels.Base;
 #pragma warning disable CS8601 // 引用类型赋值可能为 null。
 #pragma warning disable CS8602 // 解引用可能出现空引用。
 #pragma warning disable CS8604 // 引用类型参数可能为 null。
-internal abstract class MediaPlayerViewModel : BaseNotifyModel
+internal abstract class MediaPlayerViewModel : NotifyBase
 {
     protected readonly IEventAggregator _eventAggregator;
     protected readonly ISettingManager<SettingModel> _settingManager;

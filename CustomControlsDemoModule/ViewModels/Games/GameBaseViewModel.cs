@@ -15,7 +15,7 @@ using System.Windows.Media;
 
 namespace CustomControlsDemoModule.ViewModels
 {
-    internal abstract class GameBaseViewModel<T> : BaseNotifyModel, IDialogAware where T : BaseNotifyModel
+    internal abstract class GameBaseViewModel<T> : NotifyBase, IDialogAware where T : NotifyBase
     {
         protected virtual string GameName { get; }
 

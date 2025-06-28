@@ -5,7 +5,7 @@ using IceTea.Atom.BaseModels;
 
 namespace MyApp.Prisms.ViewModels
 {
-    internal class CommunicationViewModel : BaseNotifyModel
+    internal class CommunicationViewModel : NotifyBase
     {
         public CommunicationViewModel(
                 UdpSocketViewModel udpContext,

@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace CustomControlsDemoModule.ViewModels
 {
-    internal class ColorViewModel : BaseNotifyModel
+    internal class ColorViewModel : NotifyBase
     {
         private string _colorCode;
 

@@ -7,7 +7,7 @@ using System;
 
 namespace PrismAppBasicLib.Models
 {
-    public class SettingModel : BaseNotifyModel
+    public class SettingModel : NotifyBase
     {
         public SettingModel(string name, string value, Action action)
         {

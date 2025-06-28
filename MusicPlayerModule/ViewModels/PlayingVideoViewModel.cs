@@ -69,6 +69,8 @@ namespace MusicPlayerModule.ViewModels
 
         protected override void DisposeCore()
         {
+            base.DisposeCore();
+
             this.Video?.Dispose();
 
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。

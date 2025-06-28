@@ -17,7 +17,7 @@ namespace CustomControlsDemoModule.Models
     }
 
     [DebuggerDisplay("IsRed={Data.IsRed}, Type={Data.Type}")]
-    internal class ChineseChessModel : BaseNotifyModel
+    internal class ChineseChessModel : NotifyBase
     {
         public ChineseChessModel(int row, int column)
         {

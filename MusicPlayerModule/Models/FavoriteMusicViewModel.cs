@@ -1,4 +1,4 @@
-﻿using IceTea.Atom.Contracts;
+﻿using IceTea.Atom.BaseModels;
 using IceTea.Atom.Extensions;
 using IceTea.Atom.Utils;
 using MusicPlayerModule.ViewModels;

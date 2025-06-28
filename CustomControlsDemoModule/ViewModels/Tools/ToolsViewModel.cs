@@ -24,7 +24,7 @@ using IceTea.Core.Utils.OS;
 
 namespace CustomControlsDemoModule.ViewModels
 {
-    internal class ToolsViewModel : BaseNotifyModel
+    internal class ToolsViewModel : NotifyBase
     {
         public ToolsViewModel(IEventAggregator eventAggregator)
         {

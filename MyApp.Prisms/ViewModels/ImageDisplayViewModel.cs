@@ -17,7 +17,7 @@ using PrismAppBasicLib.Models;
 
 namespace MyApp.Prisms.ViewModels
 {
-    internal class MyImage : BaseNotifyModel
+    internal class MyImage : NotifyBase
     {
         public bool InList { get; set; }
 
@@ -63,7 +63,7 @@ namespace MyApp.Prisms.ViewModels
         }
     }
 
-    internal class ImageDisplayViewModel : BaseNotifyModel, IDisposable
+    internal class ImageDisplayViewModel : NotifyBase, IDisposable
     {
         public ObservableCollection<MyImage> Data { get; private set; } = new ObservableCollection<MyImage>();
 

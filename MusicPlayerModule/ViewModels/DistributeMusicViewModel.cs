@@ -24,7 +24,7 @@ namespace MusicPlayerModule.ViewModels
     /// <summary>
     /// 按照歌名、专辑、歌手、自定义分类
     /// </summary>
-    internal class DistributeMusicViewModel : BaseNotifyModel
+    internal class DistributeMusicViewModel : NotifyBase
     {
         public int SelectedCount => this.DisplayFavorites.Count(item => item.IsDeleting);
 
@@ -81,7 +81,7 @@ namespace MusicPlayerModule.ViewModels
 
                     favorite.Music.MoveTo(targetDir);
 
-                    favorite.RemoveFrom(originColls);
+                    favorite.TryRemoveFrom(originColls);
                 }
 
                 this.TryRemoveMusicWithClassifyModel(originDir);
@@ -416,7 +416,7 @@ namespace MusicPlayerModule.ViewModels
                     var item = originCollection.FirstOrDefault(item => item.Music == moveModel.Music);
                     if (item != null)
                     {
-                        item.RemoveFrom(originCollection);
+                        item.TryRemoveFrom(originCollection);
 
                         if (originCollection.IsNullOrEmpty())
                         {

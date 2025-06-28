@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 namespace CustomControlsDemoModule.Models
 {
     [DebuggerDisplay("IsRed={IsRed}, Type={Type}")]
-    internal class InnerChineseChessModel : BaseNotifyModel, IChineseChess
+    internal class InnerChineseChessModel : NotifyBase, IChineseChess
     {
         public InnerChineseChessModel(int row, int column)
         {

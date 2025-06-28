@@ -13,7 +13,7 @@ namespace MusicPlayerModule.ViewModels
 #pragma warning disable CS8601 // 引用类型赋值可能为 null。
 #pragma warning disable CS8602 // 解引用可能出现空引用。
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
-    internal class DesktopLyricViewModel : BaseNotifyModel
+    internal class DesktopLyricViewModel : NotifyBase
     {
         public DesktopLyricViewModel(IConfigManager config)
         {
@@ -213,7 +213,7 @@ namespace MusicPlayerModule.ViewModels
         public string FamilyName { get; }
     }
 
-    internal class SelectableColorBrush : BaseNotifyModel
+    internal class SelectableColorBrush : NotifyBase
     {
         public static SelectableColorBrush Default = new SelectableColorBrush(new SolidColorBrush(Color.FromRgb(0, 0, 0)));
 
@@ -239,7 +239,7 @@ namespace MusicPlayerModule.ViewModels
         }
     }
 
-    internal class ColorModel : BaseNotifyModel
+    internal class ColorModel : NotifyBase
     {
         public ColorModel(IConfigManager config, string[] configKeys, byte r = 0, byte g = 0, byte b = 0)
         {
@@ -321,7 +321,7 @@ namespace MusicPlayerModule.ViewModels
         }
     }
 
-    internal class ThreePrimaryColorModel : BaseNotifyModel
+    internal class ThreePrimaryColorModel : NotifyBase
     {
         public ThreePrimaryColorModel(string name, byte defaultValue)
         {

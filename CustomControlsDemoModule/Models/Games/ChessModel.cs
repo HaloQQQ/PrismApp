@@ -8,7 +8,7 @@ using System.Windows.Input;
 namespace CustomControlsDemoModule.Models
 {
     [DebuggerDisplay("Row={Row}, Column={Column}, IsWhite={IsWhite}")]
-    internal class ChessModel : BaseNotifyModel, IReset
+    internal class ChessModel : NotifyBase, IReset
     {
         public ChessModel(int row, int column)
         {

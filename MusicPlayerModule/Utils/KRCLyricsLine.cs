@@ -9,7 +9,7 @@ namespace MusicPlayerModule.Utils
     /// KRC文件行
     /// </summary>
     [DebuggerDisplay("{DebuggerDisplay}")]
-    public class KRCLyricsLine : BaseNotifyModel
+    public class KRCLyricsLine : NotifyBase
     {
         private bool _isPlayingLine;
 

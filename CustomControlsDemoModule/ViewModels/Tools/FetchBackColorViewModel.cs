@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 
 namespace CustomControlsDemoModule.ViewModels
 {
-    internal class FetchBackColorViewModel : BaseNotifyModel, IDisposable, IDialogAware
+    internal class FetchBackColorViewModel : NotifyBase, IDisposable, IDialogAware
     {
         internal IMouseHook _mouseHook;
 

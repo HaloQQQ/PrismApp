@@ -13,7 +13,7 @@ namespace MusicPlayerModule.ViewModels
         Rewind
     }
 
-    internal class MediaOperationViewModel : BaseNotifyModel
+    internal class MediaOperationViewModel : NotifyBase
     {
         private OperationType _operationType;
         public OperationType OperationType
