@@ -38,7 +38,7 @@ namespace MyApp.Prisms.Views
 
         private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName != nameof(BaseSocketViewModel.Socket))
+            if (e.PropertyName != nameof(SocketViewModelBase.Socket))
             {
                 return;
             }

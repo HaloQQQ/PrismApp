@@ -17,6 +17,7 @@ using PrismAppBasicLib.Models;
 
 namespace MyApp.Prisms.ViewModels
 {
+#pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
     internal class MyImage : NotifyBase
     {
         public bool InList { get; set; }
@@ -128,7 +129,7 @@ namespace MyApp.Prisms.ViewModels
                     var coll = GetImageUris(dir);
                     foreach (var item in coll)
                     {
-                        if (_disposed)
+                        if (this._isDisposed)
                         {
                             break;
                         }
@@ -170,14 +171,11 @@ namespace MyApp.Prisms.ViewModels
             private set => SetProperty<bool>(ref _isLoading, value);
         }
 
-        private bool _disposed;
-
-        public void Dispose()
+        protected override void DisposeCore()
         {
-            _disposed = true;
+            base.DisposeCore();
 
             Data.Clear();
-#pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
             Data = null;
         }
     }

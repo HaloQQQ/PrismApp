@@ -11,7 +11,7 @@ using PrismAppBasicLib.Contracts;
 namespace MyApp.Prisms.ViewModels
 {
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
-    internal class UdpSocketViewModel : BaseSocketViewModel
+    internal class UdpSocketViewModel : SocketViewModelBase
     {
         public UdpSocketViewModel(IConfigManager config) : base(config, "UDP客户端")
         {
@@ -19,7 +19,6 @@ namespace MyApp.Prisms.ViewModels
         }
 
         private IUdpSocket _udpSocket;
-
         protected override bool InitSocket()
         {
             if (this.RemoteIp.IsNullOrBlank())
@@ -34,7 +33,7 @@ namespace MyApp.Prisms.ViewModels
                 return false;
             }
 
-            this.Socket = this._udpSocket = new NewUdpSocket(Encoding.UTF8, this.UnreachableDisConnect, this.Ip, this._port, this.RemoteIp, remotePort, this.Name);
+            this.Socket = this._udpSocket = new NewUdpSocket(Encoding.UTF8, this.UnreachableDisconnect, this.Ip, this._port, this.RemoteIp, remotePort, this.Name);
 
             this.Socket.ReceivedMessage += (from, to, bytes) =>
             {
@@ -62,14 +61,14 @@ namespace MyApp.Prisms.ViewModels
             set => SetProperty(ref _remotePort, value);
         }
 
-        private bool _unreachableDisConnect;
+        private bool _unreachableDisconnect;
 
-        public bool UnreachableDisConnect
+        public bool UnreachableDisconnect
         {
-            get => this._unreachableDisConnect;
+            get => this._unreachableDisconnect;
             set
             {
-                if (SetProperty<bool>(ref _unreachableDisConnect, value))
+                if (SetProperty<bool>(ref _unreachableDisconnect, value))
                 {
                     if (this.Socket.IsNotNullAnd())
                     {

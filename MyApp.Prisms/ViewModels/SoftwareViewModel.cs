@@ -455,8 +455,10 @@ namespace MyApp.Prisms.ViewModels
             CustomEventManager.Current.GetEvent<LoginEvent>().Execute += () => this.IsLogin = !this.IsLogin;
         }
 
-        public void Dispose()
+        protected override void DisposeCore()
         {
+            base.DisposeCore();
+
             this._timer?.Stop();
             this._timer = null;
         }

@@ -36,7 +36,7 @@ namespace MyApp.Prisms.ViewModels
 
                     foreach (var process in ProcessUtil.GetAllProcessList().OrderBy(p => p.Key))
                     {
-                        if (_disposed)
+                        if (this._isDisposed)
                         {
                             break;
                         }
@@ -68,7 +68,7 @@ namespace MyApp.Prisms.ViewModels
 
                     foreach (var service in ServiceUtil.GetAllNormalServiceList().OrderBy(s => s.Key))
                     {
-                        if (_disposed)
+                        if (this._isDisposed)
                         {
                             break;
                         }
@@ -86,10 +86,9 @@ namespace MyApp.Prisms.ViewModels
             });
         }
 
-        private bool _disposed;
-        public void Dispose()
+        protected override void DisposeCore()
         {
-            _disposed = true;
+            base.DisposeCore();
 
             ProcessList.Clear();
             ProcessList = null;

@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace MyApp.Prisms.ViewModels
 {
-    internal class TcpServerViewModel : BaseSocketViewModel
+    internal class TcpServerViewModel : SocketViewModelBase
     {
         public TcpServerViewModel(IConfigManager config, string name = "设备服务器") : base(config, name)
         {
@@ -40,7 +40,7 @@ namespace MyApp.Prisms.ViewModels
         public IList<string> ConnList
         {
             get => this._connList;
-            set => SetProperty<IList<string>>(ref _connList, value);
+            private set => SetProperty<IList<string>>(ref _connList, value);
         }
 
         private ushort _maxClientsCount;

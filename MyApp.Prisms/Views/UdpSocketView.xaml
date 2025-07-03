@@ -12,7 +12,7 @@
             BasedOn="{StaticResource {x:Type ComboBox}}"
             TargetType="ComboBox">
             <Setter Property="Margin" Value="0,0,5,0" />
-            <Setter Property="ItemsSource" Value="{x:Static viewModels:BaseSocketViewModel.Ips}" />
+            <Setter Property="ItemsSource" Value="{x:Static viewModels:SocketViewModelBase.Ips}" />
             <Setter Property="IsEnabled" Value="{Binding Socket.IsConnected, Converter={StaticResource OppositeBoolConverter}}" />
         </Style>
     </UserControl.Resources>
@@ -65,7 +65,7 @@
                         Style="{StaticResource TextBox_HideButton}"
                         Text="{Binding RemotePort, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <CheckBox IsChecked="{Binding UnreachableDisConnect}">
+                    <CheckBox IsChecked="{Binding UnreachableDisconnect}">
                         <TextBlock>
                             <TextBlock Style="{StaticResource TextBlock_Theme_Icon_MouseOver}" Text="&#xec6f;" />
                             <TextBlock Text="失败断开：" />
