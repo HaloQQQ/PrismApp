@@ -73,6 +73,8 @@ namespace MyApp.Prisms.Views
                 _tcpServer.ExceptionOccurred += (socketName, exception) =>
                     this.rhTxt.Info(this._tcpSocketViewModel.IsLogging, _tcpServer.Name, exception.Message);
 
+                _tcpServer.Closed += () => this.rhTxt.Info(this._tcpSocketViewModel.IsLogging, _tcpServer.Name, "连接已关闭..");
+
                 _tcpServer.SentMessage += (from, to, bytes) =>
                 {
                     this.rhTxt.Send(from, to, this._tcpSocketViewModel.IsLogging, _tcpServer, _tcpServer.GetString(bytes));

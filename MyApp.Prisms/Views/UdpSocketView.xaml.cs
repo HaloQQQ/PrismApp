@@ -65,6 +65,8 @@ namespace MyApp.Prisms.Views
 
                 udpSocket.ExceptionOccurred += (remotePoint, exception) =>
                     this.rhTxt.Info(this._udpSocketViewModel.IsLogging, udpSocket.Name, $"{remotePoint}出现异常:{exception.Message}");
+
+                udpSocket.Closed += () => this.rhTxt.Info(this._udpSocketViewModel.IsLogging, udpSocket.Name, "连接已关闭..");
             }
             catch (Exception ex)
             {

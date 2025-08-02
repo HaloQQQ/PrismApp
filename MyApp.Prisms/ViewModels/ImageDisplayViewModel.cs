@@ -129,7 +129,7 @@ namespace MyApp.Prisms.ViewModels
                     var coll = GetImageUris(dir);
                     foreach (var item in coll)
                     {
-                        if (this._isDisposed)
+                        if (this.IsDisposed)
                         {
                             break;
                         }
@@ -173,10 +173,10 @@ namespace MyApp.Prisms.ViewModels
 
         protected override void DisposeCore()
         {
-            base.DisposeCore();
-
             Data.Clear();
             Data = null;
+
+            base.DisposeCore();
         }
     }
 }

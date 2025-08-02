@@ -3,7 +3,6 @@ using IceTea.Atom.Extensions;
 using IceTea.SocketStandard.Tcp;
 using IceTea.SocketStandard.Tcp.Contracts;
 using MyApp.Prisms.ViewModels.BaseViewModels;
-using System.Text;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -23,7 +22,7 @@ namespace MyApp.Prisms.ViewModels
                 return false;
             }
 
-            this.Socket = this._tcpClient = new NewTcpClient(Encoding.UTF8, this.TryReConnect, this.Ip, this._port, this.Name);
+            this.Socket = this._tcpClient = new NewTcpClient(this.TryReConnect, this.Ip, this._port, this.Name);
             this._tcpClient.ReConnectPeriodMilliseconds = 3000;
 
             return true;

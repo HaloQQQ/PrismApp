@@ -457,10 +457,10 @@ namespace MyApp.Prisms.ViewModels
 
         protected override void DisposeCore()
         {
-            base.DisposeCore();
-
             this._timer?.Stop();
             this._timer = null;
+
+            base.DisposeCore();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using IceTea.SocketStandard.Udp;
 using MyApp.Prisms.ViewModels.BaseViewModels;
-using System.Text;
 using IceTea.Atom.Contracts;
 using IceTea.Atom.Extensions;
 using Prism.Events;
@@ -33,7 +32,7 @@ namespace MyApp.Prisms.ViewModels
                 return false;
             }
 
-            this.Socket = this._udpSocket = new NewUdpSocket(Encoding.UTF8, this.UnreachableDisconnect, this.Ip, this._port, this.RemoteIp, remotePort, this.Name);
+            this.Socket = this._udpSocket = new NewUdpSocket(this.UnreachableDisconnect, this.Ip, this._port, this.RemoteIp, remotePort, this.Name);
 
             this.Socket.ReceivedMessage += (from, to, bytes) =>
             {

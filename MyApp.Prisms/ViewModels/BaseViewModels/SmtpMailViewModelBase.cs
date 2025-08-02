@@ -52,7 +52,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
         {
             this.InitEmailManager();
 
-            _emailManager.ExceptionOccured += (sender, ex) => CommonUtil.PublishMessage(_eventAggregator, ex.Message);
+            _emailManager.ExceptionOccurred += (sender, ex) => CommonUtil.PublishMessage(_eventAggregator, ex.Message);
             _emailManager.SendCompletedEventHandler += (sender, e) =>
             {
                 CommonUtil.PublishMessage(_eventAggregator, "发送完成");
@@ -107,12 +107,14 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
             SendMailCommand = new DelegateCommand(async () =>
             {
-                var dto = new MailInDto(this.FromMail.FillToArray(), this.Tos, this.Subject, Password, this.Body, string.Empty);
+                var dto = new MailInDto(this.FromMail.FillToArray(), this.Tos, this.Subject, this.Body, string.Empty);
 
                 this.Ccs.ForEach(c => dto.TryAddCC(c));
                 this.Bccs.ForEach(bc => dto.TryAddBCC(bc));
 
                 dto.Attachments.AddRange(Attachments.Select(filePath => new System.Net.Mail.Attachment(filePath)));
+
+                _emailManager.SetCredentials(this.FromMail, this.Password);
 
                 await _emailManager.SendAsync(dto);
             }, () => !Password.IsNullOrBlank()

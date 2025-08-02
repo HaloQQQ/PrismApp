@@ -5,7 +5,6 @@ using IceTea.SqlStandard.DbModels;
 using IceTea.Wpf.Core.Utils;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 using SqlCreatorModule.Models;
 using System.Data;
 using System.Windows.Input;
@@ -13,6 +12,8 @@ using IceTea.Wpf.Atom.Utils;
 using PrismAppBasicLib.Contracts;
 using System.Collections.ObjectModel;
 using IceTea.Wpf.Atom.Contracts.FileFilters;
+using IceTea.Atom.BaseModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace SqlCreatorModule.ViewModels
 {
@@ -21,7 +22,7 @@ namespace SqlCreatorModule.ViewModels
 #pragma warning disable CS8603 // 可能返回 null 引用。
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
-    internal class CreateModelViewModel : BindableBase
+    internal class CreateModelViewModel : ValidationBase
     {
         public CreateModelViewModel(IEventAggregator eventAggregator)
         {
@@ -59,7 +60,8 @@ namespace SqlCreatorModule.ViewModels
                     this.CurrentDbName = string.Empty;
                     CommonUtil.PublishMessage(eventAggregator, ex.Message);
                 }
-            });
+            }, () => !this.HasErrors)
+                .ObservesProperty(() => this.HasErrors);
 
             this.GetTablesCommand = new DelegateCommand(() =>
             {
@@ -155,7 +157,8 @@ namespace SqlCreatorModule.ViewModels
                 {
                     CommonUtil.PublishMessage(eventAggregator, ex.Message);
                 }
-            });
+            }, () => !this.ModelExportDir.IsNullOrBlank())
+                .ObservesProperty(() => this.ModelExportDir);
         }
 
         private IDb GetSqliteDb(bool openFileDialog = true)
@@ -172,7 +175,7 @@ namespace SqlCreatorModule.ViewModels
                 this.DbFilePath = fileDialog.FileName;
             }
 
-            return new SqliteDb($"datasource={DbFilePath.AssertArgumentNotNull("sqlite数据库文件未指定")}");
+            return new SqliteDb(DbFilePath.AssertArgumentNotNull("sqlite数据库文件未指定"));
         }
 
         private IDb GetDb()
@@ -256,11 +259,17 @@ namespace SqlCreatorModule.ViewModels
 
 
         private string _currentDbName;
-
+        [Required(ErrorMessage = $"{nameof(CurrentDbName)}必须填写")]
         public string CurrentDbName
         {
             get => this._currentDbName;
-            set => SetProperty<string>(ref _currentDbName, value);
+            set
+            {
+                if (SetProperty<string>(ref _currentDbName, value))
+                {
+                    ValidateNotifyDataError();
+                }
+            }
         }
 
         private IEnumerable<string> _dbNames;
@@ -320,12 +329,18 @@ namespace SqlCreatorModule.ViewModels
             set => SetProperty<bool>(ref _isPostgresql, value);
         }
 
-        private string _host;
-
+        private string _host = "localhost";
+        [Required(ErrorMessage = $"{nameof(Host)}必须填写")]
         public string Host
         {
             get => this._host;
-            set => SetProperty<string>(ref _host, value);
+            set
+            {
+                if (SetProperty<string>(ref _host, value))
+                {
+                    ValidateNotifyDataError();
+                }
+            }
         }
 
 
@@ -338,19 +353,31 @@ namespace SqlCreatorModule.ViewModels
         }
 
         private string _uid;
-
+        [Required(ErrorMessage = $"{nameof(Uid)}必须填写")]
         public string Uid
         {
             get => this._uid;
-            set => SetProperty<string>(ref _uid, value);
+            set
+            {
+                if (SetProperty<string>(ref _uid, value))
+                {
+                    ValidateNotifyDataError();
+                }
+            }
         }
 
         private string _pwd;
-
+        [Required(ErrorMessage = $"{nameof(Pwd)}必须填写")]
         public string Pwd
         {
             get => this._pwd;
-            set => SetProperty<string>(ref _pwd, value);
+            set
+            {
+                if (SetProperty<string>(ref _pwd, value))
+                {
+                    ValidateNotifyDataError();
+                }
+            }
         }
 
         private string _dbFilePath;

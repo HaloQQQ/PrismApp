@@ -7,7 +7,7 @@ namespace SqlCreatorModule.ExportModels
     /// SqlServer.SchoolDB导出数据表Course
     /// </summary>
     [Table("Course")]
-    public class Course : BaseModel, ICloneable
+    public class Course : CloneableBase, ICloneable
     {
         [Column("CourseNo")]
         public Int32 CourseNo { get; set; }

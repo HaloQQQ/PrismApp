@@ -7,7 +7,7 @@ namespace SqlCreatorModule.ExportModels
     /// Mysql.MyDb导出数据表mysqldatatype
     /// </summary>
     [Table("mysqldatatype")]
-    public class Mysqldatatype : BaseModel, ICloneable
+    public class Mysqldatatype : CloneableBase, ICloneable
     {
         [Column("BigInt")]
         public Int64 BigInt { get; set; }

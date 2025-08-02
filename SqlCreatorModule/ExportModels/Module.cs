@@ -7,7 +7,7 @@ namespace SqlCreatorModule.ExportModels
     /// 数据表导出Module
     /// </summary>
     [Table("Module")]
-    public class Module : BaseModel, ICloneable
+    public class Module : CloneableBase, ICloneable
     {
         [Column("id")]
         public Int64 Id { get; set; }

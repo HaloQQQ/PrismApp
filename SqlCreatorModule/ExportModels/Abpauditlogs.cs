@@ -8,7 +8,7 @@ namespace SqlCreatorModule.ExportModels
     /// 数据表导出abpauditlogs
     /// </summary>
     [Table("abpauditlogs")]
-    public class Abpauditlogs : BaseModel, ICloneable
+    public class Abpauditlogs : CloneableBase, ICloneable
     {
         [Column("Id")]
         public Guid Id { get; set; }

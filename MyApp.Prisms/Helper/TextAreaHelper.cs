@@ -22,7 +22,7 @@ namespace MyApp.Prisms.Helper
             }
 
             Paragraph paragraph = new Paragraph();
-            Run title = new Run($"[{DateTime.Now.FormatTime()}]# {type} {socket.Encoding.BodyName} {from}=>{to}>".AppendLineOr());
+            Run title = new Run($"[{DateTime.Now.FormatTime()}]# {type} {socket.EncodingName} {from}=>{to}>".AppendLineOr());
             paragraph.Inlines.Add(title);
             Run item = new Run(message);
             item.FontWeight = FontWeights.Bold;

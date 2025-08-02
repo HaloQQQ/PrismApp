@@ -7,7 +7,6 @@ using MyApp.Prisms.ViewModels.BaseViewModels;
 using Prism.Commands;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 
 namespace MyApp.Prisms.ViewModels
@@ -53,7 +52,7 @@ namespace MyApp.Prisms.ViewModels
 
         protected override bool InitSocket()
         {
-            ITcpServer tcpServer = new NewTcpServer(Encoding.UTF8, this.Ip, this._port, this.Name,
+            ITcpServer tcpServer = new NewTcpServer(this.Ip, this._port, this.Name,
                 messageMaxLength: 256, maxClientsCount: MaxClientsCount);
 
             tcpServer.SocketCommunicateWithClientCreated += socket =>

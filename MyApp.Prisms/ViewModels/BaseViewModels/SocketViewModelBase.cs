@@ -113,7 +113,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
             if (this.Socket.IsNotNullAnd(server => server.IsConnected))
             {
-                this.Socket.Close();
+                this.Socket.CloseAsync();
                 return;
             }
 
