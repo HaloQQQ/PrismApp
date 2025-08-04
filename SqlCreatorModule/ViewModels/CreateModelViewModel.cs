@@ -26,7 +26,7 @@ namespace SqlCreatorModule.ViewModels
     {
         public CreateModelViewModel(IEventAggregator eventAggregator)
         {
-            this.ConnectCommand = new DelegateCommand(() =>
+            this.ConnectCommand = new DelegateCommand(async () =>
             {
                 try
                 {
@@ -41,7 +41,7 @@ namespace SqlCreatorModule.ViewModels
 
                         using (sqlite)
                         {
-                            this.DbNames = sqlite.GetDBsName();
+                            this.DbNames = await sqlite.GetDBsNameAsync();
                             this.CurrentDbName = this.DbNames.FirstOrDefault();
                         }
 
@@ -50,7 +50,7 @@ namespace SqlCreatorModule.ViewModels
 
                     using (IDb db = this.GetDb())
                     {
-                        this.DbNames = db.GetDBsName();
+                        this.DbNames = await db.GetDBsNameAsync();
                     }
 
                     CommonUtil.PublishMessage(eventAggregator, "连接成功");
@@ -63,7 +63,7 @@ namespace SqlCreatorModule.ViewModels
             }, () => !this.HasErrors)
                 .ObservesProperty(() => this.HasErrors);
 
-            this.GetTablesCommand = new DelegateCommand(() =>
+            this.GetTablesCommand = new DelegateCommand(async () =>
             {
                 try
                 {
@@ -71,7 +71,7 @@ namespace SqlCreatorModule.ViewModels
 
                     using (IDb db = this.IsSqlite ? this.GetSqliteDb(false) : this.GetDb())
                     {
-                        this.TableNames = db.GetTables();
+                        this.TableNames = await db.GetTablesAsync();
                         this.CurrentTableName = this.TableNames.FirstOrDefault();
                     }
 
@@ -83,7 +83,7 @@ namespace SqlCreatorModule.ViewModels
                 }
             });
 
-            this.ShowTableStructureCommand = new DelegateCommand(() =>
+            this.ShowTableStructureCommand = new DelegateCommand(async () =>
             {
                 try
                 {
@@ -91,7 +91,7 @@ namespace SqlCreatorModule.ViewModels
 
                     using (IDb db = this.IsSqlite ? this.GetSqliteDb(false) : this.GetDb())
                     {
-                        var dataTable = db.ExecuteQueryAtOnce($"select * from {this.CurrentTableName};", null).Tables[0];
+                        var dataTable = (await db.ExecuteQueryAtOnceAsync($"select * from {this.CurrentTableName};", null)).Tables[0];
 
                         var list = new List<DataColumnInfoModel>();
                         foreach (DataColumn item in dataTable.Columns)
@@ -101,7 +101,7 @@ namespace SqlCreatorModule.ViewModels
 
                         if (!IsSqlite)
                         {
-                            var fields = db.GetColumns(this.CurrentTableName);
+                            var fields = await db.GetColumnsAsync(this.CurrentTableName);
                             foreach (var item in fields)
                             {
                                 var array = item.Split(',');
