@@ -72,8 +72,6 @@ internal class PlayingMusicViewModel : MediaBaseViewModel, IEquatable<PlayingMus
         }
     }
 
-    public double CoverAngle => (this.CurrentMills % 30000) * 360 / 30000d; 
-
     public override int CurrentMills
     {
         get => this._currentMills;
@@ -95,8 +93,6 @@ internal class PlayingMusicViewModel : MediaBaseViewModel, IEquatable<PlayingMus
                 }
 
                 RaisePropertyChanged(nameof(base.CurrentTime));
-
-                RaisePropertyChanged(nameof(this.CoverAngle));
 
                 if (this.UpdateLyricSelect())
                 {

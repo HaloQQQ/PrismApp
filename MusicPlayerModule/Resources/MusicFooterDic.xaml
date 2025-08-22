@@ -272,6 +272,8 @@
 
         <Setter Property="Margin" Value="5" />
 
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+
         <Setter Property="Source" Value="{Binding CurrentMedia.Music.ImageSource}" />
 
         <Setter Property="Clip">

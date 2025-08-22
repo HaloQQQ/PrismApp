@@ -415,7 +415,7 @@
                         Width="300"
                         Height="300"
                         HorizontalAlignment="Left">
-                        <Image Style="{StaticResource MusicImage}">
+                        <Image>
                             <Image.Clip>
                                 <EllipseGeometry
                                     Center="30,30"
@@ -423,8 +423,43 @@
                                     RadiusY="30" />
                             </Image.Clip>
                             <Image.RenderTransform>
-                                <RotateTransform Angle="{Binding CurrentMedia.CoverAngle}" CenterX="30" CenterY="30" />
+                                <RotateTransform />
                             </Image.RenderTransform>
+                            <Image.Style>
+                                <Style BasedOn="{StaticResource MusicImage}" TargetType="Image">
+                                    <Style.Triggers>
+                                        <EventTrigger RoutedEvent="Loaded">
+                                            <BeginStoryboard x:Name="Rotate_MusicCover">
+                                                <Storyboard>
+                                                    <DoubleAnimation
+                                                        RepeatBehavior="Forever"
+                                                        Storyboard.TargetProperty="RenderTransform.(RotateTransform.Angle)"
+                                                        From="0"
+                                                        To="360"
+                                                        Duration="0:0:30" />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                        <DataTrigger Binding="{Binding Running}" Value="True">
+                                            <DataTrigger.EnterActions>
+                                                <ResumeStoryboard BeginStoryboardName="Rotate_MusicCover" />
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <PauseStoryboard BeginStoryboardName="Rotate_MusicCover" />
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Running}" Value="True" />
+                                                <Condition Binding="{Binding CurrentMedia.CurrentMills}" Value="0" />
+                                            </MultiDataTrigger.Conditions>
+                                            <MultiDataTrigger.EnterActions>
+                                                <SeekStoryboard BeginStoryboardName="Rotate_MusicCover" />
+                                            </MultiDataTrigger.EnterActions>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
                         </Image>
                     </Viewbox>
 
