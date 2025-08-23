@@ -1,4 +1,4 @@
-﻿using IceTea.Atom.Contracts;
+﻿using IceTea.Pure.Contracts;
 using IceTea.Core.Utils.Mails;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using Prism.Events;

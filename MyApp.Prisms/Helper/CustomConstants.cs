@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using System;
 using System.Windows.Media;
-using IceTea.Atom.Utils.HotKey.Global.Contracts;
-using IceTea.Atom.Extensions;
+using IceTea.Pure.Utils.HotKey.Global.Contracts;
+using IceTea.Pure.Extensions;
 
 namespace MyApp.Prisms.Helper
 {

@@ -8,10 +8,10 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using MyApp.Prisms.MsgEvents;
 using MyApp.Prisms.ViewModels;
-using IceTea.Atom.Extensions;
+using IceTea.Pure.Extensions;
 using IceTea.Wpf.Atom.Utils;
 using MyApp.Prisms.Helper;
-using IceTea.Atom.Contracts;
+using IceTea.Pure.Contracts;
 using PrismAppBasicLib.Models;
 using IceTea.Wpf.Atom.Contracts.FileFilters;
 

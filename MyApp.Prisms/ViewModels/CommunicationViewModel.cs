@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MyApp.Prisms.Views;
-using IceTea.Atom.BaseModels;
+using IceTea.Pure.BaseModels;
 
 namespace MyApp.Prisms.ViewModels
 {

@@ -1,6 +1,6 @@
-﻿using IceTea.Atom.Contracts;
-using IceTea.Atom.Extensions;
-using IceTea.Atom.Utils;
+﻿using IceTea.Pure.Contracts;
+using IceTea.Pure.Extensions;
+using IceTea.Pure.Utils;
 using IceTea.Wpf.Atom.Utils;
 using Prism.Events;
 using PrismAppBasicLib.MsgEvents;

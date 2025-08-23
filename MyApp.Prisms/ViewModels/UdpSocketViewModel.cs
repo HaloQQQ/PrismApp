@@ -1,7 +1,7 @@
 ﻿using IceTea.SocketStandard.Udp;
 using MyApp.Prisms.ViewModels.BaseViewModels;
-using IceTea.Atom.Contracts;
-using IceTea.Atom.Extensions;
+using IceTea.Pure.Contracts;
+using IceTea.Pure.Extensions;
 using Prism.Events;
 using Prism.Ioc;
 using IceTea.SocketStandard.Udp.Contracts;

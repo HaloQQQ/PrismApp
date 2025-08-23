@@ -1,4 +1,4 @@
-using IceTea.Atom.BaseModels;
+using IceTea.Pure.BaseModels;
 using NpgsqlTypes;
 using System.Collections;
 using System.ComponentModel.DataAnnotations.Schema;

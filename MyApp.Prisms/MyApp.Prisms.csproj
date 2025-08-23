@@ -34,13 +34,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="IceTea.SocketStandard" Version="2.0.4" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <PackageReference Include="IceTea.SocketStandard" Version="2.0.6" />
     <ProjectReference Include="..\CustomControlsDemoModule\CustomControlsDemoModule.csproj" />
     <ProjectReference Include="..\MusicPlayerModule\MusicPlayerModule.csproj" />
     <ProjectReference Include="..\SqlCreatorModule\SqlCreatorModule.csproj" />

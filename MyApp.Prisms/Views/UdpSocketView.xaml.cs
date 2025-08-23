@@ -3,12 +3,12 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using MyApp.Prisms.Helper;
 using MyApp.Prisms.ViewModels;
-using IceTea.Atom.Extensions;
 using IceTea.Wpf.Atom.Contracts;
 using System.ComponentModel;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using IceTea.SocketStandard.Udp.Contracts;
 using PrismAppBasicLib.Contracts;
+using IceTea.Pure.Extensions;
 
 namespace MyApp.Prisms.Views
 {

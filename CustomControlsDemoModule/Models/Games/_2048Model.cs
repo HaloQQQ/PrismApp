@@ -1,4 +1,4 @@
-﻿using IceTea.Atom.BaseModels;
+﻿using IceTea.Pure.BaseModels;
 
 namespace CustomControlsDemoModule.Models
 {

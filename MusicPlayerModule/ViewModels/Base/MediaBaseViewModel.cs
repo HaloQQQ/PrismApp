@@ -1,6 +1,6 @@
-﻿using IceTea.Atom.BaseModels;
-using IceTea.Atom.Extensions;
-using IceTea.Atom.Utils;
+﻿using IceTea.Pure.BaseModels;
+using IceTea.Pure.Extensions;
+using IceTea.Pure.Utils;
 using MusicPlayerModule.Models;
 
 namespace MusicPlayerModule.ViewModels.Base

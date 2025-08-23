@@ -3,10 +3,10 @@ using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TagLib;
-using IceTea.Atom.Extensions;
-using IceTea.Atom.Utils;
+using IceTea.Pure.Extensions;
+using IceTea.Pure.Utils;
 using System.Text.RegularExpressions;
-using IceTea.Atom.Contracts;
+using IceTea.Pure.Contracts;
 using System.Diagnostics;
 
 namespace MusicPlayerModule.Models;

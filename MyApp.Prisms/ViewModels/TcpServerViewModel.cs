@@ -1,5 +1,5 @@
-﻿using IceTea.Atom.Contracts;
-using IceTea.Atom.Extensions;
+﻿using IceTea.Pure.Contracts;
+using IceTea.Pure.Extensions;
 using IceTea.SocketStandard.Tcp;
 using IceTea.SocketStandard.Tcp.Contracts;
 using IceTea.Wpf.Atom.Utils;

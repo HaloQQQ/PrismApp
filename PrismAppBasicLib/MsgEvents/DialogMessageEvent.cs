@@ -1,4 +1,4 @@
-﻿using IceTea.Atom.Contracts;
+﻿using IceTea.Pure.Contracts;
 using Prism.Events;
 
 namespace PrismAppBasicLib.MsgEvents

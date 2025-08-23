@@ -1,6 +1,6 @@
-﻿using IceTea.Atom.BaseModels;
-using IceTea.Atom.Extensions;
-using IceTea.Atom.Utils;
+﻿using IceTea.Pure.BaseModels;
+using IceTea.Pure.Extensions;
+using IceTea.Pure.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

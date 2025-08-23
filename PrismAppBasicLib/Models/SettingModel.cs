@@ -1,8 +1,8 @@
-﻿using IceTea.Atom.BaseModels;
+﻿using IceTea.Pure.BaseModels;
 using System.Windows.Input;
 using Prism.Commands;
 using IceTea.Wpf.Core.Utils;
-using IceTea.Atom.Extensions;
+using IceTea.Pure.Extensions;
 using System;
 
 namespace PrismAppBasicLib.Models

@@ -1,4 +1,4 @@
-﻿using IceTea.Atom.Extensions;
+﻿using IceTea.Pure.Extensions;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;

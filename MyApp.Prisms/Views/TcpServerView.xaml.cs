@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Windows.Controls;
-using System.Windows.Input;
 using MyApp.Prisms.Helper;
-using IceTea.Atom.Extensions;
-using IceTea.Atom.Utils;
 using MyApp.Prisms.ViewModels;
 using System.ComponentModel;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using IceTea.SocketStandard.Tcp.Contracts;
-using IceTea.Wpf.Atom.Contracts;
 using PrismAppBasicLib.Contracts;
+using IceTea.Pure.Extensions;
+using IceTea.Pure.Utils;
 
 namespace MyApp.Prisms.Views
 {
@@ -116,45 +114,6 @@ namespace MyApp.Prisms.Views
             catch (Exception ex)
             {
                 rhTxt.Info(_tcpSocketViewModel.IsLogging, this._tcpSocketViewModel.Name, ex.Message);
-            }
-        }
-
-        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            try
-            {
-                if (e.Command == System.Windows.Documents.EditingCommands.EnterParagraphBreak) //回车发送
-                {
-                    var msg = this._tcpSocketViewModel.SendMessage;
-
-                    this._tcpServer.SendAsync(msg);
-
-                    this._tcpSocketViewModel.SendMessage = string.Empty;
-
-                    e.Handled = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                this.rhTxt.Info(this._tcpSocketViewModel.IsLogging, _tcpSocketViewModel.Name, ex.Message);
-            }
-        }
-
-        private void CommandBinding_OnCanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.Handled = true;
-
-            e.CanExecute = true;
-
-            if (e.Command == CustomCommands.TextBoxEnterCommand) // 发送消息
-            {
-                if (this._tcpSocketViewModel != null)
-                {
-                    var forbid = this._tcpSocketViewModel.SendMessage.IsNullOr(msg => msg.IsNullOrBlank())
-                                 || this._tcpSocketViewModel.ConnList.Count == 0
-                                 || !this._tcpServer.IsConnected;
-                    e.CanExecute = !forbid;
-                }
             }
         }
     }

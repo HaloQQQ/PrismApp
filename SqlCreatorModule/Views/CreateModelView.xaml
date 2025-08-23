@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:data="clr-namespace:System.Data;assembly=netstandard"
     xmlns:prism="http://prismlibrary.com/"
-    xmlns:regex="clr-namespace:IceTea.Atom.Contracts;assembly=IceTea.Atom"
+    xmlns:regex="clr-namespace:IceTea.Pure.Contracts;assembly=IceTea.Pure"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
         <Style BasedOn="{StaticResource TextBlock_Theme}" TargetType="TextBlock" />

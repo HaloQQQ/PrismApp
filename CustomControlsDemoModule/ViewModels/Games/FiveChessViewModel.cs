@@ -1,5 +1,5 @@
 ﻿using CustomControlsDemoModule.Models;
-using IceTea.Atom.Contracts;
+using IceTea.Pure.Contracts;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;

@@ -1,5 +1,5 @@
-﻿using IceTea.Atom.Extensions;
-using IceTea.Atom.Utils;
+﻿using IceTea.Pure.Extensions;
+using IceTea.Pure.Utils;
 using IceTea.SqlStandard.Contracts;
 using IceTea.SqlStandard.DbModels;
 using IceTea.Wpf.Core.Utils;
@@ -12,7 +12,7 @@ using IceTea.Wpf.Atom.Utils;
 using PrismAppBasicLib.Contracts;
 using System.Collections.ObjectModel;
 using IceTea.Wpf.Atom.Contracts.FileFilters;
-using IceTea.Atom.BaseModels;
+using IceTea.Pure.BaseModels;
 using System.ComponentModel.DataAnnotations;
 
 namespace SqlCreatorModule.ViewModels

@@ -23,9 +23,9 @@ namespace CustomControlsDemoModule.Views
 
             if (this.DataContext is FetchBackColorViewModel viewModel)
             {
-                viewModel.MouseActionEvent += ViewModel_MouseActionEvent;
+                viewModel.MouseHook.MouseActivity += ViewModel_MouseActionEvent;
 
-                viewModel._mouseHook.Start();
+                viewModel.MouseHook.StartAsync();
             }
 
             Mouse.OverrideCursor = Cursors.Cross;

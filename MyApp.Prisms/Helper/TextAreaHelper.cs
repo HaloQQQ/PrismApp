@@ -3,7 +3,7 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using IceTea.Atom.Extensions;
+using IceTea.Pure.Extensions;
 using IceTea.SocketStandard.Contracts;
 using IceTea.Wpf.Atom.Utils;
 using PrismAppBasicLib.Contracts;

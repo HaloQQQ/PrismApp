@@ -1,5 +1,5 @@
-﻿using IceTea.Atom.Contracts;
-using IceTea.Atom.Extensions;
+﻿using IceTea.Pure.Contracts;
+using IceTea.Pure.Extensions;
 using IceTea.Wpf.Atom.Contracts;
 using IceTea.Wpf.Atom.Contracts.FileFilters;
 using IceTea.Wpf.Atom.Utils;

@@ -1,4 +1,4 @@
-﻿using IceTea.Atom.Extensions;
+﻿using IceTea.Pure.Extensions;
 using System.Data;
 
 namespace SqlCreatorModule.Models

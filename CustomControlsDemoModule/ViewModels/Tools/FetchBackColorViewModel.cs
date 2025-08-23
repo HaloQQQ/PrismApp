@@ -1,5 +1,5 @@
 ﻿using CustomControlsDemoModule.Events;
-using IceTea.Atom.BaseModels;
+using IceTea.Pure.BaseModels;
 using IceTea.Desktop.Contracts.MouseHook;
 using IceTea.Desktop.Extensions;
 using IceTea.Desktop.Utils;
@@ -15,34 +15,19 @@ namespace CustomControlsDemoModule.ViewModels
 {
     internal class FetchBackColorViewModel : NotifyBase, IDisposable, IDialogAware
     {
-        internal IMouseHook _mouseHook;
+        private IMouseHook _mouseHook;
 
-        internal event EventHandler<CustomMouseEventArgs> MouseActionEvent
-        {
-            add
-            {
-                if (_mouseHook != null)
-                {
-                    _mouseHook.MouseActivity += value;
-                }
-            }
-
-            remove
-            {
-                if (_mouseHook != null)
-                {
-                    _mouseHook.MouseActivity -= value;
-                }
-            }
-        }
+        internal IMouseHook MouseHook => this._mouseHook;
 
         public FetchBackColorViewModel(IEventAggregator eventAggregator)
         {
+#pragma warning disable CA1416 // 验证平台兼容性
             _mouseHook = new GlobalMouseHook();
 
             _mouseHook.MouseActivity += _mouseHook_MouseActivity;
+#pragma warning restore CA1416 // 验证平台兼容性
 
-            _mouseHook.Start();
+            _mouseHook.StartAsync();
 
             Width = SystemParameters.WorkArea.Width;
             Height = SystemParameters.WorkArea.Height;
@@ -52,6 +37,7 @@ namespace CustomControlsDemoModule.ViewModels
 
         private void _mouseHook_MouseActivity(object sender, CustomMouseEventArgs e)
         {
+#pragma warning disable CA1416 // 验证平台兼容性
             if (e.OperationType == MouseOperationType.MOVE)
             {
                 var point = new System.Drawing.Point(e.X, e.Y);
@@ -93,6 +79,7 @@ namespace CustomControlsDemoModule.ViewModels
 
                 this.ImageSource = bitmap.GetImageSource();
             }
+#pragma warning restore CA1416 // 验证平台兼容性
         }
 
         #region Props
@@ -154,14 +141,11 @@ namespace CustomControlsDemoModule.ViewModels
 
         public string Title => "标题";
 
-        ~FetchBackColorViewModel()
-        {
-            this.Dispose();
-        }
-
-        public void Dispose()
+        protected override void DisposeCore()
         {
             _mouseHook.Dispose();
+
+            base.DisposeCore();
         }
 
         public bool CanCloseDialog()

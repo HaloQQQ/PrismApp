@@ -1,5 +1,5 @@
-﻿using IceTea.Atom.Extensions;
-using IceTea.Atom.Utils;
+﻿using IceTea.Pure.Extensions;
+using IceTea.Pure.Utils;
 using System.Diagnostics;
 
 namespace MusicPlayerModule.Models

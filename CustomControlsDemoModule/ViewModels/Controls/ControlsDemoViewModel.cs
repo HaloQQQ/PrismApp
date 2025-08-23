@@ -2,7 +2,7 @@
 using CustomControlsDemoModule.Views.Controls;
 using CustomControlsDemoModule.Views.Controls.Buttons;
 using CustomControlsDemoModule.Views.Controls.TextBoxes;
-using IceTea.Atom.Extensions;
+using IceTea.Pure.Extensions;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Regions;

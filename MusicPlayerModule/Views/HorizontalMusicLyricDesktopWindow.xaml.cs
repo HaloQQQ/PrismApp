@@ -1,5 +1,5 @@
-﻿using IceTea.Atom.Contracts;
-using IceTea.Atom.Extensions;
+﻿using IceTea.Pure.Contracts;
+using IceTea.Pure.Extensions;
 using MusicPlayerModule.Contracts;
 using MusicPlayerModule.Converters;
 using System.Windows;

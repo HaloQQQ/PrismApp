@@ -9,7 +9,7 @@ using Prism.Events;
 using Prism.Ioc;
 using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.MsgEvents.Music;
-using IceTea.Atom.Utils;
+using IceTea.Pure.Utils;
 
 namespace MusicPlayerModule.Views
 {

@@ -1,4 +1,4 @@
-﻿using IceTea.Atom.Utils;
+﻿using IceTea.Pure.Utils;
 using MusicPlayerModule.Models;
 using MusicPlayerModule.MsgEvents.Video.Dtos;
 using MusicPlayerModule.ViewModels.Base;

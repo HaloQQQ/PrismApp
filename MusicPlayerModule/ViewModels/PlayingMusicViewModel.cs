@@ -1,5 +1,5 @@
-﻿using IceTea.Atom.Extensions;
-using IceTea.Atom.Utils;
+﻿using IceTea.Pure.Extensions;
+using IceTea.Pure.Utils;
 using MusicPlayerModule.Models;
 using MusicPlayerModule.Utils;
 using MusicPlayerModule.ViewModels.Base;

@@ -1,4 +1,4 @@
-﻿using IceTea.Atom.Utils;
+﻿using IceTea.Pure.Utils;
 
 namespace MusicPlayerModule.Models
 {

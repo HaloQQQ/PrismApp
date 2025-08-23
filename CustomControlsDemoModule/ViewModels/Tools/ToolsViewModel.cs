@@ -1,10 +1,10 @@
-﻿using IceTea.Atom.BaseModels;
-using IceTea.Atom.Contracts;
-using IceTea.Atom.Utils;
+﻿using IceTea.Pure.BaseModels;
+using IceTea.Pure.Contracts;
+using IceTea.Pure.Utils;
 using IceTea.Wpf.Atom.Utils;
 using Prism.Commands;
 using System.Windows.Input;
-using IceTea.Atom.Extensions;
+using IceTea.Pure.Extensions;
 using Prism.Events;
 using PrismAppBasicLib.Contracts;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
-﻿using IceTea.Atom.BaseModels;
-using IceTea.Atom.Contracts;
+﻿using IceTea.Pure.BaseModels;
+using IceTea.Pure.Contracts;
 using Prism.Commands;
 using System;
 using System.Diagnostics;
