@@ -6,13 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="IceTea.Desktop" Version="1.0.15" />
-    <PackageReference Include="IceTea.Wpf.Core" Version="1.2.3" />
+    <PackageReference Include="IceTea.Wpf.Core" Version="1.2.4" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\MySourceCode\IceTea.Desktop\IceTea.Desktop.csproj" />
-    <ProjectReference Include="..\..\MySourceCode\IceTea.Wpf.Core\IceTea.Wpf.Core.csproj" />
   </ItemGroup>
 
 </Project>

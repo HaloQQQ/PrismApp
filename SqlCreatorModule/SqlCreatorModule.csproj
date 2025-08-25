@@ -9,15 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IceTea.SqlStandard" Version="1.1.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="ExportModels\" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MySourceCode\IceTea.SqlStandard\IceTea.SqlStandard.csproj" />
+    <PackageReference Include="IceTea.SqlStandard" Version="1.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PrismAppBasicLib\PrismAppBasicLib.csproj" />
   </ItemGroup>
 
