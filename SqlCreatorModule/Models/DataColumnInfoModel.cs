@@ -22,7 +22,7 @@ namespace SqlCreatorModule.Models
 
             this.Expression = column.Expression;
             this.ReadOnly = column.ReadOnly;
-            this.DataType = column.DataType.Name;
+            this.DataType = column.DataType;
             this.DateTimeMode = column.DateTimeMode;
             this.MaxLength = column.MaxLength;
             this.Namespace = column.Namespace;
@@ -39,7 +39,7 @@ namespace SqlCreatorModule.Models
         /// <summary>
         /// 属性数据类型
         /// </summary>
-        public string DataType { get; }
+        public Type DataType { get; }
 
         /// <summary>
         /// Db字段数据类型

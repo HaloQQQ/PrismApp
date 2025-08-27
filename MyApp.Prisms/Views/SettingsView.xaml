@@ -355,13 +355,6 @@
                             Content="关闭电脑"
                             MyAttachProperty.IconFontText="&#xe605;"
                             Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
-
-                        <Button
-                            Command="{Binding DataContext.ShowDialogCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
-                            CommandParameter="安装包"
-                            Content="创建安装包"
-                            MyAttachProperty.IconFontText="&#xe8b8;"
-                            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
                     </WrapPanel>
                 </StackPanel>
             </TabItem>

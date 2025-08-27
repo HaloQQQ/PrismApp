@@ -14,7 +14,7 @@ namespace MyApp.Prisms.ViewModels
     {
         public UdpSocketViewModel(IConfigManager config) : base(config, "UDP客户端")
         {
-            this.RemoteIp = AppStatics.Ip;
+            this.RemoteIp = AppStatics.Ip.ToString();
         }
 
         private IUdpSocket _udpSocket;

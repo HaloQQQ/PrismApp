@@ -48,7 +48,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 #pragma warning disable CA1416 // 验证平台兼容性
             this.OpenLogCommand = new DelegateCommand(() => CommonUtil.OpenLog(this.Name));
 
-            this.Ip = AppStatics.Ip;
+            this.Ip = AppStatics.Ip.ToString();
         }
 
         #region Fields
@@ -124,6 +124,6 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
         }
 
         public static IEnumerable<string> Ips { get; } =
-            AppUtils.GetIpAddressColl().Select(address => address.ToString());
+            AppUtils.GetHostIps().Select(address => address.ToString());
     }
 }
