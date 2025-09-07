@@ -1,12 +1,17 @@
 ﻿using CustomControlsDemoModule.Models;
+using CustomControlsDemoModule.Models.Games.ChineseChess;
 using IceTea.Pure.Contracts;
+using IceTea.Pure.Extensions;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using PrismAppBasicLib.Contracts;
+using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace CustomControlsDemoModule.ViewModels
 {
@@ -14,50 +19,79 @@ namespace CustomControlsDemoModule.ViewModels
     {
         protected override string GameName => "象棋";
 
+        private DispatcherTimer _timer;
+
+        private ChineseChessModel _currentChess;
+        public ChineseChessModel CurrentChess
+        {
+            get => _currentChess;
+            private set => SetProperty<ChineseChessModel>(ref _currentChess, value);
+        }
+
+        public bool CanGoBack { get; }
+
+        public ObservableCollection<IChessCommand> Stack { get; private set; }
+
         public ChineseChessViewModel(IAppConfigFileHotKeyManager appConfigFileHotKeyManager, IConfigManager configManager, IEventAggregator eventAggregator)
             : base(appConfigFileHotKeyManager, configManager, eventAggregator)
         {
+            this.Stack = new();
+
             this.CancelLastCommand = new DelegateCommand(() =>
             {
-                From.Data.GoBack(this.Datas);
-                From = null;
-                To = null;
-
-                if (CurrentChess != null)
+                IChessCommand current = default;
+                if ((current = this.Stack.FirstOrDefault()) != null)
                 {
-                    CurrentChess.Data.ClearReady(Datas);
-                    CurrentChess = null;
-                }
+                    this.From = null;
+                    this.To = Datas[current.FromRow * 9 + current.FromColumn];
 
-                IsRedTurn = !IsRedTurn;
+                    current.Back(this.Datas);
+
+                    this.Stack.RemoveAt(0);
+
+                    IsRedTurn = !IsRedTurn;
+
+                    RaisePropertyChanged(nameof(CanGoBack));
+                }
             },
-            () => !IsGameOver && IsUsable && From != null
+            () => !IsGameOver && IsUsable && Stack.Count > 0
             )
-            .ObservesProperty(() => this.From)
+            .ObservesProperty(() => this.CanGoBack)
             .ObservesProperty(() => this.IsUsable)
             .ObservesProperty(() => this.IsGameOver);
 
             this.SelectOrPutCommand = new DelegateCommand<ChineseChessModel>(model =>
             {
-                // 选中
-                if (!model.Data.IsEmpty && model.Data.IsRed == IsRedTurn)
+                var data = model.Data;
+                var targetIsEmpty = data.IsEmpty;
+
+                bool isSelected = !targetIsEmpty && model == CurrentChess;
+                bool hasnotSelected = targetIsEmpty && CurrentChess == null;
+                if (isSelected || hasnotSelected)
                 {
-                    this.PlayMedia("select.mp3");
+                    return;
+                }
 
-                    CurrentChess = model;
+                // 选中
+                bool canSelect = !targetIsEmpty && data.IsRed == this.IsRedTurn;
+                if (canSelect)
+                {
+                    if (model.TrySelect(Datas))
+                    {
+                        CurrentChess = model;
 
-                    CurrentChess.Data.PreMove(Datas);
+                        this.PlayMedia("select.mp3");
+                    }
 
                     return;
                 }
 
-                var isShuai = model.Data.Type == ChessType.帥;
-                var isEmpty = model.Data.IsEmpty;
-
-                // 移动棋子到这里
-                if (this.CurrentChess != null && this.CurrentChess.Data.TryPutTo(Datas, model.Data))
+                // 移动棋子到这里 或 吃子
+                if (this.CurrentChess.IsNotNullAnd(c => c.TryPutTo(Datas, model.Row, model.Column, Stack)))
                 {
-                    if (isEmpty)
+                    RaisePropertyChanged(nameof(CanGoBack));
+
+                    if (targetIsEmpty)
                     {
                         this.PlayMedia("go.mp3");
                     }
@@ -66,13 +100,12 @@ namespace CustomControlsDemoModule.ViewModels
                         this.PlayMedia("eat.mp3");
                     }
 
-                    model.Data.ClearReady(Datas);
-
                     this.From = this.CurrentChess;
-
                     this.To = model;
 
                     this.CurrentChess = null;
+
+                    var isShuai = data.Type == ChessType.帥;
 
                     if (isShuai || this.CheckGameOver())
                     {
@@ -83,6 +116,8 @@ namespace CustomControlsDemoModule.ViewModels
                         {
                             actor = IsRedTurn ? "黑方" : "红方";
                         }
+
+                        this.Over_Wav();
 
                         CommonUtil.PublishMessage(_eventAggregator, $"{actor}获胜");
                         return;
@@ -101,15 +136,48 @@ namespace CustomControlsDemoModule.ViewModels
             {
                 Angle = Angle == 0 ? 180 : 0;
             });
+
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromSeconds(1);
+            _timer.Tick += Timer_Tick;
+            _timer.IsEnabled = true;
         }
+
+        #region Timer
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            _seconds++;
+            if (IsRedTurn)
+            {
+                RaisePropertyChanged(nameof(this.RedTimeSpan));
+            }
+            else
+            {
+                RaisePropertyChanged(nameof(this.BlackTimeSpan));
+            }
+        }
+
+        protected override void OnUsableChanged(bool newValue)
+        {
+            base.OnUsableChanged(newValue);
+
+            this._timer.IsEnabled = newValue;
+        }
+
+        private int _seconds;
+
+        public string BlackTimeSpan => TimeSpan.FromSeconds(_seconds).FormatTimeSpan();
+
+        public string RedTimeSpan => TimeSpan.FromSeconds(_seconds).FormatTimeSpan();
+        #endregion
 
         #region overrides
         protected override bool CheckGameOver()
         {
             bool faceToFace = false;
 
-            var black = Datas.First(c => c.Data.Type == ChessType.帥 && !(bool)c.Data.IsRed).Data;
-            var red = Datas.First(c => c.Data.Type == ChessType.帥 && (bool)c.Data.IsRed).Data;
+            var black = Datas.First(c => c.Data.Type == ChessType.帥 && !(bool)c.Data.IsRed);
+            var red = Datas.First(c => c.Data.Type == ChessType.帥 && (bool)c.Data.IsRed);
 
             if (black.Column != red.Column)
             {
@@ -149,111 +217,35 @@ namespace CustomControlsDemoModule.ViewModels
 
             this.InitDatas();
 
-            CurrentChess = null;
-            From = null;
-            To = null;
+            _currentChess = null;
             IsRedTurn = true;
 
             Angle = 0;
+
+            _seconds = 0;
+            RaisePropertyChanged(nameof(BlackTimeSpan));
+            RaisePropertyChanged(nameof(RedTimeSpan));
+
+            foreach (var item in this.Stack)
+            {
+                item.Dispose();
+            }
+            this.Stack.Clear();
         }
 
         protected override void InitDatas()
         {
+            foreach (var item in this.Datas)
+            {
+                item.Dispose();
+            }
             this.Datas.Clear();
 
-            for (int i = 0; i < 10; i++)
+            for (int row = 0; row < 10; row++)
             {
-                for (int j = 0; j < 9; j++)
+                for (int column = 0; column < 9; column++)
                 {
-                    var isEmpty = true;
-
-                    if (i == 0)
-                    {
-                        isEmpty = false;
-
-                        if (j == 0 || j == 8)
-                        {
-                            this.Datas.Add(new ChineseChessModel(false, ChessType.車, i, j));
-                        }
-                        else if (j == 1 || j == 7)
-                        {
-                            this.Datas.Add(new ChineseChessModel(false, ChessType.馬, i, j));
-                        }
-                        else if (j == 2 || j == 6)
-                        {
-                            this.Datas.Add(new ChineseChessModel(false, ChessType.相, i, j));
-                        }
-                        else if (j == 3 || j == 5)
-                        {
-                            this.Datas.Add(new ChineseChessModel(false, ChessType.仕, i, j));
-                        }
-                        else if (j == 4)
-                        {
-                            this.Datas.Add(new ChineseChessModel(false, ChessType.帥, i, j));
-                        }
-                    }
-                    else if (i == 9)
-                    {
-                        isEmpty = false;
-
-                        if (j == 0 || j == 8)
-                        {
-                            this.Datas.Add(new ChineseChessModel(true, ChessType.車, i, j));
-                        }
-                        else if (j == 1 || j == 7)
-                        {
-                            this.Datas.Add(new ChineseChessModel(true, ChessType.馬, i, j));
-                        }
-                        else if (j == 2 || j == 6)
-                        {
-                            this.Datas.Add(new ChineseChessModel(true, ChessType.相, i, j));
-                        }
-                        else if (j == 3 || j == 5)
-                        {
-                            this.Datas.Add(new ChineseChessModel(true, ChessType.仕, i, j));
-                        }
-                        else if (j == 4)
-                        {
-                            this.Datas.Add(new ChineseChessModel(true, ChessType.帥, i, j));
-                        }
-                    }
-                    else if (i == 3)
-                    {
-                        if (j == 0 || j == 2 || j == 4 || j == 6 || j == 8)
-                        {
-                            this.Datas.Add(new ChineseChessModel(false, ChessType.兵, i, j));
-                            isEmpty = false;
-                        }
-                    }
-                    else if (i == 6)
-                    {
-                        if (j == 0 || j == 2 || j == 4 || j == 6 || j == 8)
-                        {
-                            this.Datas.Add(new ChineseChessModel(true, ChessType.兵, i, j));
-                            isEmpty = false;
-                        }
-                    }
-                    else if (i == 2)
-                    {
-                        if (j == 1 || j == 7)
-                        {
-                            this.Datas.Add(new ChineseChessModel(false, ChessType.炮, i, j));
-                            isEmpty = false;
-                        }
-                    }
-                    else if (i == 7)
-                    {
-                        if (j == 1 || j == 7)
-                        {
-                            this.Datas.Add(new ChineseChessModel(true, ChessType.炮, i, j));
-                            isEmpty = false;
-                        }
-                    }
-
-                    if (isEmpty)
-                    {
-                        this.Datas.Add(new ChineseChessModel(i, j));
-                    }
+                    this.Datas.Add(new ChineseChessModel(row, column));
                 }
             }
         }
@@ -266,11 +258,40 @@ namespace CustomControlsDemoModule.ViewModels
         #endregion
 
         #region Props
+        private ChineseChessModel _from;
+        public ChineseChessModel From
+        {
+            get => _from;
+            private set => SetProperty<ChineseChessModel>(ref _from, value);
+        }
+
+        private ChineseChessModel _to;
+        public ChineseChessModel To
+        {
+            get => _to;
+            private set => SetProperty<ChineseChessModel>(ref _to, value);
+        }
+
         private bool _isRedTurn = true;
         public bool IsRedTurn
         {
             get => _isRedTurn;
-            private set => SetProperty(ref _isRedTurn, value);
+            private set
+            {
+                if (SetProperty(ref _isRedTurn, value))
+                {
+                    _seconds = 0;
+
+                    if (value)
+                    {
+                        RaisePropertyChanged(nameof(BlackTimeSpan));
+                    }
+                    else
+                    {
+                        RaisePropertyChanged(nameof(RedTimeSpan));
+                    }
+                }
+            }
         }
 
         private double _angle;
@@ -278,27 +299,6 @@ namespace CustomControlsDemoModule.ViewModels
         {
             get => _angle;
             private set => SetProperty(ref _angle, value);
-        }
-
-        private ChineseChessModel _currentChess;
-        public ChineseChessModel CurrentChess
-        {
-            get => _currentChess;
-            private set => SetProperty(ref _currentChess, value);
-        }
-
-        private ChineseChessModel _from;
-        public ChineseChessModel From
-        {
-            get => _from;
-            private set => SetProperty(ref _from, value);
-        }
-
-        private ChineseChessModel _to;
-        public ChineseChessModel To
-        {
-            get => _to;
-            private set => SetProperty(ref _to, value);
         }
         #endregion
 
@@ -309,5 +309,25 @@ namespace CustomControlsDemoModule.ViewModels
 
         public ICommand SwitchDirectionCommand { get; }
         #endregion
+
+        protected override void DisposeCore()
+        {
+            _timer.IsEnabled = false;
+            _timer.Tick -= Timer_Tick;
+            _timer = null;
+
+            foreach (var item in this.Stack)
+            {
+                item.Dispose();
+            }
+            this.Stack.Clear();
+            this.Stack = null;
+
+            this.CurrentChess = null;
+            this.From = null;
+            this.To = null;
+
+            base.DisposeCore();
+        }
     }
 }

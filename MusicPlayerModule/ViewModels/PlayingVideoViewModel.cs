@@ -5,7 +5,7 @@ using MusicPlayerModule.ViewModels.Base;
 
 namespace MusicPlayerModule.ViewModels
 {
-    internal class PlayingVideoViewModel : MediaBaseViewModel
+    internal class PlayingVideoViewModel : MediaPlayerBaseViewModel
     {
         private VideoModelAndGuid _dto;
         public PlayingVideoViewModel(VideoModelAndGuid dto, VideoModel video)

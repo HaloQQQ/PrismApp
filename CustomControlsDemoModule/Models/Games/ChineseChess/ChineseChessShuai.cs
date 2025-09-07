@@ -6,21 +6,18 @@ namespace CustomControlsDemoModule.Models
 {
     internal class ChineseChessShuai : InnerChineseChessModel
     {
-        public ChineseChessShuai(bool isRed, int row, int column) : base(isRed, ChessType.帥, row, column)
+        public ChineseChessShuai(bool isRed) : base(isRed, ChessType.帥)
         {
         }
 
-        protected override bool TryPutToCore(IList<ChineseChessModel> datas, IChineseChess targetData)
+        protected override bool CheckPutToCore(IList<ChineseChessModel> datas, int fromRow, int fromColumn, int toRow, int toColumn)
         {
-            int fromRow = this.Row, fromColumn = this.Column;
-            int toRow = targetData.Row, toColumn = targetData.Column;
-
             if (toColumn < 3 || toColumn > 5)
             {
                 return false;
             }
 
-            if ((bool)IsRed)
+            if ((bool)this.IsRed)
             {
                 if (toRow < 7)
                 {
@@ -38,17 +35,15 @@ namespace CustomControlsDemoModule.Models
             return Math.Abs(toRow - fromRow) + Math.Abs(toColumn - fromColumn) == 1;
         }
 
-        protected override bool TryMoveCore(IList<ChineseChessModel> datas)
+        public override bool TryMarkMove(IList<ChineseChessModel> datas, int fromRow, int fromColumn)
         {
             bool hasChoice = false;
-
-            int fromRow = this.Row, fromColumn = this.Column;
 
             // 上
             if (fromRow > 0)
             {
                 var up = datas[GetIndex(fromRow - 1, fromColumn)];
-                if (this.CheckPut(datas, up.Data))
+                if (this.CheckPutTo(datas, fromRow, fromColumn, up.Row, up.Column))
                 {
                     up.IsReadyToPut = true;
 
@@ -60,7 +55,7 @@ namespace CustomControlsDemoModule.Models
             if (fromRow < 9)
             {
                 var down = datas[GetIndex(fromRow + 1, fromColumn)];
-                if (this.CheckPut(datas, down.Data))
+                if (this.CheckPutTo(datas, fromRow, fromColumn, down.Row, down.Column))
                 {
                     down.IsReadyToPut = true;
 
@@ -72,7 +67,7 @@ namespace CustomControlsDemoModule.Models
             if (fromColumn > 3)
             {
                 var left = datas[GetIndex(fromRow, fromColumn - 1)];
-                if (this.CheckPut(datas, left.Data))
+                if (this.CheckPutTo(datas, fromRow, fromColumn, left.Row, left.Column))
                 {
                     left.IsReadyToPut = true;
 
@@ -84,7 +79,7 @@ namespace CustomControlsDemoModule.Models
             if (fromColumn < 5)
             {
                 var right = datas[GetIndex(fromRow, fromColumn + 1)];
-                if (this.CheckPut(datas, right.Data))
+                if (this.CheckPutTo(datas, fromRow, fromColumn, right.Row, right.Column))
                 {
                     right.IsReadyToPut = true;
 

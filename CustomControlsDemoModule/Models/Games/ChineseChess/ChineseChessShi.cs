@@ -1,4 +1,5 @@
 ﻿
+using IceTea.Pure.Extensions;
 using System;
 using System.Collections.Generic;
 
@@ -6,21 +7,18 @@ namespace CustomControlsDemoModule.Models
 {
     internal class ChineseChessShi : InnerChineseChessModel
     {
-        public ChineseChessShi(bool isRed, int row, int column) : base(isRed, ChessType.仕, row, column)
+        public ChineseChessShi(bool isRed) : base(isRed, ChessType.仕)
         {
         }
 
-        protected override bool TryPutToCore(IList<ChineseChessModel> datas, IChineseChess targetData)
+        protected override bool CheckPutToCore(IList<ChineseChessModel> datas, int fromRow, int fromColumn, int toRow, int toColumn)
         {
-            int fromRow = this.Row, fromColumn = this.Column;
-            int toRow = targetData.Row, toColumn = targetData.Column;
-
-            if (toColumn < 3 || toColumn > 5)
+            if (!toColumn.IsInRange(3, 5))
             {
                 return false;
             }
 
-            if ((bool)IsRed)
+            if ((bool)this.IsRed)
             {
                 if (toRow < 7)
                 {
@@ -38,53 +36,58 @@ namespace CustomControlsDemoModule.Models
             return Math.Abs(toRow - fromRow) == 1 && Math.Abs(toColumn - fromColumn) == 1;
         }
 
-        protected override bool TryMoveCore(IList<ChineseChessModel> datas)
+        public override bool TryMarkMove(IList<ChineseChessModel> datas, int fromRow, int fromColumn)
         {
             bool hasChoice = false;
 
-            int fromRow = this.Row, fromColumn = this.Column;
-
-            // 上
-            if(fromRow > 0)
+            int toRow = fromRow - 1, toColumn = fromColumn - 1;
+            if(TryMark(datas, toRow, toColumn))
             {
-                var upLeft = datas[GetIndex(fromRow - 1, fromColumn - 1)];
-                if (this.CheckPut(datas, upLeft.Data))
-                {
-                    upLeft.IsReadyToPut = true;
-
-                    hasChoice = true;
-                }
-
-                var upRight = datas[GetIndex(fromRow - 1, fromColumn + 1)];
-                if (this.CheckPut(datas, upRight.Data))
-                {
-                    upRight.IsReadyToPut = true;
-
-                    hasChoice = true;
-                }
+                hasChoice = true;
             }
 
-            // 下
-            if (fromRow < 9)
+            toRow = fromRow - 1;
+            toColumn = fromColumn + 1;
+            if (TryMark(datas, toRow, toColumn))
             {
-                var downLeft = datas[GetIndex(fromRow + 1, fromColumn - 1)];
-                if (this.CheckPut(datas, downLeft.Data))
-                {
-                    downLeft.IsReadyToPut = true;
+                hasChoice = true;
+            }
 
-                    hasChoice = true;
-                }
+            toRow = fromRow + 1;
+            toColumn = fromColumn - 1;
+            if (TryMark(datas, toRow, toColumn))
+            {
+                hasChoice = true;
+            }
 
-                var downRight = datas[GetIndex(fromRow + 1, fromColumn + 1)];
-                if (this.CheckPut(datas, downRight.Data))
-                {
-                    downRight.IsReadyToPut = true;
-
-                    hasChoice = true;
-                }
+            toRow = fromRow + 1;
+            toColumn = fromColumn + 1;
+            if (TryMark(datas, toRow, toColumn))
+            {
+                hasChoice = true;
             }
 
             return hasChoice;
+
+            bool TryMark(IList<ChineseChessModel> datas, int toRow, int toColumn)
+            {
+                bool isRowValid = toRow.IsInRange(0, 2) || toRow.IsInRange(7, 9);
+                bool isColumnValid = toColumn.IsInRange(3, 5);
+
+                if (isRowValid && isColumnValid)
+                {
+                    var upLeft = datas[GetIndex(toRow, toColumn)];
+
+                    if (this.CheckPutTo(datas, fromRow, fromColumn, upLeft.Row, upLeft.Column))
+                    {
+                        upLeft.IsReadyToPut = true;
+
+                        return true;
+                    }
+                }
+
+                return false;
+            }
         }
     }
 }

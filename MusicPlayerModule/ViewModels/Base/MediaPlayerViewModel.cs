@@ -1,18 +1,18 @@
 ﻿using System.Windows.Input;
-using Prism.Commands;
 using System.Collections.ObjectModel;
-using Prism.Events;
-using IceTea.Pure.Utils;
-using IceTea.Pure.Contracts;
-using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
-using IceTea.Wpf.Atom.Utils.HotKey.App;
 using MusicPlayerModule.MsgEvents;
-using IceTea.Pure.Extensions;
 using MusicPlayerModule.Contracts;
-using IceTea.Pure.BaseModels;
 using PrismAppBasicLib.Models;
 using PrismAppBasicLib.Contracts;
 using MusicPlayerModule.MsgEvents.Media;
+using IceTea.Pure.BaseModels;
+using Prism.Events;
+using IceTea.Pure.Contracts;
+using IceTea.Pure.Utils;
+using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
+using Prism.Commands;
+using IceTea.Pure.Extensions;
+using IceTea.Wpf.Atom.Utils.HotKey.App;
 
 namespace MusicPlayerModule.ViewModels.Base;
 
@@ -87,12 +87,12 @@ internal abstract class MediaPlayerViewModel : NotifyBase
 
                 IList<string> pointANode = new List<string>(mediaNode)
                 {
-                    nameof(MediaBaseViewModel.PointAMills)
+                    nameof(MediaPlayerBaseViewModel.PointAMills)
                 };
 
                 IList<string> pointBNode = new List<string>(mediaNode)
                 {
-                    nameof(MediaBaseViewModel.PointBMills)
+                    nameof(MediaPlayerBaseViewModel.PointBMills)
                 };
 
                 config.WriteConfigNode(item.MediaName, mediaNode);
@@ -144,13 +144,13 @@ internal abstract class MediaPlayerViewModel : NotifyBase
                 () => this.CurrentMedia != null)
                 .ObservesProperty(() => this.CurrentMedia);
 
-        this.PrevCommand = new DelegateCommand<MediaBaseViewModel>(
+        this.PrevCommand = new DelegateCommand<MediaPlayerBaseViewModel>(
                 PrevMedia_CommandExecute,
                 currentVideo => this.CurrentMedia != null && this.DisplayPlaying.Count > 0)
                 .ObservesProperty(() => this.CurrentMedia)
                 .ObservesProperty<int>(() => this.DisplayPlaying.Count);
 
-        this.NextCommand = new DelegateCommand<MediaBaseViewModel>(
+        this.NextCommand = new DelegateCommand<MediaPlayerBaseViewModel>(
                 NextMedia_CommandExecute,
                 currentVideo => this.CurrentMedia != null && this.DisplayPlaying.Count > 0)
                 .ObservesProperty(() => this.CurrentMedia)
@@ -187,19 +187,19 @@ internal abstract class MediaPlayerViewModel : NotifyBase
                 () => this.CurrentMedia != null)
                 .ObservesProperty(() => this.CurrentMedia);
 
-        this.TogglePlayCommand = new DelegateCommand<MediaBaseViewModel>(
+        this.TogglePlayCommand = new DelegateCommand<MediaPlayerBaseViewModel>(
                 PlayInPlaying_CommandExecute,
                 _ => this.CurrentMedia != null)
                 .ObservesProperty(() => this.CurrentMedia);
 
-        this.TogglePlayCurrentCommand = new DelegateCommand<MediaBaseViewModel>(
+        this.TogglePlayCurrentCommand = new DelegateCommand<MediaPlayerBaseViewModel>(
                 PlayInPlaying_CommandExecute);
 
         this.AddFilesCommand = new DelegateCommand(AddMediaFromFileDialog_CommandExecute);
 
         this.AddFolderCommand = new DelegateCommand(AddMediaFromFolderDialog_CommandExecute);
 
-        this.DeletePlayingCommand = new DelegateCommand<MediaBaseViewModel>(
+        this.DeletePlayingCommand = new DelegateCommand<MediaPlayerBaseViewModel>(
                 DeleteFromPlaying_CommandExecute,
                 _ => this.DisplayPlaying.Count > 0)
                 .ObservesProperty(() => this.DisplayPlaying.Count);
@@ -239,7 +239,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
         this.CurrentMedia?.FastForward();
     }
 
-    protected void PrevMedia_CommandExecute(MediaBaseViewModel? currentMedia)
+    protected void PrevMedia_CommandExecute(MediaPlayerBaseViewModel? currentMedia)
     {
         if (currentMedia != null && this.DisplayPlaying.Count > 0)
         {
@@ -279,7 +279,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
         }
     }
 
-    protected void NextMedia_CommandExecute(MediaBaseViewModel? currentMedia)
+    protected void NextMedia_CommandExecute(MediaPlayerBaseViewModel? currentMedia)
     {
         if (currentMedia != null && this.DisplayPlaying.Count > 0)
         {
@@ -323,7 +323,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     /// 删除播放列表中的当前Media
     /// </summary>
     /// <param name="media"></param>
-    protected void DeleteFromPlaying_CommandExecute(MediaBaseViewModel media)
+    protected void DeleteFromPlaying_CommandExecute(MediaPlayerBaseViewModel media)
     {
         if (media.IsNotNullAnd(m => m.IsPlayingMedia))
         {
@@ -352,7 +352,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     protected abstract void AddMediaFromFileDialog_CommandExecute();
     protected abstract void AddMediaFromFolderDialog_CommandExecute();
 
-    protected virtual void PlayInPlaying_CommandExecute(MediaBaseViewModel currentMedia)
+    protected virtual void PlayInPlaying_CommandExecute(MediaPlayerBaseViewModel currentMedia)
     {
         if (currentMedia == this.CurrentMedia)
         {
@@ -427,7 +427,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
         });
     }
 
-    protected void SetAndPlay(MediaBaseViewModel? item)
+    protected void SetAndPlay(MediaPlayerBaseViewModel? item)
     {
         this.CurrentMedia = item;
 
@@ -540,10 +540,10 @@ internal abstract class MediaPlayerViewModel : NotifyBase
         };
     #endregion
 
-    public ObservableCollection<MediaBaseViewModel> DisplayPlaying { get; } = new();
+    public ObservableCollection<MediaPlayerBaseViewModel> DisplayPlaying { get; } = new();
 
-    protected MediaBaseViewModel _currentMedia;
-    public virtual MediaBaseViewModel CurrentMedia
+    protected MediaPlayerBaseViewModel _currentMedia;
+    public virtual MediaPlayerBaseViewModel CurrentMedia
     {
         get { return _currentMedia; }
         set
@@ -566,7 +566,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
                     IList<string> pointANode = new List<string>(MediaABPoints_ConfigKey)
                     {
                         _currentMedia.MediaName,
-                        nameof(MediaBaseViewModel.PointAMills)
+                        nameof(MediaPlayerBaseViewModel.PointAMills)
                     };
 
                     if (int.TryParse(
@@ -580,7 +580,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
                     IList<string> pointBNode = new List<string>(MediaABPoints_ConfigKey)
                     {
                         _currentMedia.MediaName,
-                        nameof(MediaBaseViewModel.PointBMills)
+                        nameof(MediaPlayerBaseViewModel.PointBMills)
                     };
 
                     if (int.TryParse(

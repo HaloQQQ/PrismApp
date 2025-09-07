@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using IceTea.Pure.BaseModels;
+using IceTea.Pure.Extensions;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -9,44 +11,48 @@ namespace MusicPlayerModule.Utils
     /// <summary>
     /// KRC歌词文件
     /// </summary>
-    public class KRCLyrics : IDisposable
+    public class KRCLyrics : DisposableBase
     {
-        public List<KRCLyricsLine> Lines => _lines;
+        private IList<KRCLyricsLine> _lines = new List<KRCLyricsLine>();
+        public IList<KRCLyricsLine> Lines => _lines;
 
+        private List<Tuple<Regex, Action<string>>> _properties;
+
+        #region Props
         /// <summary>
         /// 歌词文本
         /// </summary>
-        public string KRCString { get; set; }
+        public string KRCString { get; }
 
         /// <summary>
         /// ID （总是$00000000，意义未知）
         /// </summary>
-        public string ID { get; set; }
+        public string ID { get; private set; }
 
         /// <summary>
         /// 艺术家
         /// </summary>
-        public string Ar { get; set; }
+        public string Ar { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string Al { get; set; }
+        public string Al { get; private set; }
 
         /// <summary>
         /// 标题
         /// </summary>
-        public string Title { get; set; }
+        public string Title { get; private set; }
 
         /// <summary>
         /// 歌词文件作者
         /// </summary>
-        public string By { get; set; }
+        public string By { get; private set; }
 
         /// <summary>
         /// 歌曲文件Hash
         /// </summary>
-        public string Hash { get; set; }
+        public string Hash { get; private set; }
 
         /// <summary>
         /// 总时长
@@ -56,7 +62,7 @@ namespace MusicPlayerModule.Utils
             get
             {
                 //计算总时间=所有行时间
-                var sum = this.Lines.Select(x => x.LineDuring.TotalMilliseconds).Sum();
+                var sum = this.Lines.Sum(x => x.LineDuring.TotalMilliseconds);
                 return TimeSpan.FromMilliseconds(sum);
             }
         }
@@ -64,16 +70,13 @@ namespace MusicPlayerModule.Utils
         /// <summary>
         /// 偏移
         /// </summary>
-        public TimeSpan Offset { get; set; }
-
-        private List<KRCLyricsLine> _lines = new List<KRCLyricsLine>();
-        private List<Tuple<Regex, Action<string>>> _properties;
-        private readonly Regex _regGetValueFromKeyValuePair = new Regex(@"\[(.*):(.*)\]");
+        public TimeSpan Offset { get; private set; }
+        #endregion
 
         /// <summary>
         /// 默认构造
         /// </summary>
-        public KRCLyrics()
+        private KRCLyrics()
         {
             //this.Total = TimeSpan.Zero;
             this.Offset = TimeSpan.Zero;
@@ -104,39 +107,35 @@ namespace MusicPlayerModule.Utils
         private KRCLyrics(string krcstring) : this()
         {
             this.KRCString = krcstring;
-            this.LoadProperties();
-            this.LoadLines();
-        }
 
-        /// <summary>
-        /// 加载KRC属性
-        /// </summary>
-        private void LoadProperties()
-        {
-            foreach (var prop in _properties)
+            LoadProperties();
+            void LoadProperties()
             {
-                var m = prop.Item1.Match(this.KRCString);
-                if (m.Success)
-                {
-                    var mm = _regGetValueFromKeyValuePair.Match(m.Value);
+                Regex regGetValueFromKeyValuePair = new Regex(@"\[(.*):(.*)\]");
 
-                    if (mm.Success && mm.Groups.Count == 3)
+                foreach (var prop in _properties)
+                {
+                    var m = prop.Item1.Match(this.KRCString);
+                    if (m.Success)
                     {
-                        prop.Item2(mm.Groups[2].Value);
+                        var mm = regGetValueFromKeyValuePair.Match(m.Value);
+
+                        if (mm.Success && mm.Groups.Count == 3)
+                        {
+                            prop.Item2(mm.Groups[2].Value);
+                        }
                     }
                 }
             }
-        }
 
-        /// <summary>
-        /// 加载KRC所有行数据
-        /// </summary>
-        private void LoadLines()
-        {
-            var linesMachCollection = Regex.Matches(this.KRCString, @"\[\d{1,}[^\n]+\n");
-            foreach (Match m in linesMachCollection)
+            LoadLines();
+            void LoadLines()
             {
-                this.Lines.Add(new KRCLyricsLine(m.Value));
+                var linesMachCollection = Regex.Matches(this.KRCString, @"\[\d{1,}[^\n]+\n");
+                foreach (Match m in linesMachCollection)
+                {
+                    this._lines.Add(new KRCLyricsLine(m.Value));
+                }
             }
         }
 
@@ -144,11 +143,10 @@ namespace MusicPlayerModule.Utils
         /// 保存到文件
         /// </summary>
         /// <param name="outputFilePath"></param>
-        public void SaveToFile(string outputFilePath)
+        private void SaveToFile(string outputFilePath)
         {
             var sb = new StringBuilder();
             sb.AppendLine(string.Format("[id:{0}]", this.ID));
-
 
             if (!string.IsNullOrEmpty(this.Al))
             {
@@ -185,18 +183,14 @@ namespace MusicPlayerModule.Utils
                 sb.AppendLine(string.Format("[offset:{0}]", this.Offset.TotalMilliseconds));
             }
 
-
             foreach (var line in this.Lines)
             {
                 sb.AppendLine(line.KRCLineString);
             }
 
-
             var bytes = KRCFile.EncodeStringToBytes(sb.ToString());
 
-
             File.WriteAllBytes(outputFilePath, bytes);
-
         }
 
         /// <summary>
@@ -208,22 +202,15 @@ namespace MusicPlayerModule.Utils
         {
             var str = KRCFile.DecodeFileToString(inputFilePath);
 
-            return LoadFromString(str);
+            return new KRCLyrics(str);
         }
 
-        /// <summary>
-        /// 从文本加载
-        /// </summary>
-        /// <param name="krcstring"></param>
-        /// <returns></returns>
-        public static KRCLyrics LoadFromString(string krcstring)
-        {
-            return new KRCLyrics(krcstring);
-        }
+        public static async Task<IEnumerable<string>> TryGetLyricPathsAsync(string directoryPath)
+                => await Task.FromResult(directoryPath.GetFiles(true, str => str.EndsWithIgnoreCase(".krc"))).ConfigureAwait(false);
 
-        public void Dispose()
+        protected override void DisposeCore()
         {
-            foreach (var item in _lines)
+            foreach (var item in this._lines)
             {
                 item.Dispose();
             }
@@ -236,6 +223,8 @@ namespace MusicPlayerModule.Utils
                 _properties.Clear();
                 _properties = null;
             }
+
+            base.DisposeCore();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace MusicPlayerModule.ViewModels;
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
 #pragma warning disable CS8602
 
-internal class PlayingMusicViewModel : MediaBaseViewModel, IEquatable<PlayingMusicViewModel>, IEquatable<FavoriteMusicViewModel>
+internal class PlayingMusicViewModel : MediaPlayerBaseViewModel, IEquatable<PlayingMusicViewModel>, IEquatable<FavoriteMusicViewModel>
 {
     public PlayingMusicViewModel(MusicModel music, SettingModel lyricSetting)
         : base(music)
@@ -122,9 +122,40 @@ internal class PlayingMusicViewModel : MediaBaseViewModel, IEquatable<PlayingMus
         {
             // 不要await不然会卡死界面
 #pragma warning disable CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
-            LyricUtil.TryLoadLyricAsync(_lyricSetting.Value, this.Music);
+            TryLoadLyricAsync(_lyricSetting.Value);
 
             return false;
+
+            async Task TryLoadLyricAsync(string lyricDir)
+            {
+                var music = this.Music;
+                if (music.IsPureMusic || music.IsLoadingLyric || music.Lyric != null)
+                {
+                    return;
+                }
+
+                IEnumerable<string> paths = await KRCLyrics.TryGetLyricPathsAsync(lyricDir).ConfigureAwait(false);
+
+                string? lyricFilePath = paths.FirstOrDefault(path => path.ContainsIgnoreCase(music.Name) &&
+                                                                (
+                                                                    path.ContainsIgnoreCase(music.Performer)
+                                                                    || path.ContainsIgnoreCase(music.Singer)
+                                                                )
+                                                            );
+
+                if (!(music.IsPureMusic = lyricFilePath == null))
+                {
+                    music.IsLoadingLyric = true;
+
+                    await Task.Delay(10).ConfigureAwait(false);
+
+#pragma warning disable CS8604 // 引用类型参数可能为 null。
+                    music.Lyric = KRCLyrics.LoadFromFile(lyricFilePath);
+
+                    music.IsLoadingLyric = false;
+                }
+
+            }
         }
 
         var lines = lyric.Lines;
@@ -260,7 +291,7 @@ internal class PlayingMusicViewModel : MediaBaseViewModel, IEquatable<PlayingMus
         }
     }
 
-    public void DisConnect()
+    internal void DisConnect()
     {
         base.DisposeCore();
 

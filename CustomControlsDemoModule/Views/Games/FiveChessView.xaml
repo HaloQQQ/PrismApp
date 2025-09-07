@@ -15,208 +15,7 @@
     </prism:Dialog.WindowStyle>
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <Style x:Key="Singal" TargetType="Ellipse">
-                <Setter Property="Stroke" Value="Yellow" />
-                <Setter Property="StrokeThickness" Value="4" />
-
-                <Setter Property="Width" Value="35" />
-                <Setter Property="Height" Value="35" />
-
-                <Setter Property="Effect">
-                    <Setter.Value>
-                        <DropShadowEffect BlurRadius="6" ShadowDepth="3" />
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <DataTemplate x:Key="Chess" DataType="models:ChessModel">
-                <Button Command="{Binding PressCommand}" CommandParameter="{Binding DataContext.IsWhiteTurn, RelativeSource={RelativeSource AncestorType=UserControl}}">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Ellipse
-                                Margin="{TemplateBinding Margin}"
-                                Fill="{TemplateBinding Background}"
-                                Stroke="{TemplateBinding BorderBrush}"
-                                StrokeDashArray="5 2">
-                                <Ellipse.Style>
-                                    <Style TargetType="Ellipse">
-                                        <Setter Property="Width" Value="38" />
-                                        <Setter Property="Height" Value="38" />
-
-                                        <Setter Property="StrokeThickness" Value="1" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsSucceed}" Value="True">
-                                                <Setter Property="Width" Value="36" />
-                                                <Setter Property="Height" Value="36" />
-
-                                                <Setter Property="StrokeThickness" Value="2" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Ellipse.Style>
-                            </Ellipse>
-                        </ControlTemplate>
-                    </Button.Template>
-
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="BorderBrush" Value="Transparent" />
-                            <Setter Property="Background" Value="Transparent" />
-
-                            <Setter Property="Margin" Value="0" />
-                            <Setter Property="Padding" Value="0" />
-
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsSucceed}" Value="True">
-                                    <Setter Property="BorderBrush" Value="Red" />
-                                </DataTrigger>
-
-                                <DataTrigger Binding="{Binding IsWhite}" Value="True">
-                                    <Setter Property="Background">
-                                        <Setter.Value>
-                                            <RadialGradientBrush Center="0.3,0.3" GradientOrigin="0.3,0.3" RadiusX="0.4" RadiusY="0.4">
-                                                <GradientStop Color="White" />
-                                                <GradientStop Offset="0.2" Color="LightGray" />
-                                                <GradientStop Offset="1" Color="White" />
-                                            </RadialGradientBrush>
-                                        </Setter.Value>
-                                    </Setter>
-
-                                    <Setter Property="Effect">
-                                        <Setter.Value>
-                                            <DropShadowEffect
-                                                BlurRadius="3"
-                                                Opacity="0.6"
-                                                ShadowDepth="6" />
-                                        </Setter.Value>
-                                    </Setter>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding IsWhite}" Value="False">
-                                    <Setter Property="Background">
-                                        <Setter.Value>
-                                            <RadialGradientBrush Center="0.3,0.3" GradientOrigin="0.3,0.3" RadiusX="0.4" RadiusY="0.4">
-                                                <GradientStop Color="White" />
-                                                <GradientStop Offset="0.2" Color="LightGray" />
-                                                <GradientStop Offset="1" Color="Black" />
-                                            </RadialGradientBrush>
-                                        </Setter.Value>
-                                    </Setter>
-
-                                    <Setter Property="Effect">
-                                        <Setter.Value>
-                                            <DropShadowEffect
-                                                BlurRadius="3"
-                                                Opacity="0.6"
-                                                ShadowDepth="6" />
-                                        </Setter.Value>
-                                    </Setter>
-                                </DataTrigger>
-
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsWhite}" Value="{x:Null}" />
-                                        <Condition Binding="{Binding DataContext.IsWhiteTurn, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True" />
-                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
-                                    </MultiDataTrigger.Conditions>
-
-                                    <Setter Property="Background" Value="{StaticResource LightWhite}" />
-
-                                    <Setter Property="BorderBrush" Value="White" />
-                                </MultiDataTrigger>
-
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding IsWhite}" Value="{x:Null}" />
-                                        <Condition Binding="{Binding DataContext.IsWhiteTurn, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="False" />
-                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
-                                    </MultiDataTrigger.Conditions>
-
-                                    <Setter Property="Background" Value="{StaticResource LightWhite}" />
-
-                                    <Setter Property="BorderBrush" Value="Black" />
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-            </DataTemplate>
-
-            <Style x:Key="UnUsedMark" TargetType="Ellipse">
-                <Setter Property="Fill" Value="Black" />
-                <Setter Property="Width" Value="10" />
-                <Setter Property="Height" Value="10" />
-            </Style>
-
-            <Style
-                x:Key="HorizentalLable"
-                BasedOn="{StaticResource TextBlock_Theme}"
-                TargetType="TextBlock">
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="FontWeight" Value="Bold" />
-                <Setter Property="Canvas.Left" Value="590" />
-            </Style>
-
-            <Style
-                x:Key="VerticalLable"
-                BasedOn="{StaticResource TextBlock_Theme}"
-                TargetType="TextBlock">
-                <Setter Property="FontWeight" Value="Bold" />
-                <Setter Property="Canvas.Top" Value="590" />
-            </Style>
-
-            <Style
-                x:Key="FunctionButton"
-                BasedOn="{StaticResource ButtonBase_Icon_ScaleDown_Big_SkyBlue}"
-                TargetType="Button">
-                <Setter Property="Margin" Value="10,0" />
-
-                <Setter Property="FontSize" Value="40" />
-
-                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-            </Style>
-
-            <Style
-                x:Key="StartPauseButton"
-                BasedOn="{StaticResource FunctionButton}"
-                TargetType="Button">
-                <Setter Property="Content" Value="&#xe87c;" />
-
-                <Setter Property="Command" Value="{Binding StartPauseCommand}" />
-
-                <Setter Property="ToolTip" Value="{Binding KeyGestureDic[播放/暂停].ToolTip}" />
-
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsUsable}" Value="True">
-                        <Setter Property="Content" Value="&#xe62a;" />
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-
-            <Style
-                x:Key="RePlayButton"
-                BasedOn="{StaticResource FunctionButton}"
-                TargetType="Button">
-                <Setter Property="FontSize" Value="30" />
-
-                <Setter Property="Command" Value="{Binding RePlayCommand}" />
-                <Setter Property="Content" Value="&#xe63e;" />
-
-                <Setter Property="ToolTip" Value="{Binding KeyGestureDic[重玩].ToolTip}" />
-            </Style>
-
-            <Style
-                x:Key="CancelLastButton"
-                BasedOn="{StaticResource FunctionButton}"
-                TargetType="Button">
-                <Setter Property="FontSize" Value="30" />
-
-                <Setter Property="Command" Value="{Binding CancelLastCommand}" />
-                <Setter Property="Content" Value="&#xe651;" />
-
-                <Setter Property="ToolTip" Value="{Binding KeyGestureDic[悔棋].ToolTip}" />
-            </Style>
-        </ResourceDictionary>
+        <ResourceDictionary Source="/CustomControlsDemoModule;component/Resources/Games/FiveChess.xaml" />
     </UserControl.Resources>
 
     <UserControl.InputBindings>
@@ -280,7 +79,7 @@
                                     </RadialGradientBrush>
                                 </Ellipse.Fill>
                                 <Ellipse.Style>
-                                    <Style BasedOn="{StaticResource Singal}" TargetType="Ellipse">
+                                    <Style BasedOn="{StaticResource FiveChess_Signal}" TargetType="Ellipse">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsWhiteTurn}" Value="True">
                                                 <Setter Property="Stroke" Value="Transparent" />
@@ -328,7 +127,7 @@
                                     </RadialGradientBrush>
                                 </Ellipse.Fill>
                                 <Ellipse.Style>
-                                    <Style BasedOn="{StaticResource Singal}" TargetType="Ellipse">
+                                    <Style BasedOn="{StaticResource FiveChess_Signal}" TargetType="Ellipse">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsWhiteTurn}" Value="False">
                                                 <Setter Property="Stroke" Value="Transparent" />

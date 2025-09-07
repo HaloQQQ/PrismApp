@@ -8,15 +8,12 @@ namespace CustomControlsDemoModule.Models
     /// </summary>
     internal class ChineseChessMa : InnerChineseChessModel
     {
-        public ChineseChessMa(bool isRed, int row, int column) : base(isRed, ChessType.馬, row, column)
+        public ChineseChessMa(bool isRed) : base(isRed, ChessType.馬)
         {
         }
 
-        protected override bool TryPutToCore(IList<ChineseChessModel> datas, IChineseChess targetData)
+        protected override bool CheckPutToCore(IList<ChineseChessModel> datas, int fromRow, int fromColumn, int toRow, int toColumn)
         {
-            int fromRow = this.Row, fromColumn = this.Column;
-            int toRow = targetData.Row, toColumn = targetData.Column;
-
             // 左上 - -
             if (fromColumn - 1 == toColumn && fromRow - 2 == toRow)
             {
@@ -104,18 +101,16 @@ namespace CustomControlsDemoModule.Models
             return false;
         }
 
-        protected override bool TryMoveCore(IList<ChineseChessModel> datas)
+        public override bool TryMarkMove(IList<ChineseChessModel> datas, int fromRow, int fromColumn)
         {
             bool hasChoice = false;
-
-            int fromRow = this.Row, fromColumn = this.Column;
 
             // 左上 --
             if (fromRow > 1 && fromColumn > 0)
             {
                 var upLeft = datas[GetIndex(fromRow - 2, fromColumn - 1)];
 
-                if (this.CheckPut(datas, upLeft.Data))
+                if (this.CheckPutTo(datas, fromRow, fromColumn, upLeft.Row, upLeft.Column))
                 {
                     upLeft.IsReadyToPut = true;
 
@@ -127,7 +122,7 @@ namespace CustomControlsDemoModule.Models
             {
                 var upLeft = datas[GetIndex(fromRow - 1, fromColumn - 2)];
 
-                if (this.CheckPut(datas, upLeft.Data))
+                if (this.CheckPutTo(datas, fromRow, fromColumn, upLeft.Row, upLeft.Column))
                 {
                     upLeft.IsReadyToPut = true;
 
@@ -140,7 +135,7 @@ namespace CustomControlsDemoModule.Models
             {
                 var downLeft = datas[GetIndex(fromRow + 2, fromColumn - 1)];
 
-                if (this.CheckPut(datas, downLeft.Data))
+                if (this.CheckPutTo(datas, fromRow, fromColumn, downLeft.Row, downLeft.Column))
                 {
                     downLeft.IsReadyToPut = true;
 
@@ -152,7 +147,7 @@ namespace CustomControlsDemoModule.Models
             {
                 var downLeft = datas[GetIndex(fromRow + 1, fromColumn - 2)];
 
-                if (this.CheckPut(datas, downLeft.Data))
+                if (this.CheckPutTo(datas, fromRow, fromColumn, downLeft.Row, downLeft.Column))
                 {
                     downLeft.IsReadyToPut = true;
 
@@ -165,7 +160,7 @@ namespace CustomControlsDemoModule.Models
             {
                 var upRight = datas[GetIndex(fromRow - 2, fromColumn + 1)];
 
-                if (this.CheckPut(datas, upRight.Data))
+                if (this.CheckPutTo(datas, fromRow, fromColumn, upRight.Row, upRight.Column))
                 {
                     upRight.IsReadyToPut = true;
 
@@ -177,7 +172,7 @@ namespace CustomControlsDemoModule.Models
             {
                 var upRight = datas[GetIndex(fromRow - 1, fromColumn + 2)];
 
-                if (this.CheckPut(datas, upRight.Data))
+                if (this.CheckPutTo(datas, fromRow, fromColumn, upRight.Row, upRight.Column))
                 {
                     upRight.IsReadyToPut = true;
 
@@ -190,7 +185,7 @@ namespace CustomControlsDemoModule.Models
             {
                 var downRight = datas[GetIndex(fromRow + 2, fromColumn + 1)];
 
-                if (this.CheckPut(datas, downRight.Data))
+                if (this.CheckPutTo(datas, fromRow, fromColumn, downRight.Row, downRight.Column))
                 {
                     downRight.IsReadyToPut = true;
 
@@ -202,7 +197,7 @@ namespace CustomControlsDemoModule.Models
             {
                 var downRight = datas[GetIndex(fromRow + 1, fromColumn + 2)];
 
-                if (this.CheckPut(datas, downRight.Data))
+                if (this.CheckPutTo(datas, fromRow, fromColumn, downRight.Row, downRight.Column))
                 {
                     downRight.IsReadyToPut = true;
 

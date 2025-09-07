@@ -1,17 +1,17 @@
 ﻿using MusicPlayerModule.Models;
-using Prism.Commands;
-using Prism.Events;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using IceTea.Pure.Extensions;
-using IceTea.Pure.Contracts;
-using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using MusicPlayerModule.ViewModels.Base;
-using IceTea.Wpf.Atom.Utils.HotKey.App;
 using MusicPlayerModule.Contracts;
 using MusicPlayerModule.MsgEvents.Music;
 using PrismAppBasicLib.Models;
 using PrismAppBasicLib.Contracts;
+using Prism.Events;
+using IceTea.Pure.Contracts;
+using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
+using Prism.Commands;
+using IceTea.Wpf.Atom.Utils.HotKey.App;
+using IceTea.Pure.Extensions;
 
 namespace MusicPlayerModule.ViewModels;
 
@@ -128,7 +128,7 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
 
     public Collection<PlayingMusicViewModel> Playing { get; } = new();
 
-    protected override bool AllowRefreshPlayingIndex => PlayingListFilteKeyWords.IsNullOrEmpty();
+    protected override bool AllowRefreshPlayingIndex => PlayingListFilteKeyWords.IsNullOrBlank();
 
     /// <summary>
     /// 播放队列筛选条件
@@ -384,10 +384,10 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
 
     protected override void DisposeCore()
     {
-        base.DisposeCore();
-
         this.DistributeMusicViewModel.Dispose();
 
         PlayingMusicViewModel.ToNextMusic -= NextMedia_CommandExecute;
+
+        base.DisposeCore();
     }
 }

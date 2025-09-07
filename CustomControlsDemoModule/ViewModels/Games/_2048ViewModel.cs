@@ -164,6 +164,8 @@ namespace CustomControlsDemoModule.ViewModels
 
                 MaxScore = Math.Max(MaxScore, Score);
 
+                this.Over_Wav();
+                
                 CommonUtil.PublishMessage(_eventAggregator, "游戏结束");
 
                 return true;
@@ -221,7 +223,7 @@ namespace CustomControlsDemoModule.ViewModels
 
             if (Datas[index] == 0)
             {
-                Datas[index].Value = (index & 1) == 0 ? 2 : 4;
+                Datas[index].Value = index % 8 != 0 ? 2 : 4;
 
                 if (Datas[index].IsCreating)
                 {
@@ -238,6 +240,8 @@ namespace CustomControlsDemoModule.ViewModels
                 }
 
                 SetRandomValue();
+
+                this.Move_Wav();
             }
         }
 

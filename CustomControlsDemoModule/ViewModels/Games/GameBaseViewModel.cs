@@ -36,6 +36,8 @@ namespace CustomControlsDemoModule.ViewModels
             }, () => !IsGameOver).ObservesProperty(() => IsGameOver);
 
             RePlayCommand = new DelegateCommand(RePlay_CommandExecute);
+
+            this.Begin_Wav();
         }
 
         #region Logicals
@@ -70,6 +72,8 @@ namespace CustomControlsDemoModule.ViewModels
         protected virtual void RePlay_CommandExecute()
         {
             this.IsGameOver = false;
+
+            this.Restart_Wav();
         }
         #endregion
 
@@ -77,17 +81,24 @@ namespace CustomControlsDemoModule.ViewModels
         private MediaPlayer _player = new MediaPlayer();
         protected void PlayMedia(string mediaName)
         {
-            _player.Open(new Uri(Path.Combine(AppStatics.ExeDirectory, "Resources/medias" , mediaName), UriKind.RelativeOrAbsolute));
+            _player.Open(new Uri(Path.Combine(AppStatics.ExeDirectory, "Resources/Medias", mediaName), UriKind.RelativeOrAbsolute));
             _player.Play();
         }
 
+        protected void Begin_Wav() => this.PlayMedia("begin.wav");
+        protected void Move_Wav() => this.PlayMedia("move.wav");
+        protected void Over_Wav() => this.PlayMedia("over.wav");
+        protected void Restart_Wav() => this.PlayMedia("restart.wav");
+
+
         public bool CanCloseDialog()
-        {             
+        {
             return true;
         }
 
         public void OnDialogClosed()
         {
+            this.Dispose();
         }
 
         public void OnDialogOpened(IDialogParameters parameters)
@@ -108,7 +119,17 @@ namespace CustomControlsDemoModule.ViewModels
         public bool IsUsable
         {
             get => _isUsable;
-            private set { SetProperty(ref _isUsable, value); }
+            private set
+            {
+                if (SetProperty(ref _isUsable, value))
+                {
+                    this.OnUsableChanged(value);
+                }
+            }
+        }
+
+        protected virtual void OnUsableChanged(bool newValue)
+        {
         }
 
         private bool _isGameOver;
@@ -121,9 +142,17 @@ namespace CustomControlsDemoModule.ViewModels
             get => _isGameOver;
             protected set
             {
-                SetProperty(ref _isGameOver, value);
+                if (SetProperty(ref _isGameOver, value) && value)
+                {
+                    this.OnGameOver();
+                }
+
                 IsUsable = !_isGameOver;
             }
+        }
+
+        protected virtual void OnGameOver()
+        {
         }
 
         public string Title => this.GameName;

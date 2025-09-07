@@ -463,65 +463,72 @@
                         </Image>
                     </Viewbox>
 
-                    <ListBox
-                        x:Name="LyricList"
-                        DockPanel.Dock="Top"
-                        Focusable="False"
-                        ItemsSource="{Binding CurrentMedia.Music.Lyric.Lines}"
-                        OpacityMask="{StaticResource GradientOpacityMask}"
-                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                        SelectionChanged="LyricList_SelectionChanged"
-                        VirtualizingPanel.IsVirtualizing="False">
-                        <ListBox.ItemContainerStyle>
-                            <Style BasedOn="{StaticResource LyricListBoxItem}" TargetType="ListBoxItem">
-                                <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
-                                <EventSetter Event="PreviewMouseRightButtonDown" Handler="SwitchLyricMode" />
+                    <Grid DockPanel.Dock="Top">
+                        <ListBox
+                            x:Name="LyricList"
+                            Focusable="False"
+                            ItemsSource="{Binding CurrentMedia.Music.Lyric.Lines}"
+                            OpacityMask="{StaticResource GradientOpacityMask}"
+                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                            SelectionChanged="LyricList_SelectionChanged"
+                            VirtualizingPanel.IsVirtualizing="False">
+                            <ListBox.ItemContainerStyle>
+                                <Style BasedOn="{StaticResource LyricListBoxItem}" TargetType="ListBoxItem">
+                                    <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
+                                    <EventSetter Event="PreviewMouseRightButtonDown" Handler="SwitchLyricMode" />
 
-                                <Setter Property="Padding" Value="0,10" />
+                                    <Setter Property="Padding" Value="0,10" />
 
-                                <Setter Property="Width" Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=DockPanel}}" />
+                                    <Setter Property="Width" Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=DockPanel}}" />
 
-                                <Setter Property="IsSelected" Value="{Binding IsPlayingLine, Mode=OneWay}" />
+                                    <Setter Property="IsSelected" Value="{Binding IsPlayingLine, Mode=OneWay}" />
 
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsPlayingLine}" Value="True">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation
-                                                        DecelerationRatio="0.5"
-                                                        Storyboard.TargetProperty="(ListBoxItem.RenderTransform).(ScaleTransform.ScaleX)"
-                                                        To="1.5"
-                                                        Duration="0:0:0.5" />
-                                                    <DoubleAnimation
-                                                        DecelerationRatio="0.5"
-                                                        Storyboard.TargetProperty="(ListBoxItem.RenderTransform).(ScaleTransform.ScaleY)"
-                                                        To="1.5"
-                                                        Duration="0:0:0.5" />
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation
-                                                        DecelerationRatio="0.5"
-                                                        Storyboard.TargetProperty="(ListBoxItem.RenderTransform).(ScaleTransform.ScaleX)"
-                                                        To="1.0"
-                                                        Duration="0:0:0.5" />
-                                                    <DoubleAnimation
-                                                        DecelerationRatio="0.5"
-                                                        Storyboard.TargetProperty="(ListBoxItem.RenderTransform).(ScaleTransform.ScaleY)"
-                                                        To="1.0"
-                                                        Duration="0:0:0.5" />
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                    </ListBox>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsPlayingLine}" Value="True">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation
+                                                            DecelerationRatio="0.5"
+                                                            Storyboard.TargetProperty="(ListBoxItem.RenderTransform).(ScaleTransform.ScaleX)"
+                                                            To="1.5"
+                                                            Duration="0:0:0.5" />
+                                                        <DoubleAnimation
+                                                            DecelerationRatio="0.5"
+                                                            Storyboard.TargetProperty="(ListBoxItem.RenderTransform).(ScaleTransform.ScaleY)"
+                                                            To="1.5"
+                                                            Duration="0:0:0.5" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation
+                                                            DecelerationRatio="0.5"
+                                                            Storyboard.TargetProperty="(ListBoxItem.RenderTransform).(ScaleTransform.ScaleX)"
+                                                            To="1.0"
+                                                            Duration="0:0:0.5" />
+                                                        <DoubleAnimation
+                                                            DecelerationRatio="0.5"
+                                                            Storyboard.TargetProperty="(ListBoxItem.RenderTransform).(ScaleTransform.ScaleY)"
+                                                            To="1.0"
+                                                            Duration="0:0:0.5" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
+
+                        <NeedleWaitLoad
+                            Width="80"
+                            Height="80"
+                            Foreground="DodgerBlue"
+                            Visibility="{Binding CurrentMedia.Music.IsLoadingLyric, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
+                    </Grid>
                 </Grid>
             </DockPanel>
         </DockPanel>

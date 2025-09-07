@@ -9,10 +9,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\*" />
-    <Resource Include="Resources\pictures\*" />
+    <Resource Include="Resources\Pictures\*" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\medias\*">
+    <Content Include="Resources\Medias\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

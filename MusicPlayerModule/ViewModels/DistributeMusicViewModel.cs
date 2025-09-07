@@ -1,20 +1,20 @@
 ﻿using MusicPlayerModule.Models;
-using Prism.Commands;
-using Prism.Events;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using IceTea.Pure.Extensions;
-using IceTea.Pure.Utils;
-using IceTea.Pure.Contracts;
-using IceTea.Wpf.Core.Utils;
 using MusicPlayerModule.Contracts;
 using System.Collections.Specialized;
-using IceTea.Pure.BaseModels;
 using PrismAppBasicLib.Models;
 using PrismAppBasicLib.Contracts;
-using IceTea.Wpf.Atom.Utils;
 using Microsoft.Win32;
 using MusicPlayerModule.Utils;
+using IceTea.Pure.BaseModels;
+using IceTea.Pure.Utils;
+using IceTea.Pure.Extensions;
+using Prism.Events;
+using IceTea.Pure.Contracts;
+using Prism.Commands;
+using IceTea.Wpf.Core.Utils;
+using IceTea.Wpf.Atom.Utils;
 using IceTea.Wpf.Atom.Contracts.FileFilters;
 
 namespace MusicPlayerModule.ViewModels
@@ -533,16 +533,16 @@ namespace MusicPlayerModule.ViewModels
             var musicSetting = settingManger[CustomStatics.MUSIC];
             var lyricSetting = settingManger[CustomStatics.LYRIC];
 
-            var selectedPath = WpfCoreUtils.OpenFolderDialog(musicSetting.Value);
-            if (!selectedPath.IsNullOrBlank())
+            var selectedFolder = WpfCoreUtils.OpenFolderDialog(musicSetting.Value);
+            if (!selectedFolder.IsNullOrBlank())
             {
-                var list = selectedPath.GetFiles(true, str => str.EndsWithIgnoreCase(".mp3"));
+                var list = selectedFolder.GetFiles(true, str => str.EndsWithIgnoreCase(".mp3"));
 
                 if (await this.TryLoadMusicAsync(list))
                 {
-                    musicSetting.Value = selectedPath;
+                    musicSetting.Value = selectedFolder;
 
-                    var lyricDir = await LyricUtil.TryGetLyricDir(selectedPath);
+                    var lyricDir = await this.TryGetRealDir(selectedFolder);
                     if (!lyricDir.IsNullOrBlank())
                     {
                         lyricSetting.Value = lyricDir;
@@ -550,7 +550,7 @@ namespace MusicPlayerModule.ViewModels
                 }
                 else
                 {
-                    CommonUtil.PublishMessage(_eventAggregator, $"【{selectedPath}】中找不到新的mp3音乐文件");
+                    CommonUtil.PublishMessage(_eventAggregator, $"【{selectedFolder}】中找不到新的mp3音乐文件");
                 }
             }
         }
@@ -571,7 +571,7 @@ namespace MusicPlayerModule.ViewModels
 
                     musicSetting.Value = musicDir;
 
-                    var lyricDir = await LyricUtil.TryGetLyricDir(musicDir);
+                    var lyricDir = await this.TryGetRealDir(musicDir);
                     if (!lyricDir.IsNullOrBlank())
                     {
                         lyricSetting.Value = lyricDir;
@@ -582,6 +582,18 @@ namespace MusicPlayerModule.ViewModels
                     CommonUtil.PublishMessage(_eventAggregator, $"选中文件中不存在新的mp3音乐文件");
                 }
             }
+        }
+
+        private async Task<string> TryGetRealDir(string originDir)
+        {
+            var lyricFiles = await KRCLyrics.TryGetLyricPathsAsync(originDir);
+
+            if (!lyricFiles.Any())
+            {
+                return string.Empty;
+            }
+
+            return lyricFiles.First().GetParentPath();
         }
 
         private async Task<bool> TryLoadMusicAsync(IEnumerable<string> filePaths)

@@ -5,7 +5,7 @@ using MusicPlayerModule.Models;
 
 namespace MusicPlayerModule.ViewModels.Base
 {
-    internal abstract class MediaBaseViewModel : ChildrenBase
+    internal abstract class MediaPlayerBaseViewModel : ChildrenBase
     {
         private int _index;
         public int Index
@@ -25,7 +25,7 @@ namespace MusicPlayerModule.ViewModels.Base
         public string MediaName { get; }
         public string FilePath { get; }
 
-        protected MediaBaseViewModel(MediaBaseModel mediaBase)
+        protected MediaPlayerBaseViewModel(MediaBaseModel mediaBase)
         {
             mediaBase.AssertNotNull(nameof(MediaBaseModel));
 

@@ -8,15 +8,12 @@ namespace CustomControlsDemoModule.Models
     /// </summary>
     internal class ChineseChessPao : InnerChineseChessModel
     {
-        public ChineseChessPao(bool isRed, int row, int column) : base(isRed, ChessType.炮, row, column)
+        public ChineseChessPao(bool isRed) : base(isRed, ChessType.炮)
         {
         }
 
-        protected override bool TryPutToCore(IList<ChineseChessModel> datas, IChineseChess targetData)
+        protected override bool CheckPutToCore(IList<ChineseChessModel> datas, int fromRow, int fromColumn, int toRow, int toColumn)
         {
-            int fromRow = this.Row, fromColumn = this.Column;
-            int toRow = targetData.Row, toColumn = targetData.Column;
-
             // 移动
             var isSameRow = fromRow == toRow;
             var isSameColumn = fromColumn == toColumn;
@@ -30,6 +27,8 @@ namespace CustomControlsDemoModule.Models
             {
                 return false;
             }
+
+            var targetData = datas[GetIndex(toRow, toColumn)].Data;
 
             var mountainsCount = 0;
 
@@ -92,18 +91,16 @@ namespace CustomControlsDemoModule.Models
             return true;
         }
 
-        protected override bool TryMoveCore(IList<ChineseChessModel> datas)
+        public override bool TryMarkMove(IList<ChineseChessModel> datas, int fromRow, int fromColumn)
         {
             bool hasChoice = false;
-
-            int fromRow = this.Row, fromColumn = this.Column;
 
             if (fromRow > 0)
             {
                 var currentRow = fromRow - 1;
                 var up = datas[GetIndex(currentRow, fromColumn)];
 
-                while (this.CheckPut(datas, up.Data))
+                while (this.CheckPutTo(datas, fromRow, fromColumn, up.Row, up.Column))
                 {
                     up.IsReadyToPut = true;
 
@@ -149,7 +146,7 @@ namespace CustomControlsDemoModule.Models
                 var currentRow = fromRow + 1;
                 var down = datas[GetIndex(currentRow, fromColumn)];
 
-                while (this.CheckPut(datas, down.Data))
+                while (this.CheckPutTo(datas, fromRow, fromColumn, down.Row, down.Column))
                 {
                     down.IsReadyToPut = true;
 
@@ -195,7 +192,7 @@ namespace CustomControlsDemoModule.Models
                 var currentColumn = fromColumn - 1;
                 var left = datas[GetIndex(fromRow, currentColumn)];
 
-                while (this.CheckPut(datas, left.Data))
+                while (this.CheckPutTo(datas, fromRow, fromColumn, left.Row, left.Column))
                 {
                     left.IsReadyToPut = true;
 
@@ -241,7 +238,7 @@ namespace CustomControlsDemoModule.Models
                 var currentColumn = fromColumn + 1;
                 var right = datas[GetIndex(fromRow, currentColumn)];
 
-                while (this.CheckPut(datas, right.Data))
+                while (this.CheckPutTo(datas, fromRow, fromColumn, right.Row, right.Column))
                 {
                     right.IsReadyToPut = true;
 

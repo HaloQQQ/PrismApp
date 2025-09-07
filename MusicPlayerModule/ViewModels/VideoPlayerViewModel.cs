@@ -191,7 +191,7 @@ namespace MusicPlayerModule.ViewModels
             _eventAggregator.GetEvent<ResetPlayerAndPlayVideoEvent>().Publish(this.Identity);
         }
 
-        protected override void PlayInPlaying_CommandExecute(MediaBaseViewModel currentMedia)
+        protected override void PlayInPlaying_CommandExecute(MediaPlayerBaseViewModel currentMedia)
         {
             base.PlayInPlaying_CommandExecute(currentMedia);
 

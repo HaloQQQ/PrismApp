@@ -56,7 +56,14 @@ internal class MusicModel : MediaBaseModel, IEquatable<MusicModel>
     private bool _noCover;
     private WeakReference<ImageSource>? _weakReference;
 
-    public bool IsLoadingLyric { get; internal set; }
+
+    private bool _isLoadingLyric;
+    public bool IsLoadingLyric
+    {
+        get => _isLoadingLyric;
+        internal set => SetProperty<bool>(ref _isLoadingLyric, value);
+    }
+
     public bool IsPureMusic { get; internal set; }
 
     private string _filePath;

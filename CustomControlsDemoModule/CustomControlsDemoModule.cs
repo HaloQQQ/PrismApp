@@ -25,7 +25,7 @@ namespace CustomControlsDemoModule
             containerRegistry.RegisterSingleton<FiveChessViewModel>();
             
             containerRegistry.RegisterDialog<ChineseChessView>("象棋");
-            containerRegistry.RegisterSingleton<ChineseChessViewModel>();
+            containerRegistry.Register<ChineseChessViewModel>();
 
             containerRegistry.RegisterDialog<FetchBackColorView>();
             containerRegistry.RegisterDialogWindow<FetchBackColor>(nameof(FetchBackColor));

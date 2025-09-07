@@ -37,6 +37,8 @@ namespace CustomControlsDemoModule.ViewModels
                 {
                     IsGameOver = true;
 
+                    this.Over_Wav();
+
                     var msg = (bool)model.IsWhite ? "白方" : "黑方";
 
                     CommonUtil.PublishMessage(eventAggregator, $"{msg}获胜");

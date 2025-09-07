@@ -1,4 +1,5 @@
 ﻿using IceTea.Pure.BaseModels;
+using IceTea.Pure.Contracts;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
@@ -15,8 +16,8 @@ namespace MusicPlayerModule.Utils
 
         public bool IsPlayingLine
         {
-            get { return _isPlayingLine; }
-            set { SetProperty<bool>(ref _isPlayingLine, value); }
+            get => _isPlayingLine; 
+            set => SetProperty<bool>(ref _isPlayingLine, value);
         }
 
         public bool IsEnglish { get; private set; }
@@ -35,16 +36,11 @@ namespace MusicPlayerModule.Utils
         /// 行字符串
         /// </summary>
         public string KRCLineString
-        {
-            get
-            {
-                return string.Format(@"[{0},{1}]{2}", this.LineStart.TotalMilliseconds, this.LineDuring.TotalMilliseconds,
-                    string.Join("", this.Chars.Select(x => x.KRCCharString)));
-            }
-        }
+            => string.Format(@"[{0},{1}]{2}", this.LineStart.TotalMilliseconds, this.LineDuring.TotalMilliseconds,
+                string.Join("", this.Chars.Select(x => x.KRCCharString)));
 
         /// <summary>
-        /// 行开始事件
+        /// 行开始时间
         /// </summary>
         public TimeSpan LineStart { get; set; }
 
@@ -65,17 +61,12 @@ namespace MusicPlayerModule.Utils
         /// <summary>
         /// 行内字符
         /// </summary>
-
         public List<KRCLyricsWord> Chars => _chars;
 
-        public KRCLyricsLine()
+        internal KRCLyricsLine(string krclinestring)
         {
             this.LineStart = TimeSpan.Zero;
-        }
 
-
-        public KRCLyricsLine(string krclinestring) : this()
-        {
             var regLineTime = new Regex(@"^\[(.*),(.*)\](.*)");
 
             var m1 = regLineTime.Match(krclinestring);
@@ -98,28 +89,20 @@ namespace MusicPlayerModule.Utils
             }
         }
 
-        public string DebuggerDisplay
-        {
-            get
-            {
-                return string.Format(@"{0:hh\:mm\:ss\.fff} {1:hh\:mm\:ss\.fff} {2}", this.LineStart, this.LineDuring,
-                    string.Join(",", this.Chars.Select(x => x.Word.ToString())));
-            }
-        }
-
-        public override string ToString()
-        {
-            var line = string.Join(string.Empty, this.Chars.Select(item => item.Word));
-            this.IsEnglish = Regex.IsMatch(line, "[a-zA-Z]");
-
-            return this.IsEnglish ? line : line.Replace(' ', '\u3000');
-        }
         private string _words;
         public string Words => _words ??= this.ToString();
 
         private string _verticalWords;
         public string VerticalWords =>
             _verticalWords ??= string.Join(string.Empty, this.Chars.Select(item => item.Word)).Replace(' ', '\u00a0');
+
+        public override string ToString()
+        {
+            var line = string.Join(string.Empty, this.Chars.Select(item => item.Word));
+            this.IsEnglish = Regex.IsMatch(line, RegexConstants.EnglishPattern);
+
+            return this.IsEnglish ? line : line.Replace(' ', '\u3000');
+        }
 
         protected override void DisposeCore()
         {
@@ -128,5 +111,9 @@ namespace MusicPlayerModule.Utils
             this._chars.Clear();
             this._chars = null;
         }
+
+        public string DebuggerDisplay
+            => string.Format(@"{0:hh\:mm\:ss\.fff} {1:hh\:mm\:ss\.fff} {2}", this.LineStart, this.LineDuring,
+                string.Join(",", this.Chars.Select(x => x.Word.ToString())));
     }
 }
