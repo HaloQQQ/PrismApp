@@ -68,12 +68,6 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <UserControl.InputBindings>
-        <KeyBinding
-            Key="O"
-            Command="{Binding OpenLogCommand}"
-            Modifiers="Ctrl" />
-    </UserControl.InputBindings>
 
     <GroupBox>
         <GroupBox.Header>
@@ -163,7 +157,14 @@
                         x:Name="rhTxt"
                         Background="Transparent"
                         ContextMenu="{StaticResource ForMessageBoard}"
-                        DockPanel.Dock="Bottom" />
+                        DockPanel.Dock="Bottom">
+                        <RichTextBox.InputBindings>
+                            <KeyBinding
+                                Key="O"
+                                Command="{Binding OpenLogCommand}"
+                                Modifiers="Ctrl" />
+                        </RichTextBox.InputBindings>
+                    </RichTextBox>
                 </DockPanel>
             </Grid>
 

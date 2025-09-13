@@ -27,10 +27,18 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
 
     protected override string[] MediaABPoints_ConfigKey => new string[] { CustomStatics.EnumSettings.Music.ToString(), "MusicABPoints" };
 
+    public DesktopLyricViewModel DesktopLyric { get; private set; }
+
+    public DistributeMusicViewModel DistributeMusicViewModel { get; private set; }
+
+    public Collection<PlayingMusicViewModel> Playing { get; private set; } = new();
+
     private SettingModel LyricSetting => this._settingManager[CustomStatics.LYRIC];
 
     protected override void AllMediaModelNotPlaying()
     {
+        base.AllMediaModelNotPlaying();
+
         foreach (var item in this.Playing.Where(m => m.IsPlayingMedia))
         {
             item.IsPlayingMedia = false;
@@ -43,17 +51,8 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
     ///  默认播放列表第一个
     /// </summary>
     /// <param name="favoriteMusicViewModel"></param>
-    private void PlayCurrentItems(BatchAddAndPlayModel? aggregate = null)
-    {
-        if (aggregate == null)
-        {
-            aggregate = new BatchAddAndPlayModel(
-                this.DistributeMusicViewModel.DisplayFavorites.First(),
-                this.DistributeMusicViewModel.DisplayFavorites);
-        }
-
-        this.AddItemsToPlaying(aggregate);
-    }
+    private void PlayCurrentItems(BatchAddAndPlayModel aggregate)
+        => this.AddItemsToPlaying(aggregate);
 
     private PlayingMusicViewModel AddOneToPlaying(FavoriteMusicViewModel music)
     {
@@ -83,7 +82,7 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
             {
                 for (int i = this.Playing.Count - 1; i >= 0; i--)
                 {
-                    this.Playing[i].DisConnect();
+                    this.Playing[i].Dispose();
                 }
             }
 
@@ -122,14 +121,9 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
     #endregion
 
     #region General Props
-    public DesktopLyricViewModel DesktopLyric { get; }
-
-    public DistributeMusicViewModel DistributeMusicViewModel { get; }
-
-    public Collection<PlayingMusicViewModel> Playing { get; } = new();
-
     protected override bool AllowRefreshPlayingIndex => PlayingListFilteKeyWords.IsNullOrBlank();
 
+    private string _playingListFilteKeyWords;
     /// <summary>
     /// 播放队列筛选条件
     /// </summary>
@@ -165,10 +159,6 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
             }
         }
     }
-    #endregion
-
-    #region Fields
-    private string _playingListFilteKeyWords;
     #endregion
 
     #region Command
@@ -219,7 +209,9 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
         this.DistributeMusicViewModel = new DistributeMusicViewModel(eventAggregator, settingManager);
 
         this.PlayAllCommand = new DelegateCommand(
-            () => PlayCurrentItems(),
+            () => PlayCurrentItems(new BatchAddAndPlayModel(
+                this.DistributeMusicViewModel.DisplayFavorites.First(),
+                this.DistributeMusicViewModel.DisplayFavorites)),
             () => this.DistributeMusicViewModel.DisplayFavorites.Count > 0 && !this.DistributeMusicViewModel.IsLoading)
             .ObservesProperty(() => this.DistributeMusicViewModel.DisplayFavorites.Count)
             .ObservesProperty(() => this.DistributeMusicViewModel.IsLoading);
@@ -228,7 +220,7 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
     }
 
     protected override IEnumerable<AppHotKey> MediaHotKeys => base.MediaHotKeys.Concat(
-        new AppHotKey[]
+        new[]
         {
             new AppHotKey("播放所有音乐", Key.P, ModifierKeys.Alt),
 
@@ -242,27 +234,11 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
     #region CommandExecute
     #region MusicFile
     protected override async void AddMediaFromFileDialog_CommandExecute()
-    {
-        await this.DistributeMusicViewModel.AddMediaFromFileDialogAsync(_settingManager);
-    }
+        => await this.DistributeMusicViewModel.AddMediaFromFileDialogAsync(_settingManager);
 
     protected override async void AddMediaFromFolderDialog_CommandExecute()
-    {
-        await this.DistributeMusicViewModel.AddMediaFromFolderDialogAsync(_settingManager);
-    }
+        => await this.DistributeMusicViewModel.AddMediaFromFolderDialogAsync(_settingManager);
     #endregion
-
-    protected override void CleanPlaying_CommandExecute()
-    {
-        base.CleanPlaying_CommandExecute();
-
-        for (int i = this.Playing.Count - 1; i >= 0; i--)
-        {
-            this.Playing[i].Dispose();
-        }
-
-        this.Playing.Clear();
-    }
     #endregion
 
     #region overrides
@@ -289,25 +265,25 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
 
         this.AddToPlayingCommand = new DelegateCommand<MusicWithClassifyModel>(category =>
         {
-            if (category.IsNullOr(_ => _.DisplayByClassifyKeyFavorites.IsNullOrEmpty()))
+            if (category.IsNullOr(_ => _.ClassifyFavorites.IsNullOrEmpty()))
             {
                 CommonUtil.PublishMessage(_eventAggregator, $"传入的分类{category?.ClassifyKey}为空");
                 return;
             }
 
-            this.AddItemsToPlaying(new BatchAddAndPlayModel(null, category.DisplayByClassifyKeyFavorites), false);
+            this.AddItemsToPlaying(new BatchAddAndPlayModel(null, category.ClassifyFavorites), false);
         });
 
         this.PlayCurrentCategoryCommand = new DelegateCommand<MusicWithClassifyModel>(category =>
         {
-            if (category.IsNullOr(_ => _.DisplayByClassifyKeyFavorites.IsNullOrEmpty()))
+            if (category.IsNullOr(_ => _.ClassifyFavorites.IsNullOrEmpty()))
             {
                 CommonUtil.PublishMessage(_eventAggregator, $"传入的分类{category?.ClassifyKey}为空");
                 return;
             }
 
-            this.PlayCurrentItems(new BatchAddAndPlayModel(category.DisplayByClassifyKeyFavorites.First(),
-                category.DisplayByClassifyKeyFavorites));
+            this.PlayCurrentItems(new BatchAddAndPlayModel(category.ClassifyFavorites.First(),
+                category.ClassifyFavorites));
         });
 
         this.PlayCurrentItemsCommand = new DelegateCommand<BatchAddAndPlayModel>(model =>
@@ -384,7 +360,18 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
 
     protected override void DisposeCore()
     {
+        for (int i = this.Playing.Count - 1; i >= 0; i--)
+        {
+            this.Playing[i].Dispose();
+        }
+        this.Playing.Clear();
+        this.Playing = null;
+
         this.DistributeMusicViewModel.Dispose();
+        this.DistributeMusicViewModel = null;
+
+        this.DesktopLyric.Dispose();
+        this.DesktopLyric = null;
 
         PlayingMusicViewModel.ToNextMusic -= NextMedia_CommandExecute;
 

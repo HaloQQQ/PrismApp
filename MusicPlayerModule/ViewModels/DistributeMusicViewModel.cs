@@ -33,89 +33,11 @@ namespace MusicPlayerModule.ViewModels
         /// </summary>
         public bool CanBatchSelect
         {
-            get { return _canBatchSelect; }
-            set { SetProperty<bool>(ref _canBatchSelect, value); }
+            get => _canBatchSelect;
+            set => SetProperty<bool>(ref _canBatchSelect, value);
         }
 
-        /// <summary>
-        /// 为新目录创建对象
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        private bool TryAddNewDirItemFromPath(string path)
-        {
-            path.AssertNotNull(nameof(path));
-
-            if (!this.MusicDirs.Any(item => item.DirPath == path))
-            {
-                var current = new MusicWithClassifyModel(path, new ObservableCollection<FavoriteMusicViewModel>(),
-                    MusicClassifyType.Dir);
-                current.IsSelected = true;
-
-                current.TryAddTo(MusicDirFavorites);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool MoveMusicsTo(MusicWithClassifyModel originClassify, string targetDir)
-        {
-            TryAddNewDirItemFromPath(targetDir);
-
-            var originDir = originClassify.ClassifyKey;
-            var originColls = originClassify.DisplayByClassifyKeyFavorites;
-
-            var targetColls = this.MusicDirFavorites.First(item => item.ClassifyKey == targetDir)
-                                    .DisplayByClassifyKeyFavorites;
-
-            var newColls = originColls.SkipWhile(item => targetColls.Any(m => m.Music.Name == item.Music.Name))
-                                .ToList();
-
-            if (newColls.Any())
-            {
-                foreach (var favorite in newColls)
-                {
-                    favorite.TryAddTo(targetColls);
-
-                    favorite.Music.MoveTo(targetDir);
-
-                    favorite.TryRemoveFrom(originColls);
-                }
-
-                this.TryRemoveMusicWithClassifyModel(originDir);
-
-                return true;
-            }
-            else
-            {
-                CommonUtil.PublishMessage(_eventAggregator, "目标目录已包含源目录所有内容，不允许重复");
-
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 删除空文件夹
-        /// </summary>
-        /// <param name="originDir"></param>
-        private void TryRemoveMusicWithClassifyModel(string originDir)
-        {
-            if (originDir.IsDirectoryExists())
-            {
-                if (originDir.DeleteDirIfEmptyOr())
-                {
-                    CommonUtil.PublishMessage(_eventAggregator, $"【{originDir}】删除成功");
-                }
-                else
-                {
-                    CommonUtil.PublishMessage(_eventAggregator, "目录不为空，不允许删除");
-                }
-            }
-        }
-
-        private readonly IEventAggregator _eventAggregator;
+        private IEventAggregator _eventAggregator;
 
         public DistributeMusicViewModel(IEventAggregator eventAggregator, ISettingManager<SettingModel> settingManager)
         {
@@ -147,9 +69,9 @@ namespace MusicPlayerModule.ViewModels
                 {
                     if (newValue)
                     {
-                        var c = DisplayMusicAlbumFavorites.FirstOrDefault(c => c.IsSelected);
+                        var c = DisplayAlbumClassify.FirstOrDefault(c => c.IsSelected);
 
-                        if (c.IsNullOr(_ => _.HasUnselected()))
+                        if (c.IsNullOr(_ => _.HasUnselected))
                         {
                             return;
                         }
@@ -167,9 +89,9 @@ namespace MusicPlayerModule.ViewModels
                 {
                     if (newValue)
                     {
-                        var c = DisplayMusicSingerFavorites.FirstOrDefault(c => c.IsSelected);
+                        var c = DisplaySingerClassify.FirstOrDefault(c => c.IsSelected);
 
-                        if (c.IsNullOr(_ => _.HasUnselected()))
+                        if (c.IsNullOr(_ => _.HasUnselected))
                         {
                             return;
                         }
@@ -187,9 +109,9 @@ namespace MusicPlayerModule.ViewModels
                 {
                     if (newValue)
                     {
-                        var c = MusicDirFavorites.FirstOrDefault(c => c.IsSelected);
+                        var c = DisplayDirClassify.FirstOrDefault(c => c.IsSelected);
 
-                        if (c.IsNullOr(_ => _.HasUnselected()))
+                        if (c.IsNullOr(_ => _.HasUnselected))
                         {
                             return;
                         }
@@ -201,7 +123,7 @@ namespace MusicPlayerModule.ViewModels
                 }
             };
 
-            this.MusicDirFavorites.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs e) =>
+            this.DisplayDirClassify.CollectionChanged += (object? sender, NotifyCollectionChangedEventArgs e) =>
             {
                 if (e.Action == NotifyCollectionChangedAction.Remove)
                 {
@@ -249,63 +171,42 @@ namespace MusicPlayerModule.ViewModels
 
                 this.SelectFavoriteAll = this.DisplayFavorites.Count > 0 && !this.DisplayFavorites.Any(m => !m.IsDeleting);
 
-                if (music.IsDeleting)
-                {
-                    this.RaisePropertyChanged(nameof(SelectedCount));
-                }
+                this.RaisePropertyChanged(nameof(SelectedCount));
             }, _ => this.DisplayFavorites.Count > 0)
                 .ObservesProperty<int>(() => this.DisplayFavorites.Count);
 
             this.BatchDeleteCommand = new DelegateCommand(() =>
             {
+                FavoriteMusicViewModel[]? items = default;
+
                 if (this.IsInSong)
                 {
-                    var items = DisplayFavorites.Where(item => item.IsDeleting).ToArray();
-
-                    for (int i = items.Length - 1; i >= 0; i--)
-                    {
-                        items[i].Dispose();
-                    }
+                    items = DisplayFavorites.Where(item => item.IsDeleting).ToArray();
                 }
                 else if (this.IsInAlbum)
                 {
-                    var items = DisplayMusicAlbumFavorites
-                                                    .FirstOrDefault(i => i.IsSelected)?.DisplayByClassifyKeyFavorites
-                                                     .Where(m => m.IsDeleting).ToArray();
-                    if (items != null)
-                    {
-                        for (int i = items.Length - 1; i >= 0; i--)
-                        {
-                            items[i].Dispose();
-                        }
-                    }
+                    items = DisplayAlbumClassify
+                                    .FirstOrDefault(i => i.IsSelected)?.ClassifyFavorites
+                                        .Where(m => m.IsDeleting).ToArray();
                 }
                 else if (this.IsInSinger)
                 {
-                    var items = DisplayMusicSingerFavorites
-                                                    .FirstOrDefault(i => i.IsSelected)?.DisplayByClassifyKeyFavorites
-                                                     .Where(m => m.IsDeleting).ToArray();
-
-                    if (items != null)
-                    {
-                        for (int i = items.Length - 1; i >= 0; i--)
-                        {
-                            items[i].Dispose();
-                        }
-                    }
+                    items = DisplaySingerClassify
+                                    .FirstOrDefault(i => i.IsSelected)?.ClassifyFavorites
+                                        .Where(m => m.IsDeleting).ToArray();
                 }
-                else if (IsInDir)
+                else if (this.IsInDir)
                 {
-                    var items = MusicDirFavorites.FirstOrDefault(i => i.IsSelected)?.DisplayByClassifyKeyFavorites
-                                                     .Where(m => m.IsDeleting).ToArray();
+                    items = DisplayDirClassify
+                                    .FirstOrDefault(i => i.IsSelected)?.ClassifyFavorites
+                                        .Where(m => m.IsDeleting).ToArray();
+                }
 
-                    if (items != null)
-                    {
-                        for (int i = items.Length - 1; i >= 0; i--)
-                        {
-                            items[i].Dispose();
-                        }
-                    }
+                items.AssertNotNull(nameof(items));
+
+                for (int i = items.Length - 1; i >= 0; i--)
+                {
+                    items[i].Dispose();
                 }
 
                 this.OnlyRefreshClassifySelectAllStatus();
@@ -326,18 +227,14 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
-                var path = settingManager[CustomStatics.MUSIC].Value;
-
-                var selectedPath = WpfCoreUtils.OpenFolderDialog(path);
-
-                if (!selectedPath.IsNullOrBlank())
+                var dirItem = DisplayDirClassify.First(item => item.ClassifyKey == originDir);
+                if (dirItem.MoveMusicsTo(DisplayDirClassify, settingManager[CustomStatics.MUSIC].Value))
                 {
-                    this.TryAddNewDirItemFromPath(selectedPath);
-
-                    if (this.MoveMusicsTo(MusicDirFavorites.First(item => item.ClassifyKey == originDir), selectedPath))
-                    {
-                        CommonUtil.PublishMessage(_eventAggregator, $"移动成功");
-                    }
+                    CommonUtil.PublishMessage(_eventAggregator, $"移动成功");
+                }
+                else
+                {
+                    CommonUtil.PublishMessage(_eventAggregator, "目标目录已包含源目录所有内容，不允许重复");
                 }
             });
 
@@ -349,7 +246,7 @@ namespace MusicPlayerModule.ViewModels
 
                 if (!selectedPath.IsNullOrBlank())
                 {
-                    if (this.TryAddNewDirItemFromPath(selectedPath))
+                    if (MusicWithClassifyModel.TryCreateDirItemFromPath(this.DisplayDirClassify, selectedPath))
                     {
                         CommonUtil.PublishMessage(_eventAggregator, $"{selectedPath}分类创建成功");
                     }
@@ -360,7 +257,13 @@ namespace MusicPlayerModule.ViewModels
                 }
             });
 
-            this.RemoveMusicDirCommand = new DelegateCommand<string>(TryRemoveMusicWithClassifyModel);
+            this.RemoveMusicDirCommand = new DelegateCommand<string>(dir =>
+            {
+                if (CommonUtil.TryDeleteEmptyFolder(_eventAggregator, dir))
+                {
+                    this.DisplayDirClassify.RemoveAll(c => c.ClassifyKey.EqualsIgnoreCase(dir) && c.ClassifyFavorites.Count == 0);
+                }
+            });
 
             this.RenameMusicDirCommand = new DelegateCommand<MusicWithClassifyModel>(item =>
             {
@@ -370,22 +273,13 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
-                var path = settingManager[CustomStatics.MUSIC].Value;
-                var selectedPath = WpfCoreUtils.OpenFolderDialog(path);
-
-                if (!selectedPath.IsNullOrBlank())
+                if (item.MoveMusicsTo(this.DisplayDirClassify, settingManager[CustomStatics.MUSIC].Value))
                 {
-                    if (this.TryAddNewDirItemFromPath(selectedPath))
-                    {
-                        if (this.MoveMusicsTo(item, selectedPath))
-                        {
-                            CommonUtil.PublishMessage(_eventAggregator, "目录重命名成功");
-                        }
-                    }
-                    else
-                    {
-                        CommonUtil.PublishMessage(_eventAggregator, $"{item.ClassifyKey}分类之前已存在");
-                    }
+                    CommonUtil.PublishMessage(_eventAggregator, "目录重命名成功");
+                }
+                else
+                {
+                    CommonUtil.PublishMessage(_eventAggregator, $"{item.ClassifyKey}分类之前已存在");
                 }
             });
 
@@ -396,52 +290,30 @@ namespace MusicPlayerModule.ViewModels
                     return;
                 }
 
-                var originDir = moveModel.Music.FileDir;
-                var targetDir = moveModel.MoveToDir;
-
-                if (originDir.EqualsIgnoreCase(targetDir))
+                try
                 {
-                    CommonUtil.PublishMessage(_eventAggregator, $"源目录和目标目录不允许相同");
-                    return;
-                }
-
-                if (moveModel.Music.MoveTo(moveModel.MoveToDir))
-                {
-                    var originItem = this.MusicDirFavorites.First(item => item.ClassifyKey == originDir);
-
-                    var originCollection = originItem.DisplayByClassifyKeyFavorites;
-                    var targetCollection = this.MusicDirFavorites.First(item => item.ClassifyKey == targetDir)
-                        .DisplayByClassifyKeyFavorites;
-
-                    var item = originCollection.FirstOrDefault(item => item.Music == moveModel.Music);
-                    if (item != null)
+                    using (moveModel)
                     {
-                        item.TryRemoveFrom(originCollection);
-
-                        if (originCollection.IsNullOrEmpty())
+                        if (moveModel.MoveTo(this.DisplayDirClassify))
                         {
-                            this.TryRemoveMusicWithClassifyModel(originDir);
+                            CommonUtil.PublishMessage(_eventAggregator, $"【{moveModel.Music.Name}】移动成功");
                         }
-
-                        item.TryAddTo(targetCollection);
-
-                        CommonUtil.PublishMessage(_eventAggregator, $"【{moveModel.Music.Name}】移动成功");
                     }
-                    else
-                    {
-                        CommonUtil.PublishMessage(_eventAggregator, $"源目录不存在【{moveModel.Music.Name}】");
-                    }
+                }
+                catch (Exception ex)
+                {
+                    CommonUtil.PublishMessage(_eventAggregator, ex.Message);
                 }
             });
         }
 
         internal void AddNewMusic(FavoriteMusicViewModel musicModel)
         {
-            TryAddNewMusic(MusicDirFavorites, null, musicModel.Music.FileDir, MusicClassifyType.Dir);
+            TryAddNewMusic(DisplayDirClassify, null, musicModel.Music.FileDir, MusicClassifyType.Dir);
 
-            TryAddNewMusic(MusicSingerFavorites, DisplayMusicSingerFavorites, musicModel.Music.Singer, MusicClassifyType.Singer);
+            TryAddNewMusic(SingerClassify, DisplaySingerClassify, musicModel.Music.Singer, MusicClassifyType.Singer);
 
-            TryAddNewMusic(MusicAlbumFavorites, DisplayMusicAlbumFavorites, musicModel.Music.Album, MusicClassifyType.Album);
+            TryAddNewMusic(AlbumClassify, DisplayAlbumClassify, musicModel.Music.Album, MusicClassifyType.Album);
 
             void TryAddNewMusic(Collection<MusicWithClassifyModel> collection, ObservableCollection<MusicWithClassifyModel> displayCollection, string classifyKey, MusicClassifyType classifyType)
             {
@@ -463,19 +335,16 @@ namespace MusicPlayerModule.ViewModels
                     }
                 }
 
-                if (!classifyModel.Contains(musicModel))
-                {
-                    musicModel.TryAddTo(classifyModel.DisplayByClassifyKeyFavorites);
-                }
+                musicModel.TryAddTo(classifyModel.ClassifyFavorites);
             }
         }
 
-        internal void OnlyRefreshClassifySelectAllStatus(MusicWithClassifyModel current = null)
+        private void OnlyRefreshClassifySelectAllStatus(MusicWithClassifyModel current = null)
         {
-            var newValue = IsCollectionSelectedAll(this.DisplayMusicAlbumFavorites);
+            var newValue = IsCollectionSelectedAll(this.DisplayAlbumClassify);
             if (newValue != SelectAlbumFavoriteAll)
             {
-                if (newValue && (current ?? DisplayMusicAlbumFavorites.First(item => item.IsSelected)).HasUnselected())
+                if (newValue && (current ?? DisplayAlbumClassify.First(item => item.IsSelected)).HasUnselected)
                 {
                     return;
                 }
@@ -484,10 +353,10 @@ namespace MusicPlayerModule.ViewModels
                 RaisePropertyChanged(nameof(SelectAlbumFavoriteAll));
             }
 
-            newValue = IsCollectionSelectedAll(this.DisplayMusicSingerFavorites);
+            newValue = IsCollectionSelectedAll(this.DisplaySingerClassify);
             if (newValue != SelectSingerFavoriteAll)
             {
-                if (newValue && (current ?? DisplayMusicSingerFavorites.First(item => item.IsSelected)).HasUnselected())
+                if (newValue && (current ?? DisplaySingerClassify.First(item => item.IsSelected)).HasUnselected)
                 {
                     return;
                 }
@@ -496,10 +365,10 @@ namespace MusicPlayerModule.ViewModels
                 RaisePropertyChanged(nameof(SelectSingerFavoriteAll));
             }
 
-            newValue = IsCollectionSelectedAll(this.MusicDirFavorites);
+            newValue = IsCollectionSelectedAll(this.DisplayDirClassify);
             if (newValue != SelectDirFavoriteAll)
             {
-                if (newValue && (current ?? MusicDirFavorites.First(item => item.IsSelected)).HasUnselected())
+                if (newValue && (current ?? DisplayDirClassify.First(item => item.IsSelected)).HasUnselected)
                 {
                     return;
                 }
@@ -509,11 +378,9 @@ namespace MusicPlayerModule.ViewModels
             }
 
             bool IsCollectionSelectedAll(ICollection<MusicWithClassifyModel> collection)
-            {
-                return collection.Count > 0 &&
+                => collection.Count > 0 &&
                         collection.Any(item => item.IsSelected) &&
-                        !(current ?? collection.First(item => item.IsSelected)).HasUnselected();
-            }
+                        !(current ?? collection.First(item => item.IsSelected)).HasUnselected;
         }
 
         private void TryRefreshFavoriteIndex()
@@ -542,7 +409,7 @@ namespace MusicPlayerModule.ViewModels
                 {
                     musicSetting.Value = selectedFolder;
 
-                    var lyricDir = await this.TryGetRealDir(selectedFolder);
+                    var lyricDir = await KRCLyrics.TryGetRealDir(selectedFolder);
                     if (!lyricDir.IsNullOrBlank())
                     {
                         lyricSetting.Value = lyricDir;
@@ -571,7 +438,7 @@ namespace MusicPlayerModule.ViewModels
 
                     musicSetting.Value = musicDir;
 
-                    var lyricDir = await this.TryGetRealDir(musicDir);
+                    var lyricDir = await KRCLyrics.TryGetRealDir(musicDir);
                     if (!lyricDir.IsNullOrBlank())
                     {
                         lyricSetting.Value = lyricDir;
@@ -582,18 +449,6 @@ namespace MusicPlayerModule.ViewModels
                     CommonUtil.PublishMessage(_eventAggregator, $"选中文件中不存在新的mp3音乐文件");
                 }
             }
-        }
-
-        private async Task<string> TryGetRealDir(string originDir)
-        {
-            var lyricFiles = await KRCLyrics.TryGetLyricPathsAsync(originDir);
-
-            if (!lyricFiles.Any())
-            {
-                return string.Empty;
-            }
-
-            return lyricFiles.First().GetParentPath();
         }
 
         private async Task<bool> TryLoadMusicAsync(IEnumerable<string> filePaths)
@@ -706,14 +561,13 @@ namespace MusicPlayerModule.ViewModels
         private Collection<FavoriteMusicViewModel> Favorites { get; } = new();
         public ObservableCollection<FavoriteMusicViewModel> DisplayFavorites { get; } = new();
 
-        private Collection<MusicWithClassifyModel> MusicAlbumFavorites { get; } = new();
-        public ObservableCollection<MusicWithClassifyModel> DisplayMusicAlbumFavorites { get; private set; } = new();
+        private Collection<MusicWithClassifyModel> AlbumClassify { get; } = new();
+        public ObservableCollection<MusicWithClassifyModel> DisplayAlbumClassify { get; private set; } = new();
 
-        private Collection<MusicWithClassifyModel> MusicSingerFavorites { get; } = new();
-        public ObservableCollection<MusicWithClassifyModel> DisplayMusicSingerFavorites { get; private set; } = new();
+        private Collection<MusicWithClassifyModel> SingerClassify { get; } = new();
+        public ObservableCollection<MusicWithClassifyModel> DisplaySingerClassify { get; private set; } = new();
 
-        public ObservableCollection<MusicWithClassifyModel> MusicDirFavorites { get; private set; } = new();
-
+        public ObservableCollection<MusicWithClassifyModel> DisplayDirClassify { get; private set; } = new();
         public ObservableCollection<MusicDirModel> MusicDirs { get; private set; } = new();
 
         public bool IsLoading
@@ -743,7 +597,7 @@ namespace MusicPlayerModule.ViewModels
 
         public bool SelectFavoriteAll
         {
-            get { return _selectFavoriteAll; }
+            get => _selectFavoriteAll;
             set
             {
                 if (SetProperty<bool>(ref _selectFavoriteAll, value))
@@ -753,7 +607,7 @@ namespace MusicPlayerModule.ViewModels
             }
         }
 
-        private bool AllowRefreshFavoriteIndex => FavoriteListFilteKeyWords.IsNullOrEmpty();
+        private bool AllowRefreshFavoriteIndex => FavoriteListFilteKeyWords.IsNullOrBlank();
 
         /// <summary>
         /// 收藏队列筛选条件  Name or Singer
@@ -787,7 +641,6 @@ namespace MusicPlayerModule.ViewModels
 
                         this.TryRefreshFavoriteIndex();
                     }
-
                 }
             }
         }
@@ -816,9 +669,9 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (SetProperty<bool>(ref _selectAlbumFavoriteAll, value))
                 {
-                    var current = this.DisplayMusicAlbumFavorites.FirstOrDefault(item => item.IsSelected);
+                    var current = this.DisplayAlbumClassify.FirstOrDefault(item => item.IsSelected);
 
-                    current?.DisplayByClassifyKeyFavorites.ForEach(m => m.IsDeleting = value);
+                    current?.ClassifyFavorites.ForEach(m => m.IsDeleting = value);
                 }
             }
         }
@@ -833,21 +686,21 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (SetProperty<string>(ref _albumMusicFilteKeyWords, value))
                 {
-                    if (this.MusicAlbumFavorites.Count == 0)
+                    if (this.AlbumClassify.Count == 0)
                     {
                         return;
                     }
 
-                    this.DisplayMusicAlbumFavorites.Clear();
+                    this.DisplayAlbumClassify.Clear();
 
                     if (!_albumMusicFilteKeyWords.IsNullOrBlank())
                     {
-                        this.DisplayMusicAlbumFavorites.AddRange(this.MusicAlbumFavorites.Where(item =>
+                        this.DisplayAlbumClassify.AddRange(this.AlbumClassify.Where(item =>
                             item.ClassifyKey.ContainsIgnoreCase(this._albumMusicFilteKeyWords)));
                     }
                     else
                     {
-                        this.DisplayMusicAlbumFavorites.AddRange(this.MusicAlbumFavorites);
+                        this.DisplayAlbumClassify.AddRange(this.AlbumClassify);
                     }
                 }
             }
@@ -877,9 +730,9 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (SetProperty<bool>(ref _selectSingerFavoriteAll, value))
                 {
-                    var current = this.DisplayMusicSingerFavorites.FirstOrDefault(item => item.IsSelected);
+                    var current = this.DisplaySingerClassify.FirstOrDefault(item => item.IsSelected);
 
-                    current?.DisplayByClassifyKeyFavorites.ForEach(m => m.IsDeleting = value);
+                    current?.ClassifyFavorites.ForEach(m => m.IsDeleting = value);
                 }
             }
         }
@@ -894,21 +747,21 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (SetProperty<string>(ref _singerMusicFilteKeyWords, value))
                 {
-                    if (this.MusicSingerFavorites.Count == 0)
+                    if (this.SingerClassify.Count == 0)
                     {
                         return;
                     }
 
-                    this.DisplayMusicSingerFavorites.Clear();
+                    this.DisplaySingerClassify.Clear();
 
                     if (!_singerMusicFilteKeyWords.IsNullOrBlank())
                     {
-                        this.DisplayMusicSingerFavorites.AddRange(this.MusicSingerFavorites.Where(item =>
+                        this.DisplaySingerClassify.AddRange(this.SingerClassify.Where(item =>
                             item.ClassifyKey.ContainsIgnoreCase(this._singerMusicFilteKeyWords)));
                     }
                     else
                     {
-                        this.DisplayMusicSingerFavorites.AddRange(this.MusicSingerFavorites);
+                        this.DisplaySingerClassify.AddRange(this.SingerClassify);
                     }
                 }
             }
@@ -929,9 +782,9 @@ namespace MusicPlayerModule.ViewModels
             {
                 if (SetProperty<bool>(ref _selectDirFavoriteAll, value))
                 {
-                    var current = this.MusicDirFavorites.FirstOrDefault(item => item.IsSelected);
+                    var current = this.DisplayDirClassify.FirstOrDefault(item => item.IsSelected);
 
-                    current?.DisplayByClassifyKeyFavorites.ForEach(m => m.IsDeleting = value);
+                    current?.ClassifyFavorites.ForEach(m => m.IsDeleting = value);
                 }
             }
         }
@@ -966,8 +819,6 @@ namespace MusicPlayerModule.ViewModels
 
         protected override void DisposeCore()
         {
-            base.DisposeCore();
-
             foreach (var item in this.Favorites)
             {
                 item.Dispose();
@@ -977,17 +828,38 @@ namespace MusicPlayerModule.ViewModels
             this.Favorites.Clear();
 
 
-            this.DisplayMusicAlbumFavorites.Clear();
+            this.DisplayAlbumClassify.Clear();
 
-            this.MusicAlbumFavorites.Clear();
+            foreach (var item in AlbumClassify)
+            {
+                item.Dispose();
+            }
+            this.AlbumClassify.Clear();
 
-            this.DisplayMusicSingerFavorites.Clear();
 
-            this.MusicSingerFavorites.Clear();
+            this.DisplaySingerClassify.Clear();
 
-            this.MusicDirFavorites.Clear();
+            foreach (var item in SingerClassify)
+            {
+                item.Dispose();
+            }
+            this.SingerClassify.Clear();
+
+
+            foreach (var item in DisplayDirClassify)
+            {
+                item.Dispose();
+            }
+            this.DisplayDirClassify.Clear();
+
+            this.MusicDirs.Clear();
+            this.MusicDirs = null;
+
+            this._eventAggregator = null;
 
             MusicWithClassifyModel.SelectedEvent -= OnlyRefreshClassifySelectAllStatus;
+
+            base.DisposeCore();
         }
     }
 }

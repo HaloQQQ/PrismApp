@@ -11,7 +11,7 @@ namespace MusicPlayerModule.Utils
     /// <summary>
     /// KRC歌词文件
     /// </summary>
-    public class KRCLyrics : DisposableBase
+    internal class KRCLyrics : DisposableBase
     {
         private IList<KRCLyricsLine> _lines = new List<KRCLyricsLine>();
         public IList<KRCLyricsLine> Lines => _lines;
@@ -58,14 +58,7 @@ namespace MusicPlayerModule.Utils
         /// 总时长
         /// </summary>
         public TimeSpan Total
-        {
-            get
-            {
-                //计算总时间=所有行时间
-                var sum = this.Lines.Sum(x => x.LineDuring.TotalMilliseconds);
-                return TimeSpan.FromMilliseconds(sum);
-            }
-        }
+            => TimeSpan.FromMilliseconds(this.Lines.Sum(x => x.LineDuring.TotalMilliseconds));
 
         /// <summary>
         /// 偏移
@@ -78,9 +71,6 @@ namespace MusicPlayerModule.Utils
         /// </summary>
         private KRCLyrics()
         {
-            //this.Total = TimeSpan.Zero;
-            this.Offset = TimeSpan.Zero;
-
             this._properties = new List<Tuple<Regex, Action<string>>>()
              {
                  new Tuple<Regex, Action<string>>(new Regex("\\[id:[^\\]]+\\]"), (s) => { this.ID = s; }),
@@ -206,7 +196,19 @@ namespace MusicPlayerModule.Utils
         }
 
         public static async Task<IEnumerable<string>> TryGetLyricPathsAsync(string directoryPath)
-                => await Task.FromResult(directoryPath.GetFiles(true, str => str.EndsWithIgnoreCase(".krc"))).ConfigureAwait(false);
+            => await Task.FromResult(directoryPath.GetFiles(true, str => str.EndsWithIgnoreCase(".krc"))).ConfigureAwait(false);
+
+        public static async Task<string> TryGetRealDir(string originDir)
+        {
+            var lyricFiles = await KRCLyrics.TryGetLyricPathsAsync(originDir);
+
+            if (!lyricFiles.Any())
+            {
+                return string.Empty;
+            }
+
+            return lyricFiles.First().GetParentPath();
+        }
 
         protected override void DisposeCore()
         {

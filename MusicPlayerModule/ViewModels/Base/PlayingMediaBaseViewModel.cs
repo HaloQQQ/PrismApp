@@ -5,7 +5,7 @@ using MusicPlayerModule.Models;
 
 namespace MusicPlayerModule.ViewModels.Base
 {
-    internal abstract class MediaPlayerBaseViewModel : ChildrenBase
+    internal abstract class PlayingMediaBaseViewModel : ChildrenBase
     {
         private int _index;
         public int Index
@@ -25,9 +25,9 @@ namespace MusicPlayerModule.ViewModels.Base
         public string MediaName { get; }
         public string FilePath { get; }
 
-        protected MediaPlayerBaseViewModel(MediaBaseModel mediaBase)
+        protected PlayingMediaBaseViewModel(MediaBaseModel mediaBase)
         {
-            mediaBase.AssertNotNull(nameof(MediaBaseModel));
+            mediaBase.AssertNotNull(nameof(PlayingMediaBaseViewModel));
 
             MediaName = mediaBase.Name;
             FilePath = mediaBase.FilePath;
@@ -41,15 +41,15 @@ namespace MusicPlayerModule.ViewModels.Base
         private bool _isPlayingMedia;
         public bool IsPlayingMedia
         {
-            get { return _isPlayingMedia; }
-            internal set { SetProperty<bool>(ref _isPlayingMedia, value); }
+            get => _isPlayingMedia;
+            set => SetProperty<bool>(ref _isPlayingMedia, value);
         }
 
         private int _totalMills;
         public int TotalMills
         {
             get => _totalMills;
-            set { SetProperty(ref _totalMills, value); }
+            protected set => SetProperty(ref _totalMills, value);
         }
 
         #region 当前时间更新
@@ -67,7 +67,7 @@ namespace MusicPlayerModule.ViewModels.Base
         private int _pointAMills;
         public int PointAMills
         {
-            get { return _pointAMills; }
+            get => _pointAMills;
             private set
             {
                 if (SetProperty<int>(ref _pointAMills, value))
@@ -100,8 +100,8 @@ namespace MusicPlayerModule.ViewModels.Base
         private int _pointBMills;
         public int PointBMills
         {
-            get { return _pointBMills; }
-            protected set
+            get => _pointBMills;
+            private set
             {
                 if (SetProperty<int>(ref _pointBMills, value))
                 {
@@ -126,9 +126,7 @@ namespace MusicPlayerModule.ViewModels.Base
         }
 
         public bool ShouleSaveABPoint()
-        {
-            return this.PointAMills != 0 || this.PointBMills != 0;
-        }
+            => this.PointAMills != 0 || this.PointBMills != 0;
 
         public virtual void ResetABPoint()
         {

@@ -10,6 +10,7 @@ using IceTea.Pure.Contracts;
 using System.Diagnostics;
 
 namespace MusicPlayerModule.Models;
+#pragma warning disable CS8600 // 将 null 字面量或可能为 null 的值转换为非 null 类型。
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
 #pragma warning disable CS8602
 [DebuggerDisplay("Name={Name}")]
@@ -54,17 +55,9 @@ internal class MusicModel : MediaBaseModel, IEquatable<MusicModel>
     }
 
     private bool _noCover;
-    private WeakReference<ImageSource>? _weakReference;
+    private WeakReference<ImageSource>? _imageRef;
 
-
-    private bool _isLoadingLyric;
-    public bool IsLoadingLyric
-    {
-        get => _isLoadingLyric;
-        internal set => SetProperty<bool>(ref _isLoadingLyric, value);
-    }
-
-    public bool IsPureMusic { get; internal set; }
+    public bool IsPureMusic { get; private set; }
 
     private string _filePath;
     public override string FilePath
@@ -88,7 +81,7 @@ internal class MusicModel : MediaBaseModel, IEquatable<MusicModel>
                 return null;
             }
 
-            if (_weakReference == null || !_weakReference.TryGetTarget(out var source))
+            if (_imageRef == null || !_imageRef.TryGetTarget(out var source))
             {
                 var file = TagLib.File.Create(FilePath);   // 打开音频文件
 
@@ -109,13 +102,13 @@ internal class MusicModel : MediaBaseModel, IEquatable<MusicModel>
 
                 bi.EndInit();
 
-                if (_weakReference == null)
+                if (_imageRef == null)
                 {
-                    _weakReference = new WeakReference<ImageSource>(bi);
+                    _imageRef = new WeakReference<ImageSource>(bi);
                 }
                 else
                 {
-                    _weakReference.SetTarget(bi);
+                    _imageRef.SetTarget(bi);
                 }
 
                 return bi;
@@ -144,31 +137,177 @@ internal class MusicModel : MediaBaseModel, IEquatable<MusicModel>
 
     public string Singer { get; }
 
-    private volatile WeakReference<KRCLyrics>? _krcLyrics;
+    #region Lyric
+    private bool _isLoadingLyric;
+    public bool IsLoadingLyric
+    {
+        get => _isLoadingLyric;
+        private set => SetProperty<bool>(ref _isLoadingLyric, value);
+    }
+
+    private volatile WeakReference<KRCLyrics>? _krcLyricsRef;
 
     public KRCLyrics? Lyric
     {
-        get => _krcLyrics != null && _krcLyrics.TryGetTarget(out var kRCLyrics) ? kRCLyrics : null;
+        get
+        {
+            if (this.IsPureMusic)
+            {
+                return null;
+            }
 
-        internal set
+            KRCLyrics result = default;
+
+            _krcLyricsRef.IsNotNullAnd(_ => _.TryGetTarget(out result));
+
+            return result;
+        }
+
+        private set
         {
             value.AssertNotNull(nameof(Lyric));
 
-            if (_krcLyrics == null)
+            if (_krcLyricsRef == null)
             {
 #pragma warning disable CS8604 // 引用类型参数可能为 null。
-                _krcLyrics = new WeakReference<KRCLyrics>(value);
+                _krcLyricsRef = new WeakReference<KRCLyrics>(value);
             }
             else
             {
-                _krcLyrics.SetTarget(value);
+                _krcLyricsRef.SetTarget(value);
             }
 
             RaisePropertyChanged();
         }
     }
 
-    public bool MoveTo(string targetDir)
+    public async Task TryLoadLyricAsync(string lyricDir)
+    {
+        if (this.IsPureMusic || this.IsLoadingLyric || this.Lyric != null)
+        {
+            return;
+        }
+
+        IEnumerable<string> paths = await KRCLyrics.TryGetLyricPathsAsync(lyricDir).ConfigureAwait(false);
+
+        string? lyricFilePath = paths.FirstOrDefault(path => path.ContainsIgnoreCase(this.Name) &&
+                                                        (
+                                                            path.ContainsIgnoreCase(this.Performer)
+                                                            || path.ContainsIgnoreCase(this.Singer)
+                                                        )
+                                                    );
+
+        if (!(this.IsPureMusic = lyricFilePath == null))
+        {
+            this.IsLoadingLyric = true;
+
+            await Task.Delay(10).ConfigureAwait(false);
+
+            this.Lyric = KRCLyrics.LoadFromFile(lyricFilePath);
+
+            this.IsLoadingLyric = false;
+        }
+    }
+
+    public int GetCurrentLineIndex(int currentMills)
+    {
+        int currentIndex = 0;
+
+        if (this.IsPureMusic)
+        {
+            return currentIndex;
+        }
+
+        var lyric = this.Lyric;
+        var lines = lyric.Lines;
+
+        // 注意当前歌词的结束时间要与下一句歌词的开始时间比较
+        while (currentIndex < lines.Count - 1 &&
+               currentMills >= lines[currentIndex + 1].LineStart.TotalMilliseconds)
+        {
+            // 更新当前歌词的索引
+            currentIndex++;
+        }
+
+        var currentLine = lines[currentIndex];
+        if (!currentLine.IsPlayingLine)
+        {
+            for (int i = 0; i < lines.Count; i++)
+            {
+                if (i != currentIndex)
+                {
+                    lines[i].IsPlayingLine = false;
+                }
+
+                lines[i].IsPlayed = i < currentIndex;
+            }
+        }
+
+        return currentIndex;
+    }
+
+    public double GetWordProgress(int currentMills, int currentLineIndex)
+    {
+        if (this.IsPureMusic)
+        {
+            return 0d;
+        }
+
+        var lyric = this.Lyric;
+
+        var currentLine = lyric.Lines[currentLineIndex];
+
+        if (currentMills < currentLine.LineStart.TotalMilliseconds)
+        {
+            return 0d;
+        }
+
+        int charCount = 0;
+        KRCLyricsWord tempChar;
+        for (int i = 0; i < currentLine.Chars.Count; i++)
+        {
+            tempChar = currentLine.Chars[i];
+            double value = currentMills - tempChar.CharStart.Add(currentLine.LineStart).Add(tempChar.CharDuring).TotalMilliseconds;
+
+            if (value <= 0)
+            {
+                return (charCount + (tempChar.CharDuring.TotalMilliseconds + value) /
+                            tempChar.CharDuring.TotalMilliseconds * tempChar.Word.Length
+                        ) / currentLine.Words.Length;
+            }
+
+            charCount += tempChar.Word.Length;
+        }
+
+        return 1d;
+    }
+
+    public bool TryResetLyric()
+    {
+        if (!this.IsPureMusic)
+        {
+            var lyric = this.Lyric;
+            if (lyric != null)
+            {
+                foreach (var item in lyric.Lines)
+                {
+                    item.IsPlayed = false;
+
+                    if (item.IsPlayingLine)
+                    {
+                        item.IsPlayingLine = false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+    #endregion
+
+    public bool MoveFileTo(string targetDir)
     {
         if (targetDir.IsDirectoryExists() && FilePath.IsFileExists())
         {
@@ -190,9 +329,9 @@ internal class MusicModel : MediaBaseModel, IEquatable<MusicModel>
     {
         base.DisposeCore();
 
-        _weakReference = null;
+        _imageRef = null;
 
-        _krcLyrics = null;
+        _krcLyricsRef = null;
     }
 
     public bool Equals(MusicModel? other)

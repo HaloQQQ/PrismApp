@@ -7,13 +7,7 @@
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/MusicPlayerModule;component/Resources/MediaDic.xaml" />
-
-                <ResourceDictionary Source="/MusicPlayerModule;component/Resources/MusicFooterDic.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <ResourceDictionary Source="/MusicPlayerModule;component/Resources/Music/MusicFooter.xaml" />
     </UserControl.Resources>
 
     <Grid

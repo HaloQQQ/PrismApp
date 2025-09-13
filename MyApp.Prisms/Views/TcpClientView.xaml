@@ -7,13 +7,6 @@
     xmlns:viewModels="clr-namespace:MyApp.Prisms.ViewModels.BaseViewModels"
     prism:ViewModelLocator.AutoWireViewModel="True"
     SnapsToDevicePixels="True">
-    <UserControl.InputBindings>
-        <KeyBinding
-            Key="O"
-            Command="{Binding OpenLogCommand}"
-            Modifiers="Ctrl" />
-    </UserControl.InputBindings>
-
     <GroupBox>
         <GroupBox.Header>
             <TextBlock
@@ -125,7 +118,14 @@
                 Grid.Row="1"
                 Background="Transparent"
                 ContextMenu="{StaticResource ForMessageBoard}"
-                DockPanel.Dock="Bottom" />
+                DockPanel.Dock="Bottom">
+                <RichTextBox.InputBindings>
+                    <KeyBinding
+                        Key="O"
+                        Command="{Binding OpenLogCommand}"
+                        Modifiers="Ctrl" />
+                </RichTextBox.InputBindings>
+            </RichTextBox>
 
             <TextBox
                 Grid.Row="2"

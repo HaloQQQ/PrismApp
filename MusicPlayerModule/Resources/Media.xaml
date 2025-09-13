@@ -78,4 +78,34 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="MusicImage" TargetType="Image">
+        <Setter Property="Width" Value="60" />
+        <Setter Property="Height" Value="60" />
+
+        <Setter Property="Margin" Value="5" />
+
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+
+        <Setter Property="Source" Value="{Binding CurrentMedia.Music.ImageSource}" />
+
+        <Setter Property="Clip">
+            <Setter.Value>
+                <RectangleGeometry
+                    RadiusX="5"
+                    RadiusY="5"
+                    Rect="0,0,60,60" />
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding CurrentMedia.Music.ImageSource}" Value="{x:Null}">
+                <Setter Property="Source">
+                    <Setter.Value>
+                        <BitmapImage UriSource="/MusicPlayerModule;component/Resources/音符SVG-87.png" />
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

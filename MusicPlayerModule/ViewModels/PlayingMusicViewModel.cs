@@ -12,7 +12,7 @@ namespace MusicPlayerModule.ViewModels;
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
 #pragma warning disable CS8602
 
-internal class PlayingMusicViewModel : MediaPlayerBaseViewModel, IEquatable<PlayingMusicViewModel>, IEquatable<FavoriteMusicViewModel>
+internal class PlayingMusicViewModel : PlayingMediaBaseViewModel, IEquatable<PlayingMusicViewModel>, IEquatable<FavoriteMusicViewModel>
 {
     public PlayingMusicViewModel(MusicModel music, SettingModel lyricSetting)
         : base(music)
@@ -28,49 +28,10 @@ internal class PlayingMusicViewModel : MediaPlayerBaseViewModel, IEquatable<Play
 
     #region 当前歌曲进度相关
 
-    private int _currentLineIndex = 0;
-
     /// <summary>
     /// 当前歌词的字进度
     /// </summary>
-    public double WordProgress
-    {
-        get
-        {
-            var lyric = this.Music.Lyric;
-
-            if (lyric == null)
-            {
-                return 0d;
-            }
-
-            var line = lyric.Lines[this._currentLineIndex];
-
-            if (this._currentMills < line.LineStart.TotalMilliseconds)
-            {
-                return 0d;
-            }
-
-            int charCount = 0;
-            KRCLyricsWord tempChar;
-            for (int i = 0; i < line.Chars.Count; i++)
-            {
-                tempChar = line.Chars[i];
-                double value = this._currentMills - tempChar.CharStart.Add(line.LineStart).Add(tempChar.CharDuring).TotalMilliseconds;
-
-                if (value <= 0)
-                {
-                    return (charCount + (tempChar.CharDuring.TotalMilliseconds + value) /
-                                tempChar.CharDuring.TotalMilliseconds * tempChar.Word.Length
-                            ) / line.Words.Length;
-                }
-
-                charCount += tempChar.Word.Length;
-            }
-
-            return 1d;
-        }
-    }
+    public double WordProgress { get; private set; }
 
     public override int CurrentMills
     {
@@ -94,18 +55,15 @@ internal class PlayingMusicViewModel : MediaPlayerBaseViewModel, IEquatable<Play
 
                 RaisePropertyChanged(nameof(base.CurrentTime));
 
-                if (this.UpdateLyricSelect())
-                {
-                    // 通知歌词字的进度
-                    RaisePropertyChanged(nameof(WordProgress));
-                }
+                this.UpdateLyricSelect();
             }
         }
     }
 
     private bool UpdateLyricSelect()
     {
-        if (this._currentMills + 100 > this.TotalMills)
+        var currentMills = this._currentMills;
+        if (currentMills + 100 > this.TotalMills)
         {
             ToNextMusic?.Invoke(this);
             return false;
@@ -122,69 +80,21 @@ internal class PlayingMusicViewModel : MediaPlayerBaseViewModel, IEquatable<Play
         {
             // 不要await不然会卡死界面
 #pragma warning disable CS4014 // 由于此调用不会等待，因此在调用完成前将继续执行当前方法
-            TryLoadLyricAsync(_lyricSetting.Value);
+            this.Music.TryLoadLyricAsync(_lyricSetting.Value);
 
             return false;
-
-            async Task TryLoadLyricAsync(string lyricDir)
-            {
-                var music = this.Music;
-                if (music.IsPureMusic || music.IsLoadingLyric || music.Lyric != null)
-                {
-                    return;
-                }
-
-                IEnumerable<string> paths = await KRCLyrics.TryGetLyricPathsAsync(lyricDir).ConfigureAwait(false);
-
-                string? lyricFilePath = paths.FirstOrDefault(path => path.ContainsIgnoreCase(music.Name) &&
-                                                                (
-                                                                    path.ContainsIgnoreCase(music.Performer)
-                                                                    || path.ContainsIgnoreCase(music.Singer)
-                                                                )
-                                                            );
-
-                if (!(music.IsPureMusic = lyricFilePath == null))
-                {
-                    music.IsLoadingLyric = true;
-
-                    await Task.Delay(10).ConfigureAwait(false);
-
-#pragma warning disable CS8604 // 引用类型参数可能为 null。
-                    music.Lyric = KRCLyrics.LoadFromFile(lyricFilePath);
-
-                    music.IsLoadingLyric = false;
-                }
-
-            }
         }
 
         var lines = lyric.Lines;
 
         // 注意当前歌词的结束时间要与下一句歌词的开始时间比较
-        var currentIndex = GetCurrentLineIndex(lyric.Lines);
-
-        if (currentIndex < 0)
-        {
-            return false;
-        }
+        var currentIndex = this.Music.GetCurrentLineIndex(currentMills);
 
         if (this.OneLine == null && this.AnotherLine == null && currentIndex == 0)
         {
             this.OneLine = lines[0];
             this.OneLine.IsPlayingLine = true;
             this.AnotherLine = lines[1];
-        }
-
-        this._currentLineIndex = currentIndex;
-
-        for (int i = 0; i < lines.Count; i++)
-        {
-            if (i != currentIndex)
-            {
-                lines[i].IsPlayingLine = false;
-            }
-
-            lines[i].IsPlayed = i < currentIndex;
         }
 
         var currentLine = lines[currentIndex];
@@ -206,6 +116,10 @@ internal class PlayingMusicViewModel : MediaPlayerBaseViewModel, IEquatable<Play
             currentLine.IsPlayingLine = true;
         }
 
+        this.WordProgress = this.Music.GetWordProgress(currentMills, currentIndex);
+        // 通知歌词字的进度
+        RaisePropertyChanged(nameof(WordProgress));
+
         return true;
 
         void SetLine(KRCLyricsLine line, int index)
@@ -220,21 +134,6 @@ internal class PlayingMusicViewModel : MediaPlayerBaseViewModel, IEquatable<Play
                 this.AnotherLine = line;
             }
         }
-
-        int GetCurrentLineIndex(IList<KRCLyricsLine> lines)
-        {
-            int currentIndex = -1;
-
-            // 注意当前歌词的结束时间要与下一句歌词的开始时间比较
-            while (currentIndex < lines.Count - 1 &&
-                   this._currentMills >= lines[currentIndex + 1].LineStart.TotalMilliseconds)
-            {
-                // 更新当前歌词的索引
-                currentIndex++;
-            }
-
-            return currentIndex;
-        }
     }
 
     private KRCLyricsLine _currentLine;
@@ -242,7 +141,7 @@ internal class PlayingMusicViewModel : MediaPlayerBaseViewModel, IEquatable<Play
     public KRCLyricsLine CurrentLine
     {
         get => this._currentLine;
-        set => SetProperty<KRCLyricsLine>(ref _currentLine, value);
+        private set => SetProperty<KRCLyricsLine>(ref _currentLine, value);
     }
 
     private KRCLyricsLine _oneLine;
@@ -250,7 +149,7 @@ internal class PlayingMusicViewModel : MediaPlayerBaseViewModel, IEquatable<Play
     public KRCLyricsLine OneLine
     {
         get => this._oneLine;
-        set => SetProperty<KRCLyricsLine>(ref this._oneLine, value);
+        private set => SetProperty<KRCLyricsLine>(ref this._oneLine, value);
     }
 
     private KRCLyricsLine _anotherLine;
@@ -258,7 +157,7 @@ internal class PlayingMusicViewModel : MediaPlayerBaseViewModel, IEquatable<Play
     public KRCLyricsLine AnotherLine
     {
         get => this._anotherLine;
-        set => SetProperty<KRCLyricsLine>(ref this._anotherLine, value);
+        private set => SetProperty<KRCLyricsLine>(ref this._anotherLine, value);
     }
 
     internal static event Action<PlayingMusicViewModel> ToNextMusic;
@@ -270,32 +169,15 @@ internal class PlayingMusicViewModel : MediaPlayerBaseViewModel, IEquatable<Play
         base.Reset();
 
         this._currentMills = 0;
-        this._currentLineIndex = 0;
+        this.CurrentLine = null;
         this.OneLine = this.AnotherLine = null;
 
-        if (!this.Music.IsPureMusic)
-        {
-            var lyric = this.Music.Lyric;
-            if (lyric != null)
-            {
-                foreach (var item in lyric.Lines)
-                {
-                    item.IsPlayed = false;
-
-                    if (item.IsPlayingLine)
-                    {
-                        item.IsPlayingLine = false;
-                    }
-                }
-            }
-        }
+        this.Music.TryResetLyric();
     }
 
-    internal void DisConnect()
+    protected override void DisposeCore()
     {
         base.DisposeCore();
-
-        this.Music = null;
 
         this._lyricSetting = null;
 
@@ -304,13 +186,10 @@ internal class PlayingMusicViewModel : MediaPlayerBaseViewModel, IEquatable<Play
         this.AnotherLine = null;
 
         this.OneLine = null;
-    }
 
-    protected override void DisposeCore()
-    {
-        this.Music?.Dispose();
+        this.Music = null;
 
-        this.DisConnect();
+        ToNextMusic = null;
     }
 
     public bool Equals(PlayingMusicViewModel? other)

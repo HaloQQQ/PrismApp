@@ -7,7 +7,7 @@ namespace MusicPlayerModule.Utils
     /// KRC文件行字符
     /// </summary>
     [DebuggerDisplay("{DebuggerDisplay}")]
-    public class KRCLyricsWord
+    internal class KRCLyricsWord
     {
         /// <summary>
         /// 字符

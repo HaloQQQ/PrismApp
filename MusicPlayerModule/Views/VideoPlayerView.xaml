@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/MusicPlayerModule;component/Resources/MediaDic.xaml" />
+                <ResourceDictionary Source="/MusicPlayerModule;component/Resources/Media.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <ContextMenu x:Key="VideoContextMenu_Button">

@@ -12,136 +12,7 @@
     </UserControl.RenderTransform>
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/MusicPlayerModule;component/Resources/MusicFooterDic.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-
-            <converters:DesktopLyricColorfulMultiConverter x:Key="DesktopLyricColorfulMultiConverter" />
-
-            <converters:LyricWidth_MultiConverter x:Key="LyricWidth_MultiConverter" />
-
-            <converters:MultiLyricHeightMultiConverter x:Key="MultiLyricHeightMultiConverter" />
-
-            <LinearGradientBrush x:Key="GradientOpacityMask" StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Offset="0" Color="Transparent" />
-                <GradientStop Offset="0.15" Color="White" />
-                <GradientStop Offset="0.85" Color="White" />
-                <GradientStop Offset="1" Color="Transparent" />
-            </LinearGradientBrush>
-
-            <DataTemplate x:Key="ThreePrimaryColorModel" DataType="{x:Type viewmodels:ThreePrimaryColorModel}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Name}" />
-                    <Slider
-                        Width="100"
-                        Height="3"
-                        Maximum="255"
-                        Style="{StaticResource Slider_ObviousThumb}"
-                        TickFrequency="1"
-                        Value="{Binding Value}" />
-                </StackPanel>
-            </DataTemplate>
-
-            <Style
-                x:Key="LyricListBoxItem"
-                BasedOn="{StaticResource ListBoxItem_General}"
-                TargetType="ListBoxItem">
-                <Setter Property="FontSize" Value="20" />
-
-                <Setter Property="Focusable" Value="False" />
-
-                <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
-                <Setter Property="RenderTransform">
-                    <Setter.Value>
-                        <ScaleTransform ScaleX="1.0" ScaleY="1.0" />
-                    </Setter.Value>
-                </Setter>
-
-                <Setter Property="ContentTemplate">
-                    <Setter.Value>
-                        <DataTemplate DataType="{x:Type utils:KRCLyricsLine}">
-                            <Grid HorizontalAlignment="Center">
-                                <TextBlock
-                                    HorizontalAlignment="Left"
-                                    FontFamily="{Binding DataContext.DesktopLyric.CurrentFontModel.Family, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                    FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                    Text="{Binding Words}"
-                                    TextWrapping="NoWrap" />
-
-                                <TextBlock
-                                    HorizontalAlignment="Left"
-                                    ClipToBounds="True"
-                                    FontFamily="{Binding DataContext.DesktopLyric.CurrentFontModel.Family, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                    FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                    Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                    Text="{Binding Words}"
-                                    TextTrimming="None"
-                                    TextWrapping="NoWrap">
-
-                                    <TextBlock.Width>
-                                        <MultiBinding Converter="{StaticResource LyricWidth_MultiConverter}" FallbackValue="0">
-                                            <Binding Mode="OneWay" Path="IsPlayingLine" />
-                                            <Binding
-                                                Mode="OneWay"
-                                                Path="DataContext.CurrentMedia.WordProgress"
-                                                RelativeSource="{RelativeSource AncestorType=ListBox}" />
-
-                                            <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
-                                        </MultiBinding>
-                                    </TextBlock.Width>
-
-                                    <TextBlock.ToolTip>
-                                        <TextBlock>
-                                            <TextBlock Text="{Binding LineStart.TotalSeconds}" />
-                                            <TextBlock Text="{Binding LineDuring.TotalSeconds}" />
-                                        </TextBlock>
-                                    </TextBlock.ToolTip>
-                                </TextBlock>
-                            </Grid>
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <DataTemplate x:Key="PanelSimpleLyric">
-                <Grid Margin="20,10" HorizontalAlignment="Center">
-                    <TextBlock
-                        FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
-                        Foreground="{DynamicResource TextBlock.Foreground}"
-                        Text="{Binding Words}" />
-
-                    <TextBlock
-                        HorizontalAlignment="Left"
-                        ClipToBounds="True"
-                        FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
-                        Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=SkyBlue}"
-                        Text="{Binding Words}"
-                        TextTrimming="None">
-                        <TextBlock.Width>
-                            <MultiBinding Converter="{StaticResource DesktopLyricColorfulMultiConverter}">
-                                <Binding Mode="OneWay" Path="IsPlayed" />
-
-                                <Binding Mode="OneWay" Path="IsPlayingLine" />
-
-                                <Binding
-                                    Mode="OneWay"
-                                    Path="DataContext.CurrentMedia.WordProgress"
-                                    RelativeSource="{RelativeSource AncestorType=Border}" />
-
-                                <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
-                            </MultiBinding>
-                        </TextBlock.Width>
-                        <TextBlock.ToolTip>
-                            <TextBlock>
-                                <TextBlock Text="{Binding LineStart.TotalSeconds}" />
-                                <TextBlock Text="{Binding LineDuring.TotalSeconds}" />
-                            </TextBlock>
-                        </TextBlock.ToolTip>
-                    </TextBlock>
-                </Grid>
-            </DataTemplate>
-        </ResourceDictionary>
+        <ResourceDictionary Source="/MusicPlayerModule;component/Resources/Music/Lyric.xaml" />
     </UserControl.Resources>
 
     <Border CommandManager.Executed="UserControl_Executed">
@@ -470,8 +341,7 @@
                             ItemsSource="{Binding CurrentMedia.Music.Lyric.Lines}"
                             OpacityMask="{StaticResource GradientOpacityMask}"
                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                            SelectionChanged="LyricList_SelectionChanged"
-                            VirtualizingPanel.IsVirtualizing="False">
+                            SelectionChanged="LyricList_SelectionChanged">
                             <ListBox.ItemContainerStyle>
                                 <Style BasedOn="{StaticResource LyricListBoxItem}" TargetType="ListBoxItem">
                                     <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
@@ -527,7 +397,7 @@
                             Width="80"
                             Height="80"
                             Foreground="DodgerBlue"
-                            Visibility="{Binding CurrentMedia.Music.IsLoadingLyric, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
+                            Visibility="{Binding CurrentMedia.Music.IsLoadingLyric, Converter={StaticResource BoolToVisibleCollapsedConverter}, FallbackValue={x:Static Visibility.Collapsed}}" />
                     </Grid>
                 </Grid>
             </DockPanel>

@@ -23,10 +23,17 @@ namespace MusicPlayerModule.ViewModels.Base;
 #pragma warning disable CS8604 // 引用类型参数可能为 null。
 internal abstract class MediaPlayerViewModel : NotifyBase
 {
-    protected readonly IEventAggregator _eventAggregator;
-    protected readonly ISettingManager<SettingModel> _settingManager;
+    #region Fields
+    protected IEventAggregator _eventAggregator { get; private set; }
+    protected ISettingManager<SettingModel> _settingManager { get; private set; }
+    protected IConfigManager _configManager { get; private set; }
+    protected Random _random { get; private set; } = new Random();
+    #endregion
 
-    protected readonly IConfigManager _configManager;
+    public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; private set; }
+
+    public ObservableCollection<PlayingMediaBaseViewModel> DisplayPlaying { get; private set; } = new();
+
 
     protected MediaPlayerViewModel(IEventAggregator eventAggregator, IConfigManager configManager, IAppConfigFileHotKeyManager appConfigFileHotKeyManager, ISettingManager<SettingModel> settingManager)
     {
@@ -46,8 +53,6 @@ internal abstract class MediaPlayerViewModel : NotifyBase
 
         this.SubscribeEvents(eventAggregator);
     }
-
-    public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; private set; }
 
     private void InitHotkeys(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
     {
@@ -71,9 +76,9 @@ internal abstract class MediaPlayerViewModel : NotifyBase
                     CustomStatics.MediaPlayOrderList.First()
                 );
 
-        configManager.SetConfig += config =>
+        configManager.SetConfig += _ =>
         {
-            config.WriteConfigNode(this.CurrentPlayOrder.Description, this.MediaPlayOrder_ConfigKey);
+            _.WriteConfigNode(this.CurrentPlayOrder.Description, this.MediaPlayOrder_ConfigKey);
         };
 
         configManager.PostSetConfig += config =>
@@ -87,12 +92,12 @@ internal abstract class MediaPlayerViewModel : NotifyBase
 
                 IList<string> pointANode = new List<string>(mediaNode)
                 {
-                    nameof(MediaPlayerBaseViewModel.PointAMills)
+                    nameof(PlayingMediaBaseViewModel.PointAMills)
                 };
 
                 IList<string> pointBNode = new List<string>(mediaNode)
                 {
-                    nameof(MediaPlayerBaseViewModel.PointBMills)
+                    nameof(PlayingMediaBaseViewModel.PointBMills)
                 };
 
                 config.WriteConfigNode(item.MediaName, mediaNode);
@@ -115,94 +120,95 @@ internal abstract class MediaPlayerViewModel : NotifyBase
         });
 
         this.PointACommand = new DelegateCommand(
-                () => this.CurrentMedia?.SetPointA(this.CurrentMedia.CurrentMills),
-                () => this.CurrentMedia != null)
-                .ObservesProperty(() => this.CurrentMedia);
+            () => this.CurrentMedia?.SetPointA(this.CurrentMedia.CurrentMills),
+            () => this.CurrentMedia != null)
+            .ObservesProperty(() => this.CurrentMedia);
 
         this.PointBCommand = new DelegateCommand(
-                () => this.CurrentMedia?.SetPointB(this.CurrentMedia.CurrentMills),
-                () => this.CurrentMedia != null)
-                .ObservesProperty(() => this.CurrentMedia);
+            () => this.CurrentMedia?.SetPointB(this.CurrentMedia.CurrentMills),
+            () => this.CurrentMedia != null)
+            .ObservesProperty(() => this.CurrentMedia);
 
         this.ToPointACommand = new DelegateCommand(
-                () => this.CurrentMedia?.GoToPointA(),
-                () => this.CurrentMedia != null)
-                .ObservesProperty(() => this.CurrentMedia);
+            () => this.CurrentMedia?.GoToPointA(),
+            () => this.CurrentMedia != null)
+            .ObservesProperty(() => this.CurrentMedia);
 
         this.AllToPointACommand = new DelegateCommand(
-                () => _eventAggregator.GetEvent<GoBackMediaPointAEvent>().Publish(),
-                () => this.CurrentMedia != null)
-                .ObservesProperty(() => this.CurrentMedia);
+            () => _eventAggregator.GetEvent<GoBackMediaPointAEvent>().Publish(),
+            () => this.CurrentMedia != null)
+            .ObservesProperty(() => this.CurrentMedia);
 
         this.ResetPointABCommand = new DelegateCommand(
-                () => this.CurrentMedia?.ResetABPoint(),
-                () => this.CurrentMedia != null)
-                .ObservesProperty(() => this.CurrentMedia);
+            () => this.CurrentMedia?.ResetABPoint(),
+            () => this.CurrentMedia != null)
+            .ObservesProperty(() => this.CurrentMedia);
 
         this.RewindCommand = new DelegateCommand(
-                Rewind_CommandExecute,
-                () => this.CurrentMedia != null)
-                .ObservesProperty(() => this.CurrentMedia);
+            Rewind_CommandExecute,
+            () => this.CurrentMedia != null)
+            .ObservesProperty(() => this.CurrentMedia);
 
-        this.PrevCommand = new DelegateCommand<MediaPlayerBaseViewModel>(
-                PrevMedia_CommandExecute,
-                currentVideo => this.CurrentMedia != null && this.DisplayPlaying.Count > 0)
-                .ObservesProperty(() => this.CurrentMedia)
-                .ObservesProperty<int>(() => this.DisplayPlaying.Count);
+        this.PrevCommand = new DelegateCommand<PlayingMediaBaseViewModel>(
+            PrevMedia_CommandExecute,
+            currentVideo => this.CurrentMedia != null && this.DisplayPlaying.Count > 0)
+            .ObservesProperty(() => this.CurrentMedia)
+            .ObservesProperty<int>(() => this.DisplayPlaying.Count);
 
-        this.NextCommand = new DelegateCommand<MediaPlayerBaseViewModel>(
-                NextMedia_CommandExecute,
-                currentVideo => this.CurrentMedia != null && this.DisplayPlaying.Count > 0)
-                .ObservesProperty(() => this.CurrentMedia)
-                .ObservesProperty<int>(() => this.DisplayPlaying.Count);
+        this.NextCommand = new DelegateCommand<PlayingMediaBaseViewModel>(
+            NextMedia_CommandExecute,
+            currentVideo => this.CurrentMedia != null && this.DisplayPlaying.Count > 0)
+            .ObservesProperty(() => this.CurrentMedia)
+            .ObservesProperty<int>(() => this.DisplayPlaying.Count);
 
         this.FastForwardCommand = new DelegateCommand(
-                FastForward_CommandExecute,
-                () => this.CurrentMedia != null)
-                .ObservesProperty(() => this.CurrentMedia);
+            FastForward_CommandExecute,
+            () => this.CurrentMedia != null)
+            .ObservesProperty(() => this.CurrentMedia);
 
         this.StopPlayCommand = new DelegateCommand(
-                () => this.CurrentMedia = null,
-                () => !this.Running && this.CurrentMedia != null)
-                .ObservesProperty(() => this.CurrentMedia)
-                .ObservesProperty(() => this.Running);
+            () => this.CurrentMedia = null,
+            () => !this.Running && this.CurrentMedia != null)
+            .ObservesProperty(() => this.CurrentMedia)
+            .ObservesProperty(() => this.Running);
 
         this.CleanPlayingCommand = new DelegateCommand(
-                CleanPlaying_CommandExecute,
-                () => !this.Running && this.DisplayPlaying.Count > 0)
-                .ObservesProperty(() => this.Running)
-                .ObservesProperty<int>(() => this.DisplayPlaying.Count);
+            CleanPlaying_CommandExecute,
+            () => !this.Running && this.DisplayPlaying.Count > 0)
+            .ObservesProperty(() => this.Running)
+            .ObservesProperty<int>(() => this.DisplayPlaying.Count);
 
-        this.AllMoveToHomeEventCommand = new DelegateCommand(() => this._eventAggregator.GetEvent<MoveToHomeEvent>().Publish());
+        this.AllMoveToHomeEventCommand = new DelegateCommand(
+            () => this._eventAggregator.GetEvent<MoveToHomeEvent>().Publish());
 
         this.MoveToHomeCommand = new DelegateCommand(
-                () => this.CurrentMedia.CurrentMills = 0,
-                () => this.CurrentMedia != null)
-                .ObservesProperty(() => this.CurrentMedia);
+            () => this.CurrentMedia.CurrentMills = 0,
+            () => this.CurrentMedia != null)
+            .ObservesProperty(() => this.CurrentMedia);
 
         this.MoveToEndCommand = new DelegateCommand(
-                () => this.CurrentMedia.CurrentMills =
-                            this.CurrentMedia.TotalMills > 5000
-                                ? (this.CurrentMedia.TotalMills - 5000) : this.CurrentMedia.TotalMills,
-                () => this.CurrentMedia != null)
-                .ObservesProperty(() => this.CurrentMedia);
+            () => this.CurrentMedia.CurrentMills =
+                        this.CurrentMedia.TotalMills > 5000
+                            ? (this.CurrentMedia.TotalMills - 5000) : this.CurrentMedia.TotalMills,
+            () => this.CurrentMedia != null)
+            .ObservesProperty(() => this.CurrentMedia);
 
-        this.TogglePlayCommand = new DelegateCommand<MediaPlayerBaseViewModel>(
-                PlayInPlaying_CommandExecute,
-                _ => this.CurrentMedia != null)
-                .ObservesProperty(() => this.CurrentMedia);
+        this.TogglePlayCommand = new DelegateCommand<PlayingMediaBaseViewModel>(
+            PlayInPlaying_CommandExecute,
+            _ => this.CurrentMedia != null)
+            .ObservesProperty(() => this.CurrentMedia);
 
-        this.TogglePlayCurrentCommand = new DelegateCommand<MediaPlayerBaseViewModel>(
-                PlayInPlaying_CommandExecute);
+        this.TogglePlayCurrentCommand = new DelegateCommand<PlayingMediaBaseViewModel>(
+            PlayInPlaying_CommandExecute);
 
         this.AddFilesCommand = new DelegateCommand(AddMediaFromFileDialog_CommandExecute);
 
         this.AddFolderCommand = new DelegateCommand(AddMediaFromFolderDialog_CommandExecute);
 
-        this.DeletePlayingCommand = new DelegateCommand<MediaPlayerBaseViewModel>(
-                DeleteFromPlaying_CommandExecute,
-                _ => this.DisplayPlaying.Count > 0)
-                .ObservesProperty(() => this.DisplayPlaying.Count);
+        this.DeletePlayingCommand = new DelegateCommand<PlayingMediaBaseViewModel>(
+            DeleteFromPlaying_CommandExecute,
+            _ => this.DisplayPlaying.Count > 0)
+            .ObservesProperty(() => this.DisplayPlaying.Count);
 
         this.IncreaseVolumeCommand = new DelegateCommand(
             () => _eventAggregator.GetEvent<IncreaseVolumeEvent>().Publish(),
@@ -218,28 +224,23 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     }
 
     #region CommandExecute
-    protected virtual void CleanPlaying_CommandExecute()
+    protected void CleanPlaying_CommandExecute()
     {
         for (int i = this.DisplayPlaying.Count - 1; i >= 0; i--)
         {
             this.DisplayPlaying[i].Dispose();
         }
 
-        this.DisplayPlaying.Clear();
         this.CurrentMedia = null;
     }
 
     protected virtual void Rewind_CommandExecute()
-    {
-        this.CurrentMedia?.Rewind();
-    }
+        => this.CurrentMedia?.Rewind();
 
     protected virtual void FastForward_CommandExecute()
-    {
-        this.CurrentMedia?.FastForward();
-    }
+        => this.CurrentMedia?.FastForward();
 
-    protected void PrevMedia_CommandExecute(MediaPlayerBaseViewModel? currentMedia)
+    protected void PrevMedia_CommandExecute(PlayingMediaBaseViewModel? currentMedia)
     {
         if (currentMedia != null && this.DisplayPlaying.Count > 0)
         {
@@ -279,7 +280,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
         }
     }
 
-    protected void NextMedia_CommandExecute(MediaPlayerBaseViewModel? currentMedia)
+    protected void NextMedia_CommandExecute(PlayingMediaBaseViewModel? currentMedia)
     {
         if (currentMedia != null && this.DisplayPlaying.Count > 0)
         {
@@ -323,11 +324,11 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     /// 删除播放列表中的当前Media
     /// </summary>
     /// <param name="media"></param>
-    protected void DeleteFromPlaying_CommandExecute(MediaPlayerBaseViewModel media)
+    protected void DeleteFromPlaying_CommandExecute(PlayingMediaBaseViewModel media)
     {
         if (media.IsNotNullAnd(m => m.IsPlayingMedia))
         {
-            CommonUtil.PublishMessage(_eventAggregator, "当前音乐正在播放，不允许删除");
+            CommonUtil.PublishMessage(_eventAggregator, "当前媒体资源正在播放，不允许删除");
 
             return;
         }
@@ -352,7 +353,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     protected abstract void AddMediaFromFileDialog_CommandExecute();
     protected abstract void AddMediaFromFolderDialog_CommandExecute();
 
-    protected virtual void PlayInPlaying_CommandExecute(MediaPlayerBaseViewModel currentMedia)
+    protected virtual void PlayInPlaying_CommandExecute(PlayingMediaBaseViewModel currentMedia)
     {
         if (currentMedia == this.CurrentMedia)
         {
@@ -374,24 +375,16 @@ internal abstract class MediaPlayerViewModel : NotifyBase
 
     #region Methods
     protected virtual void RaiseContinueMediaEvent()
-    {
-        _eventAggregator.GetEvent<ContinueCurrentMediaEvent>().Publish();
-    }
+        => _eventAggregator.GetEvent<ContinueCurrentMediaEvent>().Publish();
 
     protected virtual void RaisePauseMediaEvent()
-    {
-        _eventAggregator.GetEvent<PauseCurrentMediaEvent>().Publish();
-    }
+        => _eventAggregator.GetEvent<PauseCurrentMediaEvent>().Publish();
 
     protected virtual void RaiseResetMediaEvent()
-    {
-        _eventAggregator.GetEvent<ResetMediaPlayerEvent>().Publish();
-    }
+        => _eventAggregator.GetEvent<ResetMediaPlayerEvent>().Publish();
 
     protected virtual void RaiseResetPlayerAndPlayMediaEvent()
-    {
-        _eventAggregator.GetEvent<ResetPlayerAndPlayMediaEvent>().Publish();
-    }
+        => _eventAggregator.GetEvent<ResetPlayerAndPlayMediaEvent>().Publish();
 
     protected virtual void SubscribeEvents(IEventAggregator eventAggregator)
     {
@@ -427,7 +420,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
         });
     }
 
-    protected void SetAndPlay(MediaPlayerBaseViewModel? item)
+    protected void SetAndPlay(PlayingMediaBaseViewModel? item)
     {
         this.CurrentMedia = item;
 
@@ -464,10 +457,6 @@ internal abstract class MediaPlayerViewModel : NotifyBase
             item.IsPlayingMedia = false;
         }
     }
-    #endregion
-
-    #region Fields
-    protected Random _random = new Random();
     #endregion
 
     #region Props
@@ -511,7 +500,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     }
 
     protected virtual IEnumerable<AppHotKey> MediaHotKeys =>
-        new AppHotKey[]
+        new[]
         {
             new AppHotKey(MediaHotKeyConsts.ResetPointAB, Key.Delete, ModifierKeys.Control),
             new AppHotKey(MediaHotKeyConsts.SetPointA, Key.D1, ModifierKeys.Control),
@@ -540,12 +529,10 @@ internal abstract class MediaPlayerViewModel : NotifyBase
         };
     #endregion
 
-    public ObservableCollection<MediaPlayerBaseViewModel> DisplayPlaying { get; } = new();
-
-    protected MediaPlayerBaseViewModel _currentMedia;
-    public virtual MediaPlayerBaseViewModel CurrentMedia
+    private PlayingMediaBaseViewModel _currentMedia;
+    public virtual PlayingMediaBaseViewModel CurrentMedia
     {
-        get { return _currentMedia; }
+        get => _currentMedia;
         set
         {
             if (SetProperty(ref _currentMedia, value))
@@ -566,7 +553,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
                     IList<string> pointANode = new List<string>(MediaABPoints_ConfigKey)
                     {
                         _currentMedia.MediaName,
-                        nameof(MediaPlayerBaseViewModel.PointAMills)
+                        nameof(PlayingMediaBaseViewModel.PointAMills)
                     };
 
                     if (int.TryParse(
@@ -580,7 +567,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
                     IList<string> pointBNode = new List<string>(MediaABPoints_ConfigKey)
                     {
                         _currentMedia.MediaName,
-                        nameof(MediaPlayerBaseViewModel.PointBMills)
+                        nameof(PlayingMediaBaseViewModel.PointBMills)
                     };
 
                     if (int.TryParse(
@@ -613,7 +600,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     protected bool _running;
     public virtual bool Running
     {
-        get { return _running; }
+        get => _running;
         set
         {
             if (SetProperty<bool>(ref _running, value))
@@ -690,8 +677,29 @@ internal abstract class MediaPlayerViewModel : NotifyBase
 
     protected override void DisposeCore()
     {
-        base.DisposeCore();
-
         this.CleanPlaying_CommandExecute();
+
+        _random = null;
+
+        _configManager = null;
+        _eventAggregator = null;
+        _settingManager = null;
+
+        if (MediaHotKeys is IList<AppHotKey> list)
+        {
+            list.Clear();
+        }
+
+        KeyGestureDic.Clear();
+        KeyGestureDic = null;
+
+        DisplayPlaying.Clear();
+        DisplayPlaying = null;
+
+        _currentMedia = null;
+
+        _mediaPlayOrder = null;
+
+        base.DisposeCore();
     }
 }

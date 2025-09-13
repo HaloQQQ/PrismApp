@@ -16,12 +16,6 @@
             <Setter Property="IsEnabled" Value="{Binding Socket.IsConnected, Converter={StaticResource OppositeBoolConverter}}" />
         </Style>
     </UserControl.Resources>
-    <UserControl.InputBindings>
-        <KeyBinding
-            Key="O"
-            Command="{Binding OpenLogCommand}"
-            Modifiers="Ctrl" />
-    </UserControl.InputBindings>
 
     <GroupBox>
         <GroupBox.Header>
@@ -81,7 +75,14 @@
                 Grid.Row="1"
                 Background="Transparent"
                 ContextMenu="{StaticResource ForMessageBoard}"
-                DockPanel.Dock="Bottom" />
+                DockPanel.Dock="Bottom">
+                <RichTextBox.InputBindings>
+                    <KeyBinding
+                        Key="O"
+                        Command="{Binding OpenLogCommand}"
+                        Modifiers="Ctrl" />
+                </RichTextBox.InputBindings>
+            </RichTextBox>
 
             <TextBox
                 Grid.Row="2"

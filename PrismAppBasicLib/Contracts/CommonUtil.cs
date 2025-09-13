@@ -15,15 +15,32 @@ namespace PrismAppBasicLib.Contracts
 {
     public static class CommonUtil
     {
-        public static void PublishMessage(IEventAggregator eventAggregator, string msg, int seconds = 3)
+        public static bool TryDeleteEmptyFolder(IEventAggregator eventAggregator, string originDir)
         {
-            eventAggregator.AssertNotNull(nameof(IEventAggregator)).GetEvent<DialogMessageEvent>().Publish(new DialogMessage(msg, seconds));
+            eventAggregator.AssertNotNull(nameof(IEventAggregator));
+
+            if (originDir.IsDirectoryExists())
+            {
+                if (originDir.DeleteDirIfEmptyOr())
+                {
+                    CommonUtil.PublishMessage(eventAggregator, $"【{originDir}】删除成功");
+
+                    return true;
+                }
+                else
+                {
+                    CommonUtil.PublishMessage(eventAggregator, "目录不为空，不允许删除");
+                }
+            }
+
+            return false;
         }
 
+        public static void PublishMessage(IEventAggregator eventAggregator, string msg, int seconds = 3)
+            => eventAggregator.AssertNotNull(nameof(IEventAggregator)).GetEvent<DialogMessageEvent>().Publish(new DialogMessage(msg, seconds));
+
         public static void SubscribeMessage(IEventAggregator eventAggregator, Action<DialogMessage> action)
-        {
-            eventAggregator.AssertNotNull(nameof(IEventAggregator)).GetEvent<DialogMessageEvent>().Subscribe(action);
-        }
+            => eventAggregator.AssertNotNull(nameof(IEventAggregator)).GetEvent<DialogMessageEvent>().Subscribe(action);
 
         public static void Log(string typeName, string message)
         {

@@ -1,4 +1,5 @@
 ﻿using MusicPlayerModule.Models;
+using MusicPlayerModule.ViewModels;
 using System.Globalization;
 using System.Windows.Data;
 
@@ -9,7 +10,9 @@ namespace MusicPlayerModule.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values != null && values.Length == 2 && values[0] is IEnumerable<FavoriteMusicViewModel> collection && values[1] is FavoriteMusicViewModel favorite)
+            if (values != null && values.Length == 2 
+                && values[0] is IEnumerable<FavoriteMusicViewModel> collection 
+                && values[1] is FavoriteMusicViewModel favorite)
             {
                 return new BatchAddAndPlayModel(favorite, collection);
             }
