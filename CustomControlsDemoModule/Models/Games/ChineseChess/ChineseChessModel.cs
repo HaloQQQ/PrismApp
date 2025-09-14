@@ -56,7 +56,7 @@ namespace CustomControlsDemoModule.Models
 
                 int fromRow = this.Row, fromColumn = this.Column;
 
-                commandStack.Insert(0, new ChinChessCommand((bool)this.Data.IsRed, fromRow, fromColumn, toRow, toColumn).Forward(datas));
+                commandStack.Insert(0, new ChinChessCommand(commandStack.Count + 1, (bool)this.Data.IsRed, fromRow, fromColumn, toRow, toColumn).Forward(datas));
 
                 return true;
             }

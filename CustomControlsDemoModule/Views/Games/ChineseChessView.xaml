@@ -209,6 +209,9 @@
                             <DataTemplate DataType="{x:Type chinesechess:ChinChessCommand}">
                                 <TextBlock Style="{StaticResource {x:Type TextBlock}}">
                                     <TextBlock>
+                                        [
+                                        <TextBlock Text="{Binding Index}" />
+                                        ]
                                         (
                                         <TextBlock Text="{Binding FromRow}" />
                                         ,

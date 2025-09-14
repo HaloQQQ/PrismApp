@@ -558,13 +558,13 @@ namespace MusicPlayerModule.ViewModels
         #endregion
 
         #region GenericProps
-        private Collection<FavoriteMusicViewModel> Favorites { get; } = new();
-        public ObservableCollection<FavoriteMusicViewModel> DisplayFavorites { get; } = new();
+        private Collection<FavoriteMusicViewModel> Favorites { get; set; } = new();
+        public ObservableCollection<FavoriteMusicViewModel> DisplayFavorites { get; private set; } = new();
 
-        private Collection<MusicWithClassifyModel> AlbumClassify { get; } = new();
+        private Collection<MusicWithClassifyModel> AlbumClassify { get; set; } = new();
         public ObservableCollection<MusicWithClassifyModel> DisplayAlbumClassify { get; private set; } = new();
 
-        private Collection<MusicWithClassifyModel> SingerClassify { get; } = new();
+        private Collection<MusicWithClassifyModel> SingerClassify { get; set; } = new();
         public ObservableCollection<MusicWithClassifyModel> DisplaySingerClassify { get; private set; } = new();
 
         public ObservableCollection<MusicWithClassifyModel> DisplayDirClassify { get; private set; } = new();
@@ -825,32 +825,36 @@ namespace MusicPlayerModule.ViewModels
             }
 
             this.DisplayFavorites.Clear();
+            this.DisplayFavorites = null;
             this.Favorites.Clear();
+            this.Favorites = null;
 
-
-            this.DisplayAlbumClassify.Clear();
 
             foreach (var item in AlbumClassify)
             {
                 item.Dispose();
             }
             this.AlbumClassify.Clear();
+            this.AlbumClassify = null;
+            this.DisplayAlbumClassify.Clear();
+            this.DisplayAlbumClassify = null;
 
-
-            this.DisplaySingerClassify.Clear();
 
             foreach (var item in SingerClassify)
             {
                 item.Dispose();
             }
             this.SingerClassify.Clear();
-
+            this.SingerClassify = null;
+            this.DisplaySingerClassify.Clear();
+            this.DisplaySingerClassify = null;
 
             foreach (var item in DisplayDirClassify)
             {
                 item.Dispose();
             }
             this.DisplayDirClassify.Clear();
+            this.DisplayDirClassify = null;
 
             this.MusicDirs.Clear();
             this.MusicDirs = null;
@@ -858,6 +862,17 @@ namespace MusicPlayerModule.ViewModels
             this._eventAggregator = null;
 
             MusicWithClassifyModel.SelectedEvent -= OnlyRefreshClassifySelectAllStatus;
+
+            DeleteFavoriteCommand = null;
+            BatchDeleteCommand = null;
+            BatchMoveMusicDirCommand = null;
+            AddMusicDirCommand = null;
+            RemoveMusicDirCommand = null;
+            RenameMusicDirCommand = null;
+            DistributeToCommand = null;
+            CurrentDirSelectAllCommand = null;
+            CurrentSingerSelectAllCommand = null;
+            CurrentAlbumSelectAllCommand = null;
 
             base.DisposeCore();
         }

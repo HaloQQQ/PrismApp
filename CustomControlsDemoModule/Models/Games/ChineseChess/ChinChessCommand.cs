@@ -19,8 +19,10 @@ namespace CustomControlsDemoModule.Models.Games.ChineseChess
 
     internal class ChinChessCommand : DisposableBase, IChessCommand
     {
-        public ChinChessCommand(bool isRed, int fromRow, int fromColumn, int toRow, int toColumn)
+        public ChinChessCommand(int index, bool isRed, int fromRow, int fromColumn, int toRow, int toColumn)
         {
+            Index = index;
+
             FromRow = fromRow;
             FromColumn = fromColumn;
             ToRow = toRow;
@@ -28,6 +30,7 @@ namespace CustomControlsDemoModule.Models.Games.ChineseChess
             IsRed = isRed;
         }
 
+        public int Index { get; }
         public bool IsRed { get; }
 
         public int FromRow { get; }

@@ -181,11 +181,11 @@ internal class PlayingMusicViewModel : PlayingMediaBaseViewModel, IEquatable<Pla
 
         this._lyricSetting = null;
 
-        this.CurrentLine = null;
+        this._currentLine = null;
 
-        this.AnotherLine = null;
+        this._anotherLine = null;
 
-        this.OneLine = null;
+        this._oneLine = null;
 
         this.Music = null;
 

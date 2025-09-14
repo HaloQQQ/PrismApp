@@ -375,6 +375,15 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
 
         PlayingMusicViewModel.ToNextMusic -= NextMedia_CommandExecute;
 
+        ToggleDesktopLyricCommand = null;
+        AddToPlayingCommand = null;
+        PlayCurrentCategoryCommand = null;
+        PlayCurrentItemsCommand = null;
+        PlayAllCommand = null;
+        PlayFavoriteCommand = null;
+        AddNextCommand = null;
+        DownLoadCommand = null;
+
         base.DisposeCore();
     }
 }

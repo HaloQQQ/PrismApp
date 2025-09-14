@@ -700,6 +700,29 @@ internal abstract class MediaPlayerViewModel : NotifyBase
 
         _mediaPlayOrder = null;
 
+        OpenInExploreCommand = null;
+        DeletePlayingCommand = null;
+        AddFilesCommand = null;
+        AddFolderCommand = null;
+        AllMoveToHomeEventCommand = null;
+        MoveToHomeCommand = null;
+        MoveToEndCommand = null;
+        PointACommand = null;
+        PointBCommand = null;
+        ToPointACommand = null;
+        AllToPointACommand = null;
+        ResetPointABCommand = null;
+        StopPlayCommand = null;
+        CleanPlayingCommand = null;
+        TogglePlayCommand = null;
+        TogglePlayCurrentCommand = null;
+        PrevCommand = null;
+        NextCommand = null;
+        IncreaseVolumeCommand = null;
+        DecreaseVolumeCommand = null;
+        RewindCommand = null;
+        FastForwardCommand = null;
+
         base.DisposeCore();
     }
 }
