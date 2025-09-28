@@ -2,7 +2,7 @@
     x:Class="CustomControlsDemoModule.Views.ChineseChessView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:chinesechess="clr-namespace:CustomControlsDemoModule.Models.Games.ChineseChess"
+    xmlns:chinesechess="clr-namespace:CustomControlsDemoModule.Models"
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True"
     FocusVisualStyle="{x:Null}"
@@ -27,12 +27,12 @@
 
         <KeyBinding
             Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"
-            Command="{Binding StartPauseCommand}"
+            Command="{Binding TogglePauseCommand}"
             Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" />
 
         <KeyBinding
             Key="{Binding KeyGestureDic[悔棋].SelectedKey}"
-            Command="{Binding CancelLastCommand}"
+            Command="{Binding RevokeCommand}"
             Modifiers="{Binding KeyGestureDic[悔棋].ModifierKey}" />
 
         <KeyBinding

@@ -1,7 +1,8 @@
 ﻿using IceTea.Pure.BaseModels;
 using IceTea.Pure.Contracts;
+using IceTea.Pure.Extensions;
+using IceTea.Pure.Utils;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
-using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Services.Dialogs;
@@ -19,18 +20,21 @@ namespace CustomControlsDemoModule.ViewModels
     {
         protected virtual string GameName { get; }
 
-        public GameBaseViewModel(IAppConfigFileHotKeyManager appConfigFileHotKeyManager, IConfigManager configManager, IEventAggregator eventAggregator)
+        private IAppConfigFileHotKeyManager _appCfgHotkeyManager;
+
+        public GameBaseViewModel(IAppConfigFileHotKeyManager appCfgHotkeyManager, IConfigManager configManager, IEventAggregator eventAggregator)
         {
-            _eventAggregator = eventAggregator;
+            _appCfgHotkeyManager = appCfgHotkeyManager.AssertNotNull(nameof(IAppConfigFileHotKeyManager));
+            _eventAggregator = eventAggregator.AssertNotNull(nameof(IEventAggregator));
 
             this.LoadConfig(configManager);
 
             this.Datas = new ObservableCollection<T>();
             this.InitDatas();
 
-            this.InitHotKeys(appConfigFileHotKeyManager);
+            this.InitHotKeys(appCfgHotkeyManager);
 
-            StartPauseCommand = new DelegateCommand(() =>
+            TogglePauseCommand = new DelegateCommand(() =>
             {
                 IsUsable = !IsUsable;
             }, () => !IsGameOver).ObservesProperty(() => IsGameOver);
@@ -43,25 +47,27 @@ namespace CustomControlsDemoModule.ViewModels
         #region Logicals
         protected abstract bool CheckGameOver();
 
-        protected void InitHotKeys(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
+        protected void InitHotKeys(IAppConfigFileHotKeyManager appCfgHotkeyManager)
         {
             var groupName = GameName;
 
-            appConfigFileHotKeyManager.TryAdd(groupName, new[] { "HotKeys", "App", groupName });
+            appCfgHotkeyManager.TryRegister(groupName, new[] { "HotKeys", "App", groupName });
 
-            appConfigFileHotKeyManager.TryRegisterItem(groupName, new AppHotKey("重玩", Key.R, ModifierKeys.Alt));
-            appConfigFileHotKeyManager.TryRegisterItem(groupName, new AppHotKey("播放/暂停", Key.Space, ModifierKeys.None));
+            var group = appCfgHotkeyManager[groupName];
 
-            this.InitHotKeysCore(appConfigFileHotKeyManager);
+            group.TryRegister(new AppHotKey("重玩", Key.R, ModifierKeys.Alt));
+            group.TryRegister(new AppHotKey("播放/暂停", Key.Space, ModifierKeys.None));
 
-            KeyGestureDic = appConfigFileHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
+            this.InitHotKeysCore(group.As<IAppHotKeyGroup>());
+
+            KeyGestureDic = group.ToDictionary(hotKey => hotKey.Name);
         }
 
         /// <summary>
         /// 注册快捷键
         /// </summary>
-        /// <param name="appConfigFileHotKeyManager"></param>
-        protected virtual void InitHotKeysCore(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
+        /// <param name="group"></param>
+        protected virtual void InitHotKeysCore(IAppHotKeyGroup group)
         {
         }
 
@@ -104,6 +110,7 @@ namespace CustomControlsDemoModule.ViewModels
         public void OnDialogOpened(IDialogParameters parameters)
         {
         }
+
         #endregion
 
         #region Fields
@@ -160,7 +167,18 @@ namespace CustomControlsDemoModule.ViewModels
 
         #region Commands
         public ICommand RePlayCommand { get; protected set; }
-        public ICommand StartPauseCommand { get; }
+        public ICommand TogglePauseCommand { get; }
         #endregion
+
+        protected override void DisposeCore()
+        {
+            _player.Close();
+            _player = null;
+
+            _appCfgHotkeyManager.TryDispose(this.GameName);
+            _appCfgHotkeyManager = null;
+
+            base.DisposeCore();
+        }
     }
 }

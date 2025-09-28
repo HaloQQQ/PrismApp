@@ -8,7 +8,6 @@ using PrismAppBasicLib.Models;
 using PrismAppBasicLib.Contracts;
 using Prism.Events;
 using IceTea.Pure.Contracts;
-using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
 using IceTea.Pure.Extensions;
@@ -203,8 +202,8 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
     public ICommand DownLoadCommand { get; private set; }
     #endregion
 
-    public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager, ISettingManager<SettingModel> settingManager)
-        : base(eventAggregator, config, appConfigFileHotKeyManager, settingManager)
+    public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appCfgHotkeyManager, ISettingManager<SettingModel> settingManager)
+        : base(eventAggregator, config, appCfgHotkeyManager, settingManager)
     {
         this.DistributeMusicViewModel = new DistributeMusicViewModel(eventAggregator, settingManager);
 

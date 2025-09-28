@@ -1,7 +1,7 @@
 ﻿using CustomControlsDemoModule.Models;
 using IceTea.Pure.Contracts;
 using IceTea.Pure.Extensions;
-using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
+using IceTea.Wpf.Atom.Utils.HotKey.App;
 using Prism.Commands;
 using Prism.Events;
 using PrismAppBasicLib.Contracts;
@@ -17,8 +17,8 @@ namespace CustomControlsDemoModule.ViewModels
     {
         protected override string GameName => "2048";
 
-        public _2048ViewModel(IAppConfigFileHotKeyManager appConfigFileHotKeyManager, IConfigManager configManager, IEventAggregator eventAggregator)
-            : base(appConfigFileHotKeyManager, configManager, eventAggregator)
+        public _2048ViewModel(IAppConfigFileHotKeyManager appCfgHotkeyManager, IConfigManager configManager, IEventAggregator eventAggregator)
+            : base(appCfgHotkeyManager, configManager, eventAggregator)
         {
             LeftCommand = new DelegateCommand(() =>
             {

@@ -6,13 +6,13 @@ using System.Windows.Media;
 using Microsoft.Win32;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.Contracts;
-using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using IceTea.Wpf.Atom.Utils;
 using IceTea.Wpf.Core.Utils;
 using MusicPlayerModule.ViewModels.Base;
 using MusicPlayerModule.Contracts;
 using PrismAppBasicLib.Models;
 using IceTea.Wpf.Atom.Contracts.FileFilters;
+using IceTea.Wpf.Atom.Utils.HotKey.App;
 
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
 namespace MusicPlayerModule.ViewModels;
@@ -110,8 +110,8 @@ internal class VideoPlayerViewModel : MediaPlayerViewModel
 
     private VideoModelAndGuid _dto;
 
-    public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appConfigFileHotKeyManager, ISettingManager<SettingModel> settingMnager)
-        : base(eventAggregator, config, appConfigFileHotKeyManager, settingMnager)
+    public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appCfgHotkeyManager, ISettingManager<SettingModel> settingMnager)
+        : base(eventAggregator, config, appCfgHotkeyManager, settingMnager)
     {
         this._dto = new VideoModelAndGuid(this.Identity);
     }

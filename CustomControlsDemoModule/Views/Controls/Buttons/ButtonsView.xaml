@@ -60,10 +60,12 @@
         <StackPanel>
             <Slider
                 x:Name="slider"
+                Width="200"
                 Orientation="Horizontal"
                 Style="{StaticResource Slider_Custom}" />
 
             <Slider
+                Width="200"
                 BorderBrush="Red"
                 BorderThickness="2"
                 MyAttachProperty.CornerRadius="15,5,15,10"
@@ -72,6 +74,7 @@
                 Value="{Binding Value, Source={x:Reference slider}}" />
 
             <ProgressBar
+                Width="200"
                 BorderBrush="Red"
                 BorderThickness="2"
                 MyAttachProperty.CornerRadius="10,15,5,10"

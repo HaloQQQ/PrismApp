@@ -1,9 +1,7 @@
 ﻿using CustomControlsDemoModule.Models;
-using CustomControlsDemoModule.Models.Games.ChineseChess;
 using IceTea.Pure.Contracts;
 using IceTea.Pure.Extensions;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
-using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using PrismAppBasicLib.Contracts;
@@ -32,12 +30,12 @@ namespace CustomControlsDemoModule.ViewModels
 
         public ObservableCollection<IChessCommand> Stack { get; private set; }
 
-        public ChineseChessViewModel(IAppConfigFileHotKeyManager appConfigFileHotKeyManager, IConfigManager configManager, IEventAggregator eventAggregator)
-            : base(appConfigFileHotKeyManager, configManager, eventAggregator)
+        public ChineseChessViewModel(IAppConfigFileHotKeyManager appCfgHotkeyManager, IConfigManager configManager, IEventAggregator eventAggregator)
+            : base(appCfgHotkeyManager, configManager, eventAggregator)
         {
             this.Stack = new();
 
-            this.CancelLastCommand = new DelegateCommand(() =>
+            this.RevokeCommand = new DelegateCommand(() =>
             {
                 IChessCommand current = default;
                 if ((current = this.Stack.FirstOrDefault()) != null)
@@ -250,10 +248,10 @@ namespace CustomControlsDemoModule.ViewModels
             }
         }
 
-        protected override void InitHotKeysCore(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
+        protected override void InitHotKeysCore(IAppHotKeyGroup group)
         {
-            appConfigFileHotKeyManager.TryRegisterItem(GameName, new AppHotKey("悔棋", Key.Z, ModifierKeys.Control));
-            appConfigFileHotKeyManager.TryRegisterItem(GameName, new AppHotKey("棋盘换向", Key.D, ModifierKeys.Alt));
+            group.TryRegister(new AppHotKey("悔棋", Key.Z, ModifierKeys.Control));
+            group.TryRegister(new AppHotKey("棋盘换向", Key.D, ModifierKeys.Alt));
         }
         #endregion
 
@@ -305,7 +303,7 @@ namespace CustomControlsDemoModule.ViewModels
         #region Commands
         public ICommand SelectOrPutCommand { get; }
 
-        public ICommand CancelLastCommand { get; }
+        public ICommand RevokeCommand { get; }
 
         public ICommand SwitchDirectionCommand { get; }
         #endregion

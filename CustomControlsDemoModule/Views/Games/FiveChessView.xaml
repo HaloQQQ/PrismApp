@@ -26,12 +26,12 @@
 
         <KeyBinding
             Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"
-            Command="{Binding StartPauseCommand}"
+            Command="{Binding TogglePauseCommand}"
             Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" />
 
         <KeyBinding
             Key="{Binding KeyGestureDic[悔棋].SelectedKey}"
-            Command="{Binding CancelLastCommand}"
+            Command="{Binding RevokeCommand}"
             Modifiers="{Binding KeyGestureDic[悔棋].ModifierKey}" />
     </UserControl.InputBindings>
 

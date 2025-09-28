@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CustomControlsDemoModule.Models.Games.ChineseChess
+namespace CustomControlsDemoModule.Models
 {
     interface IChessCommand : IDisposable
     {

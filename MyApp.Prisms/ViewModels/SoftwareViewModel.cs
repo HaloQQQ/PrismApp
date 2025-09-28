@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using IceTea.Pure.Contracts;
 using IceTea.Pure.Utils.Events;
 using IceTea.Desktop.Utils;
-using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using IceTea.Wpf.Atom.Contracts.MyEvents;
 using IceTea.Pure.BaseModels;
 using Prism.Regions;
@@ -30,6 +29,7 @@ using PrismAppBasicLib.Contracts;
 using IceTea.Wpf.Core.Utils;
 using IceTea.Core.Utils.OS;
 using IceTea.Core.Utils.QRCodes;
+using IceTea.Wpf.Atom.Utils.HotKey.App;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -42,7 +42,7 @@ namespace MyApp.Prisms.ViewModels
                 ImageDisplayViewModel imageDisplayViewModel,
                 SettingsViewModel settings,
                 IConfigManager config,
-                IAppConfigFileHotKeyManager appConfigFileHotKeyManager,
+                IAppConfigFileHotKeyManager appCfgHotkeyManager,
                 IEventAggregator eventAggregator,
                 IRegionManager regionManager
             )
@@ -50,7 +50,7 @@ namespace MyApp.Prisms.ViewModels
             this.UserContext = userContext.AssertNotNull(nameof(UserContext));
             this.Settings = settings.AssertNotNull(nameof(SettingsViewModel));
             this._imageDisplayViewModel = imageDisplayViewModel.AssertNotNull(nameof(ImageDisplayViewModel));
-            this.AppConfigFileHotKeyManager = appConfigFileHotKeyManager.AssertNotNull(nameof(IAppConfigFileHotKeyManager));
+            this.AppConfigFileHotKeyManager = appCfgHotkeyManager.AssertNotNull(nameof(IAppConfigFileHotKeyManager));
 
             this.InitQRCodeImage();
 
@@ -117,7 +117,7 @@ namespace MyApp.Prisms.ViewModels
             });
 
             this.LoadConfig(config);
-            this.InitHotkeys(appConfigFileHotKeyManager);
+            this.InitHotkeys(appCfgHotkeyManager);
 
             this.SubscribeCustomCommandEvent();
 
@@ -312,17 +312,15 @@ namespace MyApp.Prisms.ViewModels
         #region 窗口标题栏快捷键
         public Dictionary<string, IHotKey<Key, ModifierKeys>> WindowKeyBindingMap { get; private set; }
 
-        private void InitHotkeys(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
+        private void InitHotkeys(IAppConfigFileHotKeyManager appCfgHotkeyManager)
         {
             var groupName = "窗口";
-            appConfigFileHotKeyManager.TryAdd(groupName, PreDefinedHotKeys.ConfigWindowAppHotKeys);
+            appCfgHotkeyManager.TryRegister(groupName, PreDefinedHotKeys.ConfigWindowAppHotKeys);
 
-            foreach (var item in PreDefinedHotKeys.WindowAppHotKeys)
-            {
-                appConfigFileHotKeyManager.TryRegisterItem(groupName, item);
-            }
+            var group = appCfgHotkeyManager[groupName];
+            group.TryRegisterBatch(PreDefinedHotKeys.WindowAppHotKeys);
 
-            this.WindowKeyBindingMap = appConfigFileHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
+            this.WindowKeyBindingMap = group.ToDictionary(hotKey => hotKey.Name);
         }
         #endregion
 
@@ -407,7 +405,7 @@ namespace MyApp.Prisms.ViewModels
                 this.CurrentTime = now.FormatTime();
                 this.Week = now.GetWeek();
 
-                var seconds = now.TimeOfDay.Seconds;
+                var seconds = now.Second;
 
                 if (this.BackgroundSwitch)
                 {

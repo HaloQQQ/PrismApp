@@ -1,5 +1,4 @@
-﻿using CustomControlsDemoModule.Models.Games.ChineseChess;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CustomControlsDemoModule.Models
 {

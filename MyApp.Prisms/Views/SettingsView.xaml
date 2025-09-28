@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:appHotKey="http://IceTea.Wpf.Atom.AppHotKey.com/"
     xmlns:globalHotKey="clr-namespace:IceTea.Pure.Utils.HotKey.Global;assembly=IceTea.Pure"
-    xmlns:globalHotKeyContracts="clr-namespace:IceTea.Pure.Utils.HotKey.Global.Contracts;assembly=IceTea.Pure"
     xmlns:models="clr-namespace:PrismAppBasicLib.Models;assembly=PrismAppBasicLib"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:MyApp.Prisms.ViewModels"
@@ -15,9 +14,9 @@
         <ObjectDataProvider
             x:Key="CustomKeys"
             MethodName="GetNames"
-            ObjectType="{x:Type globalHotKeyContracts:CustomKeys}">
+            ObjectType="{x:Type globalHotKey:CustomKeys}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="globalHotKeyContracts:CustomKeys" />
+                <x:Type TypeName="globalHotKey:CustomKeys" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 

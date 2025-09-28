@@ -16,7 +16,7 @@
         TargetType="Button">
         <Setter Property="Content" Value="&#xe87c;" />
 
-        <Setter Property="Command" Value="{Binding StartPauseCommand}" />
+        <Setter Property="Command" Value="{Binding TogglePauseCommand}" />
 
         <Setter Property="ToolTip" Value="{Binding KeyGestureDic[播放/暂停].ToolTip}" />
 
@@ -59,7 +59,7 @@
         TargetType="Button">
         <Setter Property="FontSize" Value="30" />
 
-        <Setter Property="Command" Value="{Binding CancelLastCommand}" />
+        <Setter Property="Command" Value="{Binding RevokeCommand}" />
         <Setter Property="Content" Value="&#xe651;" />
 
         <Setter Property="ToolTip" Value="{Binding KeyGestureDic[悔棋].ToolTip}" />

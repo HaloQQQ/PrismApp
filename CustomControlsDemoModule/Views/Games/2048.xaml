@@ -31,7 +31,7 @@
                 TargetType="Button">
                 <Setter Property="Content" Value="&#xe87c;" />
 
-                <Setter Property="Command" Value="{Binding StartPauseCommand}" />
+                <Setter Property="Command" Value="{Binding TogglePauseCommand}" />
 
                 <Setter Property="ToolTip" Value="{Binding KeyGestureDic[播放/暂停].ToolTip}" />
 
@@ -62,7 +62,7 @@
 
         <KeyBinding
             Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"
-            Command="{Binding StartPauseCommand}"
+            Command="{Binding TogglePauseCommand}"
             Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" />
 
         <KeyBinding Key="Left" Command="{Binding LeftCommand}" />

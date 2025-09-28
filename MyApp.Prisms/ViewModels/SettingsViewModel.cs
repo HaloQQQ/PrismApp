@@ -11,8 +11,6 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using System.Windows;
 using System;
-using IceTea.Pure.Utils.HotKey.Global.Contracts;
-using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using MusicPlayerModule.Contracts;
 using IceTea.Pure.BaseModels;
 using Prism.Services.Dialogs;
@@ -23,6 +21,8 @@ using PrismAppBasicLib.Contracts;
 using IceTea.Wpf.Atom.Utils;
 using Prism.Ioc;
 using MyApp.Prisms.MsgEvents;
+using IceTea.Pure.Utils.HotKey.Global;
+using IceTea.Wpf.Atom.Utils.HotKey.App;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -33,12 +33,12 @@ namespace MyApp.Prisms.ViewModels
                 IConfigManager configManager,
                 ISettingManager settingManager,
                 ISettingManager<SettingModel> settingModels,
-                IAppConfigFileHotKeyManager appConfigFileHotKeyManager,
+                IAppConfigFileHotKeyManager appCfgHotkeyManager,
                 IEventAggregator eventAggregator,
                 IDialogService dialogService
             )
         {
-            this.AppConfigFileHotKeyManager = appConfigFileHotKeyManager.AssertNotNull(nameof(IAppConfigFileHotKeyManager));
+            this.AppConfigFileHotKeyManager = appCfgHotkeyManager.AssertNotNull(nameof(IAppConfigFileHotKeyManager));
 
             this.SettingModels = settingModels.AssertNotNull(nameof(ISettingManager<SettingModel>));
 

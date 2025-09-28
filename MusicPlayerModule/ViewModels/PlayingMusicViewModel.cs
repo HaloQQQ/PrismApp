@@ -188,8 +188,6 @@ internal class PlayingMusicViewModel : PlayingMediaBaseViewModel, IEquatable<Pla
         this._oneLine = null;
 
         this.Music = null;
-
-        ToNextMusic = null;
     }
 
     public bool Equals(PlayingMusicViewModel? other)

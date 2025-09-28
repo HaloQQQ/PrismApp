@@ -9,7 +9,6 @@ using IceTea.Pure.BaseModels;
 using Prism.Events;
 using IceTea.Pure.Contracts;
 using IceTea.Pure.Utils;
-using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using IceTea.Pure.Extensions;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
@@ -35,7 +34,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     public ObservableCollection<PlayingMediaBaseViewModel> DisplayPlaying { get; private set; } = new();
 
 
-    protected MediaPlayerViewModel(IEventAggregator eventAggregator, IConfigManager configManager, IAppConfigFileHotKeyManager appConfigFileHotKeyManager, ISettingManager<SettingModel> settingManager)
+    protected MediaPlayerViewModel(IEventAggregator eventAggregator, IConfigManager configManager, IAppConfigFileHotKeyManager appCfgHotkeyManager, ISettingManager<SettingModel> settingManager)
     {
         this._eventAggregator = eventAggregator.AssertNotNull(nameof(IEventAggregator));
         this._configManager = configManager.AssertArgumentNotNull(nameof(IConfigManager));
@@ -49,22 +48,21 @@ internal abstract class MediaPlayerViewModel : NotifyBase
 
         this.InitCommands();
 
-        this.InitHotkeys(appConfigFileHotKeyManager);
+        this.InitHotkeys(appCfgHotkeyManager);
 
         this.SubscribeEvents(eventAggregator);
     }
 
-    private void InitHotkeys(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
+    private void InitHotkeys(IAppConfigFileHotKeyManager appCfgHotkeyManager)
     {
         var groupName = this.MediaType;
-        appConfigFileHotKeyManager.TryAdd(groupName, this.MediaHotKey_ConfigKey);
+        appCfgHotkeyManager.TryRegister(groupName, this.MediaHotKey_ConfigKey);
 
-        foreach (var item in this.MediaHotKeys)
-        {
-            appConfigFileHotKeyManager.TryRegisterItem(groupName, item);
-        }
+        var group = appCfgHotkeyManager[groupName];
 
-        this.KeyGestureDic = appConfigFileHotKeyManager.First(g => g.GroupName == groupName).ToDictionary(hotKey => hotKey.Name);
+        group.TryRegisterBatch(this.MediaHotKeys);
+
+        this.KeyGestureDic = group.ToDictionary(hotKey => hotKey.Name);
     }
 
     protected virtual void LoadConfig(IConfigManager configManager)

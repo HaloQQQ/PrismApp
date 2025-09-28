@@ -72,8 +72,6 @@ internal class PlayingVideoViewModel : PlayingMediaBaseViewModel
     {
         base.DisposeCore();
 
-        ToNextVideo = null;
-
         this._dto?.Dispose();
         this._dto = null;
 

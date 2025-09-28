@@ -1,7 +1,6 @@
 ﻿using CustomControlsDemoModule.Models;
 using IceTea.Pure.Contracts;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
-using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using Prism.Commands;
 using Prism.Events;
 using PrismAppBasicLib.Contracts;
@@ -14,10 +13,10 @@ namespace CustomControlsDemoModule.ViewModels
     {
         protected override string GameName => "五子棋";
 
-        public FiveChessViewModel(IAppConfigFileHotKeyManager appConfigFileHotKeyManager, IConfigManager configManager, IEventAggregator eventAggregator)
-            : base(appConfigFileHotKeyManager, configManager, eventAggregator)
+        public FiveChessViewModel(IAppConfigFileHotKeyManager appCfgHotkeyManager, IConfigManager configManager, IEventAggregator eventAggregator)
+            : base(appCfgHotkeyManager, configManager, eventAggregator)
         {
-            CancelLastCommand = new DelegateCommand(() =>
+            RevokeCommand = new DelegateCommand(() =>
             {
                 LastModel?.Reset();
                 LastModel = null;
@@ -189,9 +188,9 @@ namespace CustomControlsDemoModule.ViewModels
             }
         }
 
-        protected override void InitHotKeysCore(IAppConfigFileHotKeyManager appConfigFileHotKeyManager)
+        protected override void InitHotKeysCore(IAppHotKeyGroup group)
         {
-            appConfigFileHotKeyManager.TryRegisterItem(GameName, new AppHotKey("悔棋", Key.Z, ModifierKeys.Control));
+            group.TryRegister(new AppHotKey("悔棋", Key.Z, ModifierKeys.Control));
         }
         #endregion
 
@@ -212,7 +211,7 @@ namespace CustomControlsDemoModule.ViewModels
         #endregion
 
         #region Commands
-        public ICommand CancelLastCommand { get; }
+        public ICommand RevokeCommand { get; }
         #endregion
 
         private ChessModel[][] chessModels;

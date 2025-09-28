@@ -18,10 +18,8 @@ using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.Views;
 using IceTea.Pure.Utils.HotKey.Global;
 using System.Linq;
-using IceTea.Pure.Utils.HotKey.Global.Contracts;
 using IceTea.Wpf.Atom.Utils.HotKey;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
-using IceTea.Wpf.Atom.Utils.HotKey.App.Contracts;
 using IceTea.Pure.Extensions;
 using MusicPlayerModule.MsgEvents.Music;
 using PrismAppBasicLib.Models;
@@ -210,7 +208,7 @@ namespace MyApp.Prisms
             globalConfigFileHotKeyManager = new GlobalConfigFileHotKeyManager(App.Current.MainWindow.RegisterHotKeyManager(mid =>
             {
 #pragma warning disable CS8602 // 解引用可能出现空引用。
-                foreach (var group in globalConfigFileHotKeyManager)
+                foreach (var group in globalConfigFileHotKeyManager.Values)
                 {
                     foreach (var item in group)
                     {
@@ -268,16 +266,17 @@ namespace MyApp.Prisms
             this.Container.Resolve<SettingsViewModel>().GlobaConfigFilelHotKeyManager = globalConfigFileHotKeyManager;
 
             var systemGroupName = "系统";
-            globalConfigFileHotKeyManager.TryAdd(systemGroupName, CustomConstants.ConfigGlobalHotkeys);
+            globalConfigFileHotKeyManager.TryRegister(systemGroupName, CustomConstants.ConfigGlobalHotkeys);
 
+            var globalGroup = globalConfigFileHotKeyManager[systemGroupName];
             foreach (var item in CustomConstants.GlobalHotKeys)
             {
-                globalConfigFileHotKeyManager.TryRegisterItem(systemGroupName, item.Name, item.CustomKeys, item.CustomModifierKeys, item.IsUsable);
+                globalGroup.TryRegister(item.Name, item.CustomKeys, item.CustomModifierKeys, item.IsUsable);
             }
 
-            globalConfigFileHotKeyManager.TryRegisterItem(systemGroupName, CustomConstants.GlobalHotKeysConst.ColorPicker, CustomKeys.C, CustomModifierKeys.Alt | CustomModifierKeys.Shift, true);
+            globalGroup.TryRegister(CustomConstants.GlobalHotKeysConst.ColorPicker, CustomKeys.C, CustomModifierKeys.Alt | CustomModifierKeys.Shift, true);
 
-            var failedKeys = globalConfigFileHotKeyManager.First(g => g.GroupName == systemGroupName).Where(i => i.HasChanged).Select(i => i.ToString());
+            var failedKeys = globalGroup.Where(i => i.HasChanged).Select(i => i.ToString());
 
             if (failedKeys.Any())
             {
