@@ -13,7 +13,7 @@
     MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius}"
     MyAttachProperty.IsMinimalScreen="True"
     MyAttachProperty.IsResizeAdorner="False"
-    Style="{StaticResource Window_WithoutTitleBar_Animation}">
+    Style="{StaticResource Window_WithoutTitleBar_ScaleUp}">
     <Grid ClipToBounds="True">
         <Grid.Background>
             <ImageBrush ImageSource="{Binding CurrentBkGrd}" Stretch="UniformToFill" />
