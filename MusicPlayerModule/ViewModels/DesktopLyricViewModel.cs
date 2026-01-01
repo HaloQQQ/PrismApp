@@ -16,17 +16,6 @@ namespace MusicPlayerModule.ViewModels;
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
 internal class DesktopLyricViewModel : NotifyBase
 {
-    /// <summary>
-    /// 桌面歌词前景渐变色
-    /// </summary>
-    public ColorModel LinearGradientColorBrush { get; private set; }
-
-    /// <summary>
-    /// 桌面歌词非渐变色
-    /// </summary>
-    public ColorModel LyricColorBrush { get; private set; }
-
-
     public DesktopLyricViewModel(IConfigManager config)
     {
         var currentLyricFontSize = config.ReadConfigNode<double>(CustomStatics.CurrentLyricFontSize_ConfigKey);
@@ -53,6 +42,13 @@ internal class DesktopLyricViewModel : NotifyBase
             this.CurrentFontModel = this.Fonts.FirstOrDefault(f => f.DisplayName.EqualsIgnoreCase(currentFontFamily));
         }
 
+        var customColor = config.ReadConfigNode<string>(CustomStatics.CustomColor_ConfigKey);
+
+        if (customColor.IsHexColorString())
+        {
+            this._customColor = customColor;
+        }
+
         config.SetConfig += config =>
         {
             config.WriteConfigNode(this.IsDesktopLyricShow, CustomStatics.IsDesktopLyricShow_ConfigKey);
@@ -61,86 +57,49 @@ internal class DesktopLyricViewModel : NotifyBase
 
             config.WriteConfigNode(this.IsSingleLine, CustomStatics.IsSingleLine_ConfigKey);
 
-            config.WriteConfigNode(this.CurrentLyricForeground.ColorBrush.ToString(), CustomStatics.CurrentLyricForeground_ConfigKey);
-
             config.WriteConfigNode(this.CurrentLyricFontSize, CustomStatics.CurrentLyricFontSize_ConfigKey);
 
             config.WriteConfigNode(this.CurrentFontModel.DisplayName, CustomStatics.CurrentLyricFontFamily_ConfigKey);
+
+            config.WriteConfigNode(this.CustomColor, CustomStatics.CustomColor_ConfigKey);
         };
 
-        this.LinearGradientColorBrush = new ColorModel(config, CustomStatics.LinearGradientLyricColor_ConfigKey, 190, 250, 253);
+        this.LinearGradientColorBrush = new ColorModel(config, CustomStatics.LinearGradientLyricColor_ConfigKey, Color.FromRgb(190, 250, 253));
 
-        var currentLyricForeground = config.ReadConfigNode<string>(CustomStatics.CurrentLyricForeground_ConfigKey);
-
-        var colorBrush = currentLyricForeground.IsNullOrBlank()
-                            ? this.DefaultLyricForegrounds.First().ColorBrush
-                            : currentLyricForeground.GetBrushFromString();
-
-        var color = ((SolidColorBrush)colorBrush).Color;
-        this.LyricColorBrush = new ColorModel(config, CustomStatics.CurrentLyricForeground_ConfigKey, color.R, color.G, color.B);
-
-        void SetCurrentLyric(Brush brush)
-        {
-            SelectableColorBrush.Default.ColorBrush = brush;
-            this.CurrentLyricForeground = SelectableColorBrush.Default;
-        }
-
-        this.LyricColorBrush.PropertyChanged += (sender, e) =>
-        {
-            if (e.PropertyName == nameof(ColorModel.ColorBrush))
-            {
-                SetCurrentLyric(this.LyricColorBrush.ColorBrush);
-            }
-        };
-
-        SetCurrentLyric(colorBrush);
-
-        this.SelectLyricColorCommand = new DelegateCommand(() => SetCurrentLyric(this.LyricColorBrush.ColorBrush))
-                                        .ObservesCanExecute(() => IsUnSelected)
-                                        .ObservesProperty(() => this.LyricColorBrush.IsSelected);
+        this.LyricColorBrush = new ColorModel(config, CustomStatics.CurrentLyricForeground_ConfigKey, Color.FromRgb(190, 250, 253));
     }
-
-    public bool IsUnSelected => !this.LyricColorBrush.IsSelected;
-
-    /// <summary>
-    /// 设置自定义颜色为当前非渐变色
-    /// </summary>
-    public ICommand SelectLyricColorCommand { get; }
 
     #region 歌词颜色
-    public IEnumerable<SelectableColorBrush> DefaultLyricForegrounds { get; private set; } = new List<SelectableColorBrush>()
+    private string _customColor = "#FFFFFF";
+    public string CustomColor
     {
-        new SelectableColorBrush("#FD6C6C".GetBrushFromString()),
-        new SelectableColorBrush("#F2910D".GetBrushFromString()),
-        new SelectableColorBrush("#FFAF00".GetBrushFromString()),
-        new SelectableColorBrush("#C0DF4E".GetBrushFromString()),
-        new SelectableColorBrush("#51DAC9".GetBrushFromString()),
-        new SelectableColorBrush("#4DB0FF".GetBrushFromString()),
-        new SelectableColorBrush("#A587F3".GetBrushFromString()),
-        new SelectableColorBrush("#FF8DBB".GetBrushFromString()),
-        new SelectableColorBrush("#8C8796".GetBrushFromString()),
-        new SelectableColorBrush("#00FF7F".GetBrushFromString())
+        get => _customColor;
+        set => SetProperty<string>(ref _customColor, value);
+    }
+
+    public IList<string> DefaultLyricForegrounds { get; private set; } = new List<string>()
+    {
+        "#FD6C6C",
+        "#F2910D",
+        "#FFAF00",
+        "#C0DF4E",
+        "#51DAC9",
+        "#4DB0FF",
+        "#A587F3",
+        "#FF8DBB",
+        "#8C8796",
+        "#00FF7F"
     };
 
-    private SelectableColorBrush _currentLyricForeground;
+    /// <summary>
+    /// 桌面歌词渐变前景色
+    /// </summary>
+    public ColorModel LinearGradientColorBrush { get; private set; }
 
-    public SelectableColorBrush CurrentLyricForeground
-    {
-        get => this._currentLyricForeground;
-        set
-        {
-            if (value != null && SetProperty<SelectableColorBrush>(ref _currentLyricForeground, value))
-            {
-                var colorStr = _currentLyricForeground.ColorBrush.ToString();
-                this.LyricColorBrush.IsSelected = this.LyricColorBrush.ColorBrush.ToString() == colorStr;
-
-                this.DefaultLyricForegrounds.ForEach(item =>
-                {
-                    item.Selected = item.ColorBrush.ToString() == colorStr;
-                });
-            }
-        }
-    }
+    /// <summary>
+    /// 桌面歌词非渐变底色
+    /// </summary>
+    public ColorModel LyricColorBrush { get; private set; }
     #endregion
 
     #region 歌词字体
@@ -151,7 +110,8 @@ internal class DesktopLyricViewModel : NotifyBase
           new FontModel("黑体", "SimHei"),
           new FontModel("微软正黑", "Microsoft JhengHei"),
           new FontModel("楷体", "KaiTi"),
-          new FontModel("细明体", "MingLiU")
+          new FontModel("微软雅黑 Light", "Microsoft YaHei Light"),
+          new FontModel("幼圆", "YouYuan"),
         };
 
     private FontModel _fontModel;
@@ -164,7 +124,6 @@ internal class DesktopLyricViewModel : NotifyBase
     #endregion
 
     private bool _isDesktopLyricShow;
-
     public bool IsDesktopLyricShow
     {
         get => this._isDesktopLyricShow;
@@ -177,7 +136,6 @@ internal class DesktopLyricViewModel : NotifyBase
     }
 
     private bool _isVertical;
-
     public bool IsVertical
     {
         get => this._isVertical;
@@ -185,7 +143,6 @@ internal class DesktopLyricViewModel : NotifyBase
     }
 
     private bool _isSingleLine;
-
     public bool IsSingleLine
     {
         get => this._isSingleLine;
@@ -193,7 +150,6 @@ internal class DesktopLyricViewModel : NotifyBase
     }
 
     private double _currentLyricFontSize;
-
     public double CurrentLyricFontSize
     {
         get => this._currentLyricFontSize;
@@ -208,19 +164,8 @@ internal class DesktopLyricViewModel : NotifyBase
         LyricColorBrush.Dispose();
         LyricColorBrush = null;
 
-        if (DefaultLyricForegrounds is IList<SelectableColorBrush> list)
-        {
-            foreach (var item in list)
-            {
-                item.Dispose();
-            }
-
-            list.Clear();
-
-            DefaultLyricForegrounds = null;
-        }
-
-        CurrentLyricForeground = null;
+        DefaultLyricForegrounds.Clear();
+        DefaultLyricForegrounds = null;
 
         if (Fonts is IList<FontModel> fonts)
         {
@@ -259,49 +204,25 @@ internal class FontModel : DisposableBase
     }
 }
 
-internal class SelectableColorBrush : NotifyBase
-{
-    public static SelectableColorBrush Default = new SelectableColorBrush(new SolidColorBrush(Color.FromRgb(0, 0, 0)));
-
-    public SelectableColorBrush(Brush colorBrush)
-    {
-        ColorBrush = colorBrush;
-    }
-
-    private Brush _colorBrush;
-
-    public Brush ColorBrush
-    {
-        get => this._colorBrush;
-        set => SetProperty<Brush>(ref _colorBrush, value);
-    }
-
-    private bool _selected;
-
-    public bool Selected
-    {
-        get => this._selected;
-        set => SetProperty<bool>(ref _selected, value);
-    }
-
-    protected override void DisposeCore()
-    {
-        this.ColorBrush = null;
-
-        base.DisposeCore();
-    }
-}
-
 internal class ColorModel : NotifyBase
 {
-    public ColorModel(IConfigManager config, string[] configKeys, byte r = 0, byte g = 0, byte b = 0)
+    public ColorModel(IConfigManager config, string[] configKeys, Color defaultColor)
     {
         this.Colors = new List<ThreePrimaryColorModel>
         {
-            new ThreePrimaryColorModel("R:", r),
-            new ThreePrimaryColorModel("G:", g),
-            new ThreePrimaryColorModel("B:", b)
+            new ThreePrimaryColorModel("R:", defaultColor.R),
+            new ThreePrimaryColorModel("G:", defaultColor.G),
+            new ThreePrimaryColorModel("B:", defaultColor.B)
         };
+
+        var colorString = config.ReadConfigNode<string>(configKeys);
+        if (colorString.IsHexColorString())
+        {
+            var color = colorString.GetColorFromString();
+            this.Colors[0].Value = color.R;
+            this.Colors[1].Value = color.G;
+            this.Colors[2].Value = color.B;
+        }
 
         foreach (var item in this.Colors)
         {
@@ -309,15 +230,6 @@ internal class ColorModel : NotifyBase
             {
                 RaisePropertyChanged(nameof(ColorBrush));
             };
-        }
-
-        var colorString = config.ReadConfigNode<string>(configKeys);
-        if (!colorString.IsNullOrBlank())
-        {
-            var color = colorString.GetColorFromString();
-            this.Colors[0].Value = color.R;
-            this.Colors[1].Value = color.G;
-            this.Colors[2].Value = color.B;
         }
 
         config.PreSetConfig += config =>
@@ -362,15 +274,6 @@ internal class ColorModel : NotifyBase
                 RaisePropertyChanged(nameof(ColorBrush));
             }
         }
-    }
-
-
-    private bool _isSelected;
-
-    public bool IsSelected
-    {
-        get => this._isSelected;
-        set => SetProperty<bool>(ref _isSelected, value);
     }
 }
 

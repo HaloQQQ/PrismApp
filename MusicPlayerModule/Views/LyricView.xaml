@@ -42,7 +42,7 @@
                     Placement="Left"
                     PlacementTarget="{Binding ElementName=LyricSettingButton}">
                     <Border
-                        Width="320"
+                        Width="400"
                         Padding="20"
                         Background="{StaticResource PopupBackground}"
                         CornerRadius="10">
@@ -55,11 +55,11 @@
                                 <StackPanel VerticalAlignment="Center">
                                     <Slider
                                         x:Name="LyricFontSizeSlider"
-                                        Width="200"
+                                        Width="287"
                                         Height="3"
                                         Margin="5"
                                         HorizontalAlignment="Left"
-                                        Maximum="30"
+                                        Maximum="40"
                                         Minimum="15"
                                         Style="{StaticResource Slider_ObviousThumb}"
                                         TickFrequency="5"
@@ -71,17 +71,25 @@
                                             Style="{StaticResource TextBlock_Theme}"
                                             Text="15" />
                                         <TextBlock
-                                            Margin="46,0,0,0"
+                                            Margin="37,0,0,0"
                                             Style="{StaticResource TextBlock_Theme}"
                                             Text="20" />
                                         <TextBlock
-                                            Margin="48,0,0,0"
+                                            Margin="38,0,0,0"
                                             Style="{StaticResource TextBlock_Theme}"
                                             Text="25" />
                                         <TextBlock
-                                            Margin="46,0,0,0"
+                                            Margin="38,0,0,0"
                                             Style="{StaticResource TextBlock_Theme}"
                                             Text="30" />
+                                        <TextBlock
+                                            Margin="38,0,0,0"
+                                            Style="{StaticResource TextBlock_Theme}"
+                                            Text="35" />
+                                        <TextBlock
+                                            Margin="37,0,0,0"
+                                            Style="{StaticResource TextBlock_Theme}"
+                                            Text="40" />
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
@@ -94,9 +102,8 @@
                                 <StackPanel>
                                     <ListBox
                                         x:Name="LyricForegroundListBox"
-                                        Margin="5,0"
-                                        ItemsSource="{Binding DesktopLyric.DefaultLyricForegrounds}"
-                                        SelectedItem="{Binding DesktopLyric.CurrentLyricForeground}">
+                                        Margin="40,5"
+                                        ItemsSource="{Binding DesktopLyric.DefaultLyricForegrounds}">
                                         <ListBox.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel MaxWidth="220" />
@@ -105,13 +112,11 @@
                                         <ListBox.ItemContainerStyle>
                                             <Style BasedOn="{StaticResource ListBoxItem_General}" TargetType="ListBoxItem">
                                                 <Setter Property="BorderBrush" Value="Transparent" />
-                                                <Setter Property="Background" Value="{Binding ColorBrush}" />
+                                                <Setter Property="Background" Value="{Binding}" />
                                                 <Setter Property="BorderThickness" Value="2" />
-                                                <Setter Property="ToolTip" Value="{Binding ColorBrush.Color}" />
+                                                <Setter Property="ToolTip" Value="{Binding}" />
 
                                                 <EventSetter Event="MouseMove" Handler="DragLeaveFrom" />
-
-                                                <Setter Property="IsSelected" Value="{Binding Selected}" />
 
                                                 <Setter Property="Width" Value="40" />
                                                 <Setter Property="Height" Value="40" />
@@ -120,49 +125,45 @@
                                                 <Setter Property="Content" Value="{x:Null}" />
 
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Selected}" Value="True">
+                                                    <Trigger Property="IsSelected" Value="True">
                                                         <Setter Property="BorderBrush" Value="{StaticResource HoveredTransparentButtonBackground}" />
-                                                    </DataTrigger>
+                                                    </Trigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </ListBox.ItemContainerStyle>
                                     </ListBox>
 
                                     <StackPanel Orientation="Horizontal">
+                                        <Border
+                                            Width="40"
+                                            Height="40"
+                                            Margin="10,0"
+                                            Background="{Binding DesktopLyric.CustomColor}"
+                                            CornerRadius="20"
+                                            MouseMove="DragLeaveFrom"
+                                            ToolTip="{Binding DesktopLyric.CustomColor}" />
+
+                                        <ColorPicker
+                                            Width="200"
+                                            Height="200"
+                                            Background="LightBlue"
+                                            SelectedBrush="{Binding DesktopLyric.CustomColor, Mode=TwoWay}" />
+                                    </StackPanel>
+
+                                    <StackPanel Margin="20,10,0,0" Orientation="Horizontal">
                                         <ListBox
                                             ItemContainerStyle="{StaticResource ListBoxItem_General}"
                                             ItemTemplate="{StaticResource ThreePrimaryColorModel}"
                                             ItemsSource="{Binding DesktopLyric.LyricColorBrush.Colors}" />
 
-                                        <Button
-                                            x:Name="ForegroundColor"
+                                        <Border
                                             Width="40"
                                             Height="40"
                                             AllowDrop="True"
                                             Background="{Binding DesktopLyric.LyricColorBrush.ColorBrush, Mode=TwoWay}"
-                                            Command="{Binding DesktopLyric.SelectLyricColorCommand}"
-                                            Drop="DropIn_ForegroundColor"
-                                            ToolTip="{Binding DesktopLyric.LyricColorBrush.ColorBrush.Color}">
-                                            <Button.Style>
-                                                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
-                                                    <Setter Property="MinWidth" Value="0" />
-                                                    <Setter Property="MinHeight" Value="0" />
-
-                                                    <Setter Property="MyAttachProperty.CornerRadius" Value="20" />
-
-                                                    <Setter Property="BorderThickness" Value="2" />
-                                                    <Setter Property="BorderBrush" Value="Transparent" />
-
-                                                    <Setter Property="Effect" Value="{x:Null}" />
-
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding DesktopLyric.LyricColorBrush.IsSelected}" Value="True">
-                                                            <Setter Property="BorderBrush" Value="{StaticResource HoveredTransparentButtonBackground}" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
-                                        </Button>
+                                            CornerRadius="20"
+                                            Drop="DropIn_Color"
+                                            ToolTip="{Binding DesktopLyric.LyricColorBrush.ColorBrush.Color}" />
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
@@ -174,18 +175,18 @@
                                     Text="渐变：" />
 
                                 <ListBox
+                                    Margin="20,0,0,0"
                                     ItemContainerStyle="{StaticResource ListBoxItem_General}"
                                     ItemTemplate="{StaticResource ThreePrimaryColorModel}"
                                     ItemsSource="{Binding DesktopLyric.LinearGradientColorBrush.Colors}" />
 
                                 <Border
-                                    x:Name="LinearGradientStartColor"
                                     Width="40"
                                     Height="40"
                                     AllowDrop="True"
                                     Background="{Binding DesktopLyric.LinearGradientColorBrush.ColorBrush, Mode=TwoWay}"
                                     CornerRadius="20"
-                                    Drop="DropIn_LinearGradientForegroundColor"
+                                    Drop="DropIn_Color"
                                     ToolTip="{Binding DesktopLyric.LinearGradientColorBrush.ColorBrush.Color}" />
 
                                 <Button
@@ -241,15 +242,14 @@
                 </Popup>
             </DockPanel>
 
-            <DockPanel Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=0.8}" VerticalAlignment="Top">
-
+            <DockPanel Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitSubConverter}, ConverterParameter=140}" VerticalAlignment="Top">
                 <TextBlock
                     HorizontalAlignment="Center"
                     DockPanel.Dock="Top"
                     FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
                     FontSize="21"
                     FontWeight="Bold"
-                    Foreground="{Binding DesktopLyric.CurrentLyricForeground.ColorBrush, FallbackValue=SkyBlue}"
+                    Foreground="{Binding DesktopLyric.LyricColorBrush.ColorBrush, FallbackValue=SkyBlue}"
                     Text="{Binding CurrentMedia.Music.Name}" />
 
                 <TextBlock
@@ -257,7 +257,7 @@
                     HorizontalAlignment="Center"
                     DockPanel.Dock="Top"
                     FontFamily="{Binding DesktopLyric.CurrentFontModel.Family}"
-                    Foreground="{Binding DesktopLyric.CurrentLyricForeground.ColorBrush, FallbackValue=SkyBlue}"
+                    Foreground="{Binding DesktopLyric.LyricColorBrush.ColorBrush, FallbackValue=SkyBlue}"
                     Text="{Binding CurrentMedia.Music.Singer}" />
 
                 <StackPanel
@@ -281,7 +281,7 @@
                         FontSize="30" />
                 </StackPanel>
 
-                <Grid DockPanel.Dock="Top">
+                <Grid>
                     <Viewbox
                         Width="300"
                         Height="300"
@@ -310,6 +310,8 @@
                                                         Duration="0:0:30" />
                                                 </Storyboard>
                                             </BeginStoryboard>
+
+                                            <PauseStoryboard BeginStoryboardName="Rotate_MusicCover" />
                                         </EventTrigger>
                                         <DataTrigger Binding="{Binding Running}" Value="True">
                                             <DataTrigger.EnterActions>
@@ -328,13 +330,20 @@
                                                 <SeekStoryboard BeginStoryboardName="Rotate_MusicCover" />
                                             </MultiDataTrigger.EnterActions>
                                         </MultiDataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentMedia.Music.ImageSource}" Value="{x:Null}">
+                                            <Setter Property="Source">
+                                                <Setter.Value>
+                                                    <BitmapImage UriSource="/MusicPlayerModule;component/Resources/音符.png" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Image.Style>
                         </Image>
                     </Viewbox>
 
-                    <Grid DockPanel.Dock="Top">
+                    <Grid>
                         <ListBox
                             x:Name="LyricList"
                             Focusable="False"

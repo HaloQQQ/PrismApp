@@ -1,14 +1,17 @@
 ﻿using IceTea.Pure.BaseModels;
 using System.Windows.Input;
 using Prism.Commands;
-using IceTea.Wpf.Core.Utils;
 using IceTea.Pure.Extensions;
 using System;
+using IceTea.Wpf.Atom.Utils;
+using System.Windows;
 
 namespace PrismAppBasicLib.Models
 {
     public class SettingModel : NotifyBase
     {
+        private Window _window = new Window();
+
         public SettingModel(string name, string value, Action action)
         {
             Name = name + ":";
@@ -16,7 +19,12 @@ namespace PrismAppBasicLib.Models
 
             this.OpenFolderCommand = new DelegateCommand(() =>
             {
-                var folder = WpfCoreUtils.OpenFolderDialog(this.Value);
+                if (_window == null)
+                {
+                    return;
+                }
+
+                var folder = WpfAtomUtils.OpenFolderDialog(_window);
 
                 if (!folder.IsNullOrBlank())
                 {
@@ -42,6 +50,15 @@ namespace PrismAppBasicLib.Models
             }
         }
 
-        public ICommand OpenFolderCommand { get; }
+        public ICommand OpenFolderCommand { get; private set; }
+
+        protected override void DisposeCore()
+        {
+            base.DisposeCore();
+
+            _window = null;
+
+            OpenFolderCommand = null;
+        }
     }
 }

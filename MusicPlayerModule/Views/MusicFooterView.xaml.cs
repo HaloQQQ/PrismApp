@@ -44,21 +44,30 @@ namespace MusicPlayerModule.Views
                 Commons.ResetMediaPlayer(this.musicSlider, this.mediaPlayer);
                 this.mediaPlayer.Play();
 
-                var mainWindow = Window.GetWindow(this);
-                if ((_horizentalDesktopLyricWindow == null || _horizentalDesktopLyricWindow.DataContext == null) && mainWindow != null)
+                if (_horizentalDesktopLyricWindow == null)
                 {
-                    var configManager = ContainerLocator.Current.Resolve<IConfigManager>();
+                    var mainWindow = Window.GetWindow(this);
 
-                    _horizentalDesktopLyricWindow = new HorizontalMusicLyricDesktopWindow(configManager);
-                    mainWindow.Closing += (sender, e) => _horizentalDesktopLyricWindow.Close();
+                    if (mainWindow != null)
+                    {
+                        var configManager = ContainerLocator.Current.Resolve<IConfigManager>();
+
+                        _horizentalDesktopLyricWindow = new HorizontalMusicLyricDesktopWindow(configManager);
+                        mainWindow.Closing += (sender, e) => _horizentalDesktopLyricWindow.Close();
+                    }
                 }
 
-                if ((_verticalDesktopLyricWindow == null || _verticalDesktopLyricWindow.DataContext == null) && mainWindow != null)
+                if (_verticalDesktopLyricWindow == null)
                 {
-                    var configManager = ContainerLocator.Current.Resolve<IConfigManager>();
+                    var mainWindow = Window.GetWindow(this);
 
-                    _verticalDesktopLyricWindow = new VerticalMusicLyricDesktopWindow(configManager);
-                    mainWindow.Closing += (sender, e) => _verticalDesktopLyricWindow.Close();
+                    if (mainWindow != null)
+                    {
+                        var configManager = ContainerLocator.Current.Resolve<IConfigManager>();
+
+                        _verticalDesktopLyricWindow = new VerticalMusicLyricDesktopWindow(configManager);
+                        mainWindow.Closing += (sender, e) => _verticalDesktopLyricWindow.Close();
+                    }
                 }
             });
             eventAggregator.GetEvent<ResetMediaPlayerEvent>().Subscribe(() => Commons.ResetMediaPlayer(this.musicSlider, this.mediaPlayer));
@@ -179,7 +188,7 @@ namespace MusicPlayerModule.Views
         {
             e.Handled = true;
             var newSpan = TimeSpan.FromMilliseconds(e.NewValue);
-            if (Math.Abs(this.mediaPlayer.Position.Subtract(newSpan).TotalMilliseconds) > 50)
+            if (Math.Abs(this.mediaPlayer.Position.Subtract(newSpan).TotalMilliseconds) > 500)
             {
                 this.mediaPlayer.Position = newSpan;
             }

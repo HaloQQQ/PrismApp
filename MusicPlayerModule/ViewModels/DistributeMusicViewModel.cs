@@ -13,9 +13,9 @@ using IceTea.Pure.Extensions;
 using Prism.Events;
 using IceTea.Pure.Contracts;
 using Prism.Commands;
-using IceTea.Wpf.Core.Utils;
 using IceTea.Wpf.Atom.Utils;
 using IceTea.Wpf.Atom.Contracts.FileFilters;
+using System.Windows;
 
 namespace MusicPlayerModule.ViewModels
 {
@@ -242,7 +242,7 @@ namespace MusicPlayerModule.ViewModels
             {
                 var path = settingManager[CustomStatics.MUSIC].Value;
 
-                var selectedPath = WpfCoreUtils.OpenFolderDialog(path);
+                var selectedPath = WpfAtomUtils.OpenFolderDialog(Application.Current.MainWindow);
 
                 if (!selectedPath.IsNullOrBlank())
                 {
@@ -400,7 +400,7 @@ namespace MusicPlayerModule.ViewModels
             var musicSetting = settingManger[CustomStatics.MUSIC];
             var lyricSetting = settingManger[CustomStatics.LYRIC];
 
-            var selectedFolder = WpfCoreUtils.OpenFolderDialog(musicSetting.Value);
+            var selectedFolder = WpfAtomUtils.OpenFolderDialog(Application.Current.MainWindow);
             if (!selectedFolder.IsNullOrBlank())
             {
                 var list = selectedFolder.GetFiles(true, str => str.EndsWithIgnoreCase(".mp3"));

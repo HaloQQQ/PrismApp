@@ -297,9 +297,10 @@
 
         <Setter Property="Text" Value="&#xe61c;" />
 
-        <Setter Property="Padding" Value="0,10" />
+        <Setter Property="Margin" Value="10,0" />
 
         <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="Padding" Value="0,10" />
 
         <Setter Property="Clip">
             <Setter.Value>

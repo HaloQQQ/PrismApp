@@ -11,239 +11,48 @@
     MaxHeight="500"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
-        <ObjectDataProvider
-            x:Key="CustomKeys"
-            MethodName="GetNames"
-            ObjectType="{x:Type globalHotKey:CustomKeys}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="globalHotKey:CustomKeys" />
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/IceTea.Wpf.Core;component/DataTemplates/HotKeyDataTemplate.xaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-        <ObjectDataProvider
-            x:Key="AppHotKeys"
-            MethodName="GetNames"
-            ObjectType="{x:Type Key}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="Key" />
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-
-        <DataTemplate DataType="{x:Type appHotKey:AppConfigFileHotKeyGroup}">
-            <GroupBox Header="{Binding GroupName}">
-                <StackPanel>
-                    <TextBlock Text="{Binding Description}" />
-
+            <DataTemplate DataType="{x:Type viewModels:Pair}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource TextBlock_Theme}" Text="邮箱:" />
+                    <TextBox
+                        Width="250"
+                        IsReadOnly="True"
+                        Text="{Binding Key}" />
+                    <TextBlock Style="{StaticResource TextBlock_Theme}" Text="授权码:" />
+                    <PasswordBox
+                        Width="250"
+                        MyAttachProperty.IsReadOnly="True"
+                        MyAttachProperty.Password="{Binding Value}" />
                     <Button
-                        Margin="0,10,20,0"
-                        HorizontalAlignment="Right"
-                        Command="{Binding DataContext.ResetAppHotKeyGroupCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                        Command="{Binding DataContext.RemoveMailAccountCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         CommandParameter="{Binding}"
-                        Content="&#xe614;"
-                        Style="{StaticResource ButtonBase_Icon_ScaleUp}"
-                        ToolTip="重置快捷键" />
-
-                    <ListBox
-                        HorizontalAlignment="Stretch"
-                        ItemContainerStyle="{StaticResource ListBoxItem_General}"
-                        ItemsSource="{Binding}" />
+                        Content="&#xe60a;"
+                        FontSize="30"
+                        Style="{StaticResource ButtonBase_Icon_ScaleDown_Small_HoverBlue}" />
                 </StackPanel>
-            </GroupBox>
-        </DataTemplate>
+            </DataTemplate>
 
-        <DataTemplate DataType="{x:Type appHotKey:AppHotKey}">
-            <StackPanel MinHeight="40" Orientation="Horizontal">
-                <TextBlock
-                    MinWidth="110"
-                    FontSize="16"
-                    TextAlignment="Right">
-                    <TextBlock Text="{Binding Name}" />
-                    :
-                </TextBlock>
-
-                <CheckBox
-                    Margin="10,0,0,0"
-                    Content="Ctrl:"
-                    IsChecked="{Binding IsSelectCtrl}"
-                    IsEnabled="{Binding IsUsable}" />
-
-                <CheckBox
-                    Margin="10,0,0,0"
-                    Content="Shift:"
-                    IsChecked="{Binding IsSelectShift}"
-                    IsEnabled="{Binding IsUsable}" />
-
-                <CheckBox
-                    Margin="10,0,0,0"
-                    Content="Alt:"
-                    IsChecked="{Binding IsSelectAlt}"
-                    IsEnabled="{Binding IsUsable}" />
-
-                <ComboBox
-                    MaxWidth="120"
-                    Margin="10,0,0,0"
-                    IsEnabled="{Binding IsUsable}"
-                    IsReadOnly="True"
-                    ItemsSource="{Binding Source={StaticResource AppHotKeys}}"
-                    SelectedValue="{Binding SelectedKey, Converter={StaticResource Key2StringConverter}}" />
-
-                <TextBox
-                    MinWidth="170"
-                    IsEnabled="{Binding IsUsable}"
-                    IsReadOnly="True"
-                    KeyUp="AppHotKeyTextBox_OnKeyUp"
-                    Text="{Binding CombineKeys, Mode=OneWay}">
-                    <TextBox.Style>
-                        <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
-                            <Setter Property="MyAttachProperty.PlaceHolder" Value="组合键" />
-
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsUsable}" Value="False">
-                                    <Setter Property="Foreground" Value="Red" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
-
-                <CheckBox IsChecked="{Binding IsUsable}" Style="{StaticResource CheckBox_Switch}" />
-            </StackPanel>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type globalHotKey:GlobalConfigFileHotKeyGroup}">
-            <GroupBox Header="{Binding GroupName}">
-                <StackPanel>
-                    <TextBlock Text="{Binding Description}" />
-
+            <DataTemplate DataType="{x:Type models:SettingModel}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource TextBlock_Theme}" Text="{Binding Name}" />
+                    <TextBox
+                        Width="500"
+                        IsReadOnly="True"
+                        MyAttachProperty.PlaceHolder="空目录"
+                        Text="{Binding Value, Mode=OneWay}" />
                     <Button
-                        Margin="0,10,20,0"
-                        HorizontalAlignment="Right"
-                        Command="{Binding DataContext.ResetGlobalHotKeyGroupCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
-                        CommandParameter="{Binding}"
-                        Content="&#xe614;"
-                        Style="{StaticResource ButtonBase_Icon_ScaleUp}"
-                        ToolTip="重置快捷键" />
-
-                    <ListBox
-                        HorizontalAlignment="Stretch"
-                        ItemContainerStyle="{StaticResource ListBoxItem_General}"
-                        ItemsSource="{Binding}" />
-
-                    <DockPanel LastChildFill="False">
-                        <Button
-                            Margin="20,10"
-                            Command="{Binding DataContext.CancelCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
-                            CommandParameter="{Binding}"
-                            Content="取消"
-                            DockPanel.Dock="Right"
-                            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
-                        <Button
-                            Margin="20,10"
-                            Command="{Binding DataContext.SubmitCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
-                            CommandParameter="{Binding}"
-                            Content="确认"
-                            DockPanel.Dock="Right"
-                            Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
-                    </DockPanel>
+                        Command="{Binding OpenFolderCommand}"
+                        Content="浏览"
+                        MyAttachProperty.IconFontText="&#xebdf;"
+                        Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
                 </StackPanel>
-            </GroupBox>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type globalHotKey:GlobalHotKey}">
-            <StackPanel MinHeight="40" Orientation="Horizontal">
-                <TextBlock
-                    MinWidth="110"
-                    FontSize="16"
-                    TextAlignment="Right">
-                    <TextBlock Text="{Binding Name}" />
-                    :
-                </TextBlock>
-
-                <CheckBox
-                    Margin="10,0,0,0"
-                    Content="Ctrl:"
-                    IsChecked="{Binding IsSelectCtrl}"
-                    IsEnabled="{Binding IsUsable}" />
-
-                <CheckBox
-                    Margin="10,0,0,0"
-                    Content="Shift:"
-                    IsChecked="{Binding IsSelectShift}"
-                    IsEnabled="{Binding IsUsable}" />
-
-                <CheckBox
-                    Margin="10,0,0,0"
-                    Content="Alt:"
-                    IsChecked="{Binding IsSelectAlt}"
-                    IsEnabled="{Binding IsUsable}" />
-
-                <ComboBox
-                    MaxWidth="120"
-                    Margin="10,0,0,0"
-                    IsEnabled="{Binding IsUsable}"
-                    IsReadOnly="True"
-                    ItemsSource="{Binding Source={StaticResource CustomKeys}}"
-                    Text="{Binding SelectedKey}" />
-
-                <TextBox
-                    MinWidth="170"
-                    IsEnabled="{Binding IsUsable}"
-                    IsReadOnly="True"
-                    KeyUp="GlobalHotKeyTextBox_OnKeyUp"
-                    Text="{Binding CombineKeys, Mode=OneWay}">
-                    <TextBox.Style>
-                        <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
-                            <Setter Property="MyAttachProperty.PlaceHolder" Value="组合键" />
-
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsUsable}" Value="False">
-                                    <Setter Property="Foreground" Value="Red" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
-
-                <CheckBox IsChecked="{Binding IsUsable}" Style="{StaticResource CheckBox_Switch}" />
-            </StackPanel>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewModels:Pair}">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Style="{StaticResource TextBlock_Theme}" Text="邮箱:" />
-                <TextBox
-                    Width="250"
-                    IsReadOnly="True"
-                    Text="{Binding Key}" />
-                <TextBlock Style="{StaticResource TextBlock_Theme}" Text="授权码:" />
-                <PasswordBox
-                    Width="250"
-                    MyAttachProperty.IsReadOnly="True"
-                    MyAttachProperty.Password="{Binding Value}" />
-                <Button
-                    Command="{Binding DataContext.RemoveMailAccountCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
-                    CommandParameter="{Binding}"
-                    Content="&#xe60a;"
-                    FontSize="30"
-                    Style="{StaticResource ButtonBase_Icon_ScaleDown_Small_HoverBlue}" />
-            </StackPanel>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type models:SettingModel}">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Style="{StaticResource TextBlock_Theme}" Text="{Binding Name}" />
-                <TextBox
-                    Width="500"
-                    IsReadOnly="True"
-                    MyAttachProperty.PlaceHolder="空目录"
-                    Text="{Binding Value, Mode=OneWay}" />
-                <Button
-                    Command="{Binding OpenFolderCommand}"
-                    Content="浏览"
-                    MyAttachProperty.IconFontText="&#xebdf;"
-                    Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
-            </StackPanel>
-        </DataTemplate>
+            </DataTemplate>
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Border

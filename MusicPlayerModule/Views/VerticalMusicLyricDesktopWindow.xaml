@@ -34,7 +34,7 @@
                     Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                     VerticalAlignment="Top"
                     FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ContentControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
-                    Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=ContentControl}}"
+                    Foreground="{Binding DataContext.DesktopLyric.LyricColorBrush.ColorBrush, RelativeSource={RelativeSource AncestorType=ContentControl}}"
                     LineHeight="{Binding FontSize, RelativeSource={RelativeSource Self}}"
                     LineStackingStrategy="BlockLineHeight"
                     Text="{Binding VerticalWords, FallbackValue=狗空音乐，就是歌多}"
@@ -53,7 +53,7 @@
                     <TextBlock.Foreground>
                         <LinearGradientBrush StartPoint="1,0" EndPoint="0,0">
                             <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
-                            <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
+                            <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.LyricColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
                         </LinearGradientBrush>
                     </TextBlock.Foreground>
                     <TextBlock.Height>
@@ -85,7 +85,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ContentControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
-                    Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=ContentControl}}"
+                    Foreground="{Binding DataContext.DesktopLyric.LyricColorBrush.ColorBrush, RelativeSource={RelativeSource AncestorType=ContentControl}}"
                     Text="{Binding Words, FallbackValue=狗空音乐，就是歌多}"
                     TextAlignment="Center"
                     TextTrimming="None"
@@ -115,7 +115,7 @@
                     <TextBlock.Foreground>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                             <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
-                            <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
+                            <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.LyricColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
                         </LinearGradientBrush>
                     </TextBlock.Foreground>
                     <TextBlock.Width>
@@ -168,7 +168,8 @@
                     FontSize="18"
                     Foreground="#EBEBEB"
                     Text="{Binding CurrentMedia.Music.Name, FallbackValue=ChineseTitle}"
-                    TextTrimming="WordEllipsis" />
+                    TextTrimming="WordEllipsis"
+                    Visibility="{Binding CurrentMedia.Music.IsEnglishTitle, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
                 <TextBlock
                     MaxWidth="180"

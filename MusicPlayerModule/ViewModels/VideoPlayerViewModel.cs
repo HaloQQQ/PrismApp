@@ -7,12 +7,12 @@ using Microsoft.Win32;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.Contracts;
 using IceTea.Wpf.Atom.Utils;
-using IceTea.Wpf.Core.Utils;
 using MusicPlayerModule.ViewModels.Base;
 using MusicPlayerModule.Contracts;
 using PrismAppBasicLib.Models;
 using IceTea.Wpf.Atom.Contracts.FileFilters;
 using IceTea.Wpf.Atom.Utils.HotKey.App;
+using System.Windows;
 
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
 namespace MusicPlayerModule.ViewModels;
@@ -132,7 +132,7 @@ internal class VideoPlayerViewModel : MediaPlayerViewModel
 
     protected override void AddMediaFromFolderDialog_CommandExecute()
     {
-        var selectedPath = WpfCoreUtils.OpenFolderDialog(this.VideoSetting.Value);
+        var selectedPath = WpfAtomUtils.OpenFolderDialog(Application.Current.MainWindow);
 
         if (!selectedPath.IsNullOrBlank())
         {

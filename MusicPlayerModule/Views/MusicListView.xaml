@@ -190,6 +190,7 @@
                     HorizontalContentAlignment="Left"
                     DockPanel.Dock="Bottom"
                     ItemsSource="{Binding DistributeMusicViewModel.DisplayAlbumClassify}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     SelectedIndex="0">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
@@ -331,6 +332,7 @@
                     HorizontalContentAlignment="Left"
                     DockPanel.Dock="Bottom"
                     ItemsSource="{Binding DistributeMusicViewModel.DisplaySingerClassify}"
+                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     SelectedIndex="0">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDoubleClick">
@@ -462,6 +464,7 @@
                 ContextMenu="{StaticResource MusicDir_CRUD}"
                 DockPanel.Dock="Bottom"
                 ItemsSource="{Binding DistributeMusicViewModel.DisplayDirClassify}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                 SelectedIndex="0">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">

@@ -1,11 +1,12 @@
 ﻿using IceTea.Pure.BaseModels;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.Utils;
-using IceTea.Wpf.Core.Utils;
+using IceTea.Wpf.Atom.Utils;
 using MusicPlayerModule.ViewModels;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Windows;
 
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
 namespace MusicPlayerModule.Models;
@@ -87,7 +88,7 @@ internal class MusicWithClassifyModel : ChildrenBase
 
     public bool MoveMusicsTo(Collection<MusicWithClassifyModel> dirs, string defaultDir)
     {
-        var targetDir = WpfCoreUtils.OpenFolderDialog(defaultDir);
+        var targetDir = WpfAtomUtils.OpenFolderDialog(Application.Current.MainWindow);
 
         if (targetDir.IsNullOrBlank())
         {

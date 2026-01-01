@@ -65,7 +65,7 @@
                             ClipToBounds="True"
                             FontFamily="{Binding DataContext.DesktopLyric.CurrentFontModel.Family, RelativeSource={RelativeSource AncestorType=ListBox}}"
                             FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                            Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                            Foreground="{Binding DataContext.DesktopLyric.LyricColorBrush.ColorBrush, RelativeSource={RelativeSource AncestorType=ListBox}}"
                             Text="{Binding Words}"
                             TextTrimming="None"
                             TextWrapping="NoWrap">
@@ -106,7 +106,7 @@
                 HorizontalAlignment="Left"
                 ClipToBounds="True"
                 FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
-                Foreground="{Binding DataContext.DesktopLyric.CurrentLyricForeground.ColorBrush, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=SkyBlue}"
+                Foreground="{Binding DataContext.DesktopLyric.LyricColorBrush.ColorBrush, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=SkyBlue}"
                 Text="{Binding Words}"
                 TextTrimming="None">
                 <TextBlock.Width>

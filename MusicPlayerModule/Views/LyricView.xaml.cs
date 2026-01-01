@@ -11,6 +11,7 @@ using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.MsgEvents.Music;
 using IceTea.Pure.Utils;
 
+#pragma warning disable CS8600 // 将 null 字面量或可能为 null 的值转换为非 null 类型。
 namespace MusicPlayerModule.Views
 {
     /// <summary>
@@ -164,30 +165,29 @@ namespace MusicPlayerModule.Views
         }
 
         #region 歌词颜色调整
-        private void DropIn_LinearGradientForegroundColor(object sender, DragEventArgs e)
-        {
-            var data = e.Data;
-
-            if (data.GetDataPresent(typeof(SolidColorBrush)))
-            {
-                var color = data.GetData(typeof(SolidColorBrush)) as Brush;
-
-                this.LinearGradientStartColor.Background = color;
-            }
-        }
-
         private void DragLeaveFrom(object sender, MouseEventArgs e)
         {
             e.Handled = true;
 
             if (e.MouseDevice.LeftButton == MouseButtonState.Pressed)
             {
-                var item = (ListBoxItem)sender;
-                DragDrop.DoDragDrop(item, item.Background, DragDropEffects.Copy);
+                DependencyObject dragSource = (DependencyObject)sender;
+
+                Brush brush = default;
+                if (sender is ListBoxItem listBoxItem)
+                {
+                    brush = listBoxItem.Background;
+                }
+                else if (sender is Border border)
+                {
+                    brush = border.Background;
+                }
+
+                DragDrop.DoDragDrop(dragSource, brush, DragDropEffects.Copy);
             }
         }
 
-        private void DropIn_ForegroundColor(object sender, DragEventArgs e)
+        private void DropIn_Color(object sender, DragEventArgs e)
         {
             var data = e.Data;
 
@@ -195,7 +195,14 @@ namespace MusicPlayerModule.Views
             {
                 var color = data.GetData(typeof(SolidColorBrush)) as Brush;
 
-                this.ForegroundColor.Background = color;
+                if (sender is Border border)
+                {
+                    border.Background = color;
+                }
+                else if (sender is Control button)
+                {
+                    button.Background = color;
+                }
             }
         }
         #endregion

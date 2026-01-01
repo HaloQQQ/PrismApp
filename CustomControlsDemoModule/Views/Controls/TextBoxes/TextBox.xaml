@@ -67,7 +67,7 @@
 
             <TextBox MyAttachProperty.InputRegex="{x:Static regex:RegexConstants.DigitPattern}" MyAttachProperty.PlaceHolder="数字" />
 
-            <TextBox MyAttachProperty.InputRegex="{x:Static regex:RegexConstants.EnglishPattern}" MyAttachProperty.PlaceHolder="英文" />
+            <TextBox MyAttachProperty.InputRegex="{x:Static regex:RegexConstants.EnglishWordPattern}" MyAttachProperty.PlaceHolder="英文" />
         </StackPanel>
     </ScrollViewer>
 </UserControl>

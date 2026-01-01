@@ -38,6 +38,8 @@
         internal static readonly string[] CurrentLyricFontFamily_ConfigKey = new[] { MUSIC, "CurrentLyricFontFamily" };
 
         internal static readonly string[] LinearGradientLyricColor_ConfigKey = new[] { MUSIC, "LinearGradientLyricColor" };
+
+        internal static readonly string[] CustomColor_ConfigKey = new[] { MUSIC, "CustomColor" };
         #endregion
 
         #region Video
