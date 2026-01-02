@@ -216,6 +216,8 @@
                                     <ListBox.ItemContainerStyle>
                                         <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
                                             <Setter Property="MyAttachProperty.CornerRadius" Value="10" />
+                                            <Setter Property="Width" Value="120" />
+
                                             <Style.Triggers>
                                                 <Trigger Property="IsSelected" Value="True">
                                                     <Setter Property="Background" Value="{StaticResource TransparentButtonBackground}" />

@@ -64,9 +64,9 @@ internal class DesktopLyricViewModel : NotifyBase
             config.WriteConfigNode(this.CustomColor, CustomStatics.CustomColor_ConfigKey);
         };
 
-        this.LinearGradientColorBrush = new ColorModel(config, CustomStatics.LinearGradientLyricColor_ConfigKey, Color.FromRgb(190, 250, 253));
+        this.LinearGradientColorBrush = new ColorModel(config, CustomStatics.LinearGradientLyricColor_ConfigKey, Color.FromArgb(255, 190, 250, 253));
 
-        this.LyricColorBrush = new ColorModel(config, CustomStatics.CurrentLyricForeground_ConfigKey, Color.FromRgb(190, 250, 253));
+        this.LyricColorBrush = new ColorModel(config, CustomStatics.CurrentLyricForeground_ConfigKey, Color.FromArgb(255, 190, 250, 253));
     }
 
     #region 歌词颜色
@@ -109,7 +109,6 @@ internal class DesktopLyricViewModel : NotifyBase
           new FontModel("宋体", "SimSun"),
           new FontModel("黑体", "SimHei"),
           new FontModel("微软正黑", "Microsoft JhengHei"),
-          new FontModel("楷体", "KaiTi"),
           new FontModel("微软雅黑 Light", "Microsoft YaHei Light"),
           new FontModel("幼圆", "YouYuan"),
         };
@@ -210,6 +209,7 @@ internal class ColorModel : NotifyBase
     {
         this.Colors = new List<ThreePrimaryColorModel>
         {
+            new ThreePrimaryColorModel("A:", defaultColor.A),
             new ThreePrimaryColorModel("R:", defaultColor.R),
             new ThreePrimaryColorModel("G:", defaultColor.G),
             new ThreePrimaryColorModel("B:", defaultColor.B)
@@ -219,9 +219,10 @@ internal class ColorModel : NotifyBase
         if (colorString.IsHexColorString())
         {
             var color = colorString.GetColorFromString();
-            this.Colors[0].Value = color.R;
-            this.Colors[1].Value = color.G;
-            this.Colors[2].Value = color.B;
+            this.Colors[0].Value = color.A;
+            this.Colors[1].Value = color.R;
+            this.Colors[2].Value = color.G;
+            this.Colors[3].Value = color.B;
         }
 
         foreach (var item in this.Colors)
@@ -254,11 +255,12 @@ internal class ColorModel : NotifyBase
     {
         get
         {
-            byte red = this.Colors[0].Value;
-            byte green = this.Colors[1].Value;
-            byte blue = this.Colors[2].Value;
+            byte alpha = this.Colors[0].Value;
+            byte red = this.Colors[1].Value;
+            byte green = this.Colors[2].Value;
+            byte blue = this.Colors[3].Value;
 
-            return new SolidColorBrush(Color.FromRgb(red, green, blue));
+            return new SolidColorBrush(Color.FromArgb(alpha, red, green, blue));
         }
 
         set
@@ -267,9 +269,10 @@ internal class ColorModel : NotifyBase
             {
                 var color = solidColor.Color;
 
-                this.Colors[0].Value = color.R;
-                this.Colors[1].Value = color.G;
-                this.Colors[2].Value = color.B;
+                this.Colors[0].Value = color.A;
+                this.Colors[1].Value = color.R;
+                this.Colors[2].Value = color.G;
+                this.Colors[3].Value = color.B;
 
                 RaisePropertyChanged(nameof(ColorBrush));
             }
@@ -289,7 +292,6 @@ internal class ThreePrimaryColorModel : NotifyBase
     public string Name { get; }
 
     private byte _value;
-
     public byte Value
     {
         get => this._value;

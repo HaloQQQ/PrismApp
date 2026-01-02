@@ -41,7 +41,7 @@
                     <TextBlock.Foreground>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                             <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
-                            <GradientStop Offset="1" Color="{Binding DataContext.DesktopLyric.LyricColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ContentControl}}" />
+                            <GradientStop Offset="1" Color="Transparent" />
                         </LinearGradientBrush>
                     </TextBlock.Foreground>
                     <TextBlock.Width>
