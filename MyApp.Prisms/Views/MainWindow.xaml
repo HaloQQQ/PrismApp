@@ -11,65 +11,62 @@
     MinHeight="640"
     prism:ViewModelLocator.AutoWireViewModel="True"
     MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius}"
-    MyAttachProperty.IsMinimalScreen="True"
-    MyAttachProperty.IsResizeAdorner="False"
-    Style="{StaticResource Window_WithoutTitleBar_ScaleUp}">
-    <Grid ClipToBounds="True">
-        <Grid.Background>
-            <ImageBrush ImageSource="{Binding CurrentBkGrd}" Stretch="UniformToFill" />
-        </Grid.Background>
-        <Grid Background="#33000000">
-            <DockPanel>
-                <views:WindowTitleBarView DockPanel.Dock="Top" />
+    Style="{StaticResource Window_WithShadow}">
+    <Window.Background>
+        <ImageBrush ImageSource="{Binding CurrentBkGrd}" Stretch="UniformToFill" />
+    </Window.Background>
 
-                <Grid DockPanel.Dock="Bottom">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <TreeView
-                        Grid.Column="0"
-                        HorizontalContentAlignment="Left"
-                        FontSize="20"
-                        MyAttachProperty.IsCollapsed="True">
-                        <TreeView.ItemContainerStyle>
-                            <Style BasedOn="{StaticResource {x:Type TreeViewItem}}" TargetType="TreeViewItem">
-                                <Setter Property="MyAttachProperty.CornerRadius" Value="10" />
+    <Grid Background="#33000000">
+        <DockPanel>
+            <views:WindowTitleBarView DockPanel.Dock="Top" />
 
-                                <Setter Property="MyAttachProperty.IconFontText" Value="&#xebdf;" />
+            <Grid DockPanel.Dock="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TreeView
+                    Grid.Column="0"
+                    HorizontalContentAlignment="Left"
+                    FontSize="20"
+                    MyAttachProperty.IsCollapsed="True">
+                    <TreeView.ItemContainerStyle>
+                        <Style BasedOn="{StaticResource {x:Type TreeViewItem}}" TargetType="TreeViewItem">
+                            <Setter Property="MyAttachProperty.CornerRadius" Value="10" />
 
-                                <Setter Property="Padding" Value="10,5" />
-                            </Style>
-                        </TreeView.ItemContainerStyle>
+                            <Setter Property="MyAttachProperty.IconFontText" Value="&#xebdf;" />
 
-                        <TreeView.ItemsSource>
-                            <x:Array Type="system:String">
-                                <system:String>通讯工具</system:String>
-                                <system:String>进程服务</system:String>
-                                <system:String>邮件客户端</system:String>
+                            <Setter Property="Padding" Value="10,5" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
 
-                                <system:String>数据表结构</system:String>
-                                <system:String>颜色转换</system:String>
+                    <TreeView.ItemsSource>
+                        <x:Array Type="system:String">
+                            <system:String>通讯工具</system:String>
+                            <system:String>进程服务</system:String>
+                            <system:String>邮件客户端</system:String>
 
-                                <system:String>控件样例</system:String>
-                                <system:String>小工具</system:String>
+                            <system:String>数据表结构</system:String>
+                            <system:String>颜色转换</system:String>
 
-                                <system:String>音乐播放器</system:String>
-                                <system:String>视频播放器</system:String>
-                            </x:Array>
-                        </TreeView.ItemsSource>
+                            <system:String>控件样例</system:String>
+                            <system:String>小工具</system:String>
 
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectedItemChanged">
-                                <prism:InvokeCommandAction Command="{Binding NavigateToCommand}" TriggerParameterPath="NewValue" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </TreeView>
+                            <system:String>音乐播放器</system:String>
+                            <system:String>视频播放器</system:String>
+                        </x:Array>
+                    </TreeView.ItemsSource>
 
-                    <ContentControl Grid.Column="1" prism:RegionManager.RegionName="MainContentRegion" />
-                </Grid>
-            </DockPanel>
-        </Grid>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectedItemChanged">
+                            <prism:InvokeCommandAction Command="{Binding NavigateToCommand}" TriggerParameterPath="NewValue" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TreeView>
+
+                <ContentControl Grid.Column="1" prism:RegionManager.RegionName="MainContentRegion" />
+            </Grid>
+        </DockPanel>
 
         <views:SwitchBackgroundView HorizontalAlignment="Right" />
     </Grid>

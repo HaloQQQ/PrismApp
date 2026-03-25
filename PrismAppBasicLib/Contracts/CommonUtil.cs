@@ -44,11 +44,7 @@ namespace PrismAppBasicLib.Contracts
 
         public static void Log(string typeName, string message)
         {
-            var dir = Path.Combine(AppStatics.ExeDirectory, typeName);
-            if (!Directory.Exists(dir))
-            {
-                Directory.CreateDirectory(dir);
-            }
+            var dir = Path.Combine(AppStatics.ExeDirectory, typeName).TryCreateDir();
 
             var filePath = Path.Combine(dir, DateTime.Now.FormatTime("yyyy-MM-dd") + typeName + ".log");
 
@@ -59,7 +55,7 @@ namespace PrismAppBasicLib.Contracts
             }
             catch
             {
-                AppUtils.Kill("notepad");
+                AppUtils.KillAll("notepad");
                 File.AppendAllText(filePath, wrapMsg + Environment.NewLine);
             }
 
@@ -76,7 +72,7 @@ namespace PrismAppBasicLib.Contracts
             var dir = Path.Combine(AppStatics.ExeDirectory, typeName);
             var filePath = Path.Combine(dir, DateTime.Now.ToString("yyyy-MM-dd") + typeName + ".log");
 
-            if (AppUtils.OpenWithNotePad(filePath) == null)
+            if (!AppUtils.OpenWithNotePad(filePath).Result.IsSuccess)
             {
                 MessageBox.Show($"日志文件{filePath}不存在!");
             }

@@ -111,6 +111,11 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
                 return;
             }
 
+            if (this.Socket.IsNotNullAnd(_ => _.Status == EnumStarterStatus.Starting || _.Status == EnumStarterStatus.Closing))
+            {
+                return;
+            }
+
             if (this.Socket.IsNotNullAnd(server => server.IsConnected))
             {
                 this.Socket.CloseAsync();

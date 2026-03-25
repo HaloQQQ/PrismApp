@@ -21,7 +21,7 @@
     </UserControl.Resources>
 
     <UniformGrid Rows="3">
-        <WrapPanel>
+        <StackPanel>
             <ComboBox ItemsSource="{StaticResource Data}" />
 
             <ComboBox IsReadOnly="True" ItemsSource="{StaticResource Data}" />
@@ -29,7 +29,7 @@
             <ComboBox IsEnabled="False" ItemsSource="{StaticResource Data}" />
 
             <ComboBox ItemsSource="{StaticResource Data}" Style="{StaticResource ComboBox_ReadOnly}" />
-        </WrapPanel>
+        </StackPanel>
 
         <DataGrid
             BorderBrush="Red"

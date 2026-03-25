@@ -3,8 +3,6 @@ using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using MyApp.Prisms.Helper;
@@ -26,6 +24,7 @@ using PrismAppBasicLib.Models;
 using CustomControlsDemoModule.Events;
 using PrismAppBasicLib.Contracts;
 using IceTea.Wpf.Atom.Utils.Configs;
+using IceTea.Wpf.Atom.Utils;
 
 namespace MyApp.Prisms
 {
@@ -44,50 +43,8 @@ namespace MyApp.Prisms
             CommonUtil.Log(CustomConstants.LogType.Software_Log_Dir, $"退出成功!");
         }
 
-        private IEnumerable<string> GetMessageList(Exception exception)
-        {
-            var list = new List<string>
-            {
-                exception.Message
-            };
-
-            while ((exception = exception.InnerException) != null)
-            {
-                list.Add(exception.Message);
-
-                if (!exception.StackTrace.IsNullOrBlank())
-                {
-                    list.Add(exception.StackTrace);
-                }
-            }
-
-            return list;
-        }
-
-        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            var list = this.GetMessageList(e.ExceptionObject as Exception);
-
-            var message = $"Domain出现异常:{AppStatics.NewLineChars}" + AppStatics.NewLineChars.Join(list);
-            CommonUtil.Log(CustomConstants.LogType.DomainException_Log_Dir, message);
-            MessageBox.Show(message);
-        }
-
-        private void Current_DispatcherUnhandledException(object sender,
-            System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
-        {
-            var list = this.GetMessageList(e.Exception);
-
-            var message = $"App出现异常:{AppStatics.NewLineChars}" + AppStatics.NewLineChars.Join(list);
-            CommonUtil.Log(CustomConstants.LogType.Exception_Log_Dir, message);
-            MessageBox.Show(message);
-        }
-
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            App.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-
             containerRegistry.RegisterSingleton<IConfigManager, WpfYamlConfigManager>();
 
             var config = this.Container.Resolve<IConfigManager>();
@@ -96,18 +53,13 @@ namespace MyApp.Prisms
 
             if (config.IsTrue(CustomConstants.ONLY_ONE_PROCESS.FillToArray()))
             {
-                foreach (var process in Process.GetProcessesByName(processName))
+                if (AppUtils.HasProcessExistsAlready(() => CommonUtil.Log(CustomConstants.LogType.Software_Log_Dir, "当前已有软件运行，启动失败!")))
                 {
-                    if (process.Id != Process.GetCurrentProcess().Id)
-                    {
-                        AppUtils.ShowWindowAsync(process.MainWindowHandle);
-
-                        CommonUtil.Log(CustomConstants.LogType.Software_Log_Dir, "当前已有软件运行，启动失败!");
-
-                        Environment.Exit(1);
-                    }
+                    return;
                 }
             }
+
+            WpfAtomUtils.AddGloablExceptionHandler(ex => CommonUtil.Log(CustomConstants.LogType.Exception_Log_Dir, ex.Message));
 
             CommonUtil.Log(CustomConstants.LogType.Software_Log_Dir, $"进程{processName}启动成功!");
 

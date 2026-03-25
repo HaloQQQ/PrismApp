@@ -63,7 +63,10 @@
                 Step="1"
                 ValueFormat="F2" />
 
-            <VerificationCodeTextBox Count="8" Text="Vi" />
+            <WrapPanel>
+                <VerificationCodeTextBox Count="8" Text="Vi" x:Name="tbxVer" />
+                <TextBlock FontSize="40" Style="{StaticResource TextBlock_Theme}" Text="{Binding Text,ElementName=tbxVer}"/>
+            </WrapPanel>
 
             <TextBox MyAttachProperty.InputRegex="{x:Static regex:RegexConstants.DigitPattern}" MyAttachProperty.PlaceHolder="数字" />
 

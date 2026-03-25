@@ -131,12 +131,9 @@
         <Button Content="&#xe65f;" ToolTip="#xe65f;" />
         <Button Content="&#xe660;" ToolTip="#xe660;" />
         <Button Content="&#xe653;" ToolTip="#xe653;" />
-        <Button Content="&#xe61a;" ToolTip="#xe61a;" />
-        <Button Content="&#xe643;" ToolTip="#xe643;" />
-
         <Button Content="&#xe98e;" ToolTip="#xe98e;" />
         <Button Content="&#xe650;" ToolTip="#xe650;" />
-        <Button Content="&#xe7a3;" ToolTip="#xe7a3;" />
+
         <Button Content="&#xe657;" ToolTip="#xe657;" />
         <Button Content="&#xe63d;" ToolTip="#xe63d;" />
     </UniformGrid>

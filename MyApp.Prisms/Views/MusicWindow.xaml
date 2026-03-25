@@ -10,18 +10,17 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius}"
     MyAttachProperty.IsMinimalScreen="True"
-    Style="{StaticResource Window_WithoutTitleBar_ScaleUp}">
-    <Grid ClipToBounds="True">
-        <Grid.Background>
-            <ImageBrush ImageSource="{Binding CurrentBkGrd}" Stretch="UniformToFill" />
-        </Grid.Background>
-        <Grid Background="#33000000">
-            <DockPanel>
-                <views:WindowTitleBarView VerticalAlignment="Top" DockPanel.Dock="Top" />
+    Style="{StaticResource Window_WithShadow}">
+    <Window.Background>
+        <ImageBrush ImageSource="{Binding CurrentBkGrd}" Stretch="UniformToFill" />
+    </Window.Background>
 
-                <ContentControl prism:RegionManager.RegionName="MusicPlayerRegion" />
-            </DockPanel>
-        </Grid>
+    <Grid Background="#33000000">
+        <DockPanel>
+            <views:WindowTitleBarView DockPanel.Dock="Top" />
+
+            <ContentControl prism:RegionManager.RegionName="MusicPlayerRegion" />
+        </DockPanel>
 
         <views:SwitchBackgroundView HorizontalAlignment="Right" />
     </Grid>
