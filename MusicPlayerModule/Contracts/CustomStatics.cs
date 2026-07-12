@@ -1,4 +1,4 @@
-﻿namespace MusicPlayerModule.Contracts
+namespace MusicPlayerModule.Contracts
 {
     public static class CustomStatics
     {
@@ -11,11 +11,11 @@
 
         public static List<MediaPlayOrderModel> MediaPlayOrderList { get; } = new()
         {
-            new MediaPlayOrderModel("\ue871","顺序播放", MediaPlayOrderModel.EnumOrderType.Order),
-            new MediaPlayOrderModel("\ue66c","循环播放", MediaPlayOrderModel.EnumOrderType.Loop),
-            new MediaPlayOrderModel("\ue66b","随机播放", MediaPlayOrderModel.EnumOrderType.Random),
-            new MediaPlayOrderModel("\ue66d","单曲循环", MediaPlayOrderModel.EnumOrderType.SingleCycle),
-            new MediaPlayOrderModel("\ue621","单曲播放", MediaPlayOrderModel.EnumOrderType.SingleOnce)
+            new MediaPlayOrderModel("\ue871", MediaPlayOrderModel.EnumOrderType.Order),
+            new MediaPlayOrderModel("\ue66c", MediaPlayOrderModel.EnumOrderType.Loop),
+            new MediaPlayOrderModel("\ue66b", MediaPlayOrderModel.EnumOrderType.Random),
+            new MediaPlayOrderModel("\ue66d", MediaPlayOrderModel.EnumOrderType.SingleCycle),
+            new MediaPlayOrderModel("\ue621", MediaPlayOrderModel.EnumOrderType.SingleOnce)
         };
 
         #region Music

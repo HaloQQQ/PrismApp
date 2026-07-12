@@ -1,4 +1,4 @@
-﻿using IceTea.Pure.Contracts;
+﻿using IceTea.Pure.Businesses.Config;
 
 namespace MyApp.Prisms.ViewModels
 {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,6 +6,7 @@ using System.Windows.Documents;
 using IceTea.Pure.Extensions;
 using IceTea.SocketStandard.Contracts;
 using IceTea.Wpf.Atom.Utils;
+using MyApp.Prisms.Contracts;
 using PrismAppBasicLib.Contracts;
 
 namespace MyApp.Prisms.Helper
@@ -17,7 +18,6 @@ namespace MyApp.Prisms.Helper
         {
             if (isLogging)
             {
-#pragma warning disable CA1416 // 验证平台兼容性
                 CommonUtil.Log(socket.Name, message);
             }
 

@@ -1,8 +1,7 @@
-﻿using CustomControlsDemoModule.ViewModels;
+using CustomControlsDemoModule.ViewModels;
 using IceTea.Desktop.Extensions;
 using Prism.Services.Dialogs;
 using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
@@ -21,32 +20,31 @@ namespace CustomControlsDemoModule.Views
 
             this.SetPostion(point);
 
-            if (this.DataContext is FetchBackColorViewModel viewModel)
-            {
-                viewModel.MouseHook.MouseActivity += ViewModel_MouseActionEvent;
-
-                viewModel.MouseHook.StartAsync();
-            }
-
             Mouse.OverrideCursor = Cursors.Cross;
 
-            Application.Current.MainWindow.Closing += MainWindow_Closing;
+            this.Loaded += (s, e) =>
+            {
+                if (this.DataContext is FetchBackColorViewModel viewModel)
+                {
+                    viewModel.MouseHook.Activity += ViewModel_MouseActionEvent;
+
+                    viewModel.MouseHook.StartAsync();
+                }
+            };
         }
 
         public IDialogResult Result { get; set; }
 
-        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        protected override void OnClosed(EventArgs e)
         {
-            this.Close();
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
+            if (this.DataContext is FetchBackColorViewModel viewModel)
+            {
+                viewModel.MouseHook.Activity -= ViewModel_MouseActionEvent;
+            }
 
             Mouse.OverrideCursor = Cursors.Arrow;
 
-            Application.Current.MainWindow.Closing -= MainWindow_Closing;
+            base.OnClosed(e);
         }
 
         private void ViewModel_MouseActionEvent(object sender, IceTea.Desktop.Contracts.MouseHook.CustomMouseEventArgs e)
@@ -55,14 +53,6 @@ namespace CustomControlsDemoModule.Views
             {
                 this.SetPostion(new System.Drawing.Point(e.X, e.Y));
             }
-        }
-
-        protected override void OnActivated(EventArgs e)
-        {
-            base.OnActivated(e);
-
-            this.Owner = null;
-
         }
 
         private void SetPostion(System.Drawing.Point point)

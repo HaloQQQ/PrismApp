@@ -1,14 +1,15 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
+using IceTea.Pure.Extensions;
 
 namespace MusicPlayerModule.Contracts
 {
     public class MediaPlayOrderModel
     {
-        public MediaPlayOrderModel(string iconString, string description, EnumOrderType orderType)
+        public MediaPlayOrderModel(string iconString, EnumOrderType orderType)
         {
             IconString = iconString;
             OrderType = orderType;
-            Description = description;
+            Description = orderType.GetDescription();;
         }
 
         public string IconString { get; }

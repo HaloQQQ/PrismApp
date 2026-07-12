@@ -10,8 +10,6 @@ namespace PrismAppBasicLib.Models
 {
     public class SettingModel : NotifyBase
     {
-        private Window _window = new Window();
-
         public SettingModel(string name, string value, Action action)
         {
             Name = name + ":";
@@ -19,12 +17,7 @@ namespace PrismAppBasicLib.Models
 
             this.OpenFolderCommand = new DelegateCommand(() =>
             {
-                if (_window == null)
-                {
-                    return;
-                }
-
-                var folder = WpfAtomUtils.OpenFolderDialog(_window);
+                var folder = WpfAtomUtils.OpenFolderDialog(Application.Current.MainWindow);
 
                 if (!folder.IsNullOrBlank())
                 {
@@ -55,8 +48,6 @@ namespace PrismAppBasicLib.Models
         protected override void DisposeCore()
         {
             base.DisposeCore();
-
-            _window = null;
 
             OpenFolderCommand = null;
         }

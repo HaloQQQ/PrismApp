@@ -12,11 +12,13 @@ using DryIoc;
 using Prism.Ioc;
 using Prism.Events;
 using PrismAppBasicLib.Contracts;
+using System.ComponentModel.DataAnnotations;
+using IceTea.Pure.Businesses.Config;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
-    internal abstract class SocketViewModelBase : NotifyBase
+    internal abstract class SocketViewModelBase : ValidationBase
     {
         private ISocket _socket;
 
@@ -36,7 +38,9 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
             config.SetConfig += config =>
                 config.WriteConfigNode<bool>(this.IsLogging, configKey);
 
-            this.ConnectCommand = new DelegateCommand(this.Connect);
+            this.ConnectCommand = new DelegateCommand(this.Connect)
+                .ObservesProperty(() => Ip)
+                .ObservesProperty(() => Port);
 
             this.SendCommand = new DelegateCommand(
                     () => this.Socket.SendAsync(this.SendMessage),
@@ -44,8 +48,6 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
                 )
                 .ObservesProperty(() => this.SendMessage)
                 .ObservesProperty(() => this.Socket.IsConnected);
-
-#pragma warning disable CA1416 // 验证平台兼容性
             this.OpenLogCommand = new DelegateCommand(() => CommonUtil.OpenLog(this.Name));
 
             this.Ip = AppStatics.Ip.ToString();
@@ -58,7 +60,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
         private bool _isLogging;
 
-        protected ushort _port;
+        protected ushort _port = 50000;
 
         /// <summary>
         /// 可接受的最长数据长度
@@ -77,9 +79,44 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
             set => SetProperty<bool>(ref _isLogging, value);
         }
 
-        public string Ip { get; set; }
 
-        public string Port { get; set; } = "50000";
+        private string _ip;
+        [RegularExpression(RegexConstants.IPv4PatternStr, ErrorMessage = "必须是IP格式")]
+        public string Ip
+        {
+            get => _ip;
+            set
+            {
+                if (SetProperty<string>(ref _ip, value))
+                {
+                    ValidateNotifyDataError();
+                }
+            }
+        }
+
+
+        [RegularExpression(RegexConstants.PortPatternStr, ErrorMessage = "必须是端口格式")]
+        public string Port
+        {
+            get => _port.ToString();
+            set
+            {
+                var portStr = value;
+                if (_port.ToString() != portStr)
+                {
+                    if (ushort.TryParse(portStr, out var port))
+                    {
+                        _port = port;
+                    }
+                    else
+                    {
+                        //RaisePropertyChanged();
+                        ValidateNotifyDataError();
+                    }
+                }
+            }
+        }
+
 
         public string SendMessage
         {
@@ -89,7 +126,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
         #endregion
 
         #region Commands
-        public ICommand ConnectCommand { get; protected set; }
+        public DelegateCommand ConnectCommand { get; protected set; }
         public ICommand SendCommand { get; protected set; }
 
         public ICommand OpenLogCommand { get; private set; }

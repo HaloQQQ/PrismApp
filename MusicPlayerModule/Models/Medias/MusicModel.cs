@@ -5,7 +5,6 @@ using System.Windows.Media.Imaging;
 using TagLib;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.Utils;
-using System.Text.RegularExpressions;
 using IceTea.Pure.Contracts;
 using System.Diagnostics;
 
@@ -37,8 +36,8 @@ internal class MusicModel : MediaBaseModel, IEquatable<MusicModel>
             Name = file.Tag.Title;
         }
 
-        IsEnglishTitle = Regex.IsMatch(Name, RegexConstants.ContainsEnglishPattern);
-        IsEnglishSinger = Regex.IsMatch(Singer, RegexConstants.ContainsEnglishPattern);
+        IsEnglishTitle = RegexConstants.ContainsEnglishPattern.IsMatch(Name);
+        IsEnglishSinger = RegexConstants.ContainsEnglishPattern.IsMatch(Singer);
 
         Album = file.Tag.Album ?? "空专辑";             // 专辑名称
         Year = (int)file.Tag.Year;             // 年份

@@ -1,8 +1,10 @@
-﻿using IceTea.Pure.BaseModels;
+using IceTea.Pure.BaseModels;
 using IceTea.Pure.Contracts;
+using IceTea.Pure.Businesses.Config;
+using IceTea.Pure.Businesses.HotKey;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.Utils;
-using IceTea.Wpf.Atom.Utils.HotKey.App;
+using IceTea.Wpf.Atom.Businesses.HotKey.App;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Services.Dialogs;
@@ -10,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -60,7 +61,7 @@ namespace CustomControlsDemoModule.ViewModels
 
             this.InitHotKeysCore(group.As<IAppHotKeyGroup>());
 
-            KeyGestureDic = group.ToDictionary(hotKey => hotKey.Name);
+            KeyGestureDic = group;
         }
 
         /// <summary>
@@ -118,7 +119,7 @@ namespace CustomControlsDemoModule.ViewModels
         #endregion
 
         #region Props
-        public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; private set; }
+        public IHotKeyGroup<Key, ModifierKeys> KeyGestureDic { get; private set; }
 
         public IList<T> Datas { get; private set; }
 

@@ -1,4 +1,4 @@
-﻿using Prism.Commands;
+using Prism.Commands;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -10,13 +10,11 @@ using System.ServiceProcess;
 using IceTea.Pure.Extensions;
 using IceTea.Wpf.Atom.Utils;
 using IceTea.Pure.BaseModels;
-using MyApp.Prisms.Helper;
-using IceTea.Core.Utils.OS;
 using PrismAppBasicLib.Contracts;
+using MyApp.Prisms.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {
-#pragma warning disable CA1416 // 验证平台兼容性
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
     internal class ProcessServiceViewModel : NotifyBase, IDisposable
@@ -34,14 +32,14 @@ namespace MyApp.Prisms.ViewModels
                         WpfAtomUtils.BeginInvokeAtOnce(() => ProcessList.Clear());
                     }
 
-                    foreach (var process in ProcessUtil.GetAllProcessList().OrderBy(p => p.Key))
+                    foreach (var process in Process.GetProcesses().OrderBy(p => p.ProcessName))
                     {
                         if (this.IsDisposed)
                         {
                             break;
                         }
 
-                        ProcessContext processContext = new ProcessContext(process.Value);
+                        ProcessContext processContext = new ProcessContext(process);
                         WpfAtomUtils.BeginInvoke(() => ProcessList.Add(processContext));
 
                         await Task.Delay(50);
@@ -66,14 +64,14 @@ namespace MyApp.Prisms.ViewModels
                         WpfAtomUtils.BeginInvokeAtOnce(() => ServiceList.Clear());
                     }
 
-                    foreach (var service in ServiceUtil.GetAllNormalServiceList().OrderBy(s => s.Key))
+                    foreach (var service in ServiceController.GetServices().OrderBy(s => s.DisplayName))
                     {
                         if (this.IsDisposed)
                         {
                             break;
                         }
 
-                        ServiceContext serviceContext = new ServiceContext(service.Value);
+                        ServiceContext serviceContext = new ServiceContext(service);
                         WpfAtomUtils.BeginInvoke(() => ServiceList.Add(serviceContext));
 
                         await Task.Delay(50);

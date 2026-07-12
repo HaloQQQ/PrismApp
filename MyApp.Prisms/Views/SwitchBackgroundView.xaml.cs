@@ -1,4 +1,4 @@
-﻿using Prism.Events;
+using Prism.Events;
 using Prism.Ioc;
 using System;
 using System.Windows;
@@ -10,10 +10,10 @@ using MyApp.Prisms.MsgEvents;
 using MyApp.Prisms.ViewModels;
 using IceTea.Pure.Extensions;
 using IceTea.Wpf.Atom.Utils;
-using MyApp.Prisms.Helper;
-using IceTea.Pure.Contracts;
 using PrismAppBasicLib.Models;
 using IceTea.Wpf.Atom.Contracts.FileFilters;
+using IceTea.Pure.Businesses.Setting;
+using MyApp.Prisms.Contracts;
 
 namespace MyApp.Prisms.Views
 {
@@ -73,6 +73,8 @@ namespace MyApp.Prisms.Views
             {
                 translateAnimation.BeginTime = TimeSpan.FromMilliseconds(500);
             }
+
+            translateAnimation.EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseInOut };
 
             Storyboard.SetTarget(translateAnimation, this);
             Storyboard.SetTargetProperty(translateAnimation,

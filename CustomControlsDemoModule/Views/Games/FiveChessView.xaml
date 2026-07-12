@@ -2,38 +2,42 @@
     x:Class="CustomControlsDemoModule.Views.FiveChessView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:CustomControlsDemoModule.Models"
     xmlns:prism="http://prismlibrary.com/"
-    prism:ViewModelLocator.AutoWireViewModel="True"
-    FocusVisualStyle="{x:Null}"
-    MyAttachProperty.IsElementFocused="True">
+    mc:Ignorable="d">
     <prism:Dialog.WindowStyle>
         <Style BasedOn="{StaticResource Window_WithoutTitleBar}" TargetType="Window">
             <Setter Property="MinWidth" Value="1200" />
             <Setter Property="MinHeight" Value="640" />
+
+            <Setter Property="MyAttachProperty.AttachInputBindingCollection">
+                <Setter.Value>
+                    <InputBindingCollection>
+                        <KeyBinding
+                            Key="{Binding KeyGestureDic[重玩].SelectedKey}"
+                            Command="{Binding RePlayCommand}"
+                            Modifiers="{Binding KeyGestureDic[重玩].ModifierKey}" />
+
+                        <KeyBinding
+                            Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"
+                            Command="{Binding TogglePauseCommand}"
+                            Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" />
+
+                        <KeyBinding
+                            Key="{Binding KeyGestureDic[悔棋].SelectedKey}"
+                            Command="{Binding RevokeCommand}"
+                            Modifiers="{Binding KeyGestureDic[悔棋].ModifierKey}" />
+                    </InputBindingCollection>
+                </Setter.Value>
+            </Setter>
         </Style>
     </prism:Dialog.WindowStyle>
 
     <UserControl.Resources>
         <ResourceDictionary Source="/CustomControlsDemoModule;component/Resources/Games/FiveChess.xaml" />
     </UserControl.Resources>
-
-    <UserControl.InputBindings>
-        <KeyBinding
-            Key="{Binding KeyGestureDic[重玩].SelectedKey}"
-            Command="{Binding RePlayCommand}"
-            Modifiers="{Binding KeyGestureDic[重玩].ModifierKey}" />
-
-        <KeyBinding
-            Key="{Binding KeyGestureDic[播放/暂停].SelectedKey}"
-            Command="{Binding TogglePauseCommand}"
-            Modifiers="{Binding KeyGestureDic[播放/暂停].ModifierKey}" />
-
-        <KeyBinding
-            Key="{Binding KeyGestureDic[悔棋].SelectedKey}"
-            Command="{Binding RevokeCommand}"
-            Modifiers="{Binding KeyGestureDic[悔棋].ModifierKey}" />
-    </UserControl.InputBindings>
 
     <Grid>
         <DockPanel>
@@ -396,6 +400,7 @@
                                 Visibility="{Binding IsGameOver, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
                             <Button
+                                d:Visibility="Collapsed"
                                 FontSize="80"
                                 Foreground="Gray"
                                 Style="{StaticResource RePlayButton}"

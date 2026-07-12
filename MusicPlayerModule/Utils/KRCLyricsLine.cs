@@ -79,7 +79,7 @@ internal class KRCLyricsLine : NotifyBase
             }
 
             var line = string.Join(string.Empty, this.Chars.Select(item => item.Word));
-            this.IsEnglish = Regex.IsMatch(line, RegexConstants.ContainsEnglishPattern);
+            this.IsEnglish = RegexConstants.ContainsEnglishPattern.IsMatch(line);
 
             this.Words = this.IsEnglish ? line : line.Replace(' ', '\u3000');
         }

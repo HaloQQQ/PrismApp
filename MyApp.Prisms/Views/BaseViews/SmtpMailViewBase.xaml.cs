@@ -5,7 +5,6 @@ using IceTea.Wpf.Atom.Contracts.FileFilters;
 using IceTea.Wpf.Atom.Utils;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using System;
-using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -35,7 +34,7 @@ namespace MyApp.Prisms.Views.BaseViews
                 {
                     var text = textBox.Text;
 
-                    if (!Regex.IsMatch(text, RegexConstants.EmailPattern))
+                    if (!RegexConstants.EmailPattern.IsMatch(text))
                     {
                         System.Windows.MessageBox.Show("添加内容必须为邮箱");
                         return;

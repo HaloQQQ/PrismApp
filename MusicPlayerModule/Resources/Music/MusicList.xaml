@@ -1,4 +1,4 @@
-﻿<ResourceDictionary
+<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:MusicPlayerModule.Converters">
@@ -69,9 +69,9 @@
             Icon="&#xe704;" />
 
         <MenuItem
-            Command="{Binding PlacementTarget.DataContext.OpenInExploreCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-            CommandParameter="{Binding PlacementTarget.SelectedItem.Music.FileDir, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-            Header="打开目录位置"
+            Command="{Binding PlacementTarget.DataContext.ExploreSelectCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            CommandParameter="{Binding PlacementTarget.SelectedItem.Music.FilePath, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+            Header="打开文件位置"
             Icon="&#xebdf;" />
 
         <MenuItem

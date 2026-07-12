@@ -1,6 +1,6 @@
 ﻿using CustomControlsDemoModule.Models;
-using IceTea.Pure.Contracts;
-using IceTea.Wpf.Atom.Utils.HotKey.App;
+using IceTea.Pure.Businesses.Config;
+using IceTea.Wpf.Atom.Businesses.HotKey.App;
 using Prism.Commands;
 using Prism.Events;
 using PrismAppBasicLib.Contracts;

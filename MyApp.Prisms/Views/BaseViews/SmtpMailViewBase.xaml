@@ -6,9 +6,7 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     prism:ViewModelLocator.AutoWireViewModel="True"
     Background="Transparent"
-    FocusVisualStyle="{x:Null}"
-    FontSize="20"
-    MyAttachProperty.IsElementFocused="True">
+    FontSize="20">
     <UserControl.Resources>
         <Style x:Key="Prefix" TargetType="TextBlock">
             <Setter Property="Width" Value="80" />
@@ -209,6 +207,11 @@
                 ItemsSource="{Binding Mails}"
                 MyAttachProperty.DataGridCellHorizontalAlignment="Center"
                 Style="{StaticResource DataGrid_Transparent}">
+                <DataGrid.ItemContainerStyle>
+                    <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                        <Setter Property="Height" Value="40" />
+                    </Style>
+                </DataGrid.ItemContainerStyle>
                 <DataGrid.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="设置标记">
@@ -350,7 +353,7 @@
                                 </Style>
                             </MenuItem.ItemContainerStyle>
                         </MenuItem>
-                        <MenuItem Command="{Binding DeleteCommand}" Header="删除" />
+                        <MenuItem Command="{Binding DeleteCommand}" Header="标记删除" />
                     </ContextMenu>
                 </DataGrid.ContextMenu>
                 <DataGrid.Columns>

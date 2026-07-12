@@ -1,8 +1,7 @@
-﻿using CustomControlsDemoModule.Events;
+using CustomControlsDemoModule.Events;
 using IceTea.Pure.BaseModels;
-using IceTea.Desktop.Contracts.MouseHook;
 using IceTea.Desktop.Extensions;
-using IceTea.Desktop.Utils;
+using IceTea.Desktop.Contracts.MouseHook;
 using IceTea.Wpf.Atom.Extensions;
 using Prism.Events;
 using Prism.Services.Dialogs;
@@ -15,29 +14,27 @@ namespace CustomControlsDemoModule.ViewModels
 {
     internal class FetchBackColorViewModel : NotifyBase, IDisposable, IDialogAware
     {
+        private readonly IEventAggregator _eventAggregator;
         private IMouseHook _mouseHook;
 
         internal IMouseHook MouseHook => this._mouseHook;
 
-        public FetchBackColorViewModel(IEventAggregator eventAggregator)
+        public FetchBackColorViewModel(IEventAggregator eventAggregator, IMouseHook mouseHook)
         {
-#pragma warning disable CA1416 // 验证平台兼容性
-            _mouseHook = new GlobalMouseHook();
+            _eventAggregator = eventAggregator;
+            _mouseHook = mouseHook;
 
-            _mouseHook.MouseActivity += _mouseHook_MouseActivity;
-#pragma warning restore CA1416 // 验证平台兼容性
-
+            _mouseHook.Activity += _mouseHook_Activity;
             _mouseHook.StartAsync();
 
             Width = SystemParameters.WorkArea.Width;
             Height = SystemParameters.WorkArea.Height;
 
-            eventAggregator.GetEvent<ColorPickerEvent>().Subscribe(() => RequestClose?.Invoke(null));
+            eventAggregator.GetEvent<ColorPickerEvent>().Subscribe(RequestCloseDialog);
         }
 
-        private void _mouseHook_MouseActivity(object sender, CustomMouseEventArgs e)
+        private void _mouseHook_Activity(object sender, CustomMouseEventArgs e)
         {
-#pragma warning disable CA1416 // 验证平台兼容性
             if (e.OperationType == MouseOperationType.MOVE)
             {
                 var point = new System.Drawing.Point(e.X, e.Y);
@@ -75,11 +72,14 @@ namespace CustomControlsDemoModule.ViewModels
                     y = (int)this.Height - 2 * radius;
                 }
 
-                var bitmap = IceTea.Core.Extensions.ImageCoreExtensions.CaptureScreen(new Rectangle(x, y, 20, 20));
+                var bitmap = ImageExtensions.CaptureScreen(new Rectangle(x, y, 20, 20));
 
                 this.ImageSource = bitmap.GetImageSource();
             }
-#pragma warning restore CA1416 // 验证平台兼容性
+            else if (e.OperationType == MouseOperationType.R_BUTTON_UP)
+            {
+                _eventAggregator.GetEvent<ColorPickerEvent>().Publish();
+            }
         }
 
         #region Props
@@ -139,10 +139,19 @@ namespace CustomControlsDemoModule.ViewModels
 
         public event Action<IDialogResult> RequestClose;
 
+        private void RequestCloseDialog()
+        {
+            RequestClose?.Invoke(new DialogResult(ButtonResult.OK));
+        }
+
         public string Title => "标题";
 
         protected override void DisposeCore()
         {
+            _eventAggregator.GetEvent<ColorPickerEvent>().Unsubscribe(RequestCloseDialog);
+
+            _mouseHook.Activity -= _mouseHook_Activity;
+
             _mouseHook.Dispose();
 
             base.DisposeCore();

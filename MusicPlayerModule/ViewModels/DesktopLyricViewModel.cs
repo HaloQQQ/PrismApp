@@ -1,10 +1,11 @@
-﻿using IceTea.Pure.BaseModels;
-using IceTea.Pure.Contracts;
+using IceTea.Pure.BaseModels;
+using IceTea.Pure.Businesses.Config;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.Utils;
 using IceTea.Wpf.Atom.Extensions;
 using MusicPlayerModule.Contracts;
 using Prism.Commands;
+using System.Drawing.Text;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -103,15 +104,18 @@ internal class DesktopLyricViewModel : NotifyBase
     #endregion
 
     #region 歌词字体
-    public IEnumerable<FontModel> Fonts { get; } =
-        new[]{
-          new FontModel("微软雅黑", "Microsoft YaHei"),
-          new FontModel("宋体", "SimSun"),
-          new FontModel("黑体", "SimHei"),
-          new FontModel("微软正黑", "Microsoft JhengHei"),
-          new FontModel("微软雅黑 Light", "Microsoft YaHei Light"),
-          new FontModel("幼圆", "YouYuan"),
-        };
+    private IEnumerable<FontModel> _fonts = new InstalledFontCollection().Families
+            .Select(family => new FontModel(family.Name, family.Name))
+            .Where(fm => fm.FamilyName.ContainsChinese());
+    public IEnumerable<FontModel> Fonts => _fonts;
+    //new[]{
+    //  new FontModel("微软雅黑", "Microsoft YaHei"),
+    //  new FontModel("宋体", "SimSun"),
+    //  new FontModel("黑体", "SimHei"),
+    //  new FontModel("微软正黑", "Microsoft JhengHei"),
+    //  new FontModel("微软雅黑 Light", "Microsoft YaHei Light"),
+    //  new FontModel("幼圆", "YouYuan"),
+    //};
 
     private FontModel _fontModel;
     public FontModel CurrentFontModel

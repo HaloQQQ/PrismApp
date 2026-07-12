@@ -1,4 +1,4 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 using System.Collections.ObjectModel;
 using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.Contracts;
@@ -7,15 +7,19 @@ using PrismAppBasicLib.Contracts;
 using MusicPlayerModule.MsgEvents.Media;
 using IceTea.Pure.BaseModels;
 using Prism.Events;
-using IceTea.Pure.Contracts;
 using IceTea.Pure.Utils;
 using Prism.Commands;
 using IceTea.Pure.Extensions;
-using IceTea.Wpf.Atom.Utils.HotKey.App;
+using IceTea.Wpf.Atom.Businesses.HotKey.App;
+using IceTea.Pure.Businesses.HotKey;
+using IceTea.Pure.Businesses.Config;
+using IceTea.Pure.Businesses.Setting;
+using IceTea.Desktop.Contracts.KeyboardHook;
 
 namespace MusicPlayerModule.ViewModels.Base;
 
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
+#pragma warning disable CS8622 // 参数类型中引用类型的为 Null 性与目标委托不匹配(可能是由于为 Null 性特性)。
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
 #pragma warning disable CS8601 // 引用类型赋值可能为 null。
 #pragma warning disable CS8602 // 解引用可能出现空引用。
@@ -26,19 +30,21 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     protected IEventAggregator _eventAggregator { get; private set; }
     protected ISettingManager<SettingModel> _settingManager { get; private set; }
     protected IConfigManager _configManager { get; private set; }
+    protected IKeyboardHook _keyboardHook { get; private set; }
     protected Random _random { get; private set; } = new Random();
     #endregion
 
-    public Dictionary<string, IHotKey<Key, ModifierKeys>> KeyGestureDic { get; private set; }
+    public IHotKeyGroup<Key, ModifierKeys> KeyGestureDic { get; private set; }
 
     public ObservableCollection<PlayingMediaBaseViewModel> DisplayPlaying { get; private set; } = new();
 
 
-    protected MediaPlayerViewModel(IEventAggregator eventAggregator, IConfigManager configManager, IAppConfigFileHotKeyManager appCfgHotkeyManager, ISettingManager<SettingModel> settingManager)
+    protected MediaPlayerViewModel(IEventAggregator eventAggregator, IConfigManager configManager, IAppConfigFileHotKeyManager appCfgHotkeyManager, ISettingManager<SettingModel> settingManager, IKeyboardHook keyboardHook)
     {
         this._eventAggregator = eventAggregator.AssertNotNull(nameof(IEventAggregator));
         this._configManager = configManager.AssertArgumentNotNull(nameof(IConfigManager));
         this._settingManager = settingManager.AssertArgumentNotNull(nameof(ISettingManager<SettingModel>));
+        this._keyboardHook = keyboardHook.AssertArgumentNotNull(nameof(IKeyboardHook));
 
         this._settingManager.TryAdd(CustomStatics.MUSIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode<string>(CustomStatics.LastMusicDir_ConfigKey), null));
         this._settingManager.TryAdd(CustomStatics.LYRIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode<string>(CustomStatics.LastLyricDir_ConfigKey), null));
@@ -51,6 +57,8 @@ internal abstract class MediaPlayerViewModel : NotifyBase
         this.InitHotkeys(appCfgHotkeyManager);
 
         this.SubscribeEvents(eventAggregator);
+
+        _keyboardHook.StartAsync();
     }
 
     private void InitHotkeys(IAppConfigFileHotKeyManager appCfgHotkeyManager)
@@ -62,17 +70,21 @@ internal abstract class MediaPlayerViewModel : NotifyBase
 
         group.TryRegisterBatch(this.MediaHotKeys);
 
-        this.KeyGestureDic = group.ToDictionary(hotKey => hotKey.Name);
+        this.KeyGestureDic = group;
     }
 
     protected virtual void LoadConfig(IConfigManager configManager)
     {
         var playOrder = configManager.ReadConfigNode<string>(this.MediaPlayOrder_ConfigKey);
         this.CurrentPlayOrder =
+#if NETFRAMEWORK
+        CustomStatics.MediaPlayOrderList.FirstOrDefault(item => item.Description == playOrder) ?? CustomStatics.MediaPlayOrderList.First();
+#else
             CustomStatics.MediaPlayOrderList.FirstOrDefault(
                     item => item.Description == playOrder,
                     CustomStatics.MediaPlayOrderList.First()
                 );
+#endif
 
         configManager.SetConfig += _ =>
         {
@@ -218,6 +230,8 @@ internal abstract class MediaPlayerViewModel : NotifyBase
             () => this.CurrentMedia != null)
             .ObservesProperty(() => this.CurrentMedia);
 
+        this.ExploreSelectCommand = new DelegateCommand<string>(AppUtils.SelctFileInExplorer);
+
         this.InitCommandsExtend();
     }
 
@@ -276,6 +290,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
 
             this.SetAndPlay(currentMedia);
         }
+
     }
 
     protected void NextMedia_CommandExecute(PlayingMediaBaseViewModel? currentMedia)
@@ -316,6 +331,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
 
             this.SetAndPlay(currentMedia);
         }
+
     }
 
     /// <summary>
@@ -368,6 +384,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
         {
             this.SetAndPlay(currentMedia);
         }
+
     }
     #endregion
 
@@ -402,6 +419,8 @@ internal abstract class MediaPlayerViewModel : NotifyBase
         eventAggregator.GetEvent<PrevMediaEvent>().Subscribe(() => this.PrevMedia_CommandExecute(this.CurrentMedia));
         eventAggregator.GetEvent<NextMediaEvent>().Subscribe(() => this.NextMedia_CommandExecute(this.CurrentMedia));
 
+        eventAggregator.GetEvent<StopMediaEvent>().Subscribe(() => this.CurrentMedia = null);
+
         eventAggregator.GetEvent<ToggeleCurrentMediaEvent>().Subscribe(() =>
         {
             if (this.CurrentMedia != null)
@@ -432,6 +451,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
         {
             this.RaiseResetMediaEvent();
         }
+
     }
 
     protected virtual bool AllowRefreshPlayingIndex => true;
@@ -671,11 +691,16 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     /// 歌曲进度提前,此地只为让前端按钮在该禁用时禁用
     /// </summary>
     public ICommand FastForwardCommand { get; private set; }
+
+    public ICommand ExploreSelectCommand { get; private set; }
     #endregion
 
     protected override void DisposeCore()
     {
         this.CleanPlaying_CommandExecute();
+
+        _keyboardHook.Dispose();
+        _keyboardHook = null;
 
         _random = null;
 
@@ -688,7 +713,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
             list.Clear();
         }
 
-        KeyGestureDic.Clear();
+        KeyGestureDic.Dispose();
         KeyGestureDic = null;
 
         DisplayPlaying.Clear();
@@ -720,6 +745,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
         DecreaseVolumeCommand = null;
         RewindCommand = null;
         FastForwardCommand = null;
+        ExploreSelectCommand = null;
 
         base.DisposeCore();
     }

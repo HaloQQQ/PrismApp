@@ -51,6 +51,7 @@
                             Width="250"
                             MaxLength="12"
                             MyAttachProperty.PlaceHolder="请输入用户名"
+                            Style="{StaticResource TextBox_PlaceHolderAsLable}"
                             TabIndex="1">
                             <TextBox.Text>
                                 <Binding
@@ -113,9 +114,9 @@
                 Clip="{StaticResource PopupGeometryGroup_Bright}"
                 Orientation="Horizontal">
                 <Slider
-                    Width="180"
                     Height="4"
-                    Margin="15,0,12,0"
+                    MinWidth="180"
+                    Margin="10,0"
                     Style="{StaticResource Slider_ObviousThumb}"
                     TickFrequency="5"
                     Value="{Binding CurrentBright, Delay=100}" />

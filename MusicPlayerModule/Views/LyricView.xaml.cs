@@ -1,4 +1,4 @@
-﻿using IceTea.Wpf.Atom.Extensions;
+using IceTea.Wpf.Atom.Extensions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -121,6 +121,11 @@ namespace MusicPlayerModule.Views
         /// <param name="e"></param>
         private void SwitchLyric(RoutedEventArgs e)
         {
+            if (this.LyricList.Items.Count == 0)
+            {
+                return;
+            }
+
             if (this.LyricList.Visibility == Visibility.Visible)
             {
                 this.LyricList.Visibility = Visibility.Collapsed;

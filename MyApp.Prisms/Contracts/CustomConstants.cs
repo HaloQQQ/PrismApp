@@ -1,10 +1,10 @@
-﻿using System.Windows;
+using System.Windows;
 using System;
 using System.Windows.Media;
 using IceTea.Pure.Extensions;
-using IceTea.Pure.Utils.HotKey.Global;
+using IceTea.Pure.Businesses.HotKey.Global;
 
-namespace MyApp.Prisms.Helper
+namespace MyApp.Prisms.Contracts
 {
     internal static class CustomConstants
     {
@@ -71,6 +71,13 @@ namespace MyApp.Prisms.Helper
             internal const string MusicLyricDesktop = "歌词桌面栏";
 
             internal const string ColorPicker = "颜色提取";
+
+            internal const string PCSleep = "电脑睡眠";
+
+            internal const string PCShutdown = "电脑关机";
+            internal const string PCRestart = "电脑重启";
+
+            internal const string ActiveWindow = "激活窗口";
         }
 
         internal class GlobalHotKeyInfo
@@ -104,7 +111,15 @@ namespace MyApp.Prisms.Helper
             new GlobalHotKeyInfo(GlobalHotKeysConst.UpScreenBright, CustomModifierKeys.Alt, CustomKeys.F3),
             new GlobalHotKeyInfo(GlobalHotKeysConst.DownScreenBright, CustomModifierKeys.Alt, CustomKeys.F2),
 
-            new GlobalHotKeyInfo(GlobalHotKeysConst.MusicLyricDesktop, CustomModifierKeys.Alt, CustomKeys.C)
+            new GlobalHotKeyInfo(GlobalHotKeysConst.MusicLyricDesktop, CustomModifierKeys.Alt, CustomKeys.C),
+
+            new GlobalHotKeyInfo(GlobalHotKeysConst.ColorPicker, CustomModifierKeys.Alt | CustomModifierKeys.Shift, CustomKeys.C),
+
+            new GlobalHotKeyInfo(GlobalHotKeysConst.PCSleep, CustomModifierKeys.Alt | CustomModifierKeys.Shift, CustomKeys.L),
+            new GlobalHotKeyInfo(GlobalHotKeysConst.PCShutdown, CustomModifierKeys.Alt | CustomModifierKeys.Shift, CustomKeys.S),
+            new GlobalHotKeyInfo(GlobalHotKeysConst.PCRestart, CustomModifierKeys.Alt | CustomModifierKeys.Shift, CustomKeys.R),
+
+            new GlobalHotKeyInfo(GlobalHotKeysConst.ActiveWindow, CustomModifierKeys.Alt | CustomModifierKeys.Shift, CustomKeys.O),
         };
     }
 }

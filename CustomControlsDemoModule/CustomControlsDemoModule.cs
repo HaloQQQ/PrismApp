@@ -1,10 +1,12 @@
-﻿using CustomControlsDemoModule.ViewModels;
+using CustomControlsDemoModule.ViewModels;
 using CustomControlsDemoModule.Views;
 using CustomControlsDemoModule.Views.Controls;
 using CustomControlsDemoModule.Views.Controls.Buttons;
 using CustomControlsDemoModule.Views.Controls.TextBoxes;
 using Prism.Ioc;
 using Prism.Modularity;
+using IceTea.Desktop.Businesses.GlobalEvent;
+using IceTea.Desktop.Contracts.MouseHook;
 
 namespace CustomControlsDemoModule
 {
@@ -23,14 +25,13 @@ namespace CustomControlsDemoModule
 
             containerRegistry.RegisterDialog<FiveChessView>("五子棋");
             containerRegistry.RegisterSingleton<FiveChessViewModel>();
-            
-            containerRegistry.RegisterDialog<ChineseChessView>("象棋");
-            containerRegistry.Register<ChineseChessViewModel>();
 
             containerRegistry.RegisterDialog<FetchBackColorView>();
             containerRegistry.RegisterDialogWindow<FetchBackColor>(nameof(FetchBackColor));
 
-            containerRegistry.RegisterSingleton<FetchBackColorViewModel>();
+            //containerRegistry.RegisterSingleton<FetchBackColorViewModel>();
+
+            containerRegistry.Register<IMouseHook, GlobalMouseHook>();
         }
 
         private void RegisterNavigation(IContainerRegistry containerRegistry)

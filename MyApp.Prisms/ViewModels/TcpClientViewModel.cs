@@ -1,7 +1,6 @@
-﻿using IceTea.Pure.Contracts;
+using IceTea.Pure.Businesses.Config;
 using IceTea.Pure.Extensions;
 using IceTea.SocketStandard.Tcp;
-using IceTea.SocketStandard.Tcp.Contracts;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 
 namespace MyApp.Prisms.ViewModels

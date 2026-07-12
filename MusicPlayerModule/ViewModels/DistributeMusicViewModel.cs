@@ -11,11 +11,11 @@ using IceTea.Pure.BaseModels;
 using IceTea.Pure.Utils;
 using IceTea.Pure.Extensions;
 using Prism.Events;
-using IceTea.Pure.Contracts;
 using Prism.Commands;
 using IceTea.Wpf.Atom.Utils;
 using IceTea.Wpf.Atom.Contracts.FileFilters;
 using System.Windows;
+using IceTea.Pure.Businesses.Setting;
 
 namespace MusicPlayerModule.ViewModels
 {

@@ -1,8 +1,9 @@
-﻿using IceTea.Pure.Contracts;
-using IceTea.Core.Utils.Mails;
-using MyApp.Prisms.ViewModels.BaseViewModels;
+﻿using MyApp.Prisms.ViewModels.BaseViewModels;
 using Prism.Events;
 using System;
+using IceTea.Pure.Businesses.Config;
+using IceTea.Pure.Businesses.Setting;
+using IceTea.Core.Businesses.Mail;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -10,7 +11,7 @@ namespace MyApp.Prisms.ViewModels
     {
         public SmtpQQMailViewModel(IEventAggregator eventAggregator, IConfigManager configManager, ISettingManager settingManager) : base(eventAggregator, configManager, settingManager)
         {
-            this.TargetFolders = Enum.GetNames<EnumQQMailOtherFolder>();
+            this.TargetFolders = Enum.GetNames(typeof(EnumQQMailOtherFolder));
         }
 
         public override string MailSuffix => "@qq.com";

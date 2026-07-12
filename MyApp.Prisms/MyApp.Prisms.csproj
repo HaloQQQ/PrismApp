@@ -7,38 +7,19 @@
     <UseWPF>true</UseWPF>
     <EnableWindowsTargeting>True</EnableWindowsTargeting>
     <ApplicationIcon>Resources\Penguin.ico</ApplicationIcon>
-    <Version></Version>
-    <AssemblyVersion>1.0.1.6</AssemblyVersion>
+    <LangVersion>latest</LangVersion>
+    <Version>1.0.1.6</Version>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Commands\**" />
-    <EmbeddedResource Remove="Commands\**" />
-    <None Remove="Commands\**" />
-    <Page Remove="Commands\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="appsettings.json" />
-    <None Remove="appsettings.yml" />
-    <None Remove="gaehyjm3.zuf~" />
-    <None Remove="Resources\apple.ico" />
-    <None Remove="Resources\网络.png" />
-    <None Remove="Resources\雪山祥云.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="appsettings.yml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="appsettings.yml" CopyToOutputDirectory="Always" />
+    <Content Include="appsettings.json" CopyToOutputDirectory="Always" />
     <Content Include="Resources\Penguin.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <PackageReference Include="IceTea.SocketStandard" Version="2.0.9" />
+    <PackageReference Include="IceTea.SocketStandard" Version="2.1.0" />
     <ProjectReference Include="..\CustomControlsDemoModule\CustomControlsDemoModule.csproj" />
     <ProjectReference Include="..\MusicPlayerModule\MusicPlayerModule.csproj" />
     <ProjectReference Include="..\SqlCreatorModule\SqlCreatorModule.csproj" />
@@ -46,5 +27,4 @@
     <Resource Include="Resources\网络.png" />
     <Resource Include="Resources\雪山祥云.png" />
   </ItemGroup>
-
 </Project>

@@ -1,19 +1,20 @@
-﻿using IceTea.Pure.Extensions;
+using IceTea.Pure.BaseModels;
+using IceTea.Pure.Contracts;
+using IceTea.Pure.Extensions;
 using IceTea.Pure.Utils;
 using IceTea.SqlStandard.Contracts;
-using IceTea.SqlStandard.DbModels;
+using IceTea.SqlStandard.Services;
+using IceTea.Wpf.Atom.Contracts.FileFilters;
+using IceTea.Wpf.Atom.Utils;
 using Prism.Commands;
 using Prism.Events;
-using SqlCreatorModule.Models;
-using System.Data;
-using System.Windows.Input;
-using IceTea.Wpf.Atom.Utils;
 using PrismAppBasicLib.Contracts;
+using SqlCreatorModule.Models;
 using System.Collections.ObjectModel;
-using IceTea.Wpf.Atom.Contracts.FileFilters;
-using IceTea.Pure.BaseModels;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Windows;
+using System.Windows.Input;
 
 namespace SqlCreatorModule.ViewModels
 {
@@ -148,7 +149,7 @@ namespace SqlCreatorModule.ViewModels
 
                     this.TableColumnsStructure.AssertNotEmpty(nameof(TableColumnsStructure));
 
-                    ModelHelper.BuildTheModelClassFromColumns(TableColumnsStructure.Select(column => new ModelHelper.ColumnProperty(CurrentTableName.ToPascal(), column.ColumnName, column.DataType)),
+                    ModelUtils.BuildTheModelClassFromColumns(TableColumnsStructure.Select(column => new ModelUtils.ColumnProperty(CurrentTableName.ToPascal(), column.ColumnName, column.DataType)),
                         this.CurrentTableName, $"{CurrentDbType}.{CurrentDbName}导出数据表{CurrentTableName}", ModelExportDir, "SqlCreatorModule.ExportModels");
 
                     CommonUtil.PublishMessage(eventAggregator, "导出成功");
@@ -343,13 +344,27 @@ namespace SqlCreatorModule.ViewModels
             }
         }
 
-
-        private string _port;
-
+        private ushort _port = 1433;
+        [RegularExpression(RegexConstants.PortPatternStr, ErrorMessage = "必须是端口格式")]
         public string Port
         {
-            get => this._port;
-            set => SetProperty<string>(ref _port, value);
+            get => _port.ToString();
+            set
+            {
+                var portStr = value;
+                if (_port.ToString() != portStr)
+                {
+                    if (ushort.TryParse(portStr, out var port))
+                    {
+                        _port = port;
+                    }
+                    else
+                    {
+                        RaisePropertyChanged();
+                        ValidateNotifyDataError();
+                    }
+                }
+            }
         }
 
         private string _uid;

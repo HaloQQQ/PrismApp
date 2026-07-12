@@ -1,4 +1,4 @@
-﻿using MusicPlayerModule.Models;
+using MusicPlayerModule.Models;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using MusicPlayerModule.ViewModels.Base;
@@ -7,10 +7,12 @@ using MusicPlayerModule.MsgEvents.Music;
 using PrismAppBasicLib.Models;
 using PrismAppBasicLib.Contracts;
 using Prism.Events;
-using IceTea.Pure.Contracts;
 using Prism.Commands;
-using IceTea.Wpf.Atom.Utils.HotKey.App;
+using IceTea.Wpf.Atom.Businesses.HotKey.App;
 using IceTea.Pure.Extensions;
+using IceTea.Pure.Businesses.Config;
+using IceTea.Pure.Businesses.Setting;
+using IceTea.Desktop.Contracts.KeyboardHook;
 
 namespace MusicPlayerModule.ViewModels;
 
@@ -202,8 +204,8 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
     public ICommand DownLoadCommand { get; private set; }
     #endregion
 
-    public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appCfgHotkeyManager, ISettingManager<SettingModel> settingManager)
-        : base(eventAggregator, config, appCfgHotkeyManager, settingManager)
+    public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appCfgHotkeyManager, ISettingManager<SettingModel> settingManager, IKeyboardHook keyboardHook)
+        : base(eventAggregator, config, appCfgHotkeyManager, settingManager, keyboardHook)
     {
         this.DistributeMusicViewModel = new DistributeMusicViewModel(eventAggregator, settingManager);
 
@@ -350,12 +352,8 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
 
         this.DownLoadCommand = new DelegateCommand<MusicModel>(music => { }, _ => false);
     }
-    #endregion
 
-    ~MusicPlayerViewModel()
-    {
-        this.Dispose();
-    }
+    #endregion
 
     protected override void DisposeCore()
     {

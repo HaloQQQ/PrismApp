@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Controls;
 using System.Windows.Input;
 using MyApp.Prisms.Helper;
@@ -6,9 +6,9 @@ using MyApp.Prisms.ViewModels;
 using IceTea.Wpf.Atom.Contracts;
 using System.ComponentModel;
 using MyApp.Prisms.ViewModels.BaseViewModels;
-using IceTea.SocketStandard.Udp.Contracts;
 using PrismAppBasicLib.Contracts;
 using IceTea.Pure.Extensions;
+using IceTea.SocketStandard.Udp;
 
 namespace MyApp.Prisms.Views
 {

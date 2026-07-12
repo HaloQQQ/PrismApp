@@ -10,6 +10,8 @@
     Background="Transparent"
     Cursor="SizeAll"
     MyAttachProperty.CornerRadius="10"
+    MyAttachProperty.EnableEnterFadeInAnimation="True"
+    MyAttachProperty.EnableEnterScaleAnimation="False"
     MyAttachProperty.UseWindowCommand="False"
     MyAttachProperty.WindowStartupLocation="Manual"
     ResizeMode="NoResize"

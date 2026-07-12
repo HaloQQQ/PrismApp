@@ -1,18 +1,20 @@
-﻿using MusicPlayerModule.Models;
+using MusicPlayerModule.Models;
 using MusicPlayerModule.MsgEvents.Video;
 using MusicPlayerModule.MsgEvents.Video.Dtos;
 using Prism.Events;
 using System.Windows.Media;
 using Microsoft.Win32;
 using IceTea.Pure.Extensions;
-using IceTea.Pure.Contracts;
 using IceTea.Wpf.Atom.Utils;
 using MusicPlayerModule.ViewModels.Base;
 using MusicPlayerModule.Contracts;
 using PrismAppBasicLib.Models;
 using IceTea.Wpf.Atom.Contracts.FileFilters;
-using IceTea.Wpf.Atom.Utils.HotKey.App;
+using IceTea.Wpf.Atom.Businesses.HotKey.App;
 using System.Windows;
+using IceTea.Pure.Businesses.Config;
+using IceTea.Pure.Businesses.Setting;
+using IceTea.Desktop.Contracts.KeyboardHook;
 
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
 namespace MusicPlayerModule.ViewModels;
@@ -110,8 +112,8 @@ internal class VideoPlayerViewModel : MediaPlayerViewModel
 
     private VideoModelAndGuid _dto;
 
-    public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appCfgHotkeyManager, ISettingManager<SettingModel> settingMnager)
-        : base(eventAggregator, config, appCfgHotkeyManager, settingMnager)
+    public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appCfgHotkeyManager, ISettingManager<SettingModel> settingMnager, IKeyboardHook keyboardHook)
+        : base(eventAggregator, config, appCfgHotkeyManager, settingMnager, keyboardHook)
     {
         this._dto = new VideoModelAndGuid(this.Identity);
     }
@@ -219,6 +221,7 @@ internal class VideoPlayerViewModel : MediaPlayerViewModel
 
         this.RefreshMediaOperation(OperationType.FastForward);
     }
+
     #endregion
 
     protected override void DisposeCore()

@@ -2,17 +2,19 @@
 using CustomControlsDemoModule.Views.Controls;
 using CustomControlsDemoModule.Views.Controls.Buttons;
 using CustomControlsDemoModule.Views.Controls.TextBoxes;
+using IceTea.Pure.BaseModels;
+using IceTea.Pure.Contracts;
 using IceTea.Pure.Extensions;
 using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Regions;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Windows.Input;
 
 namespace CustomControlsDemoModule.ViewModels.Controls
 {
-    internal class ControlsDemoViewModel : BindableBase
+    internal class ControlsDemoViewModel : ValidationBase
     {
         public ControlsDemoViewModel(IRegionManager regionManager)
         {
@@ -111,6 +113,38 @@ namespace CustomControlsDemoModule.ViewModels.Controls
                 }
             });
         }
+
+
+        private string _number;
+        [RegularExpression(RegexConstants.PositiveIntPatternStr, ErrorMessage = "必须为正整数")]
+        public string Number
+        {
+            get => _number;
+            set
+            {
+                if (SetProperty<string>(ref _number, value))
+                {
+                    ValidateNotifyDataError();
+                }
+            }
+        }
+
+
+        private string _english;
+        [RegularExpression(RegexConstants.EnglishWordPatternStr, ErrorMessage = "必须为全英文")]
+        public string English
+        {
+            get => _english;
+            set
+            {
+                if (SetProperty<string>(ref _english, value))
+                {
+                    ValidateNotifyDataError();
+                }
+            }
+        }
+
+
 
         public IEnumerable<DataItem> Datas { get; private set; }
 

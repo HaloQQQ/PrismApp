@@ -108,7 +108,6 @@
                         MinWidth="110"
                         IsEnabled="{Binding Socket.IsConnected, Converter={StaticResource OppositeBoolConverter}}"
                         MaxLength="5"
-                        MyAttachProperty.InputRegex="{x:Static regex:RegexConstants.DigitPattern}"
                         Style="{StaticResource TextBox_HideButton}"
                         Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" />
 

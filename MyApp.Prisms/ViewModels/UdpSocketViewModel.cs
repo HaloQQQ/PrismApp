@@ -1,11 +1,12 @@
-﻿using IceTea.SocketStandard.Udp;
-using MyApp.Prisms.ViewModels.BaseViewModels;
 using IceTea.Pure.Contracts;
+using IceTea.Pure.Businesses.Config;
 using IceTea.Pure.Extensions;
+using IceTea.SocketStandard.Udp;
+using MyApp.Prisms.ViewModels.BaseViewModels;
 using Prism.Events;
 using Prism.Ioc;
-using IceTea.SocketStandard.Udp.Contracts;
 using PrismAppBasicLib.Contracts;
+using System.ComponentModel.DataAnnotations;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -15,6 +16,10 @@ namespace MyApp.Prisms.ViewModels
         public UdpSocketViewModel(IConfigManager config) : base(config, "UDP客户端")
         {
             this.RemoteIp = AppStatics.Ip.ToString();
+
+            this.ConnectCommand
+                .ObservesProperty(() => this.RemoteIp)
+                .ObservesProperty(() => this.RemotePort);
         }
 
         private IUdpSocket _udpSocket;
@@ -36,7 +41,7 @@ namespace MyApp.Prisms.ViewModels
 
             this.Socket.ReceivedMessage += (from, to, bytes) =>
             {
-                string[] arr = from.ToString()!.Split(":");
+                string[] arr = from.ToString()!.Split(':');
                 this.RemoteIp = arr[0];
                 this.RemotePort = arr[1];
             };
@@ -45,19 +50,40 @@ namespace MyApp.Prisms.ViewModels
         }
 
         private string _remoteIp;
-
+        [RegularExpression(RegexConstants.IPv4PatternStr, ErrorMessage = "必须是IP格式")]
         public string RemoteIp
         {
             get => _remoteIp;
-            set => SetProperty(ref _remoteIp, value);
+            set
+            {
+                if (SetProperty<string>(ref _remoteIp, value))
+                {
+                    ValidateNotifyDataError();
+                }
+            }
         }
 
-        private string _remotePort = "50001";
-
+        private int _remotePort = 50001;
+        [RegularExpression(RegexConstants.PortPatternStr, ErrorMessage = "必须是端口格式")]
         public string RemotePort
         {
-            get => _remotePort;
-            set => SetProperty(ref _remotePort, value);
+            get => _remotePort.ToString();
+            set
+            {
+                var portStr = value;
+                if (_remotePort.ToString() != portStr)
+                {
+                    if (ushort.TryParse(portStr, out var port))
+                    {
+                        _remotePort = port;
+                    }
+                    else
+                    {
+                        RaisePropertyChanged();
+                        ValidateNotifyDataError();
+                    }
+                }
+            }
         }
 
         private bool _unreachableDisconnect;

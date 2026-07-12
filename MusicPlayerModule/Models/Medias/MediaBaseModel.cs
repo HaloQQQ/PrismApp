@@ -1,7 +1,8 @@
-﻿using IceTea.Pure.BaseModels;
+using IceTea.Pure.BaseModels;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.Utils;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace MusicPlayerModule.Models;
 
@@ -12,7 +13,7 @@ internal class MediaBaseModel : NotifyBase
     {
         FilePath = filePath.AssertNotNull(nameof(filePath));
 
-        var arr = FilePath.GetFileNameWithoutExtension().Split(" - ");
+        var arr = Regex.Split(FilePath.GetFileNameWithoutExtension(), " - ");
 
         if (arr.Length > 1)
         {

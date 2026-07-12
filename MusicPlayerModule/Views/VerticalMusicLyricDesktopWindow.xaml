@@ -12,6 +12,8 @@
     Background="Transparent"
     Cursor="SizeAll"
     MyAttachProperty.CornerRadius="10"
+    MyAttachProperty.EnableEnterFadeInAnimation="True"
+    MyAttachProperty.EnableEnterScaleAnimation="False"
     MyAttachProperty.UseWindowCommand="False"
     MyAttachProperty.WindowStartupLocation="Manual"
     ResizeMode="NoResize"
@@ -163,7 +165,7 @@
                 Orientation="Vertical">
                 <TextBlock
                     Width="{Binding FontSize, RelativeSource={RelativeSource Self}}"
-                    MaxHeight="180"
+                    MaxHeight="200"
                     Margin="10"
                     FontSize="18"
                     Foreground="#EBEBEB"
@@ -172,7 +174,7 @@
                     Visibility="{Binding CurrentMedia.Music.IsEnglishTitle, Converter={StaticResource BoolToCollapsedVisibleConverter}}" />
 
                 <TextBlock
-                    MaxWidth="180"
+                    MaxWidth="200"
                     Margin="10"
                     FontSize="18"
                     Foreground="#EBEBEB"

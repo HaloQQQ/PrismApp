@@ -1,39 +1,37 @@
-﻿using Prism.DryIoc;
+using IceTea.Desktop.Contracts.KeyboardHook;
+using IceTea.Pure.Businesses.Config;
+using IceTea.Pure.Businesses.HotKey.Global;
+using IceTea.Pure.Businesses.Setting;
+using IceTea.Pure.Contracts;
+using IceTea.Pure.Extensions;
+using IceTea.Pure.Utils;
+using IceTea.Wpf.Atom.Businesses.Config;
+using IceTea.Wpf.Atom.Businesses.HotKey.App;
+using IceTea.Wpf.Atom.Businesses.HotKey.Global;
+using IceTea.Wpf.Atom.Extensions;
+using IceTea.Wpf.Atom.Utils;
+using MusicPlayerModule.Hooks;
+using MusicPlayerModule.Views;
+using MyApp.Prisms.Contracts;
+using MyApp.Prisms.Handlers;
+using MyApp.Prisms.ViewModels;
+using MyApp.Prisms.Views;
+using Prism.DryIoc;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
-using System.Diagnostics;
-using System.Windows;
-using MyApp.Prisms.Helper;
-using MyApp.Prisms.MsgEvents;
-using MyApp.Prisms.ViewModels;
-using MyApp.Prisms.Views;
-using IceTea.Pure.Utils;
-using IceTea.Pure.Contracts;
 using Prism.Regions;
-using MusicPlayerModule.MsgEvents;
-using MusicPlayerModule.Views;
-using IceTea.Pure.Utils.HotKey.Global;
-using System.Linq;
-using IceTea.Wpf.Atom.Utils.HotKey;
-using IceTea.Wpf.Atom.Utils.HotKey.App;
-using IceTea.Pure.Extensions;
-using MusicPlayerModule.MsgEvents.Music;
-using PrismAppBasicLib.Models;
-using CustomControlsDemoModule.Events;
 using PrismAppBasicLib.Contracts;
-using IceTea.Wpf.Atom.Utils.Configs;
-using IceTea.Wpf.Atom.Utils;
+using PrismAppBasicLib.Models;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows;
 
+#pragma warning disable CS8600 // 将 null 字面量或可能为 null 的值转换为非 null 类型。
+#pragma warning disable CS8602 // 解引用可能出现空引用。
 namespace MyApp.Prisms
 {
-#pragma warning disable CS8600 // 将 null 字面量或可能为 null 的值转换为非 null 类型。
-#pragma warning disable CS8604 // 引用类型参数可能为 null。
-#pragma warning disable CA1416 // 验证平台兼容性
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : PrismApplication
     {
         protected override void OnExit(ExitEventArgs e)
@@ -45,6 +43,8 @@ namespace MyApp.Prisms
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<IKeyboardHook, MediaGlobalKeyboardHook>();
+
             containerRegistry.RegisterSingleton<IConfigManager, WpfYamlConfigManager>();
 
             var config = this.Container.Resolve<IConfigManager>();
@@ -67,6 +67,18 @@ namespace MyApp.Prisms
 
             containerRegistry.RegisterSingleton<ISettingManager, SettingManager>();
             containerRegistry.RegisterSingleton<ISettingManager<SettingModel>, SettingManager<SettingModel>>();
+
+            containerRegistry.RegisterSingleton<IGlobalConfigFileHotKeyManager>(() =>
+                new GlobalConfigFileHotKeyManager(
+                    () => Application.Current.MainWindow.GetHandle(),
+                    this.Container.Resolve<IConfigManager>()
+                ));
+
+            containerRegistry.RegisterSingleton<GloablHotKeyHandlerBase>(() => new GloablHotKeyHandler(
+                    this.Container.Resolve<IEventAggregator>(),
+                    this.Container.Resolve<IGlobalConfigFileHotKeyManager>(),
+                    Application.Current.MainWindow
+                ));
 
             containerRegistry.RegisterSingleton<ImageDisplayViewModel>();
             containerRegistry.RegisterSingleton<SoftwareViewModel>();
@@ -155,80 +167,18 @@ namespace MyApp.Prisms
 
         private void RegisterGloablHotKey()
         {
-            IGlobalConfigFileHotKeyManager globalConfigFileHotKeyManager = null;
-
-            globalConfigFileHotKeyManager = new GlobalConfigFileHotKeyManager(App.Current.MainWindow.RegisterHotKeyManager(mid =>
-            {
-#pragma warning disable CS8602 // 解引用可能出现空引用。
-                foreach (var group in globalConfigFileHotKeyManager.Values)
-                {
-                    foreach (var item in group)
-                    {
-                        if (item is GlobalHotKey hotKey && hotKey.Code == mid)
-                        {
-                            var eventAggerator = this.Container.Resolve<IEventAggregator>();
-                            switch (item.Name)
-                            {
-                                case CustomConstants.GlobalHotKeysConst.TogglePlay:
-                                    eventAggerator.GetEvent<ToggeleCurrentMediaEvent>().Publish();
-                                    break;
-                                case CustomConstants.GlobalHotKeysConst.Prev:
-                                    eventAggerator.GetEvent<PrevMediaEvent>().Publish();
-                                    break;
-                                case CustomConstants.GlobalHotKeysConst.Next:
-                                    eventAggerator.GetEvent<NextMediaEvent>().Publish();
-                                    break;
-
-                                case CustomConstants.GlobalHotKeysConst.FastForward:
-                                    eventAggerator.GetEvent<FastForwardMediaEvent>().Publish();
-                                    break;
-                                case CustomConstants.GlobalHotKeysConst.Rewind:
-                                    eventAggerator.GetEvent<RewindMediaEvent>().Publish();
-                                    break;
-
-                                case CustomConstants.GlobalHotKeysConst.IncreaseVolume:
-                                    eventAggerator.GetEvent<IncreaseVolumeEvent>().Publish();
-                                    break;
-                                case CustomConstants.GlobalHotKeysConst.DecreaseVolume:
-                                    eventAggerator.GetEvent<DecreaseVolumeEvent>().Publish();
-                                    break;
-
-                                case CustomConstants.GlobalHotKeysConst.UpScreenBright:
-                                    eventAggerator.GetEvent<UpdateScreenBrightEvent>().Publish(5);
-                                    break;
-                                case CustomConstants.GlobalHotKeysConst.DownScreenBright:
-                                    eventAggerator.GetEvent<UpdateScreenBrightEvent>().Publish(-5);
-                                    break;
-                                case CustomConstants.GlobalHotKeysConst.MusicLyricDesktop:
-                                    eventAggerator.GetEvent<ToggleDesktopLyricEvent>().Publish();
-                                    break;
-
-                                case CustomConstants.GlobalHotKeysConst.ColorPicker:
-                                    eventAggerator.GetEvent<ColorPickerEvent>().Publish();
-                                    break;
-                            }
-                        }
-                    }
-                }
-#pragma warning restore CS8602 // 解引用可能出现空引用。
-            }), this.Container.Resolve<IConfigManager>());
-
-            ContainerLocator.Current.RegisterSingleton<IGlobalConfigFileHotKeyManager>(() => globalConfigFileHotKeyManager);
-
-            this.Container.Resolve<SettingsViewModel>().GlobaConfigFilelHotKeyManager = globalConfigFileHotKeyManager;
+            IGlobalConfigFileHotKeyManager globaConfigFilelHotKeyManager = Container.Resolve<IGlobalConfigFileHotKeyManager>();
 
             var systemGroupName = "系统";
-            globalConfigFileHotKeyManager.TryRegister(systemGroupName, CustomConstants.ConfigGlobalHotkeys);
+            globaConfigFilelHotKeyManager.TryRegister(systemGroupName, CustomConstants.ConfigGlobalHotkeys);
 
-            var globalGroup = globalConfigFileHotKeyManager[systemGroupName];
+            var globalGroup = globaConfigFilelHotKeyManager[systemGroupName];
             foreach (var item in CustomConstants.GlobalHotKeys)
             {
                 globalGroup.TryRegister(item.Name, item.CustomKeys, item.CustomModifierKeys, item.IsUsable);
             }
 
-            globalGroup.TryRegister(CustomConstants.GlobalHotKeysConst.ColorPicker, CustomKeys.C, CustomModifierKeys.Alt | CustomModifierKeys.Shift, true);
-
-            var failedKeys = globalGroup.Where(i => i.HasChanged).Select(i => i.ToString());
+            var failedKeys = globalGroup.Values.Where(i => i.HasChanged).Select(i => i.ToString());
 
             if (failedKeys.Any())
             {

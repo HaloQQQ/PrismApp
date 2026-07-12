@@ -1,13 +1,11 @@
-﻿using Prism.Commands;
+using Prism.Commands;
 using Prism.Events;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using MyApp.Prisms.Helper;
 using IceTea.Pure.Utils;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.Contracts;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Linq;
 using System.Windows;
 using System;
@@ -18,11 +16,14 @@ using PrismAppBasicLib.Models;
 using CustomControlsDemoModule.Views;
 using CustomControlsDemoModule.Events;
 using PrismAppBasicLib.Contracts;
-using IceTea.Wpf.Atom.Utils;
 using Prism.Ioc;
 using MyApp.Prisms.MsgEvents;
-using IceTea.Pure.Utils.HotKey.Global;
-using IceTea.Wpf.Atom.Utils.HotKey.App;
+using IceTea.Wpf.Atom.Businesses.HotKey.App;
+using IceTea.Pure.Businesses.Config;
+using IceTea.Pure.Businesses.Setting;
+using IceTea.Pure.Businesses.HotKey.Global;
+using MyApp.Prisms.Contracts;
+using IceTea.Atom.Utils;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -34,11 +35,13 @@ namespace MyApp.Prisms.ViewModels
                 ISettingManager settingManager,
                 ISettingManager<SettingModel> settingModels,
                 IAppConfigFileHotKeyManager appCfgHotkeyManager,
+                IGlobalConfigFileHotKeyManager globalCfgHotkeyManager,
                 IEventAggregator eventAggregator,
                 IDialogService dialogService
             )
         {
             this.AppConfigFileHotKeyManager = appCfgHotkeyManager.AssertNotNull(nameof(IAppConfigFileHotKeyManager));
+            this.GlobaConfigFilelHotKeyManager = globalCfgHotkeyManager.AssertArgumentNotNull(nameof(IGlobalConfigFileHotKeyManager));
 
             this.SettingModels = settingModels.AssertNotNull(nameof(ISettingManager<SettingModel>));
 
@@ -53,12 +56,7 @@ namespace MyApp.Prisms.ViewModels
 
         public IAppConfigFileHotKeyManager AppConfigFileHotKeyManager { get; }
 
-        private IGlobalConfigFileHotKeyManager _globalConfigFileHotKeyManager;
-        public IGlobalConfigFileHotKeyManager GlobaConfigFilelHotKeyManager
-        {
-            get => _globalConfigFileHotKeyManager;
-            internal set => SetProperty(ref _globalConfigFileHotKeyManager, value);
-        }
+        public IGlobalConfigFileHotKeyManager GlobaConfigFilelHotKeyManager { get; }
 
         private void InitCommands(IEventAggregator eventAggregator, ISettingManager settingManager, IConfigManager configManager, IDialogService dialogService)
         {
@@ -75,7 +73,7 @@ namespace MyApp.Prisms.ViewModels
 
             this.AddMailAccountCommand = new DelegateCommand(() =>
             {
-                if (!Regex.IsMatch(this.CurrentMailPair.Key, RegexConstants.EmailPattern))
+                if (!RegexConstants.EmailPattern.IsMatch(this.CurrentMailPair.Key))
                 {
                     CommonUtil.PublishMessage(eventAggregator, "要添加的邮箱不符合邮箱规则");
                     return;
@@ -148,9 +146,21 @@ namespace MyApp.Prisms.ViewModels
                 }
             }
 
-            this.RestartComputerCommand = new DelegateCommand(() => AppUtils.RestartPC());
+            this.RestartComputerCommand = new DelegateCommand(() =>
+            {
+                AppUtils.RestartPC(1);
 
-            this.ShutdownComputerCommand = new DelegateCommand(() => AppUtils.ShutdownPC());
+                Application.Current.MainWindow.Close();
+            });
+
+            this.ShutdownComputerCommand = new DelegateCommand(() =>
+            {
+                AppUtils.ShutdownPC(1);
+
+                Application.Current.MainWindow.Close();
+            });
+
+            this.ComputerSleepCommand = new DelegateCommand(() => AppUtils.SleepPC());
         }
 
         #region Emails
@@ -198,6 +208,8 @@ namespace MyApp.Prisms.ViewModels
         public ICommand RestartComputerCommand { get; private set; }
 
         public ICommand ShutdownComputerCommand { get; private set; }
+
+        public ICommand ComputerSleepCommand { get; private set; }
 
         /// <summary>
         /// 还原未提交的修改
@@ -258,7 +270,7 @@ namespace MyApp.Prisms.ViewModels
             {
                 if (SetProperty<bool>(ref _isLightSysTheme, value))
                 {
-                    if (WpfAtomUtils.SwitchSysTheme(_isLightSysTheme))
+                    if (RegistryUtils.SwitchLightTheme(_isLightSysTheme))
                     {
                         ContainerLocator.Current.Resolve<IEventAggregator>()
                             .GetEvent<SwitchThemeEvent>().Publish(_isLightSysTheme);

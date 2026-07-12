@@ -44,7 +44,6 @@
                     <TextBox
                         IsEnabled="{Binding Socket.IsConnected, Converter={StaticResource OppositeBoolConverter}}"
                         MaxLength="5"
-                        MyAttachProperty.InputRegex="{x:Static regex:RegexConstants.DigitPattern}"
                         Style="{StaticResource TextBox_HideButton}"
                         Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -55,7 +54,6 @@
                     <TextBox
                         IsEnabled="{Binding Socket.IsConnected, Converter={StaticResource OppositeBoolConverter}}"
                         MaxLength="5"
-                        MyAttachProperty.InputRegex="{x:Static regex:RegexConstants.DigitPattern}"
                         Style="{StaticResource TextBox_HideButton}"
                         Text="{Binding RemotePort, UpdateSourceTrigger=PropertyChanged}" />
 

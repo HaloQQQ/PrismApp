@@ -1,4 +1,4 @@
-﻿using IceTea.Pure.BaseModels;
+using IceTea.Pure.BaseModels;
 using IceTea.Pure.Contracts;
 using IceTea.Pure.Utils;
 using IceTea.Wpf.Atom.Utils;
@@ -8,19 +8,17 @@ using IceTea.Pure.Extensions;
 using Prism.Events;
 using PrismAppBasicLib.Contracts;
 using System.Collections.Generic;
-using System.ServiceProcess;
-using System.Linq;
-using System.Collections.ObjectModel;
 using System;
 using IceTea.Wpf.Atom.Contracts.FileFilters;
 using CustomControlsDemoModule.Models;
-using System.Windows.Media.Imaging;
-using System.Drawing;
 using IceTea.Desktop.Extensions;
 using System.Threading.Tasks;
-using IceTea.Core.Extensions;
-using static IceTea.Core.Extensions.ImageCoreExtensions;
-using IceTea.Core.Utils.OS;
+using System.Linq;
+using System.Windows.Media.Imaging;
+using System.Drawing;
+using System.Collections.ObjectModel;
+using System.ServiceProcess;
+using IceTea.Wpf.Atom.Extensions;
 
 namespace CustomControlsDemoModule.ViewModels
 {
@@ -82,7 +80,7 @@ namespace CustomControlsDemoModule.ViewModels
                 return time;
             }
 
-            this.CancelShutdownComputerCommand = new DelegateCommand(() => AppUtils.CancalShutdownPC());
+            this.CancelShutdownComputerCommand = new DelegateCommand(() => AppUtils.CancelShutdownPC());
 
             this.SelectFileCommand = new DelegateCommand(() =>
             {
@@ -109,7 +107,7 @@ namespace CustomControlsDemoModule.ViewModels
             {
                 this._services.Clear();
 
-                this._services.AddIfItemsNotWhileOrNotContains(ServiceUtil.GetAllNormalServiceList().Select(p => p.Value));
+                this._services.AddIfItemsNotWhileOrNotContains(ServiceController.GetDevices());
 
                 this.Services.Clear();
 
@@ -184,34 +182,30 @@ namespace CustomControlsDemoModule.ViewModels
 
                 var taskA = Task.Run(() =>
                 {
-                    WpfAtomUtils.BeginInvoke(() =>
+                    var i = new Bitmap(filePath);
+                    var waterMarkSource = i.AddWaterMark(new PointF(20, 30), "Are you Ok?", null, null).GetImageSource();
+                    this.Pictures.Add(new Picture("水印", filePath, waterMarkSource));
+
+                    var relativeVerticalSource = ImageExtensions.ArrangeImages(new ImageExtensions.ImageLocation[]
                     {
-                        var i = new Bitmap(filePath);
-                        var waterMarkSource = ImageCoreExtensions.AddWaterMark(i, new PointF(20, 30), "Are you Ok?", null, null).GetImageSource();
-                        this.Pictures.Add(new Picture("水印", filePath, waterMarkSource));
+                            new ImageExtensions.ImageLocation(i),
+                            new ImageExtensions.ImageLocation(i)
+                    }, ImageExtensions.ImageAlignment.Relative_Vertical).GetImageSource();
+                    this.Pictures.Add(new Picture("垂直排列", filePath, relativeVerticalSource));
 
-                        var relativeVerticalSource = ImageCoreExtensions.ArrangeImages(new ImageLocation[]
-                        {
-                            new ImageLocation(i),
-                            new ImageLocation(i)
-                        }, ImageAlignment.Relative_Vertical).GetImageSource();
-                        this.Pictures.Add(new Picture("垂直排列", filePath, relativeVerticalSource));
+                    var relativeHorizontalSource = ImageExtensions.ArrangeImages(new ImageExtensions.ImageLocation[]
+                    {
+                            new ImageExtensions.ImageLocation(i),
+                            new ImageExtensions.ImageLocation(i)
+                    }, ImageExtensions.ImageAlignment.Relative_Horizontal).GetImageSource();
+                    this.Pictures.Add(new Picture("水平排列", filePath, relativeHorizontalSource));
 
-                        var relativeHorizontalSource = ImageCoreExtensions.ArrangeImages(new ImageLocation[]
-                        {
-                            new ImageLocation(i),
-                            new ImageLocation(i)
-                        }, ImageAlignment.Relative_Horizontal).GetImageSource();
-                        this.Pictures.Add(new Picture("水平排列", filePath, relativeHorizontalSource));
-
-                        var absoluteSource = ImageCoreExtensions.ArrangeImages(new ImageLocation[]
-                        {
-                            new ImageLocation(i),
-                            new ImageLocation(i, new PointF(50,50))
-                        }, ImageAlignment.Absolute).GetImageSource();
-                        this.Pictures.Add(new Picture("堆叠", filePath, absoluteSource));
-                    });
-
+                    var absoluteSource = ImageExtensions.ArrangeImages(new ImageExtensions.ImageLocation[]
+                    {
+                            new ImageExtensions.ImageLocation(i),
+                            new ImageExtensions.ImageLocation(i, new PointF(50,50))
+                    }, ImageExtensions.ImageAlignment.Absolute).GetImageSource();
+                    this.Pictures.Add(new Picture("堆叠", filePath, absoluteSource));
                 });
                 list.Add(taskA);
 
@@ -248,7 +242,7 @@ namespace CustomControlsDemoModule.ViewModels
 
                         i = new Bitmap(filePath);
                         var filterSource = i.Filter().GetImageSource();
-                        this.Pictures.Add(new Picture("滤色处理", filePath, resizeSource));
+                        this.Pictures.Add(new Picture("滤色处理", filePath, filterSource));
 
                         i = new Bitmap(filePath);
                         var flipHorizontalSource = i.FlipHorizontal().GetImageSource();
@@ -266,7 +260,7 @@ namespace CustomControlsDemoModule.ViewModels
                     WpfAtomUtils.BeginInvoke(() =>
                     {
                         var i = new Bitmap(filePath);
-                        var compressSource = i.Compress(300, 300).GetImageSource();
+                        var compressSource = i.Resize(300, 300).GetImageSource();
                         this.Pictures.Add(new Picture("压缩处理", filePath, compressSource));
 
                         i = new Bitmap(filePath);

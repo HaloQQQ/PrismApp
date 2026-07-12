@@ -1,4 +1,4 @@
-﻿using IceTea.Pure.Contracts;
+using IceTea.Pure.Businesses.Config;
 using IceTea.Pure.Extensions;
 using MusicPlayerModule.Contracts;
 using MusicPlayerModule.Converters;
@@ -27,7 +27,7 @@ namespace MusicPlayerModule.Views
             var pointStr = configManager.ReadConfigNode<string>(CustomStatics.Horizontal_DesktopLyric_WindowLeftTop_ConfigKey);
             if (!pointStr.IsNullOrBlank())
             {
-                var arr = pointStr.Split(",");
+                var arr = pointStr.Split(',');
                 this.Left = double.Parse(arr[0]);
                 this.Top = double.Parse(arr[1]);
             }

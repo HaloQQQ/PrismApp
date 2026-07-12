@@ -1,20 +1,15 @@
-﻿using Prism.Commands;
+using Prism.Commands;
 using Prism.Events;
 using System;
 using System.Drawing;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using MyApp.Prisms.Helper;
 using MyApp.Prisms.MsgEvents;
 using IceTea.Pure.Utils;
 using IceTea.Pure.Extensions;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using IceTea.Pure.Contracts;
-using IceTea.Pure.Utils.Events;
-using IceTea.Desktop.Utils;
 using IceTea.Wpf.Atom.Contracts.MyEvents;
 using IceTea.Pure.BaseModels;
 using Prism.Regions;
@@ -27,15 +22,25 @@ using System.Windows.Media.Imaging;
 using IceTea.Desktop.Extensions;
 using PrismAppBasicLib.Contracts;
 using IceTea.Wpf.Core.Utils;
-using IceTea.Core.Utils.OS;
-using IceTea.Core.Utils.QRCodes;
-using IceTea.Wpf.Atom.Utils.HotKey.App;
+using IceTea.Core.Businesses.QRCode;
+using IceTea.Wpf.Atom.Businesses.HotKey.App;
+using IceTea.Wpf.Core.Interactions;
+using IceTea.Pure.Businesses.Config;
+using IceTea.Pure.Businesses.HotKey;
+using IceTea.Pure.Businesses.Event;
+using IceTea.Desktop.Businesses.QRCodes;
+using IceTea.Desktop.Businesses.Bright;
+using IceTea.Desktop.Utils;
+using MyApp.Prisms.Contracts;
+using IceTea.Wpf.Atom.Businesses.HotKey.Global;
+using IceTea.Wpf.Atom.Extensions;
 
-namespace MyApp.Prisms.ViewModels
-{
+#pragma warning disable CS8603 // 可能返回 null 引用。
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
-    internal class SoftwareViewModel : NotifyBase, IDisposable
+namespace MyApp.Prisms.ViewModels
+{
+    internal class SoftwareViewModel : NotifyBase, IDialogMessage, IDisposable
     {
         public SoftwareViewModel(
                 UserViewModel userContext,
@@ -44,13 +49,16 @@ namespace MyApp.Prisms.ViewModels
                 IConfigManager config,
                 IAppConfigFileHotKeyManager appCfgHotkeyManager,
                 IEventAggregator eventAggregator,
-                IRegionManager regionManager
+                IRegionManager regionManager,
+                GloablHotKeyHandlerBase gloablHotKeyHandler
             )
         {
             this.UserContext = userContext.AssertNotNull(nameof(UserContext));
             this.Settings = settings.AssertNotNull(nameof(SettingsViewModel));
             this._imageDisplayViewModel = imageDisplayViewModel.AssertNotNull(nameof(ImageDisplayViewModel));
-            this.AppConfigFileHotKeyManager = appCfgHotkeyManager.AssertNotNull(nameof(IAppConfigFileHotKeyManager));
+
+            this._gloablHotKeyHandler = gloablHotKeyHandler.AssertNotNull(nameof(GloablHotKeyHandlerBase));
+
 
             this.InitQRCodeImage();
 
@@ -130,9 +138,6 @@ namespace MyApp.Prisms.ViewModels
 
         public ICommand SwitchThemeCommand { get; }
 
-        public IAppConfigFileHotKeyManager AppConfigFileHotKeyManager { get; }
-
-
         private void LoadConfig(IConfigManager config)
         {
             this.OnlyOneProcess = config.IsTrue(CustomConstants.ONLY_ONE_PROCESS.FillToArray());
@@ -163,6 +168,7 @@ namespace MyApp.Prisms.ViewModels
                 config.WriteConfigNode(this.IsVideoPlayer, CustomConstants.IsVideoPlayer.FillToArray());
 
                 AppUtils.AutoStartWithShortcut(this.AutoStart);
+                //_ = AppDesktopUtils.AutoStartWithRegistryKeyAsync(this.AutoStart);
             };
         }
 
@@ -213,22 +219,22 @@ namespace MyApp.Prisms.ViewModels
         #endregion
 
         #region 周边信息
-        public string Version => AppStatics.AssemblyVersion;
+        public string Version => AppStatics.AssemblyVersion?.ToString();
 
-        private double _cpuRate;
+        private decimal _cpuRate;
 
-        public double CpuRate
+        public decimal CpuRate
         {
             get => this._cpuRate;
-            private set => SetProperty<double>(ref _cpuRate, value);
+            private set => SetProperty<decimal>(ref _cpuRate, value);
         }
 
-        private double _ramRate;
+        private decimal _ramRate;
 
-        public double RamRate
+        public decimal RamRate
         {
             get => this._ramRate;
-            private set => SetProperty<double>(ref _ramRate, value);
+            private set => SetProperty<decimal>(ref _ramRate, value);
         }
 
         private string _title = string.Empty;
@@ -256,9 +262,9 @@ namespace MyApp.Prisms.ViewModels
         public BitmapImage ImageSource { get; private set; }
         private void InitQRCodeImage()
         {
-            var bitmap = new QRCoderCreator().GenerateQRCodeImage(new QRModel("Hello3Q", Color.GreenYellow, Color.White, 20));
+            var data = new QRCoderCreator().GenerateQRCode(new QRModel("Hello3Q", (uint)Color.GreenYellow.ToArgb(), (uint)Color.White.ToArgb(), 20));
 
-            this.ImageSource = bitmap.GetImageSource();
+            this.ImageSource = ImageExtensions.ToBitmap(data).GetImageSource();
         }
 
         public UserViewModel UserContext { get; }
@@ -267,16 +273,22 @@ namespace MyApp.Prisms.ViewModels
         #region 屏幕亮度
         private void InitScreenBright(IEventAggregator eventAggregator)
         {
-            this._brightManager = new ScreenBrightManager();
-
-            this.RefreshBrightness();
-
-            eventAggregator.GetEvent<UpdateScreenBrightEvent>().Subscribe(step => this.CurrentBright += step);
+            try
+            {
+                this._brightManager = new ScreenBrightManager();
+                this.RefreshBrightness();
+                eventAggregator.GetEvent<UpdateScreenBrightEvent>().Subscribe(step => this.CurrentBright += step);
+            }
+            catch
+            {
+                this._brightManager = null;
+            }
         }
 
         internal void RefreshBrightness()
         {
-            this.CurrentBright = this._brightManager.GetBrightness();
+            if (this._brightManager == null) return;
+            try { this.CurrentBright = this._brightManager.GetBrightness(); } catch { }
         }
 
         private ScreenBrightManager _brightManager;
@@ -303,14 +315,14 @@ namespace MyApp.Prisms.ViewModels
 
                 if (newValue != Convert.ToInt32(_currentBright) && SetProperty<double>(ref _currentBright, value))
                 {
-                    this._brightManager.SetBrightness(newValue);
+                    this._brightManager?.SetBrightness(newValue);
                 }
             }
         }
         #endregion
 
         #region 窗口标题栏快捷键
-        public Dictionary<string, IHotKey<Key, ModifierKeys>> WindowKeyBindingMap { get; private set; }
+        public IHotKeyGroup<Key, ModifierKeys> WindowKeyBindingMap { get; private set; }
 
         private void InitHotkeys(IAppConfigFileHotKeyManager appCfgHotkeyManager)
         {
@@ -320,7 +332,7 @@ namespace MyApp.Prisms.ViewModels
             var group = appCfgHotkeyManager[groupName];
             group.TryRegisterBatch(PreDefinedHotKeys.WindowAppHotKeys);
 
-            this.WindowKeyBindingMap = group.ToDictionary(hotKey => hotKey.Name);
+            this.WindowKeyBindingMap = group;
         }
         #endregion
 
@@ -393,6 +405,7 @@ namespace MyApp.Prisms.ViewModels
 
         private DispatcherTimer _timer = null;
         private readonly ImageDisplayViewModel _imageDisplayViewModel;
+        private GloablHotKeyHandlerBase _gloablHotKeyHandler;
 
         private void InitBackgroundSwitch(IEventAggregator eventAggregator)
         {
@@ -423,7 +436,7 @@ namespace MyApp.Prisms.ViewModels
                     this.DialogMessage.Decrease();
                 }
             };
-            this._timer.Interval = TimeSpan.FromMilliseconds(1000);
+            this._timer.Interval = TimeSpan.FromSeconds(1);
             this._timer.Start();
 
             Task.Run(async () =>
@@ -432,14 +445,13 @@ namespace MyApp.Prisms.ViewModels
                 {
                     try
                     {
-                        this.CpuRate = ComputerInfo.GetCpuUsedRate();
-                        this.RamRate = ComputerInfo.GetMemoryUsedRate();
+                        this.CpuRate = AppDesktopUtils.GetCpuUsedRate();
+                        this.RamRate = AppDesktopUtils.GetMemoryUsedRate();
 
                         await Task.Delay(2000);
                     }
                     catch (Exception ex)
                     {
-#pragma warning disable CA1416 // 验证平台兼容性
                         CommonUtil.Log(CustomConstants.LogType.Exception_Log_Dir, ex.Message);
                     }
                 }
@@ -457,6 +469,9 @@ namespace MyApp.Prisms.ViewModels
         {
             this._timer?.Stop();
             this._timer = null;
+
+            _gloablHotKeyHandler.Dispose();
+            _gloablHotKeyHandler = null;
 
             base.DisposeCore();
         }

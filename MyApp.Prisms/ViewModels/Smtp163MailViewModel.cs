@@ -1,5 +1,6 @@
-﻿using IceTea.Pure.Contracts;
-using IceTea.Core.Utils.Mails;
+﻿using IceTea.Core.Businesses.Mail;
+using IceTea.Pure.Businesses.Config;
+using IceTea.Pure.Businesses.Setting;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using Prism.Events;
 using System;
@@ -10,7 +11,7 @@ namespace MyApp.Prisms.ViewModels
     {
         public Smtp163MailViewModel(IEventAggregator eventAggregator, IConfigManager configManager, ISettingManager settingManager) : base(eventAggregator, configManager, settingManager)
         {
-            this.TargetFolders = Enum.GetNames<Enum163MailOtherFolder>();
+            this.TargetFolders = Enum.GetNames(typeof(Enum163MailOtherFolder));
         }
 
         public override string MailSuffix => "@163.com";

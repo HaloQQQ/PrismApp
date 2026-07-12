@@ -1,4 +1,4 @@
-﻿using MyApp.Prisms.Views.BaseViews;
+using MyApp.Prisms.Views.BaseViews;
 
 namespace MyApp.Prisms.Views
 {

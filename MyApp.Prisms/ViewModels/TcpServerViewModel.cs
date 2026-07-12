@@ -1,7 +1,6 @@
-﻿using IceTea.Pure.Contracts;
+using IceTea.Pure.Businesses.Config;
 using IceTea.Pure.Extensions;
 using IceTea.SocketStandard.Tcp;
-using IceTea.SocketStandard.Tcp.Contracts;
 using IceTea.Wpf.Atom.Utils;
 using MyApp.Prisms.ViewModels.BaseViewModels;
 using Prism.Commands;
@@ -27,7 +26,7 @@ namespace MyApp.Prisms.ViewModels
             {
                 if (this.Socket is ITcpServer server)
                 {
-                    server.DestoryClientHandler(socketName);
+                    server.DestroyClientHandler(socketName);
                 }
             });
         }

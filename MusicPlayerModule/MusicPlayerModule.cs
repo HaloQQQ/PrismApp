@@ -1,4 +1,4 @@
-﻿using MusicPlayerModule.ViewModels;
+using MusicPlayerModule.ViewModels;
 using MusicPlayerModule.Views;
 using Prism.Ioc;
 using Prism.Modularity;

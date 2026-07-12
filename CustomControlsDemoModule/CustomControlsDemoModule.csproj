@@ -1,19 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net6.0-windows;net8.0-windows</TargetFrameworks>
+    <TargetFrameworks>net462;net6.0-windows;net8.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <EnableWindowsTargeting>True</EnableWindowsTargeting>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="8.0.1" />
     <ProjectReference Include="..\PrismAppBasicLib\PrismAppBasicLib.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\*" />
-    <Resource Include="Resources\Pictures\*" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\Medias\*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 </Project>

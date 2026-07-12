@@ -1,4 +1,4 @@
-﻿using IceTea.Wpf.Atom.Extensions;
+using IceTea.Wpf.Atom.Extensions;
 using System.Windows;
 using System.Windows.Controls;
 

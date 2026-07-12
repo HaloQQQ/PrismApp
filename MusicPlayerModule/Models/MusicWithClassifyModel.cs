@@ -1,4 +1,4 @@
-﻿using IceTea.Pure.BaseModels;
+using IceTea.Pure.BaseModels;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.Utils;
 using IceTea.Wpf.Atom.Utils;

@@ -64,13 +64,19 @@
                 ValueFormat="F2" />
 
             <WrapPanel>
-                <VerificationCodeTextBox Count="8" Text="Vi" x:Name="tbxVer" />
-                <TextBlock FontSize="40" Style="{StaticResource TextBlock_Theme}" Text="{Binding Text,ElementName=tbxVer}"/>
+                <VerificationCodeTextBox
+                    x:Name="tbxVer"
+                    Count="8"
+                    Text="Vi" />
+                <TextBlock
+                    FontSize="40"
+                    Style="{StaticResource TextBlock_Theme}"
+                    Text="{Binding Text, ElementName=tbxVer}" />
             </WrapPanel>
 
-            <TextBox MyAttachProperty.InputRegex="{x:Static regex:RegexConstants.DigitPattern}" MyAttachProperty.PlaceHolder="数字" />
+            <TextBox MyAttachProperty.PlaceHolder="数字" Text="{Binding Number, Mode=TwoWay}" />
 
-            <TextBox MyAttachProperty.InputRegex="{x:Static regex:RegexConstants.EnglishWordPattern}" MyAttachProperty.PlaceHolder="英文" />
+            <TextBox MyAttachProperty.PlaceHolder="英文" Text="{Binding English, Mode=TwoWay}" />
         </StackPanel>
     </ScrollViewer>
 </UserControl>

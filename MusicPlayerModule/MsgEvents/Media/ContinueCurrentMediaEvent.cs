@@ -2,5 +2,5 @@
 
 namespace MusicPlayerModule.MsgEvents
 {
-    internal class ContinueCurrentMediaEvent : PubSubEvent { }
+    public class ContinueCurrentMediaEvent : PubSubEvent { }
 }

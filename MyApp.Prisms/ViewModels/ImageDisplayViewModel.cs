@@ -1,19 +1,20 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.BaseModels;
-using IceTea.Pure.Contracts;
 using System.Windows.Input;
 using Prism.Commands;
 using IceTea.Wpf.Atom.Utils;
-using MyApp.Prisms.Helper;
 using IceTea.Pure.Utils;
 using System.Windows.Media.Imaging;
 using Prism.Events;
 using PrismAppBasicLib.Models;
+using IceTea.Pure.Businesses.Setting;
+using IceTea.Pure.Businesses.Config;
+using MyApp.Prisms.Contracts;
 
 namespace MyApp.Prisms.ViewModels
 {

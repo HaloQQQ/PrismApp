@@ -4,15 +4,15 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using IceTea.Pure.Extensions;
-using IceTea.Pure.Contracts;
 using System.Collections.Generic;
-using IceTea.Pure.Mails;
 using IceTea.Wpf.Atom.Utils;
 using System;
 using IceTea.Pure.BaseModels;
 using PrismAppBasicLib.Contracts;
-using IceTea.Core.Contracts;
-using IceTea.Core.Utils.Mails;
+using IceTea.Core.Businesses.Mail;
+using IceTea.Pure.Businesses.Mail;
+using IceTea.Pure.Businesses.Config;
+using IceTea.Pure.Businesses.Setting;
 
 namespace MyApp.Prisms.ViewModels.BaseViewModels
 {
@@ -41,7 +41,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
             _configManager = configManager;
             _settingManager = settingManager;
 
-            this.MessageFlags = Enum.GetNames<EnumSearch>();
+            this.MessageFlags = Enum.GetNames(typeof(EnumSearch));
 
             this.InitEmail();
 
@@ -86,7 +86,7 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
                 if (list.Any())
                 {
-                    var flag = Enum.Parse<EnumMessageFlags>(strList[0]);
+                    var flag = (EnumMessageFlags)Enum.Parse(typeof(EnumMessageFlags), strList[0]);
                     var addOrRemove = bool.Parse(strList[1]);
 
                     await _imapClient.MarkFlagsAsync(list.Select(m => m.Id.To<uint>()), flag, CurrentFolder, addOrRemove);
@@ -135,9 +135,9 @@ namespace MyApp.Prisms.ViewModels.BaseViewModels
 
                 _emailManager.SetCredentials(this.FromMail, this.Password);
 
-                var result = await _imapClient.SearchMessageAsync(Enum.Parse<EnumSearch>(CurrentFlag), CurrentFolder);
+                var result = await _imapClient.SearchMessageAsync((EnumSearch)Enum.Parse(typeof(EnumSearch), CurrentFlag), CurrentFolder);
 
-                if (!result.IsSucceed)
+                if (!result.IsSuccess)
                 {
                     CommonUtil.PublishMessage(_eventAggregator, result.ErrorMessage);
                 }

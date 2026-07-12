@@ -1,7 +1,7 @@
-﻿using CustomControlsDemoModule.Models;
-using IceTea.Pure.Contracts;
+using CustomControlsDemoModule.Models;
+using IceTea.Pure.Businesses.Config;
 using IceTea.Pure.Extensions;
-using IceTea.Wpf.Atom.Utils.HotKey.App;
+using IceTea.Wpf.Atom.Businesses.HotKey.App;
 using Prism.Commands;
 using Prism.Events;
 using PrismAppBasicLib.Contracts;
@@ -298,8 +298,11 @@ namespace CustomControlsDemoModule.ViewModels
                 {
                     if (item != 0)
                     {
+#if NETFRAMEWORK
+                        var current = list.LastOrDefault();
+#else
                         var current = list.LastOrDefault((0, false));
-
+#endif
                         if (current.Item1 != item)
                         {
                             list.Add((item, false));
@@ -310,8 +313,11 @@ namespace CustomControlsDemoModule.ViewModels
                             while (current.Item1 == newV)
                             {
                                 list.RemoveAt(list.Count - 1);
-
+#if NETFRAMEWORK
+                                var last = list.LastOrDefault();
+#else
                                 var last = list.LastOrDefault((0, false));
+#endif
 
                                 newV += current.Item1;
 
@@ -345,7 +351,7 @@ namespace CustomControlsDemoModule.ViewModels
 
             return values;
         }
-        #endregion
+#endregion
 
         #region 公共
         public ICommand LeftCommand { get; }

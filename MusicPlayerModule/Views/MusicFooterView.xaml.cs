@@ -7,8 +7,8 @@ using Prism.Ioc;
 using System.Windows.Input;
 using System.Windows.Threading;
 using MusicPlayerModule.Contracts;
-using IceTea.Pure.Contracts;
 using MusicPlayerModule.MsgEvents.Media;
+using IceTea.Pure.Businesses.Config;
 
 namespace MusicPlayerModule.Views
 {
