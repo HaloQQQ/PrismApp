@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.1.32414.318
+# Visual Studio Version 18
+VisualStudioVersion = 18.7.11925.98
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MusicPlayerModule", "MusicPlayerModule\MusicPlayerModule.csproj", "{5174259D-E673-4CCD-8123-B4C7D393BE01}"
 EndProject
@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyApp.Prisms", "MyApp.Prism
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PrismAppBasicLib", "PrismAppBasicLib\PrismAppBasicLib.csproj", "{BEDDDFA9-AF08-460A-BC05-75D2BCA1FAA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiAppNet", "MauiAppNet\MauiAppNet.csproj", "{37EA35C9-23B2-4762-BC68-6D8108F2A332}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApp.Maui", "MyApp.Maui\MyApp.Maui.csproj", "{58A1C880-61C6-4262-B9D8-24ABA45D4A97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,24 +85,19 @@ Global
 		{BEDDDFA9-AF08-460A-BC05-75D2BCA1FAA7}.Release|x64.Build.0 = Release|Any CPU
 		{BEDDDFA9-AF08-460A-BC05-75D2BCA1FAA7}.Release|x86.ActiveCfg = Release|Any CPU
 		{BEDDDFA9-AF08-460A-BC05-75D2BCA1FAA7}.Release|x86.Build.0 = Release|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Debug|x64.Build.0 = Debug|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Debug|x64.Deploy.0 = Debug|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Debug|x86.Build.0 = Debug|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Debug|x86.Deploy.0 = Debug|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Release|Any CPU.Build.0 = Release|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Release|x64.ActiveCfg = Release|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Release|x64.Build.0 = Release|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Release|x64.Deploy.0 = Release|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Release|x86.ActiveCfg = Release|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Release|x86.Build.0 = Release|Any CPU
-		{37EA35C9-23B2-4762-BC68-6D8108F2A332}.Release|x86.Deploy.0 = Release|Any CPU
+		{58A1C880-61C6-4262-B9D8-24ABA45D4A97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58A1C880-61C6-4262-B9D8-24ABA45D4A97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58A1C880-61C6-4262-B9D8-24ABA45D4A97}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{58A1C880-61C6-4262-B9D8-24ABA45D4A97}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{58A1C880-61C6-4262-B9D8-24ABA45D4A97}.Debug|x64.Build.0 = Debug|Any CPU
+		{58A1C880-61C6-4262-B9D8-24ABA45D4A97}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{58A1C880-61C6-4262-B9D8-24ABA45D4A97}.Debug|x86.Build.0 = Debug|Any CPU
+		{58A1C880-61C6-4262-B9D8-24ABA45D4A97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58A1C880-61C6-4262-B9D8-24ABA45D4A97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58A1C880-61C6-4262-B9D8-24ABA45D4A97}.Release|x64.ActiveCfg = Release|Any CPU
+		{58A1C880-61C6-4262-B9D8-24ABA45D4A97}.Release|x64.Build.0 = Release|Any CPU
+		{58A1C880-61C6-4262-B9D8-24ABA45D4A97}.Release|x86.ActiveCfg = Release|Any CPU
+		{58A1C880-61C6-4262-B9D8-24ABA45D4A97}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
