@@ -1,20 +1,21 @@
-using System.Windows.Input;
-using System.Collections.ObjectModel;
-using MusicPlayerModule.MsgEvents;
-using MusicPlayerModule.Contracts;
-using PrismAppBasicLib.Models;
-using PrismAppBasicLib.Contracts;
-using MusicPlayerModule.MsgEvents.Media;
 using IceTea.Pure.BaseModels;
-using Prism.Events;
-using IceTea.Pure.Utils;
-using Prism.Commands;
-using IceTea.Pure.Extensions;
-using IceTea.Wpf.Atom.Businesses.HotKey.App;
-using IceTea.Pure.Businesses.HotKey;
+using MusicPlayerModule.Hooks;
 using IceTea.Pure.Businesses.Config;
+using IceTea.Pure.Businesses.HotKey;
 using IceTea.Pure.Businesses.Setting;
-using IceTea.Desktop.Contracts.KeyboardHook;
+using IceTea.Pure.Extensions;
+using IceTea.Pure.Utils;
+using IceTea.Wpf.Atom.Businesses.HotKey.App;
+using MusicPlayerModule.Contracts;
+using MusicPlayerModule.MsgEvents;
+using MusicPlayerModule.MsgEvents.Media;
+using Prism.Commands;
+using Prism.Events;
+using PrismAppBasicLib.Contracts;
+using PrismAppBasicLib.Models;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using IceTea.Wpf.Atom.Businesses.GlobalKeyEvent;
 
 namespace MusicPlayerModule.ViewModels.Base;
 
@@ -30,7 +31,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     protected IEventAggregator _eventAggregator { get; private set; }
     protected ISettingManager<SettingModel> _settingManager { get; private set; }
     protected IConfigManager _configManager { get; private set; }
-    protected IKeyboardHook _keyboardHook { get; private set; }
+    protected IKeyHook _keyboardHook { get; private set; }
     protected Random _random { get; private set; } = new Random();
     #endregion
 
@@ -39,16 +40,12 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     public ObservableCollection<PlayingMediaBaseViewModel> DisplayPlaying { get; private set; } = new();
 
 
-    protected MediaPlayerViewModel(IEventAggregator eventAggregator, IConfigManager configManager, IAppConfigFileHotKeyManager appCfgHotkeyManager, ISettingManager<SettingModel> settingManager, IKeyboardHook keyboardHook)
+    protected MediaPlayerViewModel(IEventAggregator eventAggregator, IConfigManager configManager, IAppConfigFileHotKeyManager appCfgHotkeyManager, ISettingManager<SettingModel> settingManager, IKeyHook keyHook)
     {
         this._eventAggregator = eventAggregator.AssertNotNull(nameof(IEventAggregator));
         this._configManager = configManager.AssertArgumentNotNull(nameof(IConfigManager));
         this._settingManager = settingManager.AssertArgumentNotNull(nameof(ISettingManager<SettingModel>));
-        this._keyboardHook = keyboardHook.AssertArgumentNotNull(nameof(IKeyboardHook));
-
-        this._settingManager.TryAdd(CustomStatics.MUSIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode<string>(CustomStatics.LastMusicDir_ConfigKey), null));
-        this._settingManager.TryAdd(CustomStatics.LYRIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode<string>(CustomStatics.LastLyricDir_ConfigKey), null));
-        this._settingManager.TryAdd(CustomStatics.VIDEO, () => new SettingModel(string.Empty, configManager.ReadConfigNode<string>(CustomStatics.LastVideoDir_ConfigKey), null));
+        this._keyboardHook = keyHook.AssertArgumentNotNull(nameof(MediaGlobalKeyHook));
 
         this.LoadConfig(configManager);
 
@@ -76,45 +73,50 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     protected virtual void LoadConfig(IConfigManager configManager)
     {
         var playOrder = configManager.ReadConfigNode<string>(this.MediaPlayOrder_ConfigKey);
-        this.CurrentPlayOrder =
+        var list = typeof(EnumOrderType).GetEnumNames();
+        string order =
 #if NETFRAMEWORK
-        CustomStatics.MediaPlayOrderList.FirstOrDefault(item => item.Description == playOrder) ?? CustomStatics.MediaPlayOrderList.First();
+        list.FirstOrDefault(item => item == playOrder) ?? list.First();
 #else
-            CustomStatics.MediaPlayOrderList.FirstOrDefault(
-                    item => item.Description == playOrder,
-                    CustomStatics.MediaPlayOrderList.First()
+            list.FirstOrDefault(
+                    item => item == playOrder,
+                    list.First()
                 );
 #endif
+        this.CurrentPlayOrder = (EnumOrderType)Enum.Parse(typeof(EnumOrderType), order);
 
-        configManager.SetConfig += _ =>
-        {
-            _.WriteConfigNode(this.CurrentPlayOrder.Description, this.MediaPlayOrder_ConfigKey);
-        };
+        configManager.SetConfig += OnSetConfigSavePlayOrder;
+        configManager.PostSetConfig += OnPostSetConfigSaveABPoints;
+    }
 
-        configManager.PostSetConfig += config =>
+    private void OnSetConfigSavePlayOrder(IConfigManager config)
+    {
+        config.WriteConfigNode(this.CurrentPlayOrder, this.MediaPlayOrder_ConfigKey);
+    }
+
+    private void OnPostSetConfigSaveABPoints(IConfigManager config)
+    {
+        foreach (var item in this.DisplayPlaying.Where(m => m.ShouleSaveABPoint()))
         {
-            foreach (var item in this.DisplayPlaying.Where(m => m.ShouleSaveABPoint()))
+            IList<string> mediaNode = new List<string>(MediaABPoints_ConfigKey)
             {
-                IList<string> mediaNode = new List<string>(MediaABPoints_ConfigKey)
-                {
-                    item.MediaName
-                };
+                item.MediaName
+            };
 
-                IList<string> pointANode = new List<string>(mediaNode)
-                {
-                    nameof(PlayingMediaBaseViewModel.PointAMills)
-                };
+            IList<string> pointANode = new List<string>(mediaNode)
+            {
+                nameof(PlayingMediaBaseViewModel.PointAMills)
+            };
 
-                IList<string> pointBNode = new List<string>(mediaNode)
-                {
-                    nameof(PlayingMediaBaseViewModel.PointBMills)
-                };
+            IList<string> pointBNode = new List<string>(mediaNode)
+            {
+                nameof(PlayingMediaBaseViewModel.PointBMills)
+            };
 
-                config.WriteConfigNode(item.MediaName, mediaNode);
-                config.WriteConfigNode(item.PointAMills, pointANode);
-                config.WriteConfigNode(item.PointBMills, pointBNode);
-            }
-        };
+            config.WriteConfigNode(item.MediaName, mediaNode);
+            config.WriteConfigNode(item.PointAMills, pointANode);
+            config.WriteConfigNode(item.PointBMills, pointBNode);
+        }
     }
 
     protected virtual void InitCommandsExtend() { }
@@ -184,7 +186,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
 
         this.CleanPlayingCommand = new DelegateCommand(
             CleanPlaying_CommandExecute,
-            () => !this.Running && this.DisplayPlaying.Count > 0)
+            () => !this.Running && this.DisplayPlaying?.Count > 0)
             .ObservesProperty(() => this.Running)
             .ObservesProperty<int>(() => this.DisplayPlaying.Count);
 
@@ -256,36 +258,33 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     {
         if (currentMedia != null && this.DisplayPlaying.Count > 0)
         {
-            if (this.CurrentPlayOrder != null)
+            switch (this.CurrentPlayOrder)
             {
-                switch (this.CurrentPlayOrder.OrderType)
-                {
-                    case MediaPlayOrderModel.EnumOrderType.Order:
-                        if (currentMedia.Index <= 1)
-                        {
-                            currentMedia = null;
-                        }
-                        else
-                        {
-                            currentMedia = this.DisplayPlaying[currentMedia.Index - 2];
-                        }
-                        break;
-                    case MediaPlayOrderModel.EnumOrderType.SingleOnce:
+                case EnumOrderType.Order:
+                    if (currentMedia.Index <= 1)
+                    {
                         currentMedia = null;
-                        break;
-                    case MediaPlayOrderModel.EnumOrderType.SingleCycle:
-                        currentMedia = this.CurrentMedia;
-                        break;
-                    case MediaPlayOrderModel.EnumOrderType.Loop:
-                        currentMedia = currentMedia.Index > 1
-                            ? this.DisplayPlaying[currentMedia.Index - 2] : this.DisplayPlaying.Last();
-                        break;
-                    case MediaPlayOrderModel.EnumOrderType.Random:
-                        currentMedia = this.DisplayPlaying[this._random.Next(this.DisplayPlaying.Count)];
-                        break;
-                    default:
-                        throw new IndexOutOfRangeException();
-                }
+                    }
+                    else
+                    {
+                        currentMedia = this.DisplayPlaying[currentMedia.Index - 2];
+                    }
+                    break;
+                case EnumOrderType.SingleOnce:
+                    currentMedia = null;
+                    break;
+                case EnumOrderType.SingleCycle:
+                    currentMedia = this.CurrentMedia;
+                    break;
+                case EnumOrderType.Loop:
+                    currentMedia = currentMedia.Index > 1
+                        ? this.DisplayPlaying[currentMedia.Index - 2] : this.DisplayPlaying.Last();
+                    break;
+                case EnumOrderType.Random:
+                    currentMedia = this.DisplayPlaying[this._random.Next(this.DisplayPlaying.Count)];
+                    break;
+                default:
+                    throw new IndexOutOfRangeException();
             }
 
             this.SetAndPlay(currentMedia);
@@ -297,36 +296,33 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     {
         if (currentMedia != null && this.DisplayPlaying.Count > 0)
         {
-            if (this.CurrentPlayOrder != null)
+            switch (this.CurrentPlayOrder)
             {
-                switch (this.CurrentPlayOrder.OrderType)
-                {
-                    case MediaPlayOrderModel.EnumOrderType.Order:
-                        if (currentMedia.Index >= this.DisplayPlaying.Count)
-                        {
-                            currentMedia = null;
-                        }
-                        else
-                        {
-                            currentMedia = this.DisplayPlaying[currentMedia.Index];
-                        }
-                        break;
-                    case MediaPlayOrderModel.EnumOrderType.SingleOnce:
+                case EnumOrderType.Order:
+                    if (currentMedia.Index >= this.DisplayPlaying.Count)
+                    {
                         currentMedia = null;
-                        break;
-                    case MediaPlayOrderModel.EnumOrderType.SingleCycle:
-                        currentMedia = this.CurrentMedia;
-                        break;
-                    case MediaPlayOrderModel.EnumOrderType.Loop:
-                        currentMedia = currentMedia.Index < this.DisplayPlaying.Count
-                            ? this.DisplayPlaying[currentMedia.Index] : this.DisplayPlaying.First();
-                        break;
-                    case MediaPlayOrderModel.EnumOrderType.Random:
-                        currentMedia = this.DisplayPlaying[this._random.Next(this.DisplayPlaying.Count)];
-                        break;
-                    default:
-                        throw new IndexOutOfRangeException();
-                }
+                    }
+                    else
+                    {
+                        currentMedia = this.DisplayPlaying[currentMedia.Index];
+                    }
+                    break;
+                case EnumOrderType.SingleOnce:
+                    currentMedia = null;
+                    break;
+                case EnumOrderType.SingleCycle:
+                    currentMedia = this.CurrentMedia;
+                    break;
+                case EnumOrderType.Loop:
+                    currentMedia = currentMedia.Index < this.DisplayPlaying.Count
+                        ? this.DisplayPlaying[currentMedia.Index] : this.DisplayPlaying.First();
+                    break;
+                case EnumOrderType.Random:
+                    currentMedia = this.DisplayPlaying[this._random.Next(this.DisplayPlaying.Count)];
+                    break;
+                default:
+                    throw new IndexOutOfRangeException();
             }
 
             this.SetAndPlay(currentMedia);
@@ -518,7 +514,7 @@ internal abstract class MediaPlayerViewModel : NotifyBase
     }
 
     protected virtual IEnumerable<AppHotKey> MediaHotKeys =>
-        new[]
+        new List<AppHotKey>
         {
             new AppHotKey(MediaHotKeyConsts.ResetPointAB, Key.Delete, ModifierKeys.Control),
             new AppHotKey(MediaHotKeyConsts.SetPointA, Key.D1, ModifierKeys.Control),
@@ -601,11 +597,11 @@ internal abstract class MediaPlayerViewModel : NotifyBase
         }
     }
 
-    private MediaPlayOrderModel _mediaPlayOrder;
-    public MediaPlayOrderModel CurrentPlayOrder
+    private EnumOrderType _mediaPlayOrder;
+    public EnumOrderType CurrentPlayOrder
     {
         get { return _mediaPlayOrder; }
-        set { _mediaPlayOrder = value; IsEditingPlayOrder = false; }
+        set { SetProperty<EnumOrderType>(ref _mediaPlayOrder, value); IsEditingPlayOrder = false; }
     }
 
     private bool _isEditingPlayOrder;
@@ -697,9 +693,15 @@ internal abstract class MediaPlayerViewModel : NotifyBase
 
     protected override void DisposeCore()
     {
+        // 注销 config 事件，防止 ViewModel 释放后 PostSetConfig 访问已置 null 的 DisplayPlaying
+        if (_configManager != null)
+        {
+            _configManager.SetConfig -= OnSetConfigSavePlayOrder;
+            _configManager.PostSetConfig -= OnPostSetConfigSaveABPoints;
+        }
+
         this.CleanPlaying_CommandExecute();
 
-        _keyboardHook.Dispose();
         _keyboardHook = null;
 
         _random = null;
@@ -713,15 +715,13 @@ internal abstract class MediaPlayerViewModel : NotifyBase
             list.Clear();
         }
 
-        KeyGestureDic.Dispose();
+        // KeyGestureDic 是 IAppConfigFileHotKeyManager 的共享对象，不在此释放
         KeyGestureDic = null;
 
         DisplayPlaying.Clear();
         DisplayPlaying = null;
 
         _currentMedia = null;
-
-        _mediaPlayOrder = null;
 
         OpenInExploreCommand = null;
         DeletePlayingCommand = null;

@@ -4,17 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:contracts="clr-namespace:MusicPlayerModule.Contracts"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:prism="http://prismlibrary.com/"
-    prism:ViewModelLocator.AutoWireViewModel="True">
+    xmlns:prism="http://prismlibrary.com/">
     <UserControl.Resources>
         <ResourceDictionary Source="/MusicPlayerModule;component/Resources/Music/MusicFooter.xaml" />
     </UserControl.Resources>
 
-    <Grid
-        Background="#20000000"
-        CommandManager.Executed="UserControl_Executed"
-        Cursor="Arrow"
-        MouseWheel="Grid_MouseWheel">
+    <Grid Background="#20000000" CommandManager.Executed="UserControl_Executed">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -154,7 +149,7 @@
                     Grid.Column="1"
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
-                    <Button Command="{Binding RewindCommand, Delay=100}" Style="{StaticResource Button_Icon_Rewind_1s}" />
+                    <Button Command="{Binding RewindCommand, Delay=300}" Style="{StaticResource Button_Icon_Rewind_1s}" />
 
                     <Button
                         Command="{Binding PrevCommand}"
@@ -172,7 +167,7 @@
                         CommandParameter="{Binding CurrentMedia}"
                         Style="{StaticResource Button_Icon_Next}" />
 
-                    <Button Command="{Binding FastForwardCommand, Delay=100}" Style="{StaticResource Button_Icon_FastForward_1s}" />
+                    <Button Command="{Binding FastForwardCommand, Delay=300}" Style="{StaticResource Button_Icon_FastForward_1s}" />
 
                     <Button Command="{Binding StopPlayCommand}" Style="{StaticResource Button_Icon_Stop}" />
                 </StackPanel>
@@ -276,6 +271,7 @@
                         x:Name="VolumeToggleButton"
                         Click="VolumeToggleButton_Click"
                         IsChecked="{Binding IsMuted, ElementName=mediaPlayer, Mode=TwoWay}"
+                        MouseWheel="VolumeButton_MouseWheel"
                         Style="{StaticResource ToggleButton_Icon_Volume}" />
                     <Popup
                         x:Name="VolumePopup"
@@ -307,59 +303,19 @@
                         </StackPanel>
                     </Popup>
 
-                    <ToggleButton x:Name="listButton" IsChecked="{Binding IsEditingPlayOrder}">
-                        <ToggleButton.Style>
-                            <Style BasedOn="{StaticResource ButtonBase_Icon_Small_HoverBlue}" TargetType="ToggleButton">
-                                <Setter Property="Margin" Value="2,0" />
-
-                                <Setter Property="Content" Value="{Binding SelectedItem.IconString, ElementName=PlayOrderList, FallbackValue=播放顺序}" />
-                                <Setter Property="ToolTip" Value="{Binding SelectedItem.Description, ElementName=PlayOrderList}" />
-                            </Style>
-                        </ToggleButton.Style>
-                    </ToggleButton>
+                    <ToggleButton x:Name="PlayOrderButton" Style="{StaticResource TogBtnPlayOrder}" />
                     <Popup
                         HorizontalOffset="-67"
-                        MouseLeftButtonDown="EmptyHandler"
                         MyAttachProperty.IsAppearOnHovered="True"
                         Placement="Top"
-                        PlacementTarget="{Binding ElementName=listButton}"
+                        PlacementTarget="{Binding ElementName=PlayOrderButton}"
                         VerticalOffset="10">
                         <Border
+                            Width="150"
                             Height="310"
                             Background="{StaticResource PopupBackground}"
                             Clip="{StaticResource PopupGeometryGroup_PlayOrder}">
-                            <ListBox
-                                x:Name="PlayOrderList"
-                                ItemsSource="{x:Static contracts:CustomStatics.MediaPlayOrderList}"
-                                SelectedItem="{Binding CurrentPlayOrder}">
-                                <ListBox.ItemContainerStyle>
-                                    <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
-                                        <Setter Property="Padding" Value="0,10" />
-
-                                        <Setter Property="ContentTemplate">
-                                            <Setter.Value>
-                                                <DataTemplate DataType="contracts:MediaPlayOrderModel">
-                                                    <TextBlock Margin="30,10" Style="{StaticResource TextBlock_Theme_Icon_MouseOver}">
-                                                        <TextBlock Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Text="{Binding IconString}" />
-                                                        <TextBlock Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Text="{Binding Description}" />
-                                                    </TextBlock>
-                                                </DataTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </ListBox.ItemContainerStyle>
-
-                                <ListBox.Style>
-                                    <Style BasedOn="{StaticResource {x:Type ListBox}}" TargetType="ListBox">
-
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding CurrentPlayOrder}" Value="{x:Null}">
-                                                <Setter Property="SelectedIndex" Value="1" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ListBox.Style>
-                            </ListBox>
+                            <ListBox Style="{StaticResource LstbxPlayOrder}" />
                         </Border>
                     </Popup>
 

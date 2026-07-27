@@ -1,4 +1,4 @@
-﻿using IceTea.Pure.Contracts;
+using IceTea.Pure.Contracts;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.Utils;
 using IceTea.Wpf.Atom.Utils;

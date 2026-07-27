@@ -1,5 +1,6 @@
 using CustomControlsDemoModule.ViewModels;
-using IceTea.Desktop.Extensions;
+using IceTea.Pure.Businesses.GlobalHook;
+using IceTea.Windows.Extensions;
 using Prism.Services.Dialogs;
 using System;
 using System.Windows;
@@ -47,9 +48,9 @@ namespace CustomControlsDemoModule.Views
             base.OnClosed(e);
         }
 
-        private void ViewModel_MouseActionEvent(object sender, IceTea.Desktop.Contracts.MouseHook.CustomMouseEventArgs e)
+        private void ViewModel_MouseActionEvent(object sender, IceTea.Pure.Businesses.GlobalHook.MouseEventArgs e)
         {
-            if (e.OperationType == IceTea.Desktop.Contracts.MouseHook.MouseOperationType.MOVE)
+            if (e.OperationType == MouseOperationType.MOVE)
             {
                 this.SetPostion(new System.Drawing.Point(e.X, e.Y));
             }

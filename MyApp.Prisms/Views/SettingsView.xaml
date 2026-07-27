@@ -3,12 +3,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:appHotKey="http://IceTea.Wpf.Atom.AppHotKey.com/"
+    xmlns:contracts="clr-namespace:MyApp.Prisms.Contracts"
     xmlns:globalHotKey="clr-namespace:IceTea.Pure.Businesses.HotKey.Global;assembly=IceTea.Pure"
     xmlns:models="clr-namespace:PrismAppBasicLib.Models;assembly=PrismAppBasicLib"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewModels="clr-namespace:MyApp.Prisms.ViewModels"
-    MinWidth="800"
-    MaxHeight="500"
     prism:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -16,82 +15,112 @@
                 <ResourceDictionary Source="pack://application:,,,/IceTea.Wpf.Core;component/DataTemplates/HotKeyDataTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <ObjectDataProvider
+                x:Key="VideosCountData"
+                MethodName="GetValues"
+                ObjectType="{x:Type contracts:EnumVideosCount}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="contracts:EnumVideosCount" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+
             <DataTemplate DataType="{x:Type viewModels:Pair}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource TextBlock_Theme}" Text="邮箱:" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Style="{StaticResource TextBlock_Theme}"
+                        Text="邮箱:" />
                     <TextBox
-                        Width="250"
+                        Grid.Column="1"
                         IsReadOnly="True"
                         Text="{Binding Key}" />
                     <TextBlock
+                        Grid.Column="2"
                         Margin="20,0,0,0"
                         Style="{StaticResource TextBlock_Theme}"
                         Text="授权码:" />
                     <PasswordBox
-                        Width="250"
+                        Grid.Column="3"
                         MyAttachProperty.IsReadOnly="True"
                         MyAttachProperty.Password="{Binding Value}" />
                     <Button
+                        Grid.Column="4"
                         Command="{Binding DataContext.RemoveMailAccountCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                         CommandParameter="{Binding}"
                         Content="&#xe60a;"
                         FontSize="30"
                         Style="{StaticResource ButtonBase_Icon_ScaleDown_Small_HoverBlue}" />
-                </StackPanel>
+                </Grid>
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type models:SettingModel}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource TextBlock_Theme}" Text="{Binding Name}" />
-                    <TextBox
-                        Width="500"
-                        IsReadOnly="True"
-                        MyAttachProperty.PlaceHolder="空目录"
-                        Text="{Binding Value, Mode=OneWay}" />
+                <DockPanel>
+                    <TextBlock
+                        DockPanel.Dock="Left"
+                        Style="{StaticResource TextBlock_Theme}"
+                        Text="{Binding Name}" />
                     <Button
                         Command="{Binding OpenFolderCommand}"
                         Content="浏览"
+                        DockPanel.Dock="Right"
                         MyAttachProperty.IconFontText="&#xebdf;"
                         Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
-                </StackPanel>
+                    <TextBox
+                        IsReadOnly="True"
+                        MyAttachProperty.PlaceHolder="空目录"
+                        Text="{Binding Value, Mode=OneWay}" />
+                </DockPanel>
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Border
-        Padding="0,10"
-        Background="LightBlue"
-        CornerRadius="20">
+    <Border Padding="0,10" Background="LightBlue">
         <TabControl ItemContainerStyle="{StaticResource TabItem_Transparent}" Style="{StaticResource TabControl_ScrollContent}">
             <TabItem Header="默认目录">
-                <ListBox
-                    HorizontalContentAlignment="Left"
-                    ItemContainerStyle="{StaticResource ListBoxItem_General}"
-                    ItemsSource="{Binding DataContext.SettingModels.Values, RelativeSource={RelativeSource AncestorType=TabControl}}" />
+                <ListBox ItemContainerStyle="{StaticResource ListBoxItem_General}" ItemsSource="{Binding DataContext.SettingModels.Values, RelativeSource={RelativeSource AncestorType=TabControl}}" />
             </TabItem>
             <TabItem Header="默认邮箱">
                 <StackPanel>
-                    <StackPanel Margin="2,0,0,0" Orientation="Horizontal">
-                        <TextBlock Style="{StaticResource TextBlock_Theme}" Text="邮箱:" />
+                    <Grid Margin="2,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.Column="0"
+                            Style="{StaticResource TextBlock_Theme}"
+                            Text="邮箱:" />
                         <TextBox
-                            Width="250"
+                            Grid.Column="1"
                             MyAttachProperty.PlaceHolder="邮箱"
                             Text="{Binding DataContext.CurrentMailPair.Key, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=TabControl}}" />
                         <TextBlock
+                            Grid.Column="2"
                             Margin="20,0,0,0"
                             Style="{StaticResource TextBlock_Theme}"
                             Text="授权码:" />
                         <PasswordBox
-                            Width="250"
+                            Grid.Column="3"
                             MyAttachProperty.Password="{Binding DataContext.CurrentMailPair.Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=TabControl}}"
                             MyAttachProperty.PlaceHolder="授权码" />
 
                         <Button
+                            Grid.Column="4"
                             Command="{Binding DataContext.AddMailAccountCommand, RelativeSource={RelativeSource AncestorType=TabControl}}"
                             Content="&#xe622;"
                             FontSize="30"
                             Style="{StaticResource ButtonBase_Icon_ScaleDown_Small_HoverBlue}" />
-                    </StackPanel>
+                    </Grid>
                     <ListBox
                         HorizontalContentAlignment="Left"
                         ItemContainerStyle="{StaticResource ListBoxItem_General}"
@@ -126,25 +155,45 @@
             </TabItem>
             <TabItem Header="设置">
                 <StackPanel>
+                    <DockPanel>
+                        <TextBlock
+                            Margin="6,0,0,0"
+                            DockPanel.Dock="Left"
+                            Style="{StaticResource TextBlock_Theme}"
+                            Text="窗口圆角：" />
+                        <Viewbox>
+                            <Slider
+                                Width="630"
+                                Height="5"
+                                Maximum="20"
+                                Minimum="0"
+                                Style="{StaticResource Slider_ObviousThumb}"
+                                TickFrequency="5"
+                                Value="{Binding DataContext.CornerRadius, Converter={StaticResource CornerRadiusToDigitConverter}, ConverterParameter=1, RelativeSource={RelativeSource AncestorType=TabControl}}" />
+                        </Viewbox>
+                    </DockPanel>
+
                     <WrapPanel>
                         <TextBlock
                             Margin="6,0,0,0"
                             Style="{StaticResource TextBlock_Theme}"
-                            Text="窗口圆角：" />
-                        <Slider
-                            Width="630"
-                            Height="5"
-                            Maximum="20"
-                            Minimum="0"
-                            Style="{StaticResource Slider_ObviousThumb}"
-                            TickFrequency="5"
-                            Value="{Binding DataContext.CornerRadius, Converter={StaticResource CornerRadiusToDigitConverter}, ConverterParameter=1, RelativeSource={RelativeSource AncestorType=TabControl}}" />
+                            Text="视频窗格数：" />
+                        <ComboBox
+                            IsReadOnly="True"
+                            ItemsSource="{Binding Source={StaticResource VideosCountData}}"
+                            SelectedItem="{Binding DataContext.VideosCount, RelativeSource={RelativeSource AncestorType=TabControl}}" />
                     </WrapPanel>
 
                     <WrapPanel>
                         <CheckBox
                             Content="浅色主题："
                             IsChecked="{Binding DataContext.IsLightSysTheme, RelativeSource={RelativeSource AncestorType=TabControl}}"
+                            MyAttachProperty.IconPosition="Right"
+                            Style="{StaticResource CheckBox_Switch}" />
+
+                        <CheckBox
+                            Content="自动载入视频："
+                            IsChecked="{Binding DataContext.IsVideosAutoLoad, RelativeSource={RelativeSource AncestorType=TabControl}}"
                             MyAttachProperty.IconPosition="Right"
                             Style="{StaticResource CheckBox_Switch}" />
                     </WrapPanel>

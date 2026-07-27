@@ -1,4 +1,4 @@
-﻿using MyApp.Prisms.ViewModels;
+using MyApp.Prisms.ViewModels;
 using System;
 using System.Windows;
 using System.Windows.Controls;

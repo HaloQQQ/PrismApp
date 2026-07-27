@@ -1,24 +1,26 @@
-﻿using MusicPlayerModule.Models;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using MusicPlayerModule.Contracts;
-using System.Collections.Specialized;
-using PrismAppBasicLib.Models;
-using PrismAppBasicLib.Contracts;
-using Microsoft.Win32;
-using MusicPlayerModule.Utils;
 using IceTea.Pure.BaseModels;
-using IceTea.Pure.Utils;
-using IceTea.Pure.Extensions;
-using Prism.Events;
-using Prism.Commands;
-using IceTea.Wpf.Atom.Utils;
-using IceTea.Wpf.Atom.Contracts.FileFilters;
-using System.Windows;
+using IceTea.Pure.Businesses.Config;
 using IceTea.Pure.Businesses.Setting;
+using IceTea.Pure.Extensions;
+using IceTea.Pure.Utils;
+using IceTea.Wpf.Atom.Contracts.FileFilters;
+using IceTea.Wpf.Atom.Utils;
+using Microsoft.Win32;
+using MusicPlayerModule.Contracts;
+using MusicPlayerModule.Models;
+using MusicPlayerModule.Utils;
+using Prism.Commands;
+using Prism.Events;
+using PrismAppBasicLib.Contracts;
+using PrismAppBasicLib.Models;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Windows;
+using System.Windows.Input;
 
 namespace MusicPlayerModule.ViewModels
 {
+#pragma warning disable CS8600 // 将 null 字面量或可能为 null 的值转换为非 null 类型。
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
     /// <summary>
@@ -39,9 +41,17 @@ namespace MusicPlayerModule.ViewModels
 
         private IEventAggregator _eventAggregator;
 
-        public DistributeMusicViewModel(IEventAggregator eventAggregator, ISettingManager<SettingModel> settingManager)
+        public DistributeMusicViewModel(IEventAggregator eventAggregator, ISettingManager<SettingModel> settingManager, IConfigManager configManager)
         {
             this._eventAggregator = eventAggregator.AssertNotNull(nameof(IEventAggregator));
+
+            settingManager.TryAdd(CustomStatics.MUSIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode<string>(CustomStatics.LastMusicDir_ConfigKey), null));
+            settingManager.TryAdd(CustomStatics.LYRIC, () => new SettingModel(string.Empty, configManager.ReadConfigNode<string>(CustomStatics.LastLyricDir_ConfigKey), null));
+
+            if (settingManager.TryGetValue(CustomStatics.MUSIC, out SettingModel lastMusicDir))
+            {
+                _ = this.LoadFromFolderAsync(lastMusicDir.Value, settingManager).ConfigureAwait(false);
+            }
 
             MusicWithClassifyModel.SelectedEvent += OnlyRefreshClassifySelectAllStatus;
 
@@ -395,29 +405,36 @@ namespace MusicPlayerModule.ViewModels
         }
 
         #region Logicals
-        internal async Task AddMediaFromFolderDialogAsync(ISettingManager<SettingModel> settingManger)
+        internal Task AddMediaFromFolderDialogAsync(ISettingManager<SettingModel> settingManger)
         {
-            var musicSetting = settingManger[CustomStatics.MUSIC];
-            var lyricSetting = settingManger[CustomStatics.LYRIC];
-
             var selectedFolder = WpfAtomUtils.OpenFolderDialog(Application.Current.MainWindow);
-            if (!selectedFolder.IsNullOrBlank())
+
+            return LoadFromFolderAsync(selectedFolder, settingManger);
+        }
+
+        private async Task LoadFromFolderAsync(string folder, ISettingManager<SettingModel> settingManger)
+        {
+            if (!folder.IsNullOrBlank())
             {
-                var list = selectedFolder.GetFiles(true, str => str.EndsWithIgnoreCase(".mp3"));
+                var list = folder.GetFiles(true, str => str.EndsWithIgnoreCase(".mp3"));
 
                 if (await this.TryLoadMusicAsync(list))
                 {
-                    musicSetting.Value = selectedFolder;
+                    var musicSetting = settingManger[CustomStatics.MUSIC];
 
-                    var lyricDir = await KRCLyrics.TryGetRealDir(selectedFolder);
+                    musicSetting.Value = folder;
+
+                    var lyricDir = await KRCLyrics.TryGetRealDir(folder);
                     if (!lyricDir.IsNullOrBlank())
                     {
+                        var lyricSetting = settingManger[CustomStatics.LYRIC];
+
                         lyricSetting.Value = lyricDir;
                     }
                 }
                 else
                 {
-                    CommonUtil.PublishMessage(_eventAggregator, $"【{selectedFolder}】中找不到新的mp3音乐文件");
+                    CommonUtil.PublishMessage(_eventAggregator, $"【{folder}】中找不到新的mp3音乐文件");
                 }
             }
         }

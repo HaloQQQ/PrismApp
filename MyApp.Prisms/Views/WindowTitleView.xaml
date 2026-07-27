@@ -1,4 +1,4 @@
-﻿<UserControl
+<UserControl
     x:Class="MyApp.Prisms.Views.WindowTitleView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -27,20 +27,17 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="1.25*" />
                     </Grid.RowDefinitions>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <NeedleWaitLoad Grid.Column="0" Foreground="DodgerBlue" />
-                        <PointHorizonLineWaitLoad Grid.Column="1" Foreground="DodgerBlue" />
-                        <PointWaitLoad Grid.Column="2" Foreground="DodgerBlue" />
-                        <SquareFlipWaitLoad Grid.Column="3" Foreground="DodgerBlue" />
-                        <VerticalLineWaitLoad Grid.Column="4" Foreground="DodgerBlue" />
-                    </Grid>
+                    <UniformGrid Grid.Row="0" Columns="6">
+                        <NeedleWaitLoad Foreground="DodgerBlue" />
+                        <PointHorizonLineWaitLoad Foreground="DodgerBlue" />
+                        <PointWaitLoad Foreground="DodgerBlue" />
+                        <SquareFlipWaitLoad Foreground="DodgerBlue" />
+                        <VerticalLineWaitLoad Foreground="DodgerBlue" />
+                        <ArcRotateWaitLoad
+                            Width="60"
+                            Height="60"
+                            Foreground="DodgerBlue" />
+                    </UniformGrid>
                     <Image Grid.Row="1" Source="{Binding ImageSource}" />
                     <StackPanel
                         Grid.Row="2"
@@ -126,13 +123,6 @@
                     %
                 </TextBlock>
             </StackPanel>
-        </Popup>
-
-        <Popup
-            IsOpen="{Binding Settings.IsEditingSetting}"
-            Placement="Center"
-            PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
-            <ContentControl prism:RegionManager.RegionName="SettingRegion" />
         </Popup>
 
         <DialogMessagePopup />

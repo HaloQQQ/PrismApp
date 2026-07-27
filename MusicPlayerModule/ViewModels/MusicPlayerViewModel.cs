@@ -12,7 +12,7 @@ using IceTea.Wpf.Atom.Businesses.HotKey.App;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.Businesses.Config;
 using IceTea.Pure.Businesses.Setting;
-using IceTea.Desktop.Contracts.KeyboardHook;
+using MusicPlayerModule.Hooks;
 
 namespace MusicPlayerModule.ViewModels;
 
@@ -204,10 +204,10 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
     public ICommand DownLoadCommand { get; private set; }
     #endregion
 
-    public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appCfgHotkeyManager, ISettingManager<SettingModel> settingManager, IKeyboardHook keyboardHook)
-        : base(eventAggregator, config, appCfgHotkeyManager, settingManager, keyboardHook)
+    public MusicPlayerViewModel(IEventAggregator eventAggregator, IConfigManager configManager, IAppConfigFileHotKeyManager appCfgHotkeyManager, ISettingManager<SettingModel> settingManager, MediaGlobalKeyHook keyboardHook)
+        : base(eventAggregator, configManager, appCfgHotkeyManager, settingManager, keyboardHook)
     {
-        this.DistributeMusicViewModel = new DistributeMusicViewModel(eventAggregator, settingManager);
+        this.DistributeMusicViewModel = new DistributeMusicViewModel(eventAggregator, settingManager, configManager);
 
         this.PlayAllCommand = new DelegateCommand(
             () => PlayCurrentItems(new BatchAddAndPlayModel(
@@ -217,7 +217,7 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
             .ObservesProperty(() => this.DistributeMusicViewModel.DisplayFavorites.Count)
             .ObservesProperty(() => this.DistributeMusicViewModel.IsLoading);
 
-        this.DesktopLyric = new DesktopLyricViewModel(config);
+        this.DesktopLyric = new DesktopLyricViewModel(configManager);
     }
 
     protected override IEnumerable<AppHotKey> MediaHotKeys => base.MediaHotKeys.Concat(
@@ -234,11 +234,11 @@ internal class MusicPlayerViewModel : MediaPlayerViewModel
 
     #region CommandExecute
     #region MusicFile
-    protected override async void AddMediaFromFileDialog_CommandExecute()
-        => await this.DistributeMusicViewModel.AddMediaFromFileDialogAsync(_settingManager);
+    protected override void AddMediaFromFileDialog_CommandExecute()
+        => _ = this.DistributeMusicViewModel.AddMediaFromFileDialogAsync(_settingManager);
 
-    protected override async void AddMediaFromFolderDialog_CommandExecute()
-        => await this.DistributeMusicViewModel.AddMediaFromFolderDialogAsync(_settingManager);
+    protected override void AddMediaFromFolderDialog_CommandExecute()
+        => _ = this.DistributeMusicViewModel.AddMediaFromFolderDialogAsync(_settingManager);
     #endregion
     #endregion
 

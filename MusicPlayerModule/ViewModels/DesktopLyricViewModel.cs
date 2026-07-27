@@ -104,18 +104,22 @@ internal class DesktopLyricViewModel : NotifyBase
     #endregion
 
     #region 歌词字体
+    private static readonly HashSet<string> _commonFamilies = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "Arial", "Calibri", "Cambria", "Candara", "Comic Sans MS",
+        "Consolas", "Constantia", "Corbel", "Courier New", "Georgia",
+        "Impact", "Lucida Console", "Lucida Sans",
+        "Palatino Linotype", "Segoe UI", "Segoe UI Light", "Sitka",
+        "Tahoma", "Times New Roman", "Trebuchet MS", "Verdana",
+    };
+
     private IEnumerable<FontModel> _fonts = new InstalledFontCollection().Families
-            .Select(family => new FontModel(family.Name, family.Name))
-            .Where(fm => fm.FamilyName.ContainsChinese());
+            .Select(f => new FontModel(f.Name, f.Name))
+            .Where(f => f.FamilyName.ContainsChinese()
+                     || _commonFamilies.Contains(f.FamilyName))
+            .OrderBy(f => f.DisplayName)
+            .ToList();
     public IEnumerable<FontModel> Fonts => _fonts;
-    //new[]{
-    //  new FontModel("微软雅黑", "Microsoft YaHei"),
-    //  new FontModel("宋体", "SimSun"),
-    //  new FontModel("黑体", "SimHei"),
-    //  new FontModel("微软正黑", "Microsoft JhengHei"),
-    //  new FontModel("微软雅黑 Light", "Microsoft YaHei Light"),
-    //  new FontModel("幼圆", "YouYuan"),
-    //};
 
     private FontModel _fontModel;
     public FontModel CurrentFontModel

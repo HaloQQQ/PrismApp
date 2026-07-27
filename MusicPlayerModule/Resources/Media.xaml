@@ -1,4 +1,16 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:contracts="clr-namespace:MusicPlayerModule.Contracts">
+    <ObjectDataProvider
+        x:Key="OrdersData"
+        MethodName="GetValues"
+        ObjectType="{x:Type contracts:EnumOrderType}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="contracts:EnumOrderType" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
     <Style
         x:Key="PointABTextBlock"
         BasedOn="{StaticResource TextBlock_Theme}"
@@ -107,5 +119,107 @@
                 </Setter>
             </DataTrigger>
         </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="TogBtnPlayOrder"
+        BasedOn="{StaticResource ButtonBase_Icon_Small_HoverBlue}"
+        TargetType="ToggleButton">
+        <Setter Property="IsChecked" Value="{Binding IsEditingPlayOrder}" />
+
+        <Setter Property="Margin" Value="2,0" />
+        <Setter Property="ToolTip" Value="{Binding CurrentPlayOrder}" />
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding CurrentPlayOrder}" Value="{x:Static contracts:EnumOrderType.Order}">
+                <Setter Property="Content" Value="&#xe871;" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CurrentPlayOrder}" Value="{x:Static contracts:EnumOrderType.Loop}">
+                <Setter Property="Content" Value="&#xe66c;" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CurrentPlayOrder}" Value="{x:Static contracts:EnumOrderType.Random}">
+                <Setter Property="Content" Value="&#xe66b;" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CurrentPlayOrder}" Value="{x:Static contracts:EnumOrderType.SingleCycle}">
+                <Setter Property="Content" Value="&#xe66d;" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding CurrentPlayOrder}" Value="{x:Static contracts:EnumOrderType.SingleOnce}">
+                <Setter Property="Content" Value="&#xe621;" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="LstbxPlayOrder"
+        BasedOn="{StaticResource {x:Type ListBox}}"
+        TargetType="ListBox">
+        <Setter Property="ItemsSource" Value="{Binding Source={StaticResource OrdersData}}" />
+        <Setter Property="SelectedItem" Value="{Binding CurrentPlayOrder}" />
+
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="0,10" />
+
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate DataType="contracts:EnumOrderType">
+                                <TextBlock
+                                    Margin="30,10"
+                                    Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                    Style="{StaticResource TextBlock_Theme_Icon_MouseOver}">
+                                    <TextBlock>
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding}" Value="{x:Static contracts:EnumOrderType.Order}">
+                                                        <Setter Property="Text" Value="&#xe871;" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding}" Value="{x:Static contracts:EnumOrderType.Loop}">
+                                                        <Setter Property="Text" Value="&#xe66c;" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding}" Value="{x:Static contracts:EnumOrderType.Random}">
+                                                        <Setter Property="Text" Value="&#xe66b;" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding}" Value="{x:Static contracts:EnumOrderType.SingleCycle}">
+                                                        <Setter Property="Text" Value="&#xe66d;" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding}" Value="{x:Static contracts:EnumOrderType.SingleOnce}">
+                                                        <Setter Property="Text" Value="&#xe621;" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <TextBlock>
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding}" Value="{x:Static contracts:EnumOrderType.Order}">
+                                                        <Setter Property="Text" Value="顺序播放" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding}" Value="{x:Static contracts:EnumOrderType.Loop}">
+                                                        <Setter Property="Text" Value="循环播放" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding}" Value="{x:Static contracts:EnumOrderType.Random}">
+                                                        <Setter Property="Text" Value="随机播放" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding}" Value="{x:Static contracts:EnumOrderType.SingleCycle}">
+                                                        <Setter Property="Text" Value="单曲循环" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding}" Value="{x:Static contracts:EnumOrderType.SingleOnce}">
+                                                        <Setter Property="Text" Value="单曲播放" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </TextBlock>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

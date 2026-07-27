@@ -60,35 +60,54 @@
                             Text="{Binding Words}"
                             TextWrapping="NoWrap" />
 
-                        <TextBlock
-                            HorizontalAlignment="Left"
-                            ClipToBounds="True"
-                            FontFamily="{Binding DataContext.DesktopLyric.CurrentFontModel.Family, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                            FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                            Foreground="{Binding DataContext.DesktopLyric.LyricColorBrush.ColorBrush, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                            Text="{Binding Words}"
-                            TextTrimming="None"
-                            TextWrapping="NoWrap">
+                        <Grid>
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Left" />
+                                    <Setter Property="ClipToBounds" Value="True" />
+                                    <Setter Property="TextTrimming" Value="None" />
+                                    <Setter Property="TextWrapping" Value="NoWrap" />
 
-                            <TextBlock.Width>
-                                <MultiBinding Converter="{StaticResource LyricWidth_MultiConverter}" FallbackValue="0">
-                                    <Binding Mode="OneWay" Path="IsPlayingLine" />
-                                    <Binding
-                                        Mode="OneWay"
-                                        Path="DataContext.CurrentMedia.WordProgress"
-                                        RelativeSource="{RelativeSource AncestorType=ListBox}" />
+                                    <Setter Property="Text" Value="{Binding Words}" />
 
-                                    <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
-                                </MultiBinding>
-                            </TextBlock.Width>
+                                    <Setter Property="FontFamily" Value="{Binding DataContext.DesktopLyric.CurrentFontModel.Family, RelativeSource={RelativeSource AncestorType=ListBox}}" />
+                                    <Setter Property="FontSize" Value="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=ListBox}}" />
+                                </Style>
+                            </Grid.Resources>
+                            <TextBlock Foreground="{Binding DataContext.DesktopLyric.LyricColorBrush.ColorBrush, RelativeSource={RelativeSource AncestorType=ListBox}}">
+                                <TextBlock.Width>
+                                    <MultiBinding Converter="{StaticResource LyricWidth_MultiConverter}" FallbackValue="0">
+                                        <Binding Mode="OneWay" Path="IsPlayingLine" />
+                                        <Binding
+                                            Mode="OneWay"
+                                            Path="DataContext.CurrentMedia.WordProgress"
+                                            RelativeSource="{RelativeSource AncestorType=ListBox}" />
 
-                            <TextBlock.ToolTip>
-                                <TextBlock>
-                                    <TextBlock Text="{Binding LineStart.TotalSeconds}" />
-                                    <TextBlock Text="{Binding LineDuring.TotalSeconds}" />
-                                </TextBlock>
-                            </TextBlock.ToolTip>
-                        </TextBlock>
+                                        <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
+                                    </MultiBinding>
+                                </TextBlock.Width>
+                            </TextBlock>
+
+                            <TextBlock>
+                                <TextBlock.Foreground>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ListBox}}" />
+                                        <GradientStop Offset="1" Color="Transparent" />
+                                    </LinearGradientBrush>
+                                </TextBlock.Foreground>
+                                <TextBlock.Width>
+                                    <MultiBinding Converter="{StaticResource LyricWidth_MultiConverter}" FallbackValue="0">
+                                        <Binding Mode="OneWay" Path="IsPlayingLine" />
+                                        <Binding
+                                            Mode="OneWay"
+                                            Path="DataContext.CurrentMedia.WordProgress"
+                                            RelativeSource="{RelativeSource AncestorType=ListBox}" />
+
+                                        <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
+                                    </MultiBinding>
+                                </TextBlock.Width>
+                            </TextBlock>
+                        </Grid>
                     </Grid>
                 </DataTemplate>
             </Setter.Value>
@@ -98,38 +117,80 @@
     <DataTemplate x:Key="PanelSimpleLyric">
         <Grid Margin="20,10" HorizontalAlignment="Center">
             <TextBlock
+                FontFamily="{Binding DataContext.DesktopLyric.CurrentFontModel.Family, RelativeSource={RelativeSource AncestorType=UserControl}}"
                 FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 Foreground="{DynamicResource TextBlock.Foreground}"
                 Text="{Binding Words}" />
 
-            <TextBlock
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Setter Property="ClipToBounds" Value="True" />
+                        <Setter Property="TextTrimming" Value="None" />
+                        <Setter Property="TextWrapping" Value="NoWrap" />
+
+                        <Setter Property="Text" Value="{Binding Words}" />
+
+                        <Setter Property="FontFamily" Value="{Binding DataContext.DesktopLyric.CurrentFontModel.Family, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                        <Setter Property="FontSize" Value="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}" />
+                    </Style>
+                </Grid.Resources>
+                <TextBlock Foreground="{Binding DataContext.DesktopLyric.LyricColorBrush.ColorBrush, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                    <TextBlock.Width>
+                        <MultiBinding Converter="{StaticResource DesktopLyricColorfulMultiConverter}">
+                            <Binding Mode="OneWay" Path="IsPlayed" />
+
+                            <Binding Mode="OneWay" Path="IsPlayingLine" />
+
+                            <Binding
+                                Mode="OneWay"
+                                Path="DataContext.CurrentMedia.WordProgress"
+                                RelativeSource="{RelativeSource AncestorType=Border}" />
+
+                            <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
+                        </MultiBinding>
+                    </TextBlock.Width>
+                </TextBlock>
+
+                <TextBlock>
+                    <TextBlock.Foreground>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                            <GradientStop Offset="1" Color="Transparent" />
+                        </LinearGradientBrush>
+                    </TextBlock.Foreground>
+                    <TextBlock.Width>
+                        <MultiBinding Converter="{StaticResource DesktopLyricColorfulMultiConverter}">
+                            <Binding Mode="OneWay" Path="IsPlayed" />
+
+                            <Binding Mode="OneWay" Path="IsPlayingLine" />
+
+                            <Binding
+                                Mode="OneWay"
+                                Path="DataContext.CurrentMedia.WordProgress"
+                                RelativeSource="{RelativeSource AncestorType=Border}" />
+
+                            <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
+                        </MultiBinding>
+                    </TextBlock.Width>
+                    <TextBlock.ToolTip>
+                        <TextBlock>
+                            <TextBlock Text="{Binding LineStart.TotalSeconds}" />
+                            <TextBlock Text="{Binding LineDuring.TotalSeconds}" />
+                        </TextBlock>
+                    </TextBlock.ToolTip>
+                </TextBlock>
+            </Grid>
+
+
+            <!--<TextBlock
                 HorizontalAlignment="Left"
                 ClipToBounds="True"
                 FontSize="{Binding DataContext.DesktopLyric.CurrentLyricFontSize, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitMultiConverter}, ConverterParameter=1.5, FallbackValue=20}"
                 Foreground="{Binding DataContext.DesktopLyric.LyricColorBrush.ColorBrush, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=SkyBlue}"
                 Text="{Binding Words}"
-                TextTrimming="None">
-                <TextBlock.Width>
-                    <MultiBinding Converter="{StaticResource DesktopLyricColorfulMultiConverter}">
-                        <Binding Mode="OneWay" Path="IsPlayed" />
-
-                        <Binding Mode="OneWay" Path="IsPlayingLine" />
-
-                        <Binding
-                            Mode="OneWay"
-                            Path="DataContext.CurrentMedia.WordProgress"
-                            RelativeSource="{RelativeSource AncestorType=Border}" />
-
-                        <Binding Mode="OneWay" RelativeSource="{RelativeSource Self}" />
-                    </MultiBinding>
-                </TextBlock.Width>
-                <TextBlock.ToolTip>
-                    <TextBlock>
-                        <TextBlock Text="{Binding LineStart.TotalSeconds}" />
-                        <TextBlock Text="{Binding LineDuring.TotalSeconds}" />
-                    </TextBlock>
-                </TextBlock.ToolTip>
-            </TextBlock>
+                TextTrimming="None" />-->
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

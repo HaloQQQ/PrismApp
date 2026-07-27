@@ -11,36 +11,29 @@ using IceTea.Pure.Extensions;
 using System.Threading.Tasks;
 using IceTea.Pure.Contracts;
 using IceTea.Wpf.Atom.Contracts.MyEvents;
-using IceTea.Pure.BaseModels;
-using Prism.Regions;
-using MyApp.Prisms.Views;
-using SqlCreatorModule.Views;
-using CustomControlsDemoModule.Views;
-using CustomControlsDemoModule.Views.Controls;
-using MusicPlayerModule.Views;
 using System.Windows.Media.Imaging;
-using IceTea.Desktop.Extensions;
+using IceTea.Windows.Extensions;
 using PrismAppBasicLib.Contracts;
 using IceTea.Wpf.Core.Utils;
 using IceTea.Core.Businesses.QRCode;
 using IceTea.Wpf.Atom.Businesses.HotKey.App;
-using IceTea.Wpf.Core.Interactions;
 using IceTea.Pure.Businesses.Config;
-using IceTea.Pure.Businesses.HotKey;
 using IceTea.Pure.Businesses.Event;
-using IceTea.Desktop.Businesses.QRCodes;
-using IceTea.Desktop.Businesses.Bright;
-using IceTea.Desktop.Utils;
+using IceTea.Windows.Businesses.QRCodes;
+using IceTea.Windows.Businesses.Bright;
+using IceTea.Windows.Utils;
 using MyApp.Prisms.Contracts;
 using IceTea.Wpf.Atom.Businesses.HotKey.Global;
-using IceTea.Wpf.Atom.Extensions;
+using IceTea.Wpf.Core.Extensions;
+using IceTea.Wpf.Atom.ViewModels;
+using IceTea.Wpf.Atom.Contracts;
 
 #pragma warning disable CS8603 // 可能返回 null 引用。
 #pragma warning disable CS8618 // 在退出构造函数时，不可为 null 的字段必须包含非 null 值。请考虑添加 "required" 修饰符或声明为可为 null。
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
 namespace MyApp.Prisms.ViewModels
 {
-    internal class SoftwareViewModel : NotifyBase, IDialogMessage, IDisposable
+    internal class SoftwareViewModel : IceTeaViewModelBase, IDialogMessage, IDisposable
     {
         public SoftwareViewModel(
                 UserViewModel userContext,
@@ -49,70 +42,18 @@ namespace MyApp.Prisms.ViewModels
                 IConfigManager config,
                 IAppConfigFileHotKeyManager appCfgHotkeyManager,
                 IEventAggregator eventAggregator,
-                IRegionManager regionManager,
-                GloablHotKeyHandlerBase gloablHotKeyHandler
-            )
+                GlobalHotKeyHandlerBase gloablHotKeyHandler
+            ) : base(appCfgHotkeyManager)
         {
             this.UserContext = userContext.AssertNotNull(nameof(UserContext));
             this.Settings = settings.AssertNotNull(nameof(SettingsViewModel));
             this._imageDisplayViewModel = imageDisplayViewModel.AssertNotNull(nameof(ImageDisplayViewModel));
 
-            this._gloablHotKeyHandler = gloablHotKeyHandler.AssertNotNull(nameof(GloablHotKeyHandlerBase));
-
+            this._gloablHotKeyHandler = gloablHotKeyHandler.AssertNotNull(nameof(GlobalHotKeyHandlerBase));
 
             this.InitQRCodeImage();
 
             this.SwitchThemeCommand = new DelegateCommand(this.RefreshTheme);
-
-            this.NavigateToCommand = new DelegateCommand<string>(target =>
-            {
-                var uri = target;
-
-                this.Title = uri;
-
-                switch (uri)
-                {
-                    case "通讯工具":
-                        uri = nameof(CommunicationView);
-                        break;
-                    case "进程服务":
-                        uri = nameof(ProcessServiceView);
-                        break;
-                    case "邮件客户端":
-                        uri = nameof(MailManager);
-                        break;
-
-                    case "数据表结构":
-                        uri = nameof(CreateModelView);
-                        break;
-                    case "颜色转换":
-                        uri = nameof(ColorView);
-                        break;
-
-                    case "控件样例":
-                        uri = nameof(ControlsDemoView);
-                        break;
-
-                    case "音乐播放器":
-                        uri = nameof(MusicPlayer);
-                        break;
-
-                    case "视频播放器":
-                        uri = nameof(VideoPlayerView);
-                        break;
-
-                    case "小工具":
-                        uri = nameof(ToolsView);
-                        break;
-                    default:
-                        break;
-                }
-
-                regionManager.RequestNavigate("MainContentRegion", uri, nr => { }, new NavigationParameters()
-                    {
-                        { "Key", "Value" }
-                    });
-            });
 
             CommonUtil.SubscribeMessage(eventAggregator, item => this.DialogMessage = item);
 
@@ -125,7 +66,6 @@ namespace MyApp.Prisms.ViewModels
             });
 
             this.LoadConfig(config);
-            this.InitHotkeys(appCfgHotkeyManager);
 
             this.SubscribeCustomCommandEvent();
 
@@ -134,11 +74,10 @@ namespace MyApp.Prisms.ViewModels
             this.InitBackgroundSwitch(eventAggregator);
         }
 
-        public ICommand NavigateToCommand { get; }
 
         public ICommand SwitchThemeCommand { get; }
 
-        private void LoadConfig(IConfigManager config)
+        protected virtual void LoadConfig(IConfigManager config)
         {
             this.OnlyOneProcess = config.IsTrue(CustomConstants.ONLY_ONE_PROCESS.FillToArray());
             this.AutoStart = config.IsTrue(CustomConstants.AUTO_START.FillToArray());
@@ -237,9 +176,6 @@ namespace MyApp.Prisms.ViewModels
             private set => SetProperty<decimal>(ref _ramRate, value);
         }
 
-        private string _title = string.Empty;
-        public string Title { get => this._title; private set => SetProperty<string>(ref this._title, value); }
-
         private string _currentTime = DateTime.Now.FormatTime();
 
         public string CurrentTime
@@ -287,8 +223,13 @@ namespace MyApp.Prisms.ViewModels
 
         internal void RefreshBrightness()
         {
-            if (this._brightManager == null) return;
-            try { this.CurrentBright = this._brightManager.GetBrightness(); } catch { }
+            if (this._brightManager == null)
+                return;
+            try
+            {
+                this.CurrentBright = this._brightManager.GetBrightness();
+            }
+            catch { }
         }
 
         private ScreenBrightManager _brightManager;
@@ -320,28 +261,6 @@ namespace MyApp.Prisms.ViewModels
             }
         }
         #endregion
-
-        #region 窗口标题栏快捷键
-        public IHotKeyGroup<Key, ModifierKeys> WindowKeyBindingMap { get; private set; }
-
-        private void InitHotkeys(IAppConfigFileHotKeyManager appCfgHotkeyManager)
-        {
-            var groupName = "窗口";
-            appCfgHotkeyManager.TryRegister(groupName, PreDefinedHotKeys.ConfigWindowAppHotKeys);
-
-            var group = appCfgHotkeyManager[groupName];
-            group.TryRegisterBatch(PreDefinedHotKeys.WindowAppHotKeys);
-
-            this.WindowKeyBindingMap = group;
-        }
-        #endregion
-
-        private DialogMessage _dialogMessage;
-        public DialogMessage DialogMessage
-        {
-            get => this._dialogMessage;
-            set => SetProperty<DialogMessage>(ref _dialogMessage, value);
-        }
 
         public SettingsViewModel Settings { get; }
 
@@ -387,25 +306,11 @@ namespace MyApp.Prisms.ViewModels
             get => this._isVideoPlayer;
             set => SetProperty<bool>(ref _isVideoPlayer, value);
         }
-
-        private bool _isTitleBarHidden;
-        public bool IsTitleBarHidden
-        {
-            get => _isTitleBarHidden;
-            set => SetProperty<bool>(ref _isTitleBarHidden, value);
-        }
-
-        private bool _isLogin;
-        public bool IsLogin
-        {
-            get => this._isLogin;
-            set => SetProperty<bool>(ref _isLogin, value);
-        }
         #endregion
 
         private DispatcherTimer _timer = null;
         private readonly ImageDisplayViewModel _imageDisplayViewModel;
-        private GloablHotKeyHandlerBase _gloablHotKeyHandler;
+        private GlobalHotKeyHandlerBase _gloablHotKeyHandler;
 
         private void InitBackgroundSwitch(IEventAggregator eventAggregator)
         {
@@ -460,7 +365,12 @@ namespace MyApp.Prisms.ViewModels
 
         private void SubscribeCustomCommandEvent()
         {
-            CustomEventManager.Current.GetEvent<OpenSettingEvent>().Execute += () => this.Settings.IsEditingSetting = true;
+            CustomEventManager.Current.GetEvent<OpenSettingEvent>().Execute += () =>
+            {
+                bool isEditingSetting = this.Settings.IsEditingSetting;
+
+                this.Settings.IsEditingSetting = !isEditingSetting;
+            };
             CustomEventManager.Current.GetEvent<HideTitleBarEvent>().Execute += () => this.IsTitleBarHidden = !this.IsTitleBarHidden;
             CustomEventManager.Current.GetEvent<LoginEvent>().Execute += () => this.IsLogin = !this.IsLogin;
         }

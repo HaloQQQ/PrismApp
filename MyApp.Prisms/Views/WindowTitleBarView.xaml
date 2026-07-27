@@ -60,6 +60,8 @@
                     MouseRightButtonUp="SwitchBackSliderMoveOut_OnMouseRightButtonUp"
                     Style="{StaticResource Button_Icon_Theme}" />
 
+                <Button Style="{StaticResource Button_Icon_Setting}" />
+
                 <Button
                     ContextMenu="{StaticResource MainMenu}"
                     MyAttachProperty.HasContextMenu="True"

@@ -9,15 +9,6 @@ namespace MusicPlayerModule.Contracts
             Video
         }
 
-        public static List<MediaPlayOrderModel> MediaPlayOrderList { get; } = new()
-        {
-            new MediaPlayOrderModel("\ue871", MediaPlayOrderModel.EnumOrderType.Order),
-            new MediaPlayOrderModel("\ue66c", MediaPlayOrderModel.EnumOrderType.Loop),
-            new MediaPlayOrderModel("\ue66b", MediaPlayOrderModel.EnumOrderType.Random),
-            new MediaPlayOrderModel("\ue66d", MediaPlayOrderModel.EnumOrderType.SingleCycle),
-            new MediaPlayOrderModel("\ue621", MediaPlayOrderModel.EnumOrderType.SingleOnce)
-        };
-
         #region Music
         public static string MUSIC = EnumSettings.Music.ToString();
         public static string LYRIC = EnumSettings.Lyric.ToString();
@@ -48,6 +39,8 @@ namespace MusicPlayerModule.Contracts
         internal static readonly string[] VideoStretch_ConfigKey = new[] { VIDEO, "VideoStretch" };
 
         public static readonly string[] LastVideoDir_ConfigKey = new[] { VIDEO, "LastVideoDir" };
+
+        public static readonly string[] HistoryList_ConfigKey = new[] { VIDEO, "HistoryList" };
         #endregion
     }
 }

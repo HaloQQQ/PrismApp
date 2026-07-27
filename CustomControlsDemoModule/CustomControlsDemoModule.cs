@@ -5,8 +5,8 @@ using CustomControlsDemoModule.Views.Controls.Buttons;
 using CustomControlsDemoModule.Views.Controls.TextBoxes;
 using Prism.Ioc;
 using Prism.Modularity;
-using IceTea.Desktop.Businesses.GlobalEvent;
-using IceTea.Desktop.Contracts.MouseHook;
+using IceTea.Windows.Businesses.GlobalEvent;
+using IceTea.Windows.Contracts.GlobalEvent;
 
 namespace CustomControlsDemoModule
 {

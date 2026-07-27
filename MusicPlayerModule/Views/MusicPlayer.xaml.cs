@@ -1,4 +1,4 @@
-﻿using Prism.Events;
+using Prism.Events;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Prism.Ioc;

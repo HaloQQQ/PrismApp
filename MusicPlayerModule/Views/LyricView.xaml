@@ -116,6 +116,8 @@
                                                 <Setter Property="BorderThickness" Value="2" />
                                                 <Setter Property="ToolTip" Value="{Binding}" />
 
+                                                <Setter Property="Cursor" Value="SizeAll" />
+
                                                 <EventSetter Event="MouseMove" Handler="DragLeaveFrom" />
 
                                                 <Setter Property="Width" Value="40" />
@@ -140,6 +142,7 @@
                                             Margin="10,0"
                                             Background="{Binding DesktopLyric.CustomColor}"
                                             CornerRadius="20"
+                                            Cursor="SizeAll"
                                             MouseMove="DragLeaveFrom"
                                             ToolTip="{Binding DesktopLyric.CustomColor}" />
 
@@ -198,47 +201,20 @@
                                     Style="{StaticResource ButtonBase_Icon_Conent_Transparent}" />
                             </StackPanel>
 
-                            <WrapPanel>
+                            <StackPanel Margin="0,10" Orientation="Horizontal">
                                 <TextBlock
+                                    VerticalAlignment="Center"
                                     FontSize="20"
                                     Style="{StaticResource TextBlock_Theme}"
                                     Text="字体：" />
-                                <ListBox
+                                <ComboBox
+                                    Width="250"
+                                    DisplayMemberPath="DisplayName"
+                                    IsReadOnly="True"
                                     ItemsSource="{Binding DesktopLyric.Fonts}"
-                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                    SelectedItem="{Binding DesktopLyric.CurrentFontModel}">
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <WrapPanel />
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                    <ListBox.ItemContainerStyle>
-                                        <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
-                                            <Setter Property="MyAttachProperty.CornerRadius" Value="10" />
-                                            <Setter Property="Width" Value="145" />
-                                            <Setter Property="Cursor" Value="Hand" />
-
-                                            <Style.Triggers>
-                                                <Trigger Property="IsSelected" Value="True">
-                                                    <Setter Property="Background" Value="{StaticResource TransparentButtonBackground}" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ListBox.ItemContainerStyle>
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate DataType="viewmodels:FontModel">
-                                            <TextBlock
-                                                MinWidth="60"
-                                                Padding="10,5"
-                                                FontFamily="{Binding Family}"
-                                                FontSize="14"
-                                                Text="{Binding DisplayName}"
-                                                TextAlignment="Center"
-                                                TextWrapping="Wrap" />
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </WrapPanel>
+                                    MaxDropDownHeight="300"
+                                    SelectedItem="{Binding DesktopLyric.CurrentFontModel}" />
+                            </StackPanel>
                         </StackPanel>
                     </Border>
                 </Popup>

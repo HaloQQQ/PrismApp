@@ -14,17 +14,20 @@ using IceTea.Wpf.Atom.Businesses.HotKey.App;
 using System.Windows;
 using IceTea.Pure.Businesses.Config;
 using IceTea.Pure.Businesses.Setting;
-using IceTea.Desktop.Contracts.KeyboardHook;
+using MusicPlayerModule.Hooks;
+using Prism.Regions;
+using Prism.Ioc;
 
+#pragma warning disable CS8600 // 将 null 字面量或可能为 null 的值转换为非 null 类型。
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
 namespace MusicPlayerModule.ViewModels;
 
-internal class VideoPlayerViewModel : MediaPlayerViewModel
+internal class VideoPlayerViewModel : MediaPlayerViewModel, INavigationAware
 {
     protected override string MediaType => "视频";
 
     public MediaOperationModel MediaOperationViewModel { get; private set; } = new MediaOperationModel();
-    
+
     protected override string[] MediaHotKey_ConfigKey => new string[] { "HotKeys", "App", "Video" };
 
     protected override string[] MediaPlayOrder_ConfigKey => new string[] { CustomStatics.EnumSettings.Video.ToString(), "VideoPlayOrder" };
@@ -93,7 +96,7 @@ internal class VideoPlayerViewModel : MediaPlayerViewModel
 
         if (this.CurrentMedia == null)
         {
-            this.SetAndPlay(this.DisplayPlaying.FirstOrDefault());
+            this.SetAndPlay(this.DisplayPlaying.First(m => m.FilePath == filePaths.First()));
         }
 
         return true;
@@ -112,10 +115,12 @@ internal class VideoPlayerViewModel : MediaPlayerViewModel
 
     private VideoModelAndGuid _dto;
 
-    public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager config, IAppConfigFileHotKeyManager appCfgHotkeyManager, ISettingManager<SettingModel> settingMnager, IKeyboardHook keyboardHook)
-        : base(eventAggregator, config, appCfgHotkeyManager, settingMnager, keyboardHook)
+    public VideoPlayerViewModel(IEventAggregator eventAggregator, IConfigManager configManager, IAppConfigFileHotKeyManager appCfgHotkeyManager, ISettingManager<SettingModel> settingMnager, MediaGlobalKeyHook keyboardHook)
+        : base(eventAggregator, configManager, appCfgHotkeyManager, settingMnager, keyboardHook)
     {
         this._dto = new VideoModelAndGuid(this.Identity);
+
+        this._settingManager.TryAdd(CustomStatics.VIDEO, () => new SettingModel(string.Empty, configManager.ReadConfigNode<string>(CustomStatics.LastVideoDir_ConfigKey), null));
     }
 
     #region overrides
@@ -169,10 +174,56 @@ internal class VideoPlayerViewModel : MediaPlayerViewModel
             this.Stretch = result;
         }
 
-        configManager.SetConfig += config =>
+        configManager.SetConfig += OnSetConfigSaveStretch;
+        configManager.SetConfig += OnSetConfigSaveHistory;
+    }
+
+    private void OnSetConfigSaveStretch(IConfigManager config)
+    {
+        config.WriteConfigNode(this.Stretch, CustomStatics.VideoStretch_ConfigKey);
+    }
+
+    private void OnSetConfigSaveHistory(IConfigManager config)
+    {
+        if (this.CurrentMedia == null)
         {
-            config.WriteConfigNode(this.Stretch, CustomStatics.VideoStretch_ConfigKey);
-        };
+            return;
+        }
+
+        var list = config.ReadConfigNode<List<string>>(CustomStatics.HistoryList_ConfigKey);
+
+        var videosCount = 0;
+
+        if (list == null)
+        {
+            list = new List<string>();
+        }
+        else
+        {
+            var settingManager = ContainerLocator.Container.Resolve<ISettingManager>();
+            if (!settingManager.TryGetValue("VideosCount", out string count))
+            {
+                settingManager.AddOrUpdate("VideosCount", list.Count.ToString());
+                videosCount = list.Count;
+            }
+            else
+            {
+                videosCount = int.Parse(count);
+            }
+
+            if (!settingManager.TryGetValue("HasClean", out _))
+            {
+                list.Clear();
+                settingManager.AddOrUpdate("HasClean", "true");
+            }
+        }
+
+        if (this.CurrentMedia != null)
+        {
+            list.Add(this.CurrentMedia.FilePath);
+        }
+
+        config.WriteConfigNode(list, CustomStatics.HistoryList_ConfigKey);
     }
 
     protected override void RaiseContinueMediaEvent()
@@ -226,6 +277,13 @@ internal class VideoPlayerViewModel : MediaPlayerViewModel
 
     protected override void DisposeCore()
     {
+        // 注销 SetConfig 事件，防止移除视图后 handler 仍参与历史列表保存
+        if (_configManager != null)
+        {
+            _configManager.SetConfig -= OnSetConfigSaveStretch;
+            _configManager.SetConfig -= OnSetConfigSaveHistory;
+        }
+
         MediaOperationViewModel = null;
 
         _dto.Dispose();
@@ -233,4 +291,25 @@ internal class VideoPlayerViewModel : MediaPlayerViewModel
 
         base.DisposeCore();
     }
+
+    #region INavigationAware
+    public void OnNavigatedTo(NavigationContext navigationContext)
+    {
+        if (navigationContext.Parameters.ContainsKey("originUrl"))
+        {
+            var originUrl = navigationContext.Parameters["originUrl"].ToString();
+
+            if (originUrl.IsFileExists())
+            {
+                new PlayingVideoViewModel(this._dto, new VideoModel(originUrl!)).TryAddTo(DisplayPlaying);
+
+                this.SetAndPlay(DisplayPlaying.First());
+            }
+        }
+    }
+
+    public bool IsNavigationTarget(NavigationContext navigationContext) => false;
+
+    public void OnNavigatedFrom(NavigationContext navigationContext) { }
+    #endregion
 }

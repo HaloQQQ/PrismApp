@@ -1,29 +1,29 @@
+using CustomControlsDemoModule.Events;
+using CustomControlsDemoModule.Views;
+using IceTea.Atom.Utils;
+using IceTea.Pure.BaseModels;
+using IceTea.Pure.Businesses.Config;
+using IceTea.Pure.Businesses.HotKey.Global;
+using IceTea.Pure.Businesses.Setting;
+using IceTea.Pure.Contracts;
+using IceTea.Pure.Extensions;
+using IceTea.Pure.Utils;
+using IceTea.Wpf.Atom.Businesses.HotKey.App;
+using MusicPlayerModule.Contracts;
+using MyApp.Prisms.Contracts;
+using MyApp.Prisms.MsgEvents;
 using Prism.Commands;
 using Prism.Events;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using IceTea.Pure.Utils;
-using IceTea.Pure.Extensions;
-using IceTea.Pure.Contracts;
+using Prism.Ioc;
+using Prism.Services.Dialogs;
+using PrismAppBasicLib.Contracts;
+using PrismAppBasicLib.Models;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System;
-using MusicPlayerModule.Contracts;
-using IceTea.Pure.BaseModels;
-using Prism.Services.Dialogs;
-using PrismAppBasicLib.Models;
-using CustomControlsDemoModule.Views;
-using CustomControlsDemoModule.Events;
-using PrismAppBasicLib.Contracts;
-using Prism.Ioc;
-using MyApp.Prisms.MsgEvents;
-using IceTea.Wpf.Atom.Businesses.HotKey.App;
-using IceTea.Pure.Businesses.Config;
-using IceTea.Pure.Businesses.Setting;
-using IceTea.Pure.Businesses.HotKey.Global;
-using MyApp.Prisms.Contracts;
-using IceTea.Atom.Utils;
+using System.Windows.Input;
 
 namespace MyApp.Prisms.ViewModels
 {
@@ -45,11 +45,41 @@ namespace MyApp.Prisms.ViewModels
 
             this.SettingModels = settingModels.AssertNotNull(nameof(ISettingManager<SettingModel>));
 
+            this._eventAggregator = eventAggregator;
+
+            this._settingManager = settingManager.AssertNotNull(nameof(settingManager));
+
             this.LoadConfig(configManager, settingModels);
 
             this.LoadMailAccounts(configManager, settingManager);
 
+            this.LoadVideosCount(configManager, settingManager);
+
             this.InitCommands(eventAggregator, settingManager, configManager, dialogService);
+        }
+
+        private readonly IEventAggregator _eventAggregator;
+
+        private readonly ISettingManager _settingManager;
+
+        private void LoadVideosCount(IConfigManager configManager, ISettingManager settingManager)
+        {
+            IList<string> historyList = configManager.ReadConfigNode<List<string>>(CustomStatics.HistoryList_ConfigKey);
+
+            int count = 8;
+            if (!historyList.IsNullOrEmpty())
+            {
+                count = historyList.Count;
+            }
+
+            count = Enum.GetValues(typeof(EnumVideosCount))
+               .Cast<int>()
+               .Where(v => v <= count)
+               .Max();
+
+            _videosCount = (EnumVideosCount)count;
+
+            settingManager.AddOrUpdate(CustomConstants.SettingKeys.VideosCount, count.ToString());
         }
 
         public ISettingManager<SettingModel> SettingModels { get; }
@@ -233,6 +263,10 @@ namespace MyApp.Prisms.ViewModels
             this.InitSetting(configManager, settingModels, CustomStatics.VIDEO, "视频默认目录", CustomStatics.LastVideoDir_ConfigKey);
 
             this.LoadWindowCornerRadius(configManager);
+
+            IsVideosAutoLoad = configManager.ReadConfigNode<bool>(CustomConstants.ConfigNodes.IsVideosAutoLoad);
+
+            configManager.SetConfig += config => config.WriteConfigNode<bool>(this.IsVideosAutoLoad, CustomConstants.ConfigNodes.IsVideosAutoLoad);
         }
 
         private void InitSetting(IConfigManager configManager, ISettingManager<SettingModel> settingModels, string key, string description, params string[] configNode)
@@ -297,6 +331,25 @@ namespace MyApp.Prisms.ViewModels
             set => SetProperty<CornerRadius>(ref _cornerRadius, value);
         }
 
+        private EnumVideosCount _videosCount;
+        public EnumVideosCount VideosCount
+        {
+            get => _videosCount;
+            set
+            {
+                if (SetProperty(ref _videosCount, value))
+                {
+                    this.IsEditingSetting = false;
+
+                    // 持久化新的视频格数量，确保 VideoPlayerViewModel 在 SetConfig 时读到最新值
+                    _settingManager.AddOrUpdate(CustomConstants.SettingKeys.VideosCount, ((int)value).ToString());
+
+                    _eventAggregator.GetEvent<VideosCountChangedEvent>()
+                                    .Publish(_videosCount);
+                }
+            }
+        }
+
         private bool _isEditingSetting;
 
         public bool IsEditingSetting
@@ -313,6 +366,14 @@ namespace MyApp.Prisms.ViewModels
                 }
             }
         }
+
+        private bool _isVideosAutoLoad;
+        public bool IsVideosAutoLoad
+        {
+            get => _isVideosAutoLoad;
+            set => SetProperty<bool>(ref _isVideosAutoLoad, value);
+        }
+
         #endregion
     }
 

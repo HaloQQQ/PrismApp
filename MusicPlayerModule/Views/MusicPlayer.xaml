@@ -5,9 +5,10 @@
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewmodels="clr-namespace:MusicPlayerModule.ViewModels"
     xmlns:views="clr-namespace:MusicPlayerModule.Views"
-    prism:ViewModelLocator.AutoWireViewModel="True">
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    FocusVisualStyle="{x:Null}">
 
-    <Grid CommandManager.Executed="UserControl_Executed">
+    <Grid CommandManager.Executed="UserControl_Executed" MyAttachProperty.FocusOnClick="True">
         <Grid.InputBindings>
             <KeyBinding
                 Key="{Binding KeyGestureDic[搜索].SelectedKey}"

@@ -20,51 +20,47 @@
         <DockPanel>
             <views:WindowTitleBarView DockPanel.Dock="Top" />
 
-            <Grid DockPanel.Dock="Bottom">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <TreeView
-                    Grid.Column="0"
-                    HorizontalContentAlignment="Left"
-                    FontSize="20"
-                    MyAttachProperty.IsCollapsed="True">
-                    <TreeView.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource {x:Type TreeViewItem}}" TargetType="TreeViewItem">
-                            <Setter Property="MyAttachProperty.CornerRadius" Value="10" />
+            <Grid>
+                <ContentControl prism:RegionManager.RegionName="MainWindowRegion" />
 
-                            <Setter Property="MyAttachProperty.IconFontText" Value="&#xebdf;" />
-
-                            <Setter Property="Padding" Value="10,5" />
+                <views:SettingsView>
+                    <views:SettingsView.RenderTransform>
+                        <TranslateTransform X="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Window}}" />
+                    </views:SettingsView.RenderTransform>
+                    <views:SettingsView.Style>
+                        <Style TargetType="views:SettingsView">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DataContext.Settings.IsEditingSetting, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" To="0">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <ElasticEase
+                                                            EasingMode="EaseOut"
+                                                            Oscillations="2"
+                                                            Springiness="5" />
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <BackEase EasingMode="EaseInOut" />
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
                         </Style>
-                    </TreeView.ItemContainerStyle>
-
-                    <TreeView.ItemsSource>
-                        <x:Array Type="system:String">
-                            <system:String>通讯工具</system:String>
-                            <system:String>进程服务</system:String>
-                            <system:String>邮件客户端</system:String>
-
-                            <system:String>数据表结构</system:String>
-                            <system:String>颜色转换</system:String>
-
-                            <system:String>控件样例</system:String>
-                            <system:String>小工具</system:String>
-
-                            <system:String>音乐播放器</system:String>
-                            <system:String>视频播放器</system:String>
-                        </x:Array>
-                    </TreeView.ItemsSource>
-
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="SelectedItemChanged">
-                            <prism:InvokeCommandAction Command="{Binding NavigateToCommand}" TriggerParameterPath="NewValue" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                </TreeView>
-
-                <ContentControl Grid.Column="1" prism:RegionManager.RegionName="MainContentRegion" />
+                    </views:SettingsView.Style>
+                </views:SettingsView>
             </Grid>
         </DockPanel>
 

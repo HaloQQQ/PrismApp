@@ -1,4 +1,4 @@
-﻿using MusicPlayerModule.Contracts;
+using MusicPlayerModule.Contracts;
 using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.MsgEvents.Video;
 using MusicPlayerModule.MsgEvents.Video.Dtos;
@@ -140,6 +140,18 @@ namespace MusicPlayerModule.Views
             });
         }
 
+        /// <summary>
+        /// 主动清理 ViewModel，仅缩容时由 VideosView 调用。
+        /// 不在 Unloaded 中触发，避免正常退出时过早注销 SetConfig 导致无法保存历史记录。
+        /// </summary>
+        public void Cleanup()
+        {
+            if (_videoPlayerViewModel is IDisposable d)
+            {
+                d.Dispose();
+            }
+        }
+
         private Point lastMousePosition;  // 上次鼠标位置
         private void RefreshCursor()
         {
@@ -264,7 +276,7 @@ namespace MusicPlayerModule.Views
         }
 
         #region 音量调节
-        private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void VolumeButton_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (this.VolumePopup.IsOpen)
             {

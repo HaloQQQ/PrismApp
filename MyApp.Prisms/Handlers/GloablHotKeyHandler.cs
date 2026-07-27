@@ -12,7 +12,7 @@ using IceTea.Wpf.Atom.Extensions;
 
 namespace MyApp.Prisms.Handlers
 {
-    internal class GloablHotKeyHandler : GloablHotKeyHandlerBase
+    internal class GloablHotKeyHandler : GlobalHotKeyHandlerBase
     {
         private IEventAggregator _ea;
         public GloablHotKeyHandler(IEventAggregator ea, IGlobalHotKeyManager manager, Window window)

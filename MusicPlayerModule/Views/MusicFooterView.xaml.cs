@@ -1,4 +1,4 @@
-﻿using MusicPlayerModule.MsgEvents.Music;
+using MusicPlayerModule.MsgEvents.Music;
 using MusicPlayerModule.MsgEvents;
 using Prism.Events;
 using System.Windows;
@@ -53,6 +53,7 @@ namespace MusicPlayerModule.Views
                         var configManager = ContainerLocator.Current.Resolve<IConfigManager>();
 
                         _horizentalDesktopLyricWindow = new HorizontalMusicLyricDesktopWindow(configManager);
+                        _horizentalDesktopLyricWindow.DataContext = this.DataContext;
                         mainWindow.Closing += (sender, e) => _horizentalDesktopLyricWindow.Close();
                     }
                 }
@@ -66,6 +67,7 @@ namespace MusicPlayerModule.Views
                         var configManager = ContainerLocator.Current.Resolve<IConfigManager>();
 
                         _verticalDesktopLyricWindow = new VerticalMusicLyricDesktopWindow(configManager);
+                        _verticalDesktopLyricWindow.DataContext = this.DataContext;
                         mainWindow.Closing += (sender, e) => _verticalDesktopLyricWindow.Close();
                     }
                 }
@@ -211,7 +213,7 @@ namespace MusicPlayerModule.Views
 
         #region 音量调整
         //音量调节
-        private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void VolumeButton_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (this.VolumePopup.IsOpen)
             {

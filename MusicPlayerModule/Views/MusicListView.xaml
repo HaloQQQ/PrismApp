@@ -167,7 +167,12 @@
                                 Command="{Binding DataContext.ExploreSelectCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                 CommandParameter="{Binding Music.FilePath}"
                                 Style="{StaticResource {x:Type ButtonBase}}">
-                                <TextBlock Text="{Binding Music.FilePath}" ToolTip="{Binding Music.FilePath}">
+                                <TextBlock
+                                    Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=DataGridCell}}"
+                                    Text="{Binding Music.FilePath}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="NoWrap"
+                                    ToolTip="{Binding Music.FilePath}">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
@@ -245,7 +250,6 @@
 
             <DataGrid
                 Grid.Column="1"
-                Background="Red"
                 HeadersVisibility="All"
                 ItemsSource="{Binding SelectedItem.ClassifyFavorites, ElementName=MusicByAlbumListBox}"
                 MyAttachProperty.DisplayRowNumber="True"

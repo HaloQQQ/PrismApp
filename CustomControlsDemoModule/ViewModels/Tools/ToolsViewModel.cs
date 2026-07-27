@@ -11,14 +11,14 @@ using System.Collections.Generic;
 using System;
 using IceTea.Wpf.Atom.Contracts.FileFilters;
 using CustomControlsDemoModule.Models;
-using IceTea.Desktop.Extensions;
+using IceTea.Windows.Extensions;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Windows.Media.Imaging;
 using System.Drawing;
 using System.Collections.ObjectModel;
 using System.ServiceProcess;
-using IceTea.Wpf.Atom.Extensions;
+using IceTea.Wpf.Core.Extensions;
 
 namespace CustomControlsDemoModule.ViewModels
 {

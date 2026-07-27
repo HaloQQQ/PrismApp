@@ -74,7 +74,7 @@ namespace MyApp.Prisms.Views
                 translateAnimation.BeginTime = TimeSpan.FromMilliseconds(500);
             }
 
-            translateAnimation.EasingFunction = new CubicEase() { EasingMode = EasingMode.EaseInOut };
+            translateAnimation.EasingFunction = new BackEase() { EasingMode = EasingMode.EaseInOut };
 
             Storyboard.SetTarget(translateAnimation, this);
             Storyboard.SetTargetProperty(translateAnimation,

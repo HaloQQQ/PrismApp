@@ -16,6 +16,29 @@ namespace MyApp.Prisms.Contracts
             internal const string Software_Log_Dir = "软件启停记录";
         }
 
+        internal class RegionNames
+        {
+            internal const string VideosRegion = "VideosRegion";
+            internal const string MainWindowRegion = "MainWindowRegion";
+
+            internal const string SmtpQQMailRegion = "SmtpQQMailRegion";
+            internal const string Smtp163MailRegion = "Smtp163MailRegion";
+
+            internal const string MainContentRegion = "MainContentRegion";
+
+            internal const string SettingRegion = "SettingRegion";
+        }
+
+        internal class SettingKeys
+        {
+            internal const string VideosCount = "VideosCount";
+        }
+
+        internal class ConfigNodes
+        {
+            internal static readonly string[] IsVideosAutoLoad = new[] { "Video", "IsVideosAutoLoad" };
+        }
+
         internal const string ONLY_ONE_PROCESS = "OnlyOneProcess";
         internal const string AUTO_START = "AutoStart";
         internal const string BACKGROUND_SWITCH = "BackgroundSwitch";

@@ -1,4 +1,3 @@
-using IceTea.Desktop.Contracts.KeyboardHook;
 using IceTea.Pure.Businesses.Config;
 using IceTea.Pure.Businesses.HotKey.Global;
 using IceTea.Pure.Businesses.Setting;
@@ -6,6 +5,7 @@ using IceTea.Pure.Contracts;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.Utils;
 using IceTea.Wpf.Atom.Businesses.Config;
+using IceTea.Wpf.Atom.Businesses.GlobalKeyEvent;
 using IceTea.Wpf.Atom.Businesses.HotKey.App;
 using IceTea.Wpf.Atom.Businesses.HotKey.Global;
 using IceTea.Wpf.Atom.Extensions;
@@ -16,6 +16,7 @@ using MyApp.Prisms.Contracts;
 using MyApp.Prisms.Handlers;
 using MyApp.Prisms.ViewModels;
 using MyApp.Prisms.Views;
+using MyApp.Prisms.Views.MainViews;
 using Prism.DryIoc;
 using Prism.Events;
 using Prism.Ioc;
@@ -24,6 +25,7 @@ using Prism.Mvvm;
 using Prism.Regions;
 using PrismAppBasicLib.Contracts;
 using PrismAppBasicLib.Models;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -43,7 +45,7 @@ namespace MyApp.Prisms
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<IKeyboardHook, MediaGlobalKeyboardHook>();
+            containerRegistry.RegisterSingleton<IKeyHook, MediaGlobalKeyHook>();
 
             containerRegistry.RegisterSingleton<IConfigManager, WpfYamlConfigManager>();
 
@@ -59,7 +61,7 @@ namespace MyApp.Prisms
                 }
             }
 
-            WpfAtomUtils.AddGloablExceptionHandler(ex => CommonUtil.Log(CustomConstants.LogType.Exception_Log_Dir, ex.Message));
+            WpfAtomUtils.AddGlobalExceptionHandler(ex => CommonUtil.Log(CustomConstants.LogType.Exception_Log_Dir, ex.Message));
 
             CommonUtil.Log(CustomConstants.LogType.Software_Log_Dir, $"进程{processName}启动成功!");
 
@@ -74,14 +76,14 @@ namespace MyApp.Prisms
                     this.Container.Resolve<IConfigManager>()
                 ));
 
-            containerRegistry.RegisterSingleton<GloablHotKeyHandlerBase>(() => new GloablHotKeyHandler(
+            containerRegistry.RegisterSingleton<GlobalHotKeyHandlerBase>(() => new GloablHotKeyHandler(
                     this.Container.Resolve<IEventAggregator>(),
                     this.Container.Resolve<IGlobalConfigFileHotKeyManager>(),
                     Application.Current.MainWindow
                 ));
 
             containerRegistry.RegisterSingleton<ImageDisplayViewModel>();
-            containerRegistry.RegisterSingleton<SoftwareViewModel>();
+
             containerRegistry.RegisterSingleton<SettingsViewModel>();
 
             containerRegistry.RegisterScoped<UdpSocketViewModel>();
@@ -92,7 +94,7 @@ namespace MyApp.Prisms
             ViewModelLocationProvider.Register<WindowTitleView, SoftwareViewModel>();
             ViewModelLocationProvider.Register<SwitchBackgroundView, ImageDisplayViewModel>();
 
-            this.RegisterRegion();
+            this.RegisterRegion(config);
 
             this.RegisterNavigation(containerRegistry);
         }
@@ -106,24 +108,28 @@ namespace MyApp.Prisms
             containerRegistry.RegisterForNavigation<MailManager>();
         }
 
-        private void RegisterRegion()
+        private void RegisterRegion(IConfigManager config)
         {
             var regionManager = this.Container.Resolve<IRegionManager>();
-            regionManager.RegisterViewWithRegion("MainContentRegion", typeof(CommunicationView));
+            regionManager.RegisterViewWithRegion(CustomConstants.RegionNames.MainContentRegion, typeof(CommunicationView));
 
-            regionManager.RegisterViewWithRegion("SettingRegion", typeof(SettingsView));
+            regionManager.RegisterViewWithRegion(CustomConstants.RegionNames.SettingRegion, typeof(SettingsView));
 
-            regionManager.RegisterViewWithRegion("Smtp163MailRegion", typeof(Smtp163MailView));
-            regionManager.RegisterViewWithRegion("SmtpQQMailRegion", typeof(SmtpQQMailView));
+            regionManager.RegisterViewWithRegion(CustomConstants.RegionNames.Smtp163MailRegion, typeof(Smtp163MailView));
+            regionManager.RegisterViewWithRegion(CustomConstants.RegionNames.SmtpQQMailRegion, typeof(SmtpQQMailView));
 
-            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video1PlayerRegion");
-            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video2PlayerRegion");
-            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video3PlayerRegion");
-            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video4PlayerRegion");
-            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video5PlayerRegion");
-            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video6PlayerRegion");
-            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video7PlayerRegion");
-            regionManager.RegisterViewWithRegion<VideoPlayerView>("Video8PlayerRegion");
+            if (config.IsTrue(CustomConstants.IsMusicPlayer.FillToArray()))
+            {
+                regionManager.RegisterViewWithRegion(CustomConstants.RegionNames.MainWindowRegion, typeof(MusicPlayer));
+            }
+            else if (config.IsTrue(CustomConstants.IsVideoPlayer.FillToArray()))
+            {
+                regionManager.RegisterViewWithRegion(CustomConstants.RegionNames.MainWindowRegion, typeof(VideosView));
+            }
+            else
+            {
+                regionManager.RegisterViewWithRegion(CustomConstants.RegionNames.MainWindowRegion, typeof(MultiPageView));
+            }
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
@@ -141,16 +147,15 @@ namespace MyApp.Prisms
 
             if (config.IsTrue(CustomConstants.IsMusicPlayer.FillToArray()))
             {
-                ViewModelLocationProvider.Register<MusicWindow, SoftwareViewModel>();
-
-                return Container.Resolve<MusicWindow>();
+                ((IContainerExtension)Container).RegisterSingleton<SoftwareViewModel, SoftwareViewModel>();
             }
-
-            if (config.IsTrue(CustomConstants.IsVideoPlayer.FillToArray()))
+            else if (config.IsTrue(CustomConstants.IsVideoPlayer.FillToArray()))
             {
-                ViewModelLocationProvider.Register<VideoWindow, SoftwareViewModel>();
-
-                return Container.Resolve<VideoWindow>();
+                ((IContainerExtension)Container).RegisterSingleton<SoftwareViewModel, VideosViewModel>();
+            }
+            else
+            {
+                ((IContainerExtension)Container).RegisterSingleton<SoftwareViewModel, MainViewModel>();
             }
 
             ViewModelLocationProvider.Register<MainWindow, SoftwareViewModel>();

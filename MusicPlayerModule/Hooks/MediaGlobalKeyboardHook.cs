@@ -1,23 +1,23 @@
-using IceTea.Desktop.Businesses.GlobalEvent;
-using IceTea.Desktop.Contracts.KeyboardHook;
 using IceTea.Pure.Utils;
 using MusicPlayerModule.MsgEvents;
 using MusicPlayerModule.MsgEvents.Media;
 using Prism.Events;
+using IceTea.Wpf.Atom.Businesses.GlobalKeyEvent;
+using IceTea.Pure.Businesses.GlobalHook;
 
 #pragma warning disable CS8625 // 无法将 null 字面量转换为非 null 的引用类型。
 namespace MusicPlayerModule.Hooks
 {
-    public class MediaGlobalKeyboardHook : GlobalKeyboardHook
+    public class MediaGlobalKeyHook : WpfKeyHook
     {
         private IEventAggregator _eventAggregator;
 
-        public MediaGlobalKeyboardHook(IEventAggregator eventAggregator) : base(true)
+        public MediaGlobalKeyHook(IEventAggregator eventAggregator) : base(true)
         {
             _eventAggregator = eventAggregator.AssertArgumentNotNull(nameof(IEventAggregator));
         }
 
-        protected override void OnActivity(CustomKeyboardEventArgs args)
+        protected override void OnActivity(KeyboardEventArgs args)
         {
             base.OnActivity(args);
 
@@ -42,7 +42,6 @@ namespace MusicPlayerModule.Hooks
         protected override void DisposeCore()
         {
             base.DisposeCore();
-
             _eventAggregator = null;
         }
     }

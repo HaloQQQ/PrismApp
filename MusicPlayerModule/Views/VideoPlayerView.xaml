@@ -147,8 +147,7 @@
         Background="Transparent"
         CommandManager.Executed="UserControl_Executed"
         FocusVisualStyle="{x:Null}"
-        Focusable="True"
-        MouseWheel="Grid_MouseWheel">
+        MyAttachProperty.FocusOnClick="True">
         <Grid.InputBindings>
             <KeyBinding
                 Key="{Binding KeyGestureDic[设置A点].SelectedKey}"
@@ -189,7 +188,7 @@
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[快退].SelectedKey}"
-                Command="{Binding RewindCommand, Delay=100}"
+                Command="{Binding RewindCommand, Delay=300}"
                 Modifiers="{Binding KeyGestureDic[快退].ModifierKey}" />
 
             <KeyBinding
@@ -238,7 +237,7 @@
 
             <KeyBinding
                 Key="{Binding KeyGestureDic[快进].SelectedKey}"
-                Command="{Binding FastForwardCommand, Delay=100}"
+                Command="{Binding FastForwardCommand, Delay=300}"
                 Modifiers="{Binding KeyGestureDic[快进].ModifierKey}" />
 
             <KeyBinding
@@ -263,7 +262,6 @@
             </MediaElement.InputBindings>
         </MediaElement>
 
-        <!--  x:Name="BottomBar"  -->
         <Grid VerticalAlignment="Bottom" Background="{StaticResource LightBlackPanelBackground}">
             <Grid.Style>
                 <Style TargetType="Grid">
@@ -647,6 +645,7 @@
                             Click="VolumeToggleButton_Click"
                             DockPanel.Dock="Right"
                             IsChecked="{Binding IsMuted, ElementName=mediaPlayer, Mode=TwoWay}"
+                            MouseWheel="VolumeButton_MouseWheel"
                             Style="{StaticResource ToggleButton_Icon_Volume}" />
                         <Popup
                             x:Name="VolumePopup"
@@ -678,16 +677,7 @@
                         <ToggleButton
                             x:Name="PlayOrderButton"
                             DockPanel.Dock="Right"
-                            IsChecked="{Binding IsEditingPlayOrder}">
-                            <ToggleButton.Style>
-                                <Style BasedOn="{StaticResource ButtonBase_Icon_Small_HoverBlue}" TargetType="ToggleButton">
-                                    <Setter Property="Margin" Value="2,0" />
-
-                                    <Setter Property="Content" Value="{Binding SelectedItem.IconString, ElementName=PlayOrderList, FallbackValue=播放顺序}" />
-                                    <Setter Property="ToolTip" Value="{Binding SelectedItem.Description, ElementName=PlayOrderList}" />
-                                </Style>
-                            </ToggleButton.Style>
-                        </ToggleButton>
+                            Style="{StaticResource TogBtnPlayOrder}" />
                         <Popup
                             HorizontalOffset="-67"
                             MyAttachProperty.IsAppearOnHovered="True"
@@ -695,41 +685,11 @@
                             PlacementTarget="{Binding ElementName=PlayOrderButton}"
                             VerticalOffset="10">
                             <Border
-                                Height="313"
+                                Width="150"
+                                Height="310"
                                 Background="{StaticResource PopupBackground}"
                                 Clip="{StaticResource PopupGeometryGroup_PlayOrder}">
-                                <ListBox
-                                    x:Name="PlayOrderList"
-                                    ItemsSource="{x:Static contracts:CustomStatics.MediaPlayOrderList}"
-                                    SelectedItem="{Binding CurrentPlayOrder}">
-                                    <ListBox.ItemContainerStyle>
-                                        <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
-                                            <Setter Property="Padding" Value="0,10" />
-
-                                            <Setter Property="ContentTemplate">
-                                                <Setter.Value>
-                                                    <DataTemplate DataType="contracts:MediaPlayOrderModel">
-                                                        <TextBlock Margin="30,10" Style="{StaticResource TextBlock_Theme_Icon_MouseOver}">
-                                                            <TextBlock Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Text="{Binding IconString}" />
-                                                            <TextBlock Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Text="{Binding Description}" />
-                                                        </TextBlock>
-                                                    </DataTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </ListBox.ItemContainerStyle>
-
-                                    <ListBox.Style>
-                                        <Style BasedOn="{StaticResource {x:Type ListBox}}" TargetType="ListBox">
-
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding CurrentPlayOrder}" Value="{x:Null}">
-                                                    <Setter Property="SelectedIndex" Value="1" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ListBox.Style>
-                                </ListBox>
+                                <ListBox Style="{StaticResource LstbxPlayOrder}" />
                             </Border>
                         </Popup>
 

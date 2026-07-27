@@ -1,14 +1,16 @@
 using CustomControlsDemoModule.Events;
 using IceTea.Pure.BaseModels;
-using IceTea.Desktop.Extensions;
-using IceTea.Desktop.Contracts.MouseHook;
-using IceTea.Wpf.Atom.Extensions;
+using IceTea.Windows.Extensions;
+using IceTea.Wpf.Core.Extensions;
 using Prism.Events;
 using Prism.Services.Dialogs;
 using System;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using IceTea.Wpf.Atom.Extensions;
+using IceTea.Windows.Contracts.GlobalEvent;
+using IceTea.Pure.Businesses.GlobalHook;
 
 namespace CustomControlsDemoModule.ViewModels
 {
@@ -33,7 +35,7 @@ namespace CustomControlsDemoModule.ViewModels
             eventAggregator.GetEvent<ColorPickerEvent>().Subscribe(RequestCloseDialog);
         }
 
-        private void _mouseHook_Activity(object sender, CustomMouseEventArgs e)
+        private void _mouseHook_Activity(object sender, MouseEventArgs e)
         {
             if (e.OperationType == MouseOperationType.MOVE)
             {
