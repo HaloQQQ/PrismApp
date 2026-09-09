@@ -26,6 +26,8 @@ namespace MusicPlayerModule.Contracts
         internal static readonly string[] CurrentLyricForeground_ConfigKey = new[] { MUSIC, "CurrentLyricForeground" };
         internal static readonly string[] CurrentLyricFontSize_ConfigKey = new[] { MUSIC, "CurrentLyricFontSize" };
 
+        internal static readonly string[] CurrentLyricAlign_ConfigKey = new[] { MUSIC, "CurrentHorizentalAlign" };
+
         internal static readonly string[] CurrentLyricFontFamily_ConfigKey = new[] { MUSIC, "CurrentLyricFontFamily" };
 
         internal static readonly string[] LinearGradientLyricColor_ConfigKey = new[] { MUSIC, "LinearGradientLyricColor" };

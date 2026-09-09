@@ -1,9 +1,6 @@
-using Prism.Commands;
 using Prism.Events;
 using System;
 using System.Drawing;
-using System.Windows;
-using System.Windows.Input;
 using System.Windows.Threading;
 using MyApp.Prisms.MsgEvents;
 using IceTea.Pure.Utils;
@@ -14,7 +11,6 @@ using IceTea.Wpf.Atom.Contracts.MyEvents;
 using System.Windows.Media.Imaging;
 using IceTea.Windows.Extensions;
 using PrismAppBasicLib.Contracts;
-using IceTea.Wpf.Core.Utils;
 using IceTea.Core.Businesses.QRCode;
 using IceTea.Wpf.Atom.Businesses.HotKey.App;
 using IceTea.Pure.Businesses.Config;
@@ -53,17 +49,7 @@ namespace MyApp.Prisms.ViewModels
 
             this.InitQRCodeImage();
 
-            this.SwitchThemeCommand = new DelegateCommand(this.RefreshTheme);
-
             CommonUtil.SubscribeMessage(eventAggregator, item => this.DialogMessage = item);
-
-            eventAggregator.GetEvent<SwitchThemeEvent>().Subscribe(isLightTheme =>
-            {
-                if (this.FollowSystemTheme)
-                {
-                    this.RefreshTheme();
-                }
-            });
 
             this.LoadConfig(config);
 
@@ -74,19 +60,11 @@ namespace MyApp.Prisms.ViewModels
             this.InitBackgroundSwitch(eventAggregator);
         }
 
-
-        public ICommand SwitchThemeCommand { get; }
-
         protected virtual void LoadConfig(IConfigManager config)
         {
             this.OnlyOneProcess = config.IsTrue(CustomConstants.ONLY_ONE_PROCESS.FillToArray());
             this.AutoStart = config.IsTrue(CustomConstants.AUTO_START.FillToArray());
             this.BackgroundSwitch = config.IsTrue(CustomConstants.BACKGROUND_SWITCH.FillToArray());
-
-            this.FollowSystemTheme = config.IsTrue(CustomConstants.FollowSystemThemes);
-
-            this.DefaultThemeURI = config.ReadConfigNode<string>(CustomConstants.DefaultThemeURIs);
-            this.LoadDefaultTheme();
 
             this.SetBackgroundImage(config.ReadConfigNode<string>(CustomConstants.BkgrdUri.FillToArray()));
             this.IsMusicPlayer = config.IsTrue(CustomConstants.IsMusicPlayer.FillToArray());
@@ -97,9 +75,6 @@ namespace MyApp.Prisms.ViewModels
                 config.WriteConfigNode<bool>(this.OnlyOneProcess, CustomConstants.ONLY_ONE_PROCESS.FillToArray());
                 config.WriteConfigNode<bool>(this.AutoStart, CustomConstants.AUTO_START.FillToArray());
                 config.WriteConfigNode<bool>(this.BackgroundSwitch, CustomConstants.BACKGROUND_SWITCH.FillToArray());
-
-                config.WriteConfigNode(this.FollowSystemTheme, CustomConstants.FollowSystemThemes);
-                config.WriteConfigNode(this.DefaultThemeURI, CustomConstants.DefaultThemeURIs);
 
                 config.WriteConfigNode(this.CurrentBkGrd, CustomConstants.BkgrdUri.FillToArray());
 
@@ -119,36 +94,7 @@ namespace MyApp.Prisms.ViewModels
             }
         }
 
-        private void LoadDefaultTheme()
-        {
-            if (this.FollowSystemTheme || this.DefaultThemeURI.IsNullOrBlank())
-            {
-                this.RefreshTheme();
-            }
-            else
-            {
-                var currentUri = new Uri(this.DefaultThemeURI, UriKind.RelativeOrAbsolute);
-
-                if (CustomConstants.Dark.Source.ToString().EqualsIgnoreCase(currentUri.ToString()))
-                {
-                    Application.Current.Resources.MergedDictionaries.Add(CustomConstants.Dark);
-                }
-                else
-                {
-                    Application.Current.Resources.MergedDictionaries.Add(CustomConstants.Light);
-                }
-            }
-        }
-
         #region 主题&背景
-        public string DefaultThemeURI { get; private set; }
-        private void RefreshTheme()
-        {
-            var dict = WpfCoreUtils.RefreshTheme(this.FollowSystemTheme);
-
-            this.DefaultThemeURI = dict.Source.ToString();
-        }
-
         private string _currentBkGrd;
         public string CurrentBkGrd
         {
@@ -265,13 +211,6 @@ namespace MyApp.Prisms.ViewModels
         public SettingsViewModel Settings { get; }
 
         #region 辅助功能
-        private bool _followSystemTheme;
-        public bool FollowSystemTheme
-        {
-            get => _followSystemTheme;
-            set => SetProperty<bool>(ref _followSystemTheme, value);
-        }
-
         private bool _onlyOneProcess;
         public bool OnlyOneProcess
         {

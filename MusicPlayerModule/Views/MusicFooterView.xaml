@@ -267,6 +267,31 @@
                         </StackPanel>
                     </Grid>
 
+                    <Button x:Name="LyricAlignButton" Style="{StaticResource LyricAlignButton}" />
+                    <Popup
+                        HorizontalOffset="-65"
+                        MyAttachProperty.IsAppearOnHovered="True"
+                        Placement="Top"
+                        PlacementTarget="{Binding ElementName=LyricAlignButton}"
+                        VerticalOffset="8">
+                        <Border
+                            Width="150"
+                            Height="250"
+                            Background="{StaticResource PopupBackground}">
+                            <Border.Clip>
+                                <GeometryGroup>
+                                    <RectangleGeometry RadiusX="16" RadiusY="16">
+                                        <RectangleGeometry.Rect>
+                                            <Rect Width="150" Height="233" />
+                                        </RectangleGeometry.Rect>
+                                    </RectangleGeometry>
+                                    <PathGeometry Figures="M65,233 L75,243 L85,233 Z" />
+                                </GeometryGroup>
+                            </Border.Clip>
+                            <ListBox Style="{StaticResource LyricAlignListBox}" />
+                        </Border>
+                    </Popup>
+
                     <ToggleButton
                         x:Name="VolumeToggleButton"
                         Click="VolumeToggleButton_Click"
@@ -306,6 +331,7 @@
                     <ToggleButton x:Name="PlayOrderButton" Style="{StaticResource TogBtnPlayOrder}" />
                     <Popup
                         HorizontalOffset="-67"
+                        IsHitTestVisible="True"
                         MyAttachProperty.IsAppearOnHovered="True"
                         Placement="Top"
                         PlacementTarget="{Binding ElementName=PlayOrderButton}"

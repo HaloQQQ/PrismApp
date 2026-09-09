@@ -1,4 +1,4 @@
-﻿using Prism.Events;
+using Prism.Events;
 using Prism.Ioc;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,7 +14,7 @@ namespace MyApp.Prisms.Views
         }
 
         #region 更换主题、背景
-        private void SwitchBackSliderMoveOut_OnMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        private void SwitchBackSliderMoveOut_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
 

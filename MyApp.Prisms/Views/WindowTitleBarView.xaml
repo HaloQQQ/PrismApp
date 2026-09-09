@@ -55,10 +55,7 @@
         </WindowTitleBar.LeftCollection>
         <WindowTitleBar.RightCollection>
             <ElementCollection>
-                <Button
-                    Command="{Binding SwitchThemeCommand}"
-                    MouseRightButtonUp="SwitchBackSliderMoveOut_OnMouseRightButtonUp"
-                    Style="{StaticResource Button_Icon_Theme}" />
+                <Button PreviewMouseLeftButtonUp="SwitchBackSliderMoveOut_OnMouseLeftButtonUp" Style="{StaticResource Button_Icon_Theme}" />
 
                 <Button Style="{StaticResource Button_Icon_Setting}" />
 

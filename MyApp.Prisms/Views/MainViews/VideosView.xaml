@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:prism="http://prismlibrary.com/">
-    <ItemsControl prism:RegionManager.RegionName="VideosRegion">
+    <ItemsControl prism:RegionManager.RegionName="VideosRegion" ScrollViewer.VerticalScrollBarVisibility="Disabled">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <UniformGrid Columns="{Binding Column}" Rows="{Binding Row}" />

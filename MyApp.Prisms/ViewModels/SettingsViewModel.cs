@@ -9,8 +9,11 @@ using IceTea.Pure.Contracts;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.Utils;
 using IceTea.Wpf.Atom.Businesses.HotKey.App;
+using IceTea.Wpf.Atom.Utils;
+using IceTea.Wpf.Core.Utils;
 using MusicPlayerModule.Contracts;
 using MyApp.Prisms.Contracts;
+using MyApp.Prisms.Models;
 using MyApp.Prisms.MsgEvents;
 using Prism.Commands;
 using Prism.Events;
@@ -266,7 +269,10 @@ namespace MyApp.Prisms.ViewModels
 
             IsVideosAutoLoad = configManager.ReadConfigNode<bool>(CustomConstants.ConfigNodes.IsVideosAutoLoad);
 
-            configManager.SetConfig += config => config.WriteConfigNode<bool>(this.IsVideosAutoLoad, CustomConstants.ConfigNodes.IsVideosAutoLoad);
+            configManager.SetConfig += config =>
+                config.WriteConfigNode<bool>(this.IsVideosAutoLoad, CustomConstants.ConfigNodes.IsVideosAutoLoad);
+
+            this.LoadTheme(configManager);
         }
 
         private void InitSetting(IConfigManager configManager, ISettingManager<SettingModel> settingModels, string key, string description, params string[] configNode)
@@ -293,9 +299,63 @@ namespace MyApp.Prisms.ViewModels
                 config.WriteConfigNode(this.CornerRadius.TopLeft, CustomConstants.WindowCornerRadius);
             };
         }
+
+        private void LoadTheme(IConfigManager configManager)
+        {
+            this.FollowSystemTheme = configManager.IsTrue(CustomConstants.FollowSystemThemes);
+
+            var defaultThemeURI = configManager.ReadConfigNode<string>(CustomConstants.DefaultThemeURIs);
+
+            CurrentTheme = this.Themes.FirstOrDefault(t => t.ThemeFileUri.Source.ToString() == defaultThemeURI)
+                            ?? this.Themes.First();
+
+            if (this.FollowSystemTheme || defaultThemeURI.IsNullOrBlank())
+            {
+                var dict = WpfCoreUtils.RefreshTheme(this.FollowSystemTheme);
+
+                defaultThemeURI = dict.Source.ToString();
+            }
+
+            configManager.SetConfig += config =>
+            {
+                config.WriteConfigNode(this.FollowSystemTheme, CustomConstants.FollowSystemThemes);
+                config.WriteConfigNode(CurrentTheme.ThemeFileUri.Source.ToString(), CustomConstants.DefaultThemeURIs);
+            };
+        }
         #endregion
 
         #region Props
+        public IEnumerable<ThemeModel> Themes { get; } = ThemeModel.Create().ToArray();
+
+        private ThemeModel _currentTheme;
+        public ThemeModel CurrentTheme
+        {
+            get => _currentTheme;
+            set
+            {
+                if (CurrentTheme != value)
+                {
+                    var fromUri = value.ThemeFileUri.Source.ToString();
+                    if (CurrentTheme != null)
+                    {
+                        fromUri = CurrentTheme.ThemeFileUri.Source.ToString();
+                    }
+
+                    WpfAtomUtils.SwitchTheme(fromUri, value.ThemeFileUri.Source.ToString());
+
+                    SetProperty(ref _currentTheme, value);
+                }
+            }
+        }
+
+
+        private bool _followSystemTheme;
+        public bool FollowSystemTheme
+        {
+            get => _followSystemTheme;
+            set => SetProperty<bool>(ref _followSystemTheme, value);
+        }
+
         private bool _isLightSysTheme;
         public bool IsLightSysTheme
         {

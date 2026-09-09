@@ -84,12 +84,16 @@
                 </DataGridCheckBoxColumn>
 
                 <DataGridTemplateColumn
-                    MinWidth="230"
+                    Width="2*"
+                    MinWidth="150"
                     CellTemplate="{StaticResource FavoriteDataGridFirstColumnCellTemplate}"
                     HeaderStyle="{StaticResource FavoriteDataGridFirstColumnHeaderStyle}"
                     SortMemberPath="Music.Name" />
 
-                <DataGridTemplateColumn MaxWidth="150" SortMemberPath="Music.Singer">
+                <DataGridTemplateColumn
+                    Width="1*"
+                    MinWidth="80"
+                    SortMemberPath="Music.Singer">
                     <DataGridTemplateColumn.HeaderTemplate>
                         <DataTemplate>
                             <TextBlock>
@@ -104,7 +108,10 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn MaxWidth="200" SortMemberPath="Music.Album">
+                <DataGridTemplateColumn
+                    Width="1*"
+                    MinWidth="80"
+                    SortMemberPath="Music.Album">
                     <DataGridTemplateColumn.HeaderTemplate>
                         <DataTemplate>
                             <TextBlock>
@@ -119,7 +126,10 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn MinWidth="120" SortMemberPath="Music.Size">
+                <DataGridTemplateColumn
+                    Width="0.7*"
+                    MinWidth="60"
+                    SortMemberPath="Music.Size">
                     <DataGridTemplateColumn.HeaderTemplate>
                         <DataTemplate>
                             <TextBlock>
@@ -134,7 +144,10 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn MinWidth="80" SortMemberPath="Music.Duration">
+                <DataGridTemplateColumn
+                    Width="0.7*"
+                    MinWidth="60"
+                    SortMemberPath="Music.Duration">
                     <DataGridTemplateColumn.HeaderTemplate>
                         <DataTemplate>
                             <TextBlock>
@@ -150,8 +163,8 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn
-                    Width="*"
-                    MaxWidth="1000"
+                    Width="2*"
+                    MinWidth="100"
                     SortMemberPath="Music.FilePath">
                     <DataGridTemplateColumn.HeaderTemplate>
                         <DataTemplate>
@@ -207,8 +220,6 @@
 
                 <ListBox
                     x:Name="MusicByAlbumListBox"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Left"
                     DockPanel.Dock="Bottom"
                     ItemsSource="{Binding DistributeMusicViewModel.DisplayAlbumClassify}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -309,7 +320,10 @@
                         HeaderStyle="{StaticResource FavoriteDataGridFirstColumnHeaderStyle}"
                         SortMemberPath="Music.Name" />
 
-                    <DataGridTemplateColumn Width="Auto" SortMemberPath="Music.Singer">
+                    <DataGridTemplateColumn
+                        Width="Auto"
+                        MinWidth="300"
+                        SortMemberPath="Music.Singer">
                         <DataGridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
                                 <TextBlock>
@@ -346,7 +360,6 @@
 
                 <ListBox
                     x:Name="MusicBySingerListBox"
-                    HorizontalContentAlignment="Left"
                     DockPanel.Dock="Bottom"
                     ItemsSource="{Binding DistributeMusicViewModel.DisplaySingerClassify}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -445,7 +458,10 @@
                         HeaderStyle="{StaticResource FavoriteDataGridFirstColumnHeaderStyle}"
                         SortMemberPath="Music.Name" />
 
-                    <DataGridTemplateColumn Width="Auto" SortMemberPath="Music.Album">
+                    <DataGridTemplateColumn
+                        Width="Auto"
+                        MinWidth="300"
+                        SortMemberPath="Music.Album">
                         <DataGridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
                                 <TextBlock>
@@ -473,7 +489,6 @@
             <ListBox
                 x:Name="MusicByDirListBox"
                 Grid.Column="0"
-                HorizontalContentAlignment="Left"
                 ContextMenu="{StaticResource MusicDir_CRUD}"
                 DockPanel.Dock="Bottom"
                 ItemsSource="{Binding DistributeMusicViewModel.DisplayDirClassify}"
@@ -570,7 +585,10 @@
                         HeaderStyle="{StaticResource FavoriteDataGridFirstColumnHeaderStyle}"
                         SortMemberPath="Music.Name" />
 
-                    <DataGridTemplateColumn Width="Auto" SortMemberPath="Music.Singer">
+                    <DataGridTemplateColumn
+                        Width="Auto"
+                        MinWidth="300"
+                        SortMemberPath="Music.Singer">
                         <DataGridTemplateColumn.HeaderTemplate>
                             <DataTemplate>
                                 <TextBlock>

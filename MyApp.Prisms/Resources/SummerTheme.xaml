@@ -1,0 +1,36 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/IceTea.Wpf.Core;component/Resources/CustomColors.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--  覆盖主色调为夏季的深海蓝/亮海蓝  -->
+    <Color x:Key="DeepBlueColor">#FF002B36</Color>
+    <Color x:Key="ShallowBlueColor">#FF00CED1</Color>
+
+    <SolidColorBrush x:Key="TextBox.Background" Color="#66002B36" />
+    <SolidColorBrush x:Key="TextBox.ReadOnly.Background" Color="#88002B36" />
+    <SolidColorBrush x:Key="TextBox.Disable.Background" Color="#AA001820" />
+    <SolidColorBrush x:Key="TextBox.BorderBrush" Color="#8800CED1" />
+    <SolidColorBrush x:Key="TextBox.Focused.BorderBrush" Color="#FF00FFFF" />
+
+    <SolidColorBrush x:Key="TextBlock.PlaceHolder.Foreground" Color="#CC00CED1" />
+
+    <!--  海蓝色文字  -->
+    <SolidColorBrush x:Key="TextBlock.Foreground" Color="#FF40E0D0" />
+
+    <SolidColorBrush x:Key="BackPanel.Background" Color="#EE00222C" />
+
+    <!--  点缀色采用亮橙/黄  -->
+    <SolidColorBrush x:Key="CheckBox.BorderBrush" Color="#FFFFA500" />
+    <SolidColorBrush x:Key="CheckBox.Foreground" Color="#FFFFA500" />
+
+    <SolidColorBrush x:Key="ComboBox.Background" Color="{StaticResource DeepBlueColor}" />
+    <SolidColorBrush x:Key="ComboBox.BorderBrush" Color="{StaticResource ShallowBlueColor}" />
+
+    <SolidColorBrush x:Key="HighLight.Foreground" Color="#FFFFA500" />
+
+    <SolidColorBrush x:Key="Disable.Foreground" Color="#CC78A0B0" />
+    <SolidColorBrush x:Key="Disable.Background" Color="#77001820" />
+
+    <SolidColorBrush x:Key="Theme.SolidBack" Color="#FF00141D" />
+</ResourceDictionary>

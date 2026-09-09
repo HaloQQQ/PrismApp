@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:appHotKey="http://IceTea.Wpf.Atom.AppHotKey.com/"
     xmlns:contracts="clr-namespace:MyApp.Prisms.Contracts"
+    xmlns:customModels="clr-namespace:MyApp.Prisms.Models"
     xmlns:globalHotKey="clr-namespace:IceTea.Pure.Businesses.HotKey.Global;assembly=IceTea.Pure"
     xmlns:models="clr-namespace:PrismAppBasicLib.Models;assembly=PrismAppBasicLib"
     xmlns:prism="http://prismlibrary.com/"
@@ -121,10 +122,7 @@
                             FontSize="30"
                             Style="{StaticResource ButtonBase_Icon_ScaleDown_Small_HoverBlue}" />
                     </Grid>
-                    <ListBox
-                        HorizontalContentAlignment="Left"
-                        ItemContainerStyle="{StaticResource ListBoxItem_General}"
-                        ItemsSource="{Binding DataContext.MailAccounts, RelativeSource={RelativeSource AncestorType=TabControl}}" />
+                    <ListBox ItemContainerStyle="{StaticResource ListBoxItem_General}" ItemsSource="{Binding DataContext.MailAccounts, RelativeSource={RelativeSource AncestorType=TabControl}}" />
                 </StackPanel>
             </TabItem>
             <TabItem Header="全局快捷键">
@@ -155,6 +153,54 @@
             </TabItem>
             <TabItem Header="设置">
                 <StackPanel>
+                    <StackPanel>
+                        <TextBlock
+                            Margin="6,0,0,0"
+                            HorizontalAlignment="Left"
+                            DockPanel.Dock="Left"
+                            Style="{StaticResource TextBlock_Theme}"
+                            Text="主题：" />
+                        <ListBox ItemsSource="{Binding DataContext.Themes, RelativeSource={RelativeSource AncestorType=TabControl}}" SelectedItem="{Binding DataContext.CurrentTheme, RelativeSource={RelativeSource AncestorType=TabControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate DataType="{x:Type customModels:ThemeModel}">
+                                    <StackPanel>
+                                        <Border BorderThickness="2">
+                                            <Border
+                                                Width="80"
+                                                Height="80"
+                                                Margin="5"
+                                                Background="{Binding ColorStr}"
+                                                CornerRadius="5"
+                                                Cursor="Hand" />
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                            <Setter Property="BorderBrush" Value="{StaticResource TransparentButtonBackground}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                                            <Setter Property="BorderBrush" Value="{StaticResource TransparentButtonBackground}" />
+                                                            <Setter Property="Opacity" Value="0.8" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                        </Border>
+
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            Style="{StaticResource TextBlock_Theme}"
+                                            Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
                     <DockPanel>
                         <TextBlock
                             Margin="6,0,0,0"
@@ -173,7 +219,7 @@
                         </Viewbox>
                     </DockPanel>
 
-                    <WrapPanel>
+                    <WrapPanel Visibility="{Binding Source={x:Static contracts:CustomConstants.IsVideo}, Converter={StaticResource BoolToVisibleCollapsedConverter}}">
                         <TextBlock
                             Margin="6,0,0,0"
                             Style="{StaticResource TextBlock_Theme}"
@@ -195,7 +241,8 @@
                             Content="自动载入视频："
                             IsChecked="{Binding DataContext.IsVideosAutoLoad, RelativeSource={RelativeSource AncestorType=TabControl}}"
                             MyAttachProperty.IconPosition="Right"
-                            Style="{StaticResource CheckBox_Switch}" />
+                            Style="{StaticResource CheckBox_Switch}"
+                            Visibility="{Binding Source={x:Static contracts:CustomConstants.IsVideo}, Converter={StaticResource BoolToVisibleCollapsedConverter}}" />
                     </WrapPanel>
 
                     <WrapPanel>

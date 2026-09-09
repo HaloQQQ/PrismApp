@@ -6,6 +6,7 @@ using IceTea.Wpf.Atom.Extensions;
 using MusicPlayerModule.Contracts;
 using Prism.Commands;
 using System.Drawing.Text;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -31,6 +32,8 @@ internal class DesktopLyricViewModel : NotifyBase
         this.IsDesktopLyricShow = config.IsTrue(CustomStatics.IsDesktopLyricShow_ConfigKey);
         this.IsVertical = config.IsTrue(CustomStatics.IsVertical_ConfigKey);
         this.IsSingleLine = config.IsTrue(CustomStatics.IsSingleLine_ConfigKey);
+
+        this.CurrentHorizontalAlign = config.ReadConfigNode<HorizontalAlignment>(CustomStatics.CurrentLyricAlign_ConfigKey);
 
         string currentFontFamily = config.ReadConfigNode<string>(CustomStatics.CurrentLyricFontFamily_ConfigKey);
 
@@ -59,6 +62,8 @@ internal class DesktopLyricViewModel : NotifyBase
             config.WriteConfigNode(this.IsSingleLine, CustomStatics.IsSingleLine_ConfigKey);
 
             config.WriteConfigNode(this.CurrentLyricFontSize, CustomStatics.CurrentLyricFontSize_ConfigKey);
+
+            config.WriteConfigNode(this.CurrentHorizontalAlign, CustomStatics.CurrentLyricAlign_ConfigKey);
 
             config.WriteConfigNode(this.CurrentFontModel.DisplayName, CustomStatics.CurrentLyricFontFamily_ConfigKey);
 
@@ -161,6 +166,13 @@ internal class DesktopLyricViewModel : NotifyBase
     {
         get => this._currentLyricFontSize;
         set => SetProperty<double>(ref _currentLyricFontSize, value);
+    }
+
+    private HorizontalAlignment _currentHorizontalAlign = HorizontalAlignment.Right;
+    public HorizontalAlignment CurrentHorizontalAlign
+    {
+        get => _currentHorizontalAlign;
+        set => SetProperty<HorizontalAlignment>(ref _currentHorizontalAlign, value);
     }
 
     protected override void DisposeCore()

@@ -1,10 +1,10 @@
+using IceTea.Atom.Businesses.Config;
 using IceTea.Pure.Businesses.Config;
 using IceTea.Pure.Businesses.HotKey.Global;
 using IceTea.Pure.Businesses.Setting;
 using IceTea.Pure.Contracts;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.Utils;
-using IceTea.Wpf.Atom.Businesses.Config;
 using IceTea.Wpf.Atom.Businesses.GlobalKeyEvent;
 using IceTea.Wpf.Atom.Businesses.HotKey.App;
 using IceTea.Wpf.Atom.Businesses.HotKey.Global;
@@ -25,7 +25,6 @@ using Prism.Mvvm;
 using Prism.Regions;
 using PrismAppBasicLib.Contracts;
 using PrismAppBasicLib.Models;
-using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -47,7 +46,7 @@ namespace MyApp.Prisms
         {
             containerRegistry.RegisterSingleton<IKeyHook, MediaGlobalKeyHook>();
 
-            containerRegistry.RegisterSingleton<IConfigManager, WpfYamlConfigManager>();
+            containerRegistry.RegisterSingleton<IConfigManager, YamlConfigManager>();
 
             var config = this.Container.Resolve<IConfigManager>();
 

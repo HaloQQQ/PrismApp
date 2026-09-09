@@ -11,6 +11,7 @@
     MinHeight="640"
     prism:ViewModelLocator.AutoWireViewModel="True"
     MyAttachProperty.CornerRadius="{Binding Settings.CornerRadius}"
+    MyAttachProperty.IsEnableAttachInputBindingCollection="True"
     Style="{StaticResource Window_WithShadow}">
     <Window.Background>
         <ImageBrush ImageSource="{Binding CurrentBkGrd}" Stretch="UniformToFill" />

@@ -1,10 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net462;net6.0-windows;net8.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <EnableWindowsTargeting>True</EnableWindowsTargeting>
     <LangVersion>latest</LangVersion>
+    <Configurations>Debug;Release;ClickOnce</Configurations>
   </PropertyGroup>
+
+  <Choose>
+    <!-- 当使用 ClickOnce 配置时，仅编译 net8.0-windows -->
+    <When Condition="'$(Configuration)' == 'ClickOnce'">
+      <PropertyGroup>
+        <TargetFramework>net8.0-windows</TargetFramework>
+      </PropertyGroup>
+    </When>
+    <!-- 其他情况（Debug、Release 以及自定义配置），编译多版本 -->
+    <Otherwise>
+      <PropertyGroup>
+        <TargetFrameworks>net462;net6.0-windows;net8.0-windows</TargetFrameworks>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  
   <ItemGroup>
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="8.0.1" />
     <ProjectReference Include="..\PrismAppBasicLib\PrismAppBasicLib.csproj" />

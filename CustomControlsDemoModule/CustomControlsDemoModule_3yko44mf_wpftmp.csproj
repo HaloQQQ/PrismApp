@@ -1,26 +1,21 @@
 <Project>
   <PropertyGroup>
-    <AssemblyName>MusicPlayerModule</AssemblyName>
+    <AssemblyName>CustomControlsDemoModule</AssemblyName>
     <IntermediateOutputPath>obj\Debug\</IntermediateOutputPath>
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
-    <MSBuildProjectExtensionsPath>E:\JetBrains Code\C#\MyApp.Prisms\MusicPlayerModule\obj\</MSBuildProjectExtensionsPath>
-    <_TargetAssemblyProjectName>MusicPlayerModule</_TargetAssemblyProjectName>
-    <RootNamespace>MusicPlayerModule</RootNamespace>
+    <MSBuildProjectExtensionsPath>E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\</MSBuildProjectExtensionsPath>
+    <_TargetAssemblyProjectName>CustomControlsDemoModule</_TargetAssemblyProjectName>
+    <RootNamespace>CustomControlsDemoModule</RootNamespace>
   </PropertyGroup>
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
   <PropertyGroup>
     <TargetFrameworks>net462;net6.0-windows;net8.0-windows</TargetFrameworks>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <EnableWindowsTargeting>True</EnableWindowsTargeting>
     <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>True</EnableWindowsTargeting>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SharpZipLib" Version="1.4.2" />
-    <PackageReference Include="TagLibSharp" Version="2.3.0" />
-  </ItemGroup>
-  <ItemGroup>
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="8.0.1" />
     <ProjectReference Include="..\PrismAppBasicLib\PrismAppBasicLib.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -30,14 +25,12 @@
     <ReferencePath Include="E:\NuGetPackages\castle.core\5.2.1\lib\net462\Castle.Core.dll" />
     <ReferencePath Include="E:\NuGetPackages\dryioc.dll\4.7.7\lib\net45\DryIoc.dll" />
     <ReferencePath Include="E:\JetBrains Code\C#\IceTea\IceTea.Atom\bin\Debug\netstandard2.0\IceTea.Atom.dll" />
-    <ReferencePath Include="E:\NuGetPackages\icetea.core\1.4.3\lib\netstandard2.0\IceTea.Core.dll" />
-    <ReferencePath Include="E:\NuGetPackages\icetea.desktop\1.1.7\lib\net462\IceTea.Desktop.dll" />
-    <ReferencePath Include="E:\JetBrains Code\C#\IceTea\IceTea.Pure\bin\Debug\netstandard2.0\IceTea.Pure.dll" />
+    <ReferencePath Include="E:\NuGetPackages\icetea.core\1.4.6\lib\netstandard2.0\IceTea.Core.dll" />
+    <ReferencePath Include="E:\NuGetPackages\icetea.pure\1.4.12\lib\netstandard2.0\IceTea.Pure.dll" />
+    <ReferencePath Include="E:\NuGetPackages\icetea.windows\1.1.10\lib\net462\IceTea.Windows.dll" />
     <ReferencePath Include="E:\JetBrains Code\C#\IceTea\IceTea.Wpf.Atom\bin\Debug\net462\IceTea.Wpf.Atom.dll" />
     <ReferencePath Include="E:\JetBrains Code\C#\IceTea\IceTea.Wpf.Core\bin\Debug\net462\IceTea.Wpf.Core.dll" />
-    <ReferencePath Include="E:\NuGetPackages\sharpziplib\1.4.2\lib\netstandard2.0\ICSharpCode.SharpZipLib.dll" />
     <ReferencePath Include="E:\NuGetPackages\mailkit\4.17.0\lib\net462\MailKit.dll" />
-    <ReferencePath Include="E:\NuGetPackages\microsoft.bcl.asyncinterfaces\10.0.9\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll" />
     <ReferencePath Include="F:\VS2026 Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\Microsoft.Win32.Primitives.dll" />
     <ReferencePath Include="E:\NuGetPackages\microsoft.win32.registry\5.0.0\ref\net461\Microsoft.Win32.Registry.dll" />
     <ReferencePath Include="E:\NuGetPackages\microsoft.xaml.behaviors.wpf\1.1.142\lib\net462\Microsoft.Xaml.Behaviors.dll" />
@@ -74,6 +67,7 @@
     <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.Data.dll" />
     <ReferencePath Include="F:\VS2026 Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Diagnostics.Contracts.dll" />
     <ReferencePath Include="F:\VS2026 Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Diagnostics.Debug.dll" />
+    <ReferencePath Include="E:\NuGetPackages\system.diagnostics.eventlog\8.0.1\lib\net462\System.Diagnostics.EventLog.dll" />
     <ReferencePath Include="F:\VS2026 Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Diagnostics.FileVersionInfo.dll" />
     <ReferencePath Include="F:\VS2026 Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Diagnostics.Process.dll" />
     <ReferencePath Include="F:\VS2026 Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Diagnostics.StackTrace.dll" />
@@ -153,6 +147,8 @@
     <ReferencePath Include="F:\VS2026 Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Security.Principal.dll" />
     <ReferencePath Include="E:\NuGetPackages\system.security.principal.windows\5.0.0\ref\net461\System.Security.Principal.Windows.dll" />
     <ReferencePath Include="F:\VS2026 Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Security.SecureString.dll" />
+    <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\System.ServiceProcess.dll" />
+    <ReferencePath Include="E:\NuGetPackages\system.serviceprocess.servicecontroller\8.0.1\lib\net462\System.ServiceProcess.ServiceController.dll" />
     <ReferencePath Include="F:\VS2026 Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Text.Encoding.dll" />
     <ReferencePath Include="F:\VS2026 Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Text.Encoding.Extensions.dll" />
     <ReferencePath Include="F:\VS2026 Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Text.RegularExpressions.dll" />
@@ -175,7 +171,6 @@
     <ReferencePath Include="F:\VS2026 Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Xml.XmlSerializer.dll" />
     <ReferencePath Include="F:\VS2026 Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Xml.XPath.dll" />
     <ReferencePath Include="F:\VS2026 Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Xml.XPath.XDocument.dll" />
-    <ReferencePath Include="E:\NuGetPackages\taglibsharp\2.3.0\lib\net462\TagLibSharp.dll" />
     <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\UIAutomationClient.dll" />
     <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\UIAutomationClientsideProviders.dll" />
     <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\UIAutomationProvider.dll" />
@@ -195,15 +190,26 @@
     <ReferencePath Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.2\Facades\System.ServiceModel.Security.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\MusicPlayerModule\obj\Debug\net462\Views\HorizontalMusicLyricDesktopWindow.g.cs" />
-    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\MusicPlayerModule\obj\Debug\net462\Views\LyricView.g.cs" />
-    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\MusicPlayerModule\obj\Debug\net462\Views\MusicFooterView.g.cs" />
-    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\MusicPlayerModule\obj\Debug\net462\Views\MusicListView.g.cs" />
-    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\MusicPlayerModule\obj\Debug\net462\Views\MusicPlayer.g.cs" />
-    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\MusicPlayerModule\obj\Debug\net462\Views\OperationButtonsView.g.cs" />
-    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\MusicPlayerModule\obj\Debug\net462\Views\VerticalMusicLyricDesktopWindow.g.cs" />
-    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\MusicPlayerModule\obj\Debug\net462\Views\VideoPlayerView.g.cs" />
-    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\MusicPlayerModule\obj\Debug\net462\GeneratedInternalTypeHelper.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Controls\Buttons\ButtonsView.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Controls\Buttons\IconFontView.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Controls\Buttons\ToggleButtonsView.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Controls\ControlsDemoView.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Controls\ItemsControls.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Controls\Panels.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Controls\Pickers.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Controls\Selectors.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Controls\TabControls.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Controls\TextBoxes\PasswordBox.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Controls\TextBoxes\RichTextBox.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Controls\TextBoxes\TextBox.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Controls\VirtualizingPanels.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Games\2048.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Games\FiveChessView.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Tools\ColorView.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Tools\FetchBackColor.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Tools\FetchBackColorView.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\Views\Tools\ToolsView.g.cs" />
+    <Compile Include="E:\JetBrains Code\C#\MyApp.Prisms\CustomControlsDemoModule\obj\Debug\net462\GeneratedInternalTypeHelper.g.cs" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 </Project>

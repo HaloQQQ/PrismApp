@@ -35,6 +35,8 @@ namespace MyApp.Prisms.ViewModels
                                 Row = tuple.row;
                                 Column = tuple.col;
                             });
+
+            CustomConstants.IsVideo = true;
         }
 
         private int _row = 2;

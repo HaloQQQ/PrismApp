@@ -12,7 +12,22 @@
     </UserControl.RenderTransform>
 
     <UserControl.Resources>
-        <ResourceDictionary Source="/MusicPlayerModule;component/Resources/Music/Lyric.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MusicPlayerModule;component/Resources/Music/Lyric.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <ObjectDataProvider
+                x:Key="HorizontalAlignmentKey"
+                MethodName="GetValues"
+                ObjectType="{x:Type HorizontalAlignment}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="HorizontalAlignment" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+
+            <converters:IsHorizontalCenterConverter x:Key="IsHorizontalCenterConverter" />
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Border CommandManager.Executed="UserControl_Executed">
@@ -93,6 +108,7 @@
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
+
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock
                                     FontSize="20"
@@ -220,7 +236,7 @@
                 </Popup>
             </DockPanel>
 
-            <DockPanel Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitSubConverter}, ConverterParameter=140}" VerticalAlignment="Top">
+            <DockPanel Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DigitSubConverter}, ConverterParameter=140, FallbackValue=50}" VerticalAlignment="Top">
                 <TextBlock
                     HorizontalAlignment="Center"
                     DockPanel.Dock="Top"
@@ -324,6 +340,9 @@
                     <Grid>
                         <ListBox
                             x:Name="LyricList"
+                            Width="820"
+                            HorizontalAlignment="Center"
+                            HorizontalContentAlignment="{Binding DesktopLyric.CurrentHorizontalAlign}"
                             Focusable="False"
                             ItemsSource="{Binding CurrentMedia.Music.Lyric.Lines}"
                             OpacityMask="{StaticResource GradientOpacityMask}"
@@ -334,15 +353,18 @@
                                     <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick" />
                                     <EventSetter Event="PreviewMouseRightButtonDown" Handler="SwitchLyricMode" />
 
-                                    <Setter Property="Padding" Value="0,10" />
-
-                                    <Setter Property="Width" Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=DockPanel}}" />
+                                    <Setter Property="Padding" Value="0,8" />
 
                                     <Setter Property="IsSelected" Value="{Binding IsPlayingLine, Mode=OneWay}" />
 
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsPlayingLine}" Value="True">
-                                            <DataTrigger.EnterActions>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsPlayingLine}" Value="True" />
+
+                                                <Condition Binding="{Binding DataContext.DesktopLyric.CurrentHorizontalAlign, RelativeSource={RelativeSource AncestorType=ListBox}, Converter={StaticResource IsHorizontalCenterConverter}}" Value="True" />
+                                            </MultiDataTrigger.Conditions>
+                                            <MultiDataTrigger.EnterActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <DoubleAnimation
@@ -357,8 +379,8 @@
                                                             Duration="0:0:0.5" />
                                                     </Storyboard>
                                                 </BeginStoryboard>
-                                            </DataTrigger.EnterActions>
-                                            <DataTrigger.ExitActions>
+                                            </MultiDataTrigger.EnterActions>
+                                            <MultiDataTrigger.ExitActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <DoubleAnimation
@@ -373,8 +395,9 @@
                                                             Duration="0:0:0.5" />
                                                     </Storyboard>
                                                 </BeginStoryboard>
-                                            </DataTrigger.ExitActions>
-                                        </DataTrigger>
+                                            </MultiDataTrigger.ExitActions>
+                                        </MultiDataTrigger>
+
                                     </Style.Triggers>
                                 </Style>
                             </ListBox.ItemContainerStyle>

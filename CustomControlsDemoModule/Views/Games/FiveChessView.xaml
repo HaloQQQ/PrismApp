@@ -12,6 +12,8 @@
             <Setter Property="MinWidth" Value="1200" />
             <Setter Property="MinHeight" Value="640" />
 
+            <Setter Property="MyAttachProperty.IsEnableAttachInputBindingCollection" Value="True" />
+
             <Setter Property="MyAttachProperty.AttachInputBindingCollection">
                 <Setter.Value>
                     <InputBindingCollection>

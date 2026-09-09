@@ -1,5 +1,3 @@
-using System.Windows;
-using System;
 using System.Windows.Media;
 using IceTea.Pure.Extensions;
 using IceTea.Pure.Businesses.HotKey.Global;
@@ -8,6 +6,8 @@ namespace MyApp.Prisms.Contracts
 {
     internal static class CustomConstants
     {
+        public static bool IsVideo { get; set; }
+
         internal static class LogType
         {
             internal const string DomainException_Log_Dir = "Domain异常日志";
@@ -58,16 +58,6 @@ namespace MyApp.Prisms.Contracts
 
         internal static readonly Brush SendBrush = Brushes.LightSkyBlue;
         internal static readonly Brush RecvBrush = Brushes.LightGreen;
-
-        internal static readonly ResourceDictionary Light = new ResourceDictionary()
-        {
-            Source = new Uri("pack://application:,,,/IceTea.Wpf.Core;component/Resources/LightTheme.xaml", UriKind.RelativeOrAbsolute)
-        };
-
-        internal static readonly ResourceDictionary Dark = new ResourceDictionary()
-        {
-            Source = new Uri("pack://application:,,,/IceTea.Wpf.Core;component/Resources/DarkTheme.xaml", UriKind.RelativeOrAbsolute)
-        };
 
         internal static readonly string[] WindowCornerRadius = "WindowCornerRadius".FillToArray();
 

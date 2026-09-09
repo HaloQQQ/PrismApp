@@ -29,7 +29,7 @@
         <MenuItem
             Header="主题跟随系统"
             IsCheckable="True"
-            IsChecked="{Binding FollowSystemTheme}" />
+            IsChecked="{Binding Settings.FollowSystemTheme}" />
 
         <MenuItem
             Header="开机自启"

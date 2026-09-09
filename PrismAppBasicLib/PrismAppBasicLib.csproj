@@ -1,12 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462;net6.0-windows;net8.0-windows</TargetFrameworks>
+    <Configurations>Debug;Release;ClickOnce</Configurations>
   </PropertyGroup>
 
+  <Choose>
+    <!-- 当使用 ClickOnce 配置时，仅编译 net8.0-windows -->
+    <When Condition="'$(Configuration)' == 'ClickOnce'">
+      <PropertyGroup>
+        <TargetFramework>net8.0-windows</TargetFramework>
+      </PropertyGroup>
+    </When>
+    <!-- 其他情况（Debug、Release 以及自定义配置），编译多版本 -->
+    <Otherwise>
+      <PropertyGroup>
+        <TargetFrameworks>net462;net6.0-windows;net8.0-windows</TargetFrameworks>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+
   <ItemGroup>
-    <PackageReference Include="IceTea.Windows" Version="1.1.9" />
-    <PackageReference Include="IceTea.Wpf.Core" Version="1.4.10" />
+    <PackageReference Include="IceTea.Windows" Version="1.1.10" />
+    <PackageReference Include="IceTea.Wpf.Core" Version="1.4.14" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
   </ItemGroup>
 </Project>

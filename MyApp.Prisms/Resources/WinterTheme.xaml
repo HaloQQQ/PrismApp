@@ -1,0 +1,36 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/IceTea.Wpf.Core;component/Resources/CustomColors.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--  覆盖主色调为冬季的冷深灰蓝/冰雪蓝  -->
+    <Color x:Key="DeepBlueColor">#FF101114</Color>
+    <Color x:Key="ShallowBlueColor">#FF87CEEB</Color>
+
+    <SolidColorBrush x:Key="TextBox.Background" Color="#66101114" />
+    <SolidColorBrush x:Key="TextBox.ReadOnly.Background" Color="#88101114" />
+    <SolidColorBrush x:Key="TextBox.Disable.Background" Color="#AA08090A" />
+    <SolidColorBrush x:Key="TextBox.BorderBrush" Color="#88608A99" />
+    <SolidColorBrush x:Key="TextBox.Focused.BorderBrush" Color="#FFADD8E6" />
+
+    <SolidColorBrush x:Key="TextBlock.PlaceHolder.Foreground" Color="#CCADD8E6" />
+
+    <!--  冰雪银白文字  -->
+    <SolidColorBrush x:Key="TextBlock.Foreground" Color="#FFE0E0E0" />
+
+    <SolidColorBrush x:Key="BackPanel.Background" Color="#EE0D1117" />
+
+    <!--  点缀色采用极光紫/冰晶蓝  -->
+    <SolidColorBrush x:Key="CheckBox.BorderBrush" Color="#FF7B68EE" />
+    <SolidColorBrush x:Key="CheckBox.Foreground" Color="#FF7B68EE" />
+
+    <SolidColorBrush x:Key="ComboBox.Background" Color="{StaticResource DeepBlueColor}" />
+    <SolidColorBrush x:Key="ComboBox.BorderBrush" Color="{StaticResource ShallowBlueColor}" />
+
+    <SolidColorBrush x:Key="HighLight.Foreground" Color="#FFADD8E6" />
+
+    <SolidColorBrush x:Key="Disable.Foreground" Color="#CC708090" />
+    <SolidColorBrush x:Key="Disable.Background" Color="#7708090A" />
+
+    <SolidColorBrush x:Key="Theme.SolidBack" Color="#FF050608" />
+</ResourceDictionary>

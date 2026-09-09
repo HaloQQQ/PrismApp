@@ -146,6 +146,14 @@ namespace MusicPlayerModule.Views
         /// </summary>
         public void Cleanup()
         {
+            // 停止进度定时器
+            _progressTime.Stop();
+
+            // 释放 MediaElement 的视频资源，避免移除后仍占用 GPU/内存
+            mediaPlayer.Stop();
+            mediaPlayer.Source = null;
+            mediaPlayer.Close();
+
             if (_videoPlayerViewModel is IDisposable d)
             {
                 d.Dispose();

@@ -7,8 +7,7 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True"
-    Background="Transparent"
-    FocusVisualStyle="{x:Null}">
+    Background="Transparent">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -146,7 +145,6 @@
     <Grid
         Background="Transparent"
         CommandManager.Executed="UserControl_Executed"
-        FocusVisualStyle="{x:Null}"
         MyAttachProperty.FocusOnClick="True">
         <Grid.InputBindings>
             <KeyBinding
@@ -251,6 +249,7 @@
             Grid.Row="0"
             LoadedBehavior="Manual"
             MediaOpened="mediaPlayer_MediaOpened"
+            MyAttachProperty.FocusOnClick="True"
             Source="{Binding CurrentMedia.Video.FilePath}"
             Stretch="{Binding Stretch}"
             Volume="1">
