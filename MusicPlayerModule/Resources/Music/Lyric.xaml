@@ -62,6 +62,8 @@
 
                         <Grid>
                             <Grid.Resources>
+                                <utils:BindingProxy x:Key="LyricListProxy" Data="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListBox}}" />
+
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Left" />
                                     <Setter Property="ClipToBounds" Value="True" />
@@ -91,7 +93,7 @@
                             <TextBlock>
                                 <TextBlock.Foreground>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                        <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=ListBox}}" />
+                                        <GradientStop Offset="0.2" Color="{Binding Data.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, Source={StaticResource LyricListProxy}}" />
                                         <GradientStop Offset="1" Color="Transparent" />
                                     </LinearGradientBrush>
                                 </TextBlock.Foreground>
@@ -124,6 +126,8 @@
 
             <Grid>
                 <Grid.Resources>
+                    <utils:BindingProxy x:Key="LyricPanelProxy" Data="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+
                     <Style TargetType="TextBlock">
                         <Setter Property="HorizontalAlignment" Value="Left" />
                         <Setter Property="ClipToBounds" Value="True" />
@@ -156,7 +160,7 @@
                 <TextBlock>
                     <TextBlock.Foreground>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                            <GradientStop Offset="0.2" Color="{Binding DataContext.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                            <GradientStop Offset="0.2" Color="{Binding Data.DesktopLyric.LinearGradientColorBrush.ColorBrush.Color, Source={StaticResource LyricPanelProxy}}" />
                             <GradientStop Offset="1" Color="Transparent" />
                         </LinearGradientBrush>
                     </TextBlock.Foreground>

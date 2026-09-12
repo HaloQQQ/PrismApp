@@ -21,8 +21,7 @@ namespace MusicPlayerModule.Hooks
         {
             base.OnActivity(args);
 
-            var key = args.MediaCode;
-            switch (key)
+            switch (args.MediaCode)
             {
                 case MediaCode.MediaPlayPause:
                     _eventAggregator.GetEvent<ToggeleCurrentMediaEvent>().Publish();

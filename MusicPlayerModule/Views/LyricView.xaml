@@ -325,11 +325,7 @@
                                             </MultiDataTrigger.EnterActions>
                                         </MultiDataTrigger>
                                         <DataTrigger Binding="{Binding CurrentMedia.Music.ImageSource}" Value="{x:Null}">
-                                            <Setter Property="Source">
-                                                <Setter.Value>
-                                                    <BitmapImage UriSource="/MusicPlayerModule;component/Resources/音符.png" />
-                                                </Setter.Value>
-                                            </Setter>
+                                            <Setter Property="Source" Value="/MusicPlayerModule;component/Resources/音符.png" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
